@@ -1,10 +1,11 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import MainLayout from './layout/MainLayout'
-import DetailPage from './pages/DetailPage'
+import MainLayout from './components/layout/MainLayout'
+import MainPage from './pages/MainPage/MainPage'
+import CategoriesPage from './pages/CategoriesPage/CategoriesPage'
+import DetailPage from './pages/DetailPage/DetailPage'
 import LoginPage from './pages/LoginPage'
 import NotFoundPage from './pages/NotFoundPage'
-import CategoriesPage from './pages/CategoriesPage/CategoriesPage'
 
 export default function App() {
   return (
