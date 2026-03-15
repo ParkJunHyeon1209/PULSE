@@ -4,6 +4,7 @@ import MainLayout from './layout/MainLayout'
 import DetailPage from './pages/DetailPage'
 import LoginPage from './pages/LoginPage'
 import NotFoundPage from './pages/NotFoundPage'
+import CategoriesPage from './pages/CategoriesPage/CategoriesPage'
 
 export default function App() {
   return (
@@ -11,10 +12,11 @@ export default function App() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<MainPage />} />
-          <Route path="/learn/:id" element={<DetailPage />} />
+          <Route path="/categories" element={<CategoriesPage />} />
+          <Route path="/product/:id" element={<DetailPage />} />
         </Route>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/*" element={<NotFoundPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/*" element={<NotFoundPage />} />
       </Routes>
     </>
   )
