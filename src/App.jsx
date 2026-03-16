@@ -1,11 +1,12 @@
-import React from 'react'
-import { Route, Routes } from 'react-router-dom'
-import MainLayout from './components/layout/MainLayout'
-import MainPage from './pages/MainPage/MainPage'
-import CategoriesPage from './pages/CategoriesPage/CategoriesPage'
-import DetailPage from './pages/DetailPage/DetailPage'
-import LoginPage from './pages/LoginPage'
-import NotFoundPage from './pages/NotFoundPage'
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import MainLayout from './components/layout/MainLayout';
+import MainPage from './pages/MainPage/MainPage';
+import CategoriesPage from './pages/CategoriesPage/CategoriesPage';
+import DetailPage from './pages/DetailPage/DetailPage';
+import LoginPage from './pages/LoginPage';
+import NotFoundPage from './pages/NotFoundPage';
+import ShoppingCart from './pages/ShoppingCart';
 
 export default function App() {
   return (
@@ -15,10 +16,11 @@ export default function App() {
           <Route path="/" element={<MainPage />} />
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/product/:id" element={<DetailPage />} />
+          <Route path="/shoppingcart" element={<ShoppingCart />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/*" element={<NotFoundPage />} />
       </Routes>
     </>
-  )
+  );
 }
