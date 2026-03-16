@@ -15,7 +15,7 @@ const useCartStore = create(
             ),
           };
         }),
-
+      // 전체선택 다루기
       handleAllChange: () =>
         set((state) => {
           // 하나라도 false인 checked가 있는지 확인
@@ -51,14 +51,6 @@ const useCartStore = create(
           return { cart: [...state.cart, { ...product, quantity: qty, checked: true }] };
         }),
 
-      // 해당하는 아이템 삭제
-      removeCart: (id) =>
-        set((state) => {
-          if (confirm('정말로 삭제하시겠습니까? ')) {
-            return { cart: state.cart.filter((product) => product.id !== id) };
-          } else return { cart: state.cart };
-        }),
-
       // 수량 줄이기
       decreaseQuantity: (product) =>
         set((state) => {
@@ -71,6 +63,21 @@ const useCartStore = create(
               item.id === product.id ? { ...item, quantity: item.quantity - 1 } : item
             ),
           };
+        }),
+
+      // 해당하는 아이템 삭제
+      removeCart: (id) =>
+        set((state) => {
+          if (confirm('정말 삭제하시겠습니까? '))
+            ({ cart: state.cart.filter((product) => product.id !== id) });
+          else ({ cart: state.cart });
+        }),
+
+      removeSelected: () =>
+        set((state) => {
+          if (confirm('정말 삭제하시겠습니까? '))
+            ({ cart: state.cart.filter((product) => !product.checked) });
+          else ({ cart: state.cart });
         }),
 
       // 카트 전체 초기화

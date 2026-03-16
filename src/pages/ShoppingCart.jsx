@@ -11,6 +11,7 @@ export default function ShoppingCart() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const removeSelected = useCartStore((state) => state.removeSelected);
   const onChange = useCartStore((state) => state.onChange);
   const isAllChecked = Boolean(cart.filter((item) => item.checked === false).length);
   const handleAllChange = useCartStore((state) => state.handleAllChange);
@@ -57,7 +58,7 @@ export default function ShoppingCart() {
                   <span>전체 선택</span>
                 </div>
                 <div className="deletes">
-                  <button>선택삭제</button>
+                  <button onClick={removeSelected}>선택삭제</button>
                   <button onClick={resetCart}>전체삭제</button>
                 </div>
               </div>
