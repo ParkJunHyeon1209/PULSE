@@ -6,6 +6,8 @@ const useCartStore = create(
     (set) => ({
       cart: [],
 
+      // 장바구니에 아이템 추가시 토스트 띄우기
+
       // 상품 체크 여부 다루기
       onChange: (id) =>
         set((state) => {
@@ -15,6 +17,7 @@ const useCartStore = create(
             ),
           };
         }),
+
       // 전체선택 다루기
       handleAllChange: () =>
         set((state) => {
