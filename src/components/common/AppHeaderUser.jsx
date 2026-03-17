@@ -1,0 +1,285 @@
+import styled from '@emotion/styled';
+import BaseBtn from './BaseBtn';
+import { UserIcon, CartIcon, LoginIcon, SunIcon, MoonIcon } from '../../assets/icons/BtnIcon';
+import usePanel from '../../hooks/usePanel';
+
+const AvatarButton = styled(BaseBtn)`
+  overflow: visible;
+  /* position: relative;
+  border-radius: ${({ theme }) => theme.radii.full};
+  border: 2px solid ${({ theme }) => theme.tones.violet.subtleColor};
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  color: ${({ theme }) => theme.colors.wColor};
+  box-shadow: none;
+  font-family: ${({ theme }) => theme.fontFamily.display};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  backdrop-filter: none;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, #7c3aed, #ec4899);
+    border-color: rgba(196, 181, 253, 0.85);
+    color: ${({ theme }) => theme.colors.wColor};
+    box-shadow: ${({ theme }) => theme.effects.hoverShadowAvatar};
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    background: linear-gradient(135deg, #7c3aed, #ec4899);
+    transform: scale(0.97);
+  } */
+`;
+
+const AvatarStatus = styled.span`
+  position: absolute;
+  right: -12px;
+  top: -12px;
+  width: 12px;
+  height: 12px;
+  border-radius: ${({ theme }) => theme.radii.full};
+  background: ${({ theme }) => theme.status.new};
+  border: 2px solid ${({ theme }) => theme.colors.background};
+`;
+
+const DropWrap = styled.div`
+  position: relative;
+`;
+
+const Drop = styled.div`
+  position: absolute;
+  top: calc(100% + 14px);
+  right: 0;
+  min-width: 200px;
+  padding: ${({ theme }) => theme.spacing[2]};
+  border: 1px solid ${({ theme }) => theme.dropdown.border};
+  border-radius: ${({ theme }) => theme.radii.lg};
+  background: ${({ theme }) => theme.dropdown.bg};
+  backdrop-filter: ${({ theme }) => theme.effects.blurDropdown};
+  color: ${({ theme }) => theme.colors.text};
+  opacity: ${({ $open }) => ($open ? 1 : 0)};
+  pointer-events: ${({ $open }) => ($open ? 'auto' : 'none')};
+  transform: ${({ $open }) => ($open ? 'translateY(0) scale(1)' : 'translateY(-8px) scale(.97)')};
+  transform-origin: top right;
+  transition:
+    opacity ${({ theme }) => theme.motion.slow},
+    transform ${({ theme }) => theme.motion.slow};
+  box-shadow: ${({ theme }) => theme.dropdown.shadow};
+  z-index: 500;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: 17px;
+    width: 10px;
+    height: 10px;
+    background: ${({ theme }) => theme.dropdown.bg};
+    border-top: 1px solid ${({ theme }) => theme.dropdown.border};
+    border-left: 1px solid ${({ theme }) => theme.dropdown.border};
+    transform: rotate(45deg);
+  }
+`;
+
+const DropLabel = styled.div`
+  padding: ${({ theme }) => `${theme.spacing[3]} 13px 8px`};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-family: ${({ theme }) => theme.fontFamily.mono};
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+`;
+
+const DropItem = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[3]};
+  width: 100%;
+  padding: ${({ theme }) => `${theme.spacing[3]} 13px`};
+  border-radius: ${({ theme }) => theme.radii.sm};
+  text-align: left;
+  color: ${({ $danger, theme }) => ($danger ? theme.colors.error : theme.colors.text)};
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+
+  svg {
+    flex-shrink: 0;
+    color: ${({ $danger, theme }) => ($danger ? theme.colors.error : theme.colors.primary)};
+  }
+
+  &:hover {
+    background: ${({ $danger, theme }) =>
+      $danger ? theme.dropdown.hoverDanger : theme.dropdown.hoverBg};
+  }
+`;
+
+const ThemeRow = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: ${({ theme }) => `${theme.spacing[3]} 13px`};
+  border-radius: ${({ theme }) => theme.radii.sm};
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  margin-top: ${({ theme }) => theme.spacing[1]};
+  color: ${({ theme }) => theme.colors.text};
+
+  &:hover {
+    background: ${({ theme }) => theme.dropdown.hoverBg};
+  }
+`;
+
+const ThemeText = styled.span`
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  color: ${({ theme }) => theme.colors.textSecondary};
+`;
+
+const CartButton = styled(BaseBtn)`
+  overflow: visible;
+  position: relative;
+  color: ${({ theme }) => theme.colors.primary};
+
+  &::after {
+    content: attr(data-count);
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 ${({ theme }) => theme.spacing[1]};
+    border-radius: ${({ theme }) => theme.radii.pill};
+    border: 2px solid ${({ theme }) => theme.colors.background};
+    background: ${({ theme }) => theme.gradients.navActive};
+
+    color: ${({ theme }) => theme.colors.wColor};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: ${({ theme }) => theme.fontFamily.mono};
+    font-size: ${({ theme }) => theme.fontSize.xxxs};
+    font-weight: 700;
+    box-sizing: border-box;
+  }
+`;
+
+const Divider = styled.span`
+  width: 1px;
+  height: 22px;
+  margin: 0 2px;
+  background: ${({ theme }) => theme.colors.border};
+`;
+
+const ToggleDeco = styled.span`
+  position: absolute;
+  top: 50%;
+  right: 3px;
+  transform: translateY(-50%);
+  font-size: 5px;
+  letter-spacing: 4px;
+  line-height: 1;
+  color: ${({ theme }) => theme.tones.violet.subtleColor};
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity ${({ theme }) => theme.motion.slow};
+
+  ${({ theme, $on }) =>
+    $on &&
+    theme.mode === 'light' &&
+    `
+      right: auto;
+      left: 7px;
+    `}
+`;
+
+const ToggleIcon = styled.span`
+  position: absolute;
+  top: 7px;
+  left: ${({ $on }) => ($on ? '30px' : '8px')};
+  transition: left 100ms ease-out;
+  width: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  color: ${({ theme }) => theme.colors.primary};
+  pointer-events: none;
+
+  svg {
+    width: 11px;
+    height: 11px;
+    flex-shrink: 0;
+  }
+`;
+
+const ToggleButton = styled.div`
+  position: relative;
+  width: 48px;
+  height: 26px;
+  border-radius: ${({ theme }) => theme.radii.pill};
+  border: 1px solid ${({ theme }) => theme.toggle.trackBorder};
+  background: ${({ theme }) => theme.toggle.trackBg};
+  backdrop-filter: ${({ theme }) => theme.effects.blurButton};
+  box-shadow: ${({ theme }) => theme.toggle.trackShadow};
+  transition:
+    background ${({ theme }) => theme.motion.slow},
+    border-color ${({ theme }) => theme.motion.slow},
+    box-shadow ${({ theme }) => theme.motion.slow};
+
+  &:hover {
+    border-color: ${({ theme }) => theme.toggle.trackHoverBorder};
+    box-shadow: ${({ theme }) => theme.toggle.trackHoverShadow};
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: ${({ theme }) => theme.radii.full};
+    background: ${({ theme }) => theme.toggle.thumbBg};
+    box-shadow: ${({ theme }) => theme.toggle.thumbShadow};
+    transform: ${({ $on }) => ($on ? 'translateX(22px)' : 'translateX(0)')};
+    transition:
+      transform ${({ theme }) => theme.motion.normal},
+      box-shadow ${({ theme }) => theme.motion.slow};
+  }
+`;
+
+export default function AppHeaderUser({ open, onOpen, onClose, isDarkMode, onThemeToggle }) {
+  const wrapRef = usePanel({ open, onClose });
+
+  return (
+    <>
+      <DropWrap ref={wrapRef}>
+        <AvatarButton height={'42px'} variant="ic-btn" aria-label="User menu" onClick={onOpen}>
+          <UserIcon />
+          <AvatarStatus />
+        </AvatarButton>
+
+        <Drop $open={open}>
+          <DropLabel>PULSE ACCOUNT</DropLabel>
+          <DropItem type="button">
+            <LoginIcon />
+            로그인 / 회원가입
+          </DropItem>
+          <ThemeRow type="button" onClick={onThemeToggle}>
+            <ThemeText>{isDarkMode ? 'DARK' : 'LIGHT'}</ThemeText>
+            <ToggleButton $on={!isDarkMode} aria-hidden="true">
+              <ToggleIcon $on={!isDarkMode}>
+                {isDarkMode ? <MoonIcon strokeWidth="2" /> : <SunIcon strokeWidth="2" />}
+              </ToggleIcon>
+              <ToggleDeco $on={!isDarkMode}>···</ToggleDeco>
+            </ToggleButton>
+          </ThemeRow>
+        </Drop>
+      </DropWrap>
+
+      {/* data-count: 카트 수량 - data-count={cartCount} */}
+      <CartButton height={'42px'} variant="ic-btn" aria-label="Cart" data-count="0">
+        <CartIcon strokeWidth="1.25" />
+      </CartButton>
+    </>
+  );
+}
