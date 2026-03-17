@@ -1,13 +1,13 @@
-import React from 'react';;
-import { Route, Routes } from 'react-router-dom';;
-import MainLayout from './components/layout/MainLayout';;
-import MainPage from './pages/MainPage/MainPage';;
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import MainLayout from './components/layout/MainLayout';
+import MainPage from './pages/MainPage/MainPage';
 import CategoryPage from './pages/CategoriesPage/CategoryPage';
-import CategoriesPage from './pages/CategoriesPage/components/CategoriesPage';;
-import DetailPage from './pages/DetailPage/DetailPage';;
-import LoginPage from './pages/LoginPage';;
+import CategoriesPage from './pages/CategoriesPage/components/CategoriesPage';
+import DetailPage from './pages/DetailPage/DetailPage';
+import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
-import ShoppingCart from './pages/ShoppingCart';;
+import ShoppingCart from './pages/ShoppingCart';
 
 export default function App() {
   return (
@@ -24,6 +24,5 @@ export default function App() {
         <Route path="/*" element={<NotFoundPage />} />
       </Routes>
     </>
-  );
   );
 }

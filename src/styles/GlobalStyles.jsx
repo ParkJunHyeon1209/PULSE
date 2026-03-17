@@ -4,40 +4,8 @@ const styles = (theme) => css`
   /* 폰트는 로컬 파일 기준으로 로드 */
   @font-face {
     font-family: 'Pretendard';
-    src: url('/fonts/Pretendard-Light.woff2') format('woff2');
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Pretendard';
-    src: url('/fonts/Pretendard-Regular.woff2') format('woff2');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Pretendard';
-    src: url('/fonts/Pretendard-Medium.woff2') format('woff2');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Pretendard';
-    src: url('/fonts/Pretendard-SemiBold.woff2') format('woff2');
-    font-weight: 600;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Pretendard';
-    src: url('/fonts/Pretendard-Bold.woff2') format('woff2');
-    font-weight: 700;
+    src: url('/fonts/PretendardVariable.woff2') format('woff2');
+    font-weight: 300 700;
     font-style: normal;
     font-display: swap;
   }
@@ -259,6 +227,8 @@ const styles = (theme) => css`
 
   button {
     cursor: pointer;
+    font-size: ${theme.fontSize.xxxs};
+    font-weight: 700;
   }
 
   img {

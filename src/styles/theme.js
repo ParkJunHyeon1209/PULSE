@@ -10,7 +10,7 @@ const baseTokens = {
     blurSoft: 'blur(8px)',
     blurMd: 'blur(10px)',
     blurPromo: 'blur(12px)',
-    blurButton: 'blur(14px)',
+    blurBtn: 'blur(14px)',
     blurCard: 'blur(18px)',
     blurNav: 'blur(24px)',
     blurDropdown: 'blur(32px)',
@@ -36,6 +36,9 @@ const baseTokens = {
     // drop-timer에서 쓰는 빨간색 ✦
     glowTextRed: '0 0 6px rgba(236,72,153,.7)',
     // CATEGORIES 섹션에서 쓰는 그림자
+
+    PurpleStar: '0 0 6px rgba(158, 125, 255, 0.9), 0 0 18px rgba(124, 58, 237, 0.7)',
+
     glowDropShadowPurple:
       'drop-shadow(0 0 8px rgba(167,139,250,.7)) drop-shadow(0 0 22px rgba(124,58,237,.4))',
     glowDropShadowMint:
@@ -61,7 +64,10 @@ const baseTokens = {
 
   // 라이트/다크 공통 색상
   colors: {
+    wColor: '#fff',
     secondary: '#c4b5fd',
+    primaryRgb: '124,58,237',
+    accentRgb: '236,72,153',
     primaryStrong: '#6d28d9',
     violetDk: '#5b21b6',
     accentSoft: '#f472b6',
@@ -94,11 +100,11 @@ const baseTokens = {
     // overlay = primary 버튼 공통 상단 하이라이트
     overlay: 'linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, transparent 55%)',
   },
-  // iconButton 공통 크기
-  iconButton: {
-    size: '44px',
-    iconSize: '16px',
+  dropdown: {
+    // hoverDanger = 로그아웃 등 위험 액션 항목 hover 배경
+    hoverDanger: 'rgba(239,68,68,.1)',
   },
+
   // 인풋 상단 tabs 레이아웃
   tabs: {
     containerPadding: '4px',
@@ -126,6 +132,7 @@ const baseTokens = {
     lg: 'clamp(28px,3.2vw,42px)',
     md: '36px',
     sm: '24px',
+    s: '18px',
     xs: '16px',
     xxs: '14px',
     xxxs: '12px',
@@ -193,6 +200,9 @@ export const darkTheme = {
     // btn2Bg = 보조 버튼 배경
     btn2Bg: 'rgba(255,255,255,0.06)',
 
+    // dimBg = 모달/검색 딤드 배경
+    dimBg: 'rgba(0,0,0,.18)',
+
     // 텍스트 색상
     text: '#eeeeff',
     textSecondary: 'rgba(200,205,255,0.42)',
@@ -227,6 +237,7 @@ export const darkTheme = {
     ...baseTokens.gradients,
     // textLav = 라벤더 계열 텍스트 그라디언트
     textLav: 'linear-gradient(135deg, #c4b5fd, #a78bfa)',
+    textLavender: 'linear-gradient(to right, #e2e8f0, #c4b5fd, #a78bfa)',
     // textLavBlue = 라벤더에서 블루로 이어지는 텍스트 그라디언트
     textLavBlue: 'linear-gradient(135deg, #c4b5fd, #93c5fd, #a78bfa)',
     // lavBlue = 라벤더에서 블루로 가는 그라디언트
@@ -243,7 +254,7 @@ export const darkTheme = {
       /* previous adjusted value: radial-gradient(ellipse 30% 40% at 55% 82%,rgba(180,40,100,0.10) 0%,transparent 58%) */
     `,
   },
-  footer: {
+  foot: {
     // decoBand = 푸터 상단 장식 띠 본체(.deco-box)
     decoBand: `linear-gradient(
       to right,
@@ -257,15 +268,25 @@ export const darkTheme = {
       rgba(59,130,246,.85) 82%,
       rgba(6,6,14,1) 96%
     )`,
+    divider: 'linear-gradient(to right, transparent, rgba(167,139,250,.35), transparent)',
+    // backGlow = 푸터 상단 행성 글로우 배경
+    backGlow: `radial-gradient(
+      ellipse 100% 28% at 50% 0%,
+      rgba(167,139,250,.65) 0%,
+      rgba(124,58,237,.45) 30%,
+      rgba(80,40,200,.22) 55%,
+      transparent 80%
+    )`,
   },
 
   // Line = 구분선에 쓰는 선 색상
   Line: 'rgba(255, 255, 255, 0.08)',
 
-  // variants = violet / blue 컬러 세트
-  variants: {
+  // tones = violet / blue 컬러 세트
+  tones: {
     violet: {
       // link
+
       color: '#a78bfa',
       hoverColor: '#ffffff',
       subtleColor: 'rgba(167, 139, 250, 0.5)',
@@ -286,11 +307,11 @@ export const darkTheme = {
       // btn
       bg: 'linear-gradient(135deg,rgba(150,70,255,0.95) 0%,rgba(109,40,217,0.9) 40%,rgba(150,70,255,0.88) 100%)',
       shadow:
-        '0 0 0 1px rgba(190,130,255,0.5),0 0 14px 4px rgba(150,70,255,0.5),0 0 36px 12px rgba(150,70,255,0.28),0 4px 20px rgba(80,40,200,0.45)',
+        '0 0 0 1px rgba(190,130,255,0.35),0 0 14px 4px rgba(150,70,255,0.3),0 0 36px 12px rgba(150,70,255,0.2),0 4px 20px rgba(80,40,200,0.2)',
       hoverBg:
         'linear-gradient(135deg,rgba(165,85,255,1) 0%,rgba(150,70,255,0.98) 40%,rgba(165,85,255,0.95) 100%)',
       hoverShadow:
-        '0 0 0 1.5px rgba(220,200,255,0.85),0 0 22px 7px rgba(165,85,255,0.75),0 0 55px 20px rgba(150,70,255,0.45),0 8px 30px rgba(109,40,217,0.6),inset 0 0 20px rgba(190,130,255,0.12)',
+        '0 0 0 1px rgba(93, 0, 255, 0.8),0 0 22px 7px rgba(119, 0, 255, 0.5),0 0 55px 20px rgba(150,70,255,0.2),0 8px 30px rgba(109,40,217,0.1),inset 0 0 20px rgba(190,130,255,0.05)',
       btnActiveBg:
         'linear-gradient(135deg,rgba(150,70,255,0.95) 0%,rgba(109,40,217,0.9) 40%,rgba(150,70,255,0.88) 100%)',
       spark: '0 0 8px rgba(255,255,255,0.8), 0 0 18px rgba(220,180,255,0.7)',
@@ -321,15 +342,15 @@ export const darkTheme = {
       hoverBg:
         'linear-gradient(135deg, rgba(96, 165, 250, 1) 0%, rgba(129, 140, 248, 0.98) 45%, rgba(96, 165, 250, 0.95) 100%)',
       hoverShadow:
-        '0 0 0 1.5px rgba(186, 230, 253, 0.7), 0 0 22px 7px rgba(96, 165, 250, 0.65), 0 0 55px 20px rgba(99, 102, 241, 0.38), 0 8px 30px rgba(56, 100, 240, 0.5)',
+        '0 0 0 1.5px rgba(108, 200, 250, 0.5), 0 0 22px 7px rgba(31, 132, 255, 0.4), 0 0 55px 20px rgba(99, 102, 241, 0.3), 0 8px 30px rgba(56, 100, 240, 0.1)',
       btnActiveBg:
         'linear-gradient(135deg, rgba(56, 130, 255, 0.95) 0%, rgba(99, 102, 241, 0.92) 45%, rgba(56, 130, 255, 0.88) 100%)',
       spark: '0 0 8px rgba(255,255,255,0.8), 0 0 18px rgba(147,197,253,0.8)',
     },
   },
-  iconButton: {
+  iconBtn: {
     // auth 소셜 로그인 버튼, 원형 아이콘 액션 버튼 같은 UI에 사용
-    ...baseTokens.iconButton,
+    ...baseTokens.iconBtn,
     socialBg: 'rgba(167, 139, 250, 0.05)',
     socialBorder: 'rgba(167, 139, 250, 0.15)',
     socialColor: 'rgba(167, 139, 250, 0.5)',
@@ -373,17 +394,32 @@ export const darkTheme = {
     secondaryColor: 'rgba(200,180,255,0.9)',
     secondaryShadow:
       '0 0 0 1px rgba(124,58,237,0.15),0 0 12px 3px rgba(124,58,237,0.18),inset 0 1px 0 rgba(255,255,255,0.08)',
-    secondaryHoverBg: 'rgba(18,16,58,0.7)',
+    secondaryHoverBg: 'rgba(49,15,70,0.7)',
     secondaryHoverBorder: 'rgba(167,139,250,0.75)',
     secondaryHoverColor: 'rgba(220,200,255,1)',
     secondaryHoverShadow:
       '0 0 0 1px rgba(167,139,250,0.45),0 0 20px 6px rgba(150,70,255,0.3),0 0 45px 15px rgba(109,40,217,0.15),inset 0 1px 0 rgba(255,255,255,0.12)',
   },
-  // toggle.thumb = 테마 토글
+  // toggle.thumb = 테마 토글 핸들(원형 버튼)
+  // toggle.track = 토글 pill 트랙 자체
   toggle: {
     thumbBg: 'linear-gradient(145deg, #6d28d9, #4c1d95)',
     thumbShadow:
       '0 0 0 1px rgba(167,139,250,.35),0 0 8px 3px rgba(130,60,255,.55),0 0 18px 6px rgba(100,40,230,.3)',
+    trackBg: 'rgba(14,8,30,.7)', // 트랙 배경
+    trackBorder: 'rgba(167,139,250,.32)', // 트랙 테두리
+    trackShadow:
+      '0 0 0 1px rgba(100,40,200,.1), 0 0 10px 2px rgba(130,60,220,.18), inset 0 1px 0 rgba(255,255,255,.07)', // 트랙 기본 그림자
+    trackHoverBorder: 'rgba(190,150,255,.6)', // 트랙 hover 테두리
+    trackHoverShadow:
+      '0 0 0 1px rgba(130,60,220,.2), 0 0 16px 5px rgba(150,70,255,.32), 0 0 36px 12px rgba(120,40,230,.16), inset 0 1px 0 rgba(255,255,255,.1)', // 트랙 hover 그림자
+  },
+  dropdown: {
+    ...baseTokens.dropdown,
+    bg: 'rgba(10,8,26,.9)', // 드롭다운 배경
+    border: 'rgba(167,139,250,.18)', // 드롭다운 테두리
+    shadow: '0 20px 52px rgba(0,0,0,.32)', // 드롭다운 그림자
+    hoverBg: 'rgba(124,58,237,.13)', // 일반 항목 hover 배경
   },
   effects: {
     // 카드 하단 beam / glow / line 같은 장식 효과
@@ -433,7 +469,7 @@ export const lightTheme = {
   mode: 'light',
   colors: {
     ...baseTokens.colors,
-    background: '#ece9ff',
+    background: '#ece9ff', // 기존 색상 #e4e0ff
     navBg: 'rgba(236,233,255,0.92)',
     promoBg: 'rgba(228,224,255,1)',
     transBg: 'transparent',
@@ -441,6 +477,7 @@ export const lightTheme = {
     cardBg: 'rgba(255,255,255,0.88)',
     cardBorder: 'rgba(124,58,237,0.18)',
     btn2Bg: 'rgba(124,58,237,0.10)',
+    dimBg: 'rgba(0,0,0,.08)',
     text: '#2d1b69',
     textSecondary: 'rgba(45,27,105,0.52)',
     border: 'rgba(100,80,200,0.18)',
@@ -475,7 +512,7 @@ export const lightTheme = {
       radial-gradient(ellipse 45% 35% at 82% 28%,rgba(40,110,250,0.05) 0%,transparent 58%)
     `,
   },
-  footer: {
+  foot: {
     // decoBand = 푸터 상단 장식
     decoBand: `linear-gradient(
       to right,
@@ -489,10 +526,19 @@ export const lightTheme = {
       rgba(167,139,250,.7) 80%,
       rgba(235,233,255,1) 96%
     )`,
+    // 네비&푸터 구분선
+    divider: 'linear-gradient(to right, transparent, rgba(124,58,237,.25), transparent)',
+    // backGlow = 푸터 상단 행성 글로우 배경
+    backGlow: `radial-gradient(
+      ellipse 100% 28% at 50% 0%,
+      rgba(167,139,250,.45) 0%,
+      rgba(124,58,237,.28) 40%,
+      transparent 75%
+    )`,
   },
   Line: 'rgba(124, 58, 237, 0.15)',
 
-  variants: {
+  tones: {
     violet: {
       // link
       color: '#6d28d9',
@@ -515,10 +561,10 @@ export const lightTheme = {
       // btn
       bg: 'linear-gradient(135deg,rgba(124,58,237,0.9),rgba(99,40,210,0.88))',
       shadow:
-        '0 0 0 1px rgba(167,139,250,0.55),0 0 12px 3px rgba(124,58,237,0.4),0 4px 18px rgba(100,20,200,0.35)',
+        '0 0 0 0.8px rgba(167,139,250,0.55),0 0 12px 3px rgba(124,58,237,0.4),0 4px 18px rgba(100,20,200,0.35)',
       hoverBg: 'linear-gradient(135deg,rgba(139,70,255,1),rgba(110,45,240,0.98))',
       hoverShadow:
-        '0 0 0 1.5px rgba(180,140,255,0.8),0 0 20px 6px rgba(140,80,255,0.6),0 8px 28px rgba(110,30,230,0.5)',
+        '0 0 0 1px rgba(180,140,255,0.4),0 0 20px 6px rgba(140,80,255,0.2),0 8px 28px rgba(110,30,230,0.05)',
       btnActiveBg: 'radial-gradient(ellipse at 50% 30%, #a083f7 0%, #6d28d9 48%, #27009d 100%)',
       spark: '0 0 8px rgba(255,255,255,0.8), 0 0 18px rgba(220,180,255,0.7)',
     },
@@ -543,18 +589,18 @@ export const lightTheme = {
       iconHover: '#3b82f6',
       // btn
       bg: 'linear-gradient(135deg, rgba(56, 130, 255, 0.95) 0%, rgba(99, 102, 241, 0.92) 45%, rgba(56, 130, 255, 0.88) 100%)',
-      shadow: '0 0 0 1px rgba(147, 197, 253, 0.4), 0 4px 16px rgba(56, 130, 255, 0.25)',
+      shadow: '0 0 0 0.8px rgba(147, 197, 253, 0.4), 0 4px 16px rgba(56, 130, 255, 0.25)',
       hoverBg:
         'linear-gradient(135deg, rgba(96, 165, 250, 1) 0%, rgba(129, 140, 248, 0.98) 45%, rgba(96, 165, 250, 0.95) 100%)',
       hoverShadow:
-        '0 0 0 1.5px rgba(147, 197, 253, 0.6), 0 0 20px rgba(56, 130, 255, 0.35), 0 8px 24px rgba(56, 130, 255, 0.2)',
+        '0 0 0 1px rgba(147, 197, 253, 0.4), 0 0 20px rgba(56, 130, 255, 0.2), 0 8px 24px rgba(56, 130, 255, 0.05)',
       btnActiveBg:
         'linear-gradient(135deg, rgba(56, 130, 255, 0.95) 0%, rgba(99, 102, 241, 0.92) 45%, rgba(56, 130, 255, 0.88) 100%)',
       spark: '0 0 8px rgba(255,255,255,0.8), 0 0 18px rgba(147,197,253,0.8)',
     },
   },
-  iconButton: {
-    ...baseTokens.iconButton,
+  iconBtn: {
+    ...baseTokens.iconBtn,
     socialBg: '#ffffffcc',
     socialBorder: 'rgba(124, 58, 237, 0.15)',
     socialColor: 'rgba(45, 27, 105, 0.7)',
@@ -597,10 +643,22 @@ export const lightTheme = {
     secondaryHoverColor: '#5b21b6',
     secondaryHoverShadow: '0 0 18px 5px rgba(109,40,217,0.18),0 0 36px 12px rgba(109,40,217,0.08)',
   },
+  dropdown: {
+    ...baseTokens.dropdown,
+    bg: 'rgba(242,240,255,.98)', // 드롭다운 배경
+    border: 'rgba(124,58,237,.2)', // 드롭다운 테두리
+    shadow: '0 20px 52px rgba(124,58,237,.14)', // 드롭다운 그림자
+    hoverBg: 'rgba(124,58,237,.08)', // 일반 항목 hover 배경
+  },
   toggle: {
     thumbBg: 'linear-gradient(145deg, #f59e0b, #d97706)',
     thumbShadow:
       '0 0 0 1px rgba(251,191,36,.5),0 0 8px 3px rgba(245,158,11,.65),0 0 18px 6px rgba(217,119,6,.35)',
+    trackBg: 'rgba(240,235,255,.75)', // 트랙 배경
+    trackBorder: 'rgba(124,58,237,.28)', // 트랙 테두리
+    trackShadow: '0 0 8px 2px rgba(124,58,237,.1), inset 0 1px 0 rgba(255,255,255,.8)', // 트랙 기본 그림자
+    trackHoverBorder: 'rgba(124,58,237,.55)', // 트랙 hover 테두리
+    trackHoverShadow: '0 0 16px 5px rgba(124,58,237,.2), inset 0 1px 0 rgba(255,255,255,.9)', // 트랙 hover 그림자
   },
   effects: {
     ...baseTokens.effects,
