@@ -31,7 +31,7 @@ const SectionLinkButton = styled.button`
   gap: ${({ theme }) => theme.spacing[2]};
   border: none;
   background: transparent;
-  color: ${({ theme }) => theme.variants.violet.color};
+  color: ${({ theme }) => theme.tones.violet.color};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   line-height: 1;
   cursor: pointer;
@@ -40,7 +40,7 @@ const SectionLinkButton = styled.button`
   transition: color ${({ theme }) => theme.motion.fast};
 
   &:hover {
-    color: ${({ theme }) => theme.variants.violet.hoverColor};
+    color: ${({ theme }) => theme.tones.violet.hoverColor};
   }
   &:hover img {
     transform: translateX(2px);

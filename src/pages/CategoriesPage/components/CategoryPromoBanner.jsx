@@ -136,9 +136,9 @@ const PrimaryButton = styled.button`
   padding: 0 ${({ theme }) => theme.spacing[5]};
   border: none;
   border-radius: ${({ theme }) => theme.radii.pill};
-  background: ${({ theme }) => theme.variants.violet.bg};
+  background: ${({ theme }) => theme.tones.violet.bg};
   color: ${({ theme }) => theme.colors.text};
-  box-shadow: ${({ theme }) => theme.variants.violet.shadow};
+  box-shadow: ${({ theme }) => theme.tones.violet.shadow};
   cursor: pointer;
 `;
 

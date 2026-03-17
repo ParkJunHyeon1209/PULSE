@@ -45,12 +45,12 @@ const CategoryTabButton = styled.button`
   height: 42px;
   padding: 0 ${({ theme }) => theme.spacing[5]};
   border: 1px solid
-    ${({ theme, isActive }) => (isActive ? theme.variants.violet.activeBorder : 'transparent')};
+    ${({ theme, isActive }) => (isActive ? theme.tones.violet.activeBorder : 'transparent')};
   border-radius: ${({ theme }) => theme.radii.pill};
   background: ${({ theme, isActive }) =>
-    isActive ? theme.variants.violet.tabActiveBg : 'transparent'};
+    isActive ? theme.tones.violet.tabActiveBg : 'transparent'};
   color: ${({ theme, isActive }) =>
-    isActive ? theme.variants.violet.activeColor : theme.colors.textSecondary};
+    isActive ? theme.tones.violet.activeColor : theme.colors.textSecondary};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   font-weight: ${({ isActive }) => (isActive ? 700 : 500)};
   cursor: pointer;
@@ -60,7 +60,7 @@ const CategoryTabButton = styled.button`
     border-color ${({ theme }) => theme.motion.fast},
     box-shadow ${({ theme }) => theme.motion.fast};
 
-  box-shadow: ${({ theme, isActive }) => (isActive ? theme.variants.violet.activeShadow : 'none')};
+  box-shadow: ${({ theme, isActive }) => (isActive ? theme.tones.violet.activeShadow : 'none')};
 
   &:hover {
     color: ${({ theme }) => theme.colors.text};

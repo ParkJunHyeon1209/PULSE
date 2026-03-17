@@ -7,20 +7,12 @@ import AppHeaderSearch from './AppHeaderSearch';
 import AppHeaderUser from './AppHeaderUser';
 
 const navItems = [
-  { label: 'HEADSET', to: '/headset' },
-  { label: 'KEYBOARD', to: '/keyboard' },
-  { label: 'MOUSE', to: '/mouse' },
+  { label: 'Lineup', to: '/categories/' },
+  { label: 'Headset', to: '/categories/headset' },
+  { label: 'Gear', to: '/categories/gear' },
+  { label: 'Console', to: '/categories/console' },
   { label: 'DROPS', to: '/drops', isDrops: true },
-  { label: 'BRAND', to: '/brand' },
 ];
-
-const HeaderOffset = styled.div`
-  height: 102px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    height: 140px;
-  }
-`;
 
 const NavRoot = styled.nav`
   position: fixed;
@@ -145,37 +137,33 @@ export default function PulseHeader({ onThemeToggle }) {
   };
 
   return (
-    <>
-      <NavRoot>
-        <NavWrap>
-          <AppLogo size="90px" />
+    <NavRoot>
+      <NavWrap>
+        <AppLogo size="90px" />
 
-          <NavLinks>
-            {navItems.map((item) => (
-              <NavItem key={item.to} to={item.to} $isDrops={item.isDrops} data-label={item.label}>
-                {item.label}
-              </NavItem>
-            ))}
-          </NavLinks>
+        <NavLinks>
+          {navItems.map((item) => (
+            <NavItem key={item.to} to={item.to} $isDrops={item.isDrops} data-label={item.label}>
+              {item.label}
+            </NavItem>
+          ))}
+        </NavLinks>
 
-          <NavRight>
-            <AppHeaderSearch
-              open={searchOpen}
-              onOpen={openSearch}
-              onClose={() => setSearchOpen(false)}
-            />
-            <AppHeaderUser
-              open={loginOpen}
-              onOpen={openLogin}
-              onClose={() => setLoginOpen(false)}
-              isDarkMode={isDarkMode}
-              onThemeToggle={handleThemeToggle}
-            />
-          </NavRight>
-        </NavWrap>
-      </NavRoot>
-
-      <HeaderOffset />
-    </>
+        <NavRight>
+          <AppHeaderSearch
+            open={searchOpen}
+            onOpen={openSearch}
+            onClose={() => setSearchOpen(false)}
+          />
+          <AppHeaderUser
+            open={loginOpen}
+            onOpen={openLogin}
+            onClose={() => setLoginOpen(false)}
+            isDarkMode={isDarkMode}
+            onThemeToggle={handleThemeToggle}
+          />
+        </NavRight>
+      </NavWrap>
+    </NavRoot>
   );
 }

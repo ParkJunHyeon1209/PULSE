@@ -1,35 +1,11 @@
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 import BaseBtn from './BaseBtn';
 import { UserIcon, CartIcon, LoginIcon, SunIcon, MoonIcon } from '../../assets/icons/BtnIcon';
 import usePanel from '../../hooks/usePanel';
 
 const AvatarButton = styled(BaseBtn)`
   overflow: visible;
-  /* position: relative;
-  border-radius: ${({ theme }) => theme.radii.full};
-  border: 2px solid ${({ theme }) => theme.tones.violet.subtleColor};
-  background: linear-gradient(135deg, #7c3aed, #ec4899);
-  color: ${({ theme }) => theme.colors.wColor};
-  box-shadow: none;
-  font-family: ${({ theme }) => theme.fontFamily.display};
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  font-weight: 700;
-  letter-spacing: 0;
-  text-transform: none;
-  backdrop-filter: none;
-
-  &:hover:not(:disabled) {
-    background: linear-gradient(135deg, #7c3aed, #ec4899);
-    border-color: rgba(196, 181, 253, 0.85);
-    color: ${({ theme }) => theme.colors.wColor};
-    box-shadow: ${({ theme }) => theme.effects.hoverShadowAvatar};
-    transform: translateY(-1px);
-  }
-
-  &:active:not(:disabled) {
-    background: linear-gradient(135deg, #7c3aed, #ec4899);
-    transform: scale(0.97);
-  } */
 `;
 
 const AvatarStatus = styled.span`
@@ -249,6 +225,7 @@ const ToggleButton = styled.div`
 
 export default function AppHeaderUser({ open, onOpen, onClose, isDarkMode, onThemeToggle }) {
   const wrapRef = usePanel({ open, onClose });
+  const navigate = useNavigate();
 
   return (
     <>
@@ -277,7 +254,13 @@ export default function AppHeaderUser({ open, onOpen, onClose, isDarkMode, onThe
       </DropWrap>
 
       {/* data-count: 카트 수량 - data-count={cartCount} */}
-      <CartButton height={'42px'} variant="ic-btn" aria-label="Cart" data-count="0">
+      <CartButton
+        height={'42px'}
+        variant="ic-btn"
+        aria-label="Cart"
+        data-count="0"
+        onClick={() => navigate('/shoppingcart')}
+      >
         <CartIcon strokeWidth="1.25" />
       </CartButton>
     </>
