@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import BaseBtn from './BaseBtn';
 import { UserIcon, CartIcon, LoginIcon, SunIcon, MoonIcon } from '../../assets/icons/BtnIcon';
 import usePanel from '../../hooks/usePanel';
+import useCartStore from '../../store/useCartStore';
 
 const AvatarButton = styled(BaseBtn)`
   overflow: visible;
@@ -224,6 +225,7 @@ const ToggleButton = styled.div`
 `;
 
 export default function AppHeaderUser({ open, onOpen, onClose, isDarkMode, onThemeToggle }) {
+  const cart = useCartStore((state) => state.cart);
   const wrapRef = usePanel({ open, onClose });
   const navigate = useNavigate();
 
@@ -258,7 +260,7 @@ export default function AppHeaderUser({ open, onOpen, onClose, isDarkMode, onThe
         height={'42px'}
         variant="ic-btn"
         aria-label="Cart"
-        data-count="0"
+        data-count={`${cart.length}`}
         onClick={() => navigate('/shoppingcart')}
       >
         <CartIcon strokeWidth="1.25" />
