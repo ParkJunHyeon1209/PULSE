@@ -500,7 +500,7 @@ export default function AppHeaderSearch({ open, onOpen, onClose }) {
 
           <SearchDim aria-hidden="true" $open={open} onClick={handleClose} />
         </>,
-        document.getElementById('search-root')
+        document.getElementById('nav-root')
       )}
     </>
   );

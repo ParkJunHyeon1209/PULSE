@@ -8,7 +8,7 @@ const SectionHeadRoot = styled.div`
 const SectionLabel = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing[3]};
   font-family: ${({ theme }) => theme.fontFamily.mono};
-  font-size: ${({ theme }) => theme.fontSize.xxs};
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
   letter-spacing: 0.28em;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.textSecondary};
@@ -37,8 +37,8 @@ const SectionSub = styled.p`
  * 섹션 헤딩 컴포넌트
  *
  * label     : 제목 위 작은 레이블 텍스트
- * title     : 메인 제목
- * sub       : 제목 아래 보조 설명
+ * title     : 메인 제목 (사용X - null)
+ * sub       : 제목 아래 보조 설명 (사용X - null)
  * align     : 'left' | 'center' (기본값 'left')
  * titleFont : 타이틀 폰트 변경 (ex: theme.fontFamily.display)
  * titleSize : 타이틀 폰트 크기 변경 (ex: theme.fontSize.xxl)
