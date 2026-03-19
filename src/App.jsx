@@ -7,7 +7,7 @@ import CategoriesPage from './pages/CategoriesPage/components/CategoriesPage';
 import DetailPage from './pages/DetailPage/DetailPage';
 import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
-import ShoppingCart from './pages/ShoppingCart';
+import ShoppingCart from './pages/ShoppingCart/ShoppingCart';
 
 export default function App() {
   return (

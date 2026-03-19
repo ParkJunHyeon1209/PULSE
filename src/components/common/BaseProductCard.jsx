@@ -4,6 +4,7 @@ import { CardWish, CardBadge, CardAddBtn, CardGlow, CardShim } from './CardParts
 import BaseSparkIcon from './BaseSparkIcon';
 import { HeartIcon, PluseIcon } from '../../assets/icons/BtnIcon';
 import { BADGE_TONE, TONE_BG } from '../../utils/toneMap';
+import useCartStore from '../../store/useCartStore';
 
 const CardContainer = styled.article`
   position: relative;
@@ -176,6 +177,8 @@ export default function BaseProductCard({ product }) {
     setIsLiked((prev) => !prev);
   };
 
+  const handleAddToCart = useCartStore((state) => state.addToCart);
+
   return (
     <CardContainer $tone={sparkTone}>
       <CardShim className="card-shim" aria-hidden="true" />
@@ -218,7 +221,14 @@ export default function BaseProductCard({ product }) {
           <CardPrice>{product.price.toLocaleString()}원</CardPrice>
         </CardTextGroup>
 
-        <CardAddBtn variant="ic-btn" size="36px" flex="0 0 auto" icon={false} type="button">
+        <CardAddBtn
+          variant="ic-btn"
+          size="36px"
+          flex="0 0 auto"
+          icon={false}
+          type="button"
+          onClick={() => handleAddToCart(product)}
+        >
           <PluseIcon />
         </CardAddBtn>
       </CardContent>
