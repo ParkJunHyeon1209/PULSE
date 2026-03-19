@@ -1,13 +1,24 @@
 import styled from '@emotion/styled';
 import React, { useEffect, useState } from 'react';
-import useCartStore from '../../../store/useCartStore';
+// import useCartStore from '../../../store/useCartStore';
+import BaseSection from '../../../components/common/BaseSection';
+import BaseProductCard from '../../../components/common/BaseProductCard';
+import { ClassNames } from '@emotion/react';
 
-const RecommendWrap = styled.div``;
+const RecommendWrap = styled.div`
+  ul {
+    display: flex;
+    gap: ${({ theme }) => theme.spacing[3]};
+    > li > article {
+      min-height: 280px;
+    }
+  }
+`;
 
 export default function Recommend() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const increaseQuantity = useCartStore((state) => state.addToCart);
+  //   const increaseQuantity = useCartStore((state) => state.addToCart);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,29 +47,24 @@ export default function Recommend() {
   if (loading) return <div>PULSE 장비 로딩 중...</div>;
   return (
     <RecommendWrap>
-      <h2>ALSO IN YOUR SETUP</h2>
+      <BaseSection label="ALSO IN YOUR SETUP" />
       <ul>
-        {products
-          .filter((product) => product.tag === 'BEST')
-          .map((product) => (
+        {products.map((product, i) =>
+          i > 2 ? null : (
             <li key={product.id}>
-              <div className="thumbnail-img">
-                <img src={product.thumbnail} alt={product.title} />
-              </div>
-              <div className="product-info">
-                <h3>{product.title}</h3>
-                <p>{product.price.toLocaleString()}원</p>
-                <button
-                  onClick={() => {
-                    increaseQuantity(product);
-                    console.log(product.quantity);
-                  }}
-                >
-                  +
-                </button>
-              </div>
+              <BaseProductCard
+                product={{
+                  ...product,
+                  image: product.thumbnail,
+                  title: product.title,
+                  price: product.price,
+                  category: product.category || 'gear',
+                  meta: product.meta || 'Limited Edition',
+                }}
+              />
             </li>
-          ))}
+          )
+        )}
       </ul>
     </RecommendWrap>
   );

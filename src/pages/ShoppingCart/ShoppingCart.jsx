@@ -6,6 +6,7 @@ import ListControl from './components/ListControl';
 import Summary from './components/Summary';
 import Recommend from './components/Recommend';
 import NoItem from './components/NoItem';
+import BaseSection from '../../components/common/BaseSection';
 
 const ShoppingCartWrap = styled.div`
   width: 1280px;
@@ -23,7 +24,7 @@ const CurrentRoute = styled.div`
     color: ${({ theme }) => theme.colors.textSecondary};
     font-size: 9px;
   }
-  > h2 {
+  /* > h2 {
     background: linear-gradient(to right, #e2e8f0 0%, #c4b5fd 50%, #a78bfa 100%);
     -webkit-background-clip: text;
     background-clip: text;
@@ -31,11 +32,17 @@ const CurrentRoute = styled.div`
     font-weight: 400;
     display: inline-block;
     font-size: 64px;
-  }
+  } */
 `;
 
-const MainCart = styled.div`
+const MainWrap = styled.div`
   display: flex;
+  gap: ${({ theme }) => theme.spacing[6]};
+`;
+
+const MainLeft = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: ${({ theme }) => theme.spacing[6]};
 `;
 
@@ -44,8 +51,10 @@ const CartList = styled.div`
   display: flex;
   justify-content: ${({ isEmpty }) => (isEmpty ? 'center' : 'flex-start')};
   align-items: ${({ isEmpty }) => (isEmpty ? 'center' : 'stretch')};
-  border: 1px solid #ffffff08;
+  border: 1px solid ${({ theme }) => theme.tones.violet.hoverColor + '08'};
   border-radius: ${({ theme }) => theme.radii.lg};
+  background-color: ${({ theme }) => theme.colors.cardBg};
+  overflow: hidden;
 `;
 
 const HaveItem = styled.div`
@@ -61,24 +70,28 @@ export default function ShoppingCart() {
   return (
     <ShoppingCartWrap>
       <CurrentRoute>
-        <p>SHOPPING CART • {cart.length ? cart.length : 0} items</p>
-        <h2>YOUR PULSE</h2>
+        <BaseSection
+          label={`SHOPPING CART • ${cart.length ? cart.length : 0} items`}
+          title="YOUR PULSE"
+        />
       </CurrentRoute>
-      <MainCart>
-        <CartList isEmpty={isEmpty}>
-          {!isEmpty ? (
-            <HaveItem>
-              <ListControl />
-              <ListContent />
-            </HaveItem>
-          ) : (
-            <NoItem />
-          )}
-        </CartList>
+      <MainWrap>
+        <MainLeft>
+          <CartList isEmpty={isEmpty}>
+            {!isEmpty ? (
+              <HaveItem>
+                <ListControl />
+                <ListContent />
+              </HaveItem>
+            ) : (
+              <NoItem />
+            )}
+          </CartList>
+          <Recommend />
+        </MainLeft>
         <Summary />
-      </MainCart>
+      </MainWrap>
       {/* tag가 best인 제품만 추천 */}
-      <Recommend />
     </ShoppingCartWrap>
   );
 }

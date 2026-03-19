@@ -7,9 +7,14 @@ const ListControlWrap = styled.div`
   display: flex;
   justify-content: space-between;
   color: ${({ theme }) => theme.colors.textSecondary};
-  background-color: #ffffff04;
+  background-color: ${({ theme }) => theme.tones.violet.hoverColor + '04'};
   backdrop-filter: ${({ theme }) => theme.effects.blurPromo};
 
+  > .check-box {
+    display: flex;
+    align-items: center;
+    gap: ${({ theme }) => theme.spacing[2]};
+  }
   > .deletes {
     display: flex;
     gap: ${({ theme }) => theme.spacing[6]};
@@ -35,6 +40,35 @@ const ListControlWrap = styled.div`
   }
 `;
 
+const GradientCheckbox = styled.input`
+  appearance: none;
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border: 1px solid ${({ theme }) => theme.tones.violet.hoverColor + '33'};
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:checked {
+    background: ${({ theme }) => theme.gradients.navActive};
+    box-shadow:
+      0 0 0 1px #7c3aed,
+      0 0 0 4px #7c3aed30;
+    border: none;
+  }
+
+  &:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -58%);
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+  }
+`;
+
 export default function ListControl() {
   const cart = useCartStore((state) => state.cart);
   const removeSelected = useCartStore((state) => state.removeSelected);
@@ -45,10 +79,13 @@ export default function ListControl() {
   return (
     <ListControlWrap>
       <div className="check-box">
-        <label>
-          <input type="checkbox" checked={isAllChecked} onChange={handleAllChange} />
-          전체 선택
-        </label>
+        <GradientCheckbox
+          id="select-all"
+          type="checkbox"
+          checked={isAllChecked}
+          onChange={handleAllChange}
+        />
+        <label htmlFor="select-all">전체 선택</label>
       </div>
       <div className="deletes">
         <button onClick={removeSelected}>선택삭제</button>
