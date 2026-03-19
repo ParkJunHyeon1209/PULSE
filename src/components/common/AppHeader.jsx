@@ -11,7 +11,7 @@ const navItems = [
   { label: 'Headset', to: '/categories/headset' },
   { label: 'Gear', to: '/categories/gear' },
   { label: 'Console', to: '/categories/console' },
-  { label: 'DROPS', to: '/drops', isDrops: true },
+  { label: 'DROPS', to: '/categories/drops', isDrops: true },
 ];
 
 const NavRoot = styled.nav`

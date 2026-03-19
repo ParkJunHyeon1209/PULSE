@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import CategoryProductCard from './CategoryProductCard';
+import BaseProductCard from '../../../components/common/BaseProductCard';
 import arrowIcon from '../../../assets/arrow.png';
 
 const SectionBlock = styled.section`
@@ -86,7 +86,7 @@ export default function CategorySection({
 
       <ProductGrid columns={columns}>
         {products.map((product, index) => (
-          <CategoryProductCard key={product.id} product={product} variantIndex={index} />
+          <BaseProductCard key={product.id} product={product} variantIndex={index} />
         ))}
       </ProductGrid>
     </SectionBlock>
