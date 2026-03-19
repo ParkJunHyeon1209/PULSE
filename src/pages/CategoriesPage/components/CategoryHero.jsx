@@ -1,23 +1,21 @@
 import styled from '@emotion/styled';
+import BaseSection from '../../../components/common/BaseSection';
 
 const HeroSection = styled.section`
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
   position: relative;
   overflow: hidden;
-  min-height: 420px;
-  margin-bottom: ${({ theme }) => theme.spacing[10]};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.xxl};
-  background: ${({ theme }) => theme.colors.surface};
-  box-shadow: 0 24px 64px ${({ theme }) => theme.colors.shadow};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
     min-height: 360px;
-    margin-bottom: ${({ theme }) => theme.spacing[8]};
+    margin-bottom: 0;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     min-height: 280px;
-    margin-bottom: ${({ theme }) => theme.spacing[6]};
+    margin-bottom: 0;
   }
 `;
 
@@ -37,6 +35,44 @@ const HeroOverlay = styled.div`
     rgba(9, 6, 19, 0.08) 0%,
     rgba(9, 6, 19, 0.24) 42%,
     rgba(9, 6, 19, 0.44) 100%
+  );
+`;
+
+const SideFadeLeft = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 18%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    ${({ theme }) => theme.colors.background} 0%,
+    rgba(7, 5, 18, 0.92) 18%,
+    rgba(7, 5, 18, 0.68) 38%,
+    rgba(7, 5, 18, 0.32) 62%,
+    rgba(7, 5, 18, 0.08) 82%,
+    transparent 100%
+  );
+`;
+
+const SideFadeRight = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 18%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    to left,
+    ${({ theme }) => theme.colors.background} 0%,
+    rgba(7, 5, 18, 0.92) 18%,
+    rgba(7, 5, 18, 0.68) 38%,
+    rgba(7, 5, 18, 0.32) 62%,
+    rgba(7, 5, 18, 0.08) 82%,
+    transparent 100%
   );
 `;
 
@@ -63,29 +99,12 @@ const HeroCenterContent = styled.div`
   }
 `;
 
-const CategoryTitle = styled.h1`
-  margin: 0;
-  font-family: ${({ theme }) => theme.fontFamily.hero};
-  font-size: ${({ theme }) => theme.fontSize.xxl};
-  line-height: 0.95;
-  letter-spacing: 0.04em;
-  color: ${({ theme }) => theme.colors.text};
-  text-transform: uppercase;
-  text-shadow: 0 0 18px rgba(167, 139, 250, 0.16);
-`;
-
 const HeroBlurBand = styled.div`
-  width: min(720px, 100%);
+  width: 100%;
   min-height: 56px;
-  padding: 0 ${({ theme }) => theme.spacing[6]};
-  border-radius: ${({ theme }) => theme.radii.pill};
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background: rgba(255, 255, 255, 0.03);
+  padding: 30px 0;
   backdrop-filter: ${({ theme }) => theme.effects.blurMd};
   -webkit-backdrop-filter: ${({ theme }) => theme.effects.blurMd};
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 0 20px rgba(124, 58, 237, 0.08);
 
   display: flex;
   align-items: center;
@@ -94,20 +113,51 @@ const HeroBlurBand = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     min-height: 48px;
     width: min(92%, 100%);
-    padding: 0 ${({ theme }) => theme.spacing[4]};
   }
 `;
 
-const CategoryLabel = styled.span`
-  font-family: ${({ theme }) => theme.fontFamily.mono};
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.secondary};
+// BaseSection 타이틀 라벨 순서 바꾸기
+const HeroSectionHead = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    letter-spacing: 0.14em;
+  /* BaseSection의 root div */
+  & > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* title(h2)를 위로 */
+  & > div > h2 {
+    order: 1;
+    margin: 0 0 ${({ theme }) => theme.spacing[3]} 0;
+    font-family: ${({ theme }) => theme.fontFamily.hero};
+    font-size: ${({ theme }) => theme.fontSize.xxl};
+    line-height: 0.95;
+    letter-spacing: 0.04em;
+    color: ${({ theme }) => theme.colors.text};
+    text-transform: uppercase;
+    text-shadow: 0 0 18px rgba(167, 139, 250, 0.16);
+  }
+
+  /* label(div)를 아래로 */
+  & > div > div {
+    order: 2;
+    margin-bottom: 0;
+    font-family: ${({ theme }) => theme.fontFamily.mono};
+    font-size: ${({ theme }) => theme.fontSize.xxxs};
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: ${({ theme }) => theme.colors.secondary};
+  }
+
+  /* sub가 있으면 마지막 */
+  & > div > p {
+    order: 3;
   }
 `;
 
@@ -120,12 +170,14 @@ export default function CategoryHero({ title, label, backgroundImage }) {
         }}
       />
       <HeroOverlay />
+      <SideFadeLeft />
+      <SideFadeRight />
 
       <HeroCenterContent>
-        <CategoryTitle>{title}</CategoryTitle>
-
         <HeroBlurBand>
-          <CategoryLabel>{label}</CategoryLabel>
+          <HeroSectionHead>
+            <BaseSection label={label} title={title} align="center" star titleFirst />
+          </HeroSectionHead>
         </HeroBlurBand>
       </HeroCenterContent>
     </HeroSection>

@@ -34,6 +34,7 @@ export default function CategoryPromoBanner({
 }
 
 const SectionBlock = styled.section`
+  margin-top: ${({ theme }) => theme.spacing[20]};
   margin-bottom: ${({ theme }) => theme.spacing[18]};
 `;
 
