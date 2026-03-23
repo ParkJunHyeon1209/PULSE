@@ -20,12 +20,18 @@ export const mockProducts = [
         name: '레드',
         value: '#E11D48',
       },
+      { name: '블랙', value: '#000' },
     ],
     platforms: ['PC · Universal', 'PlayStation 5', 'Xbox Series'],
     connections: [
       { id: 'wireless', label: '무선 2.4GHz', soldOut: false },
       { id: 'wired', label: 'USB-C 유선', soldOut: false },
       { id: 'bluetooth', label: '블루투스', soldOut: true },
+    ],
+    features: [
+      '듀얼 햅틱 모터 — 게임 상황별 진동 피드백',
+      '무선 3ms 응답속도 · PC / Console 호환',
+      'PULSE x VIBE 한정 컬러웨이 · 순번 각인',
     ],
   },
   {
@@ -49,12 +55,18 @@ export const mockProducts = [
         name: '레드',
         value: '#E11D48',
       },
+      { name: '블랙', value: '#000' },
     ],
     platforms: ['PC · Universal', 'PlayStation 5', 'Xbox Series'],
     connections: [
       { id: 'wireless', label: '무선 2.4GHz', soldOut: false },
       { id: 'wired', label: 'USB-C 유선', soldOut: false },
       { id: 'bluetooth', label: '블루투스', soldOut: true },
+    ],
+    features: [
+      '듀얼 햅틱 모터 — 게임 상황별 진동 피드백',
+      '무선 3ms 응답속도 · PC / Console 호환',
+      'PULSE x VIBE 한정 컬러웨이 · 순번 각인',
     ],
   },
 ];
