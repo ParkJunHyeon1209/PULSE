@@ -1,16 +1,173 @@
-# React + Vite
+# 🎮 Mini E-Commerce
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+게이밍 용품을 판매하는 **미니 이커머스 웹 프로젝트**입니다.  
+React 기반으로 구현했으며, 상품 탐색부터 장바구니까지 이커머스의 핵심 흐름을 담는 것을 목표로 했습니다.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 1. 프로젝트 소개
 
-## React Compiler
+이 프로젝트는 **게이밍 용품 판매 서비스**를 주제로 한 팀 프로젝트입니다.  
+회원가입/로그인, 상품 목록 조회, 카테고리별 상품 탐색, 상품 상세 조회, 장바구니 기능 등을 구현하여
+실제 이커머스 서비스의 느낌을 내는 것이 목적입니다.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 주요 목표
 
-## Expanding the ESLint configuration
+- 인증 기능 구현 (로그인)
+- 상품 목록 및 상세 조회
+- 장바구니 기능 구현
+- 상태 관리 및 라우팅
+- 반응형 UI 구현
+- 사용자 중심 UX
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 2. 프로젝트 기간
+
+- 2026.03.13 ~ 2026.04.06
+
+---
+
+## 3. 배포 주소
+
+- 배포 예정
+
+---
+
+## 4. 팀원 및 역할
+
+| 이름          | 담당                                                  |
+| ------------- | ----------------------------------------------------- |
+| 박준현 (팀장) | 장바구니 페이지 UI구현 / 인터랙션 개발 / UX 개선      |
+| 김도하        | UI기획 / 메인 페이지 UI구현 / 인터랙션 개발 / UX 개선 |
+| 신주민        | 카테고리 페이지 UI 구현 / 인터랙션 개발 / UX 개선     |
+| 신진호        | 상세 페이지 UI 구현 / 인터랙션 개발 / UX 개선         |
+| 이민우        | 로그인 페이지 UI 구현 / 인터랙션 개발 / UX 개선       |
+
+---
+
+## 5. 기술 스택
+
+### Frontend
+
+- HTML5 / CSS3 / JavaScript (ES6+)
+- React
+- React Router (화면전환)
+- Emotion (CSS-in-JS)
+- Zustand (상태관리)
+
+### Data / API
+
+- Fetch API
+
+### Collaboration
+
+- GitHub
+- Figma
+
+---
+
+## 6. 주요 기능
+
+### 1) 회원가입 / 로그인
+
+- 이메일 형식 검증
+- 비밀번호 유효성 검사
+- 이용 약관 동의
+- 로그인 성공 시 메인 페이지 이동
+- 로그인 상태에 따라 헤더 UI 변경
+
+### 2) 메인 페이지
+
+- 서비스 로고 및 카테고리 메뉴 제공
+- 히어로 배너 영역 구성
+- API를 이용한 상품 목록 출력
+
+### 3) 카테고리 목록 페이지
+
+- 헤더에서 선택한 카테고리 기준 상품 필터링
+- 카테고리별 상품 목록 출력
+- 2차 카테고리별 상품 목록 필터링
+- 카테고리별 페이지네이션 적용
+- 장바구니 담기
+- 찜하기
+
+### 4) 상품 상세 페이지
+
+- 상품 이미지, 이름, 가격, 기본 정보, 배송 정보 출력
+- 수량 조절 기능
+- 장바구니 담기
+- 구매하기
+
+### 5) 장바구니 페이지
+
+- 담긴 상품 리스트 확인
+- 수량 변경
+- 개별 삭제 / 전체 삭제
+- 총 상품 금액 및 결제 예정 금액 자동 계산
+- 공용으로 사용할 장바구니 담기 기능 제공
+
+### 6) 404 페이지
+
+- 존재하지 않는 경로 접근 시 안내 페이지 표시
+- 메인 페이지로 이동 버튼 제공
+
+### 7) 반응형 레이아웃
+
+- Mobile / Tablet / PC 환경 대응
+- 화면 크기에 따라 상품 카드 및 레이아웃 변경
+
+---
+
+## 7. 페이지 구성
+
+- `/` : 메인 페이지
+- `/login` : 로그인 페이지
+- `/categories` : 전체 상품 목록 페이지
+- `/categories/:categoryName` : 카테고리 상품 목록 페이지
+- `/product/:productId` : 상품 상세 페이지
+- `/shoppingcart` : 장바구니 페이지
+- `/*` : 404 페이지
+
+---
+
+## 8. 폴더 구조
+
+```bash
+src/
+├─ assets/
+│  └─ icons/
+│
+├─ components/
+│  ├─ common/
+│  └─ layout/
+│
+├─ data/
+│
+├─ hooks/
+│
+├─ pages/
+│  ├─ CategoriesPage
+│  ├─ DetailPage
+│  ├─ MainPage
+│  ├─ ShoppingCart
+│  ├─ LoginPage.jsx
+│  └─ NotFoundPage.jsx
+│
+├─ stores/
+│  ├─ useAuthStore.js
+│  ├─ useCartStore.js
+│  └─ useThemeStore.js
+│
+├─ styles/
+│  ├─ GlobalStyle.js
+│  └─ theme.js
+│
+├─ utils/
+│  ├─ validators.js
+│  ├─ formatPrice.js
+│  └─ constants.js
+│
+├─ App.jsx
+└─ main.jsx
+```

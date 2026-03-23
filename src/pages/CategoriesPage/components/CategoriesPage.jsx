@@ -1,8 +1,9 @@
 import { useMemo, useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { PageContainer, PageInner } from '../styles/CategoriesPageLayout';
-import { getProductsByCategory } from '../../../../public/data/categoryProductsApi';
+import { getProductsByCategory } from '../../../data/categoryProductsApi';
+import { LavStarIcon } from '../../../assets/icons/BtnIcon';
 import CategoryHero from './CategoryHero';
 import CategoryTabs from './CategoryTabs';
 import CategorySection from './CategorySection';
@@ -52,8 +53,7 @@ const categoryConfig = {
   },
 };
 
-export default function CategoryPage() {
-  const navigate = useNavigate();
+export default function CategoriesPage() {
   const { categoryName = 'gear' } = useParams();
   const [activeTab, setActiveTab] = useState('ALL');
   const [products, setProducts] = useState([]);
@@ -75,57 +75,58 @@ export default function CategoryPage() {
     setActiveTab('ALL');
   }, [categoryName]);
 
+  // 이미 카테고리별로 받아온 데이터라서 재필터링하지 않음
   const categoryProducts = useMemo(() => {
-    return products.filter((product) => product.category === categoryName);
-  }, [products, categoryName]);
+    return products;
+  }, [products]);
 
   const keyboardProducts = useMemo(
-    () => categoryProducts.filter((product) => product.type === 'keyboard'),
+    () => categoryProducts.filter((product) => product.type?.toLowerCase() === 'keyboard'),
     [categoryProducts]
   );
 
   const mouseProducts = useMemo(
-    () => categoryProducts.filter((product) => product.type === 'mouse'),
+    () => categoryProducts.filter((product) => product.type?.toLowerCase() === 'mouse'),
     [categoryProducts]
   );
 
   const gearsetProducts = useMemo(
-    () => categoryProducts.filter((product) => product.type === 'gearset'),
+    () => categoryProducts.filter((product) => product.type?.toLowerCase() === 'gearset'),
     [categoryProducts]
   );
 
   const headsetProducts = useMemo(
-    () => categoryProducts.filter((product) => product.type === 'headset'),
+    () => categoryProducts.filter((product) => product.type?.toLowerCase() === 'headset'),
     [categoryProducts]
   );
 
   const earphoneProducts = useMemo(
-    () => categoryProducts.filter((product) => product.type === 'earphone'),
+    () => categoryProducts.filter((product) => product.type?.toLowerCase() === 'earphone'),
     [categoryProducts]
   );
 
   const streamingProducts = useMemo(
-    () => categoryProducts.filter((product) => product.type === 'streaming'),
+    () => categoryProducts.filter((product) => product.type?.toLowerCase() === 'streaming'),
     [categoryProducts]
   );
 
   const controllerProducts = useMemo(
-    () => categoryProducts.filter((product) => product.type === 'controller'),
+    () => categoryProducts.filter((product) => product.type?.toLowerCase() === 'controller'),
     [categoryProducts]
   );
 
   const consolesetProducts = useMemo(
-    () => categoryProducts.filter((product) => product.type === 'consoleset'),
+    () => categoryProducts.filter((product) => product.type?.toLowerCase() === 'consoleset'),
     [categoryProducts]
   );
 
   const dropsProducts = useMemo(
-    () => categoryProducts.filter((product) => product.type === 'drops'),
+    () => categoryProducts.filter((product) => product.type?.toLowerCase() === 'drops'),
     [categoryProducts]
   );
 
   const etcProducts = useMemo(
-    () => categoryProducts.filter((product) => product.type === 'etc'),
+    () => categoryProducts.filter((product) => product.type?.toLowerCase() === 'etc'),
     [categoryProducts]
   );
 
@@ -139,7 +140,13 @@ export default function CategoryPage() {
       return (
         <>
           <CategorySection
-            title="MOUSE"
+            title={
+              <SectionTitleWithStar>
+                <TitleStar $animate={false}>✦</TitleStar>
+                <span>MOUSE</span>
+                <TitleStar $animate={false}>✦</TitleStar>
+              </SectionTitleWithStar>
+            }
             viewLabel="VIEW"
             products={mouseProducts.slice(0, 4)}
             columns={4}
@@ -147,7 +154,13 @@ export default function CategoryPage() {
           />
           <SectionDivider />
           <CategorySection
-            title="KEYBOARD"
+            title={
+              <SectionTitleWithStar>
+                <TitleStar $animate={false}>✦</TitleStar>
+                <span>KEYBOARD</span>
+                <TitleStar $animate={false}>✦</TitleStar>
+              </SectionTitleWithStar>
+            }
             viewLabel="VIEW"
             products={keyboardProducts.slice(0, 4)}
             columns={4}
@@ -155,7 +168,13 @@ export default function CategoryPage() {
           />
           <SectionDivider />
           <CategorySection
-            title="GEARSET"
+            title={
+              <SectionTitleWithStar>
+                <TitleStar $animate={false}>✦</TitleStar>
+                <span>GEARSET</span>
+                <TitleStar $animate={false}>✦</TitleStar>
+              </SectionTitleWithStar>
+            }
             viewLabel="VIEW"
             products={gearsetProducts.slice(0, 4)}
             columns={4}
@@ -178,8 +197,12 @@ export default function CategoryPage() {
           title="MOUSE"
           viewLabel="BACK TO ALL"
           products={mouseProducts}
-          columns={4}
+          columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
+          enablePagination
+          itemsPerPage={6}
+          resetKey={activeTab}
+          cardMinHeight="469px"
         />
       );
     }
@@ -190,8 +213,12 @@ export default function CategoryPage() {
           title="KEYBOARD"
           viewLabel="BACK TO ALL"
           products={keyboardProducts}
-          columns={4}
+          columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
+          enablePagination
+          itemsPerPage={6}
+          resetKey={activeTab}
+          cardMinHeight="469px"
         />
       );
     }
@@ -202,8 +229,12 @@ export default function CategoryPage() {
           title="GEARSET"
           viewLabel="BACK TO ALL"
           products={gearsetProducts}
-          columns={4}
+          columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
+          enablePagination
+          itemsPerPage={6}
+          resetKey={activeTab}
+          cardMinHeight="469px"
         />
       );
     }
@@ -216,7 +247,13 @@ export default function CategoryPage() {
       return (
         <>
           <CategorySection
-            title="HEADSET"
+            title={
+              <SectionTitleWithStar>
+                <TitleStar $animate={false}>✦</TitleStar>
+                <span>HEADSET</span>
+                <TitleStar $animate={false}>✦</TitleStar>
+              </SectionTitleWithStar>
+            }
             viewLabel="VIEW"
             products={headsetProducts.slice(0, 4)}
             columns={4}
@@ -224,7 +261,13 @@ export default function CategoryPage() {
           />
           <SectionDivider />
           <CategorySection
-            title="EARPHONE"
+            title={
+              <SectionTitleWithStar>
+                <TitleStar $animate={false}>✦</TitleStar>
+                <span>EARPHONE</span>
+                <TitleStar $animate={false}>✦</TitleStar>
+              </SectionTitleWithStar>
+            }
             viewLabel="VIEW"
             products={earphoneProducts.slice(0, 4)}
             columns={4}
@@ -232,7 +275,13 @@ export default function CategoryPage() {
           />
           <SectionDivider />
           <CategorySection
-            title="STREAMING"
+            title={
+              <SectionTitleWithStar>
+                <TitleStar $animate={false}>✦</TitleStar>
+                <span>STREAMING</span>
+                <TitleStar $animate={false}>✦</TitleStar>
+              </SectionTitleWithStar>
+            }
             viewLabel="VIEW"
             products={streamingProducts.slice(0, 4)}
             columns={4}
@@ -255,8 +304,12 @@ export default function CategoryPage() {
           title="HEADSET"
           viewLabel="BACK TO ALL"
           products={headsetProducts}
-          columns={4}
+          columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
+          enablePagination
+          itemsPerPage={6}
+          resetKey={activeTab}
+          cardMinHeight="469px"
         />
       );
     }
@@ -267,8 +320,12 @@ export default function CategoryPage() {
           title="EARPHONE"
           viewLabel="BACK TO ALL"
           products={earphoneProducts}
-          columns={4}
+          columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
+          enablePagination
+          itemsPerPage={6}
+          resetKey={activeTab}
+          cardMinHeight="469px"
         />
       );
     }
@@ -279,8 +336,12 @@ export default function CategoryPage() {
           title="STREAMING"
           viewLabel="BACK TO ALL"
           products={streamingProducts}
-          columns={4}
+          columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
+          enablePagination
+          itemsPerPage={6}
+          resetKey={activeTab}
+          cardMinHeight="469px"
         />
       );
     }
@@ -293,7 +354,13 @@ export default function CategoryPage() {
       return (
         <>
           <CategorySection
-            title="CONTROLLER"
+            title={
+              <SectionTitleWithStar>
+                <TitleStar $animate={false}>✦</TitleStar>
+                <span>CONTROLLER</span>
+                <TitleStar $animate={false}>✦</TitleStar>
+              </SectionTitleWithStar>
+            }
             viewLabel="VIEW"
             products={controllerProducts.slice(0, 4)}
             columns={4}
@@ -301,7 +368,13 @@ export default function CategoryPage() {
           />
           <SectionDivider />
           <CategorySection
-            title="CONSOLESET"
+            title={
+              <SectionTitleWithStar>
+                <TitleStar $animate={false}>✦</TitleStar>
+                <span>CONSOLESET</span>
+                <TitleStar $animate={false}>✦</TitleStar>
+              </SectionTitleWithStar>
+            }
             viewLabel="VIEW"
             products={consolesetProducts.slice(0, 4)}
             columns={4}
@@ -324,8 +397,12 @@ export default function CategoryPage() {
           title="CONTROLLER"
           viewLabel="BACK TO ALL"
           products={controllerProducts}
-          columns={4}
+          columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
+          enablePagination
+          itemsPerPage={6}
+          resetKey={activeTab}
+          cardMinHeight="469px"
         />
       );
     }
@@ -336,8 +413,12 @@ export default function CategoryPage() {
           title="CONSOLESET"
           viewLabel="BACK TO ALL"
           products={consolesetProducts}
-          columns={4}
+          columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
+          enablePagination
+          itemsPerPage={6}
+          resetKey={activeTab}
+          cardMinHeight="469px"
         />
       );
     }
@@ -350,7 +431,13 @@ export default function CategoryPage() {
       return (
         <>
           <CategorySection
-            title="DROPS"
+            title={
+              <SectionTitleWithStar>
+                <TitleStar $animate={false}>✦</TitleStar>
+                <span>DROPS</span>
+                <TitleStar $animate={false}>✦</TitleStar>
+              </SectionTitleWithStar>
+            }
             viewLabel="VIEW"
             products={dropsProducts.slice(0, 4)}
             columns={4}
@@ -358,7 +445,13 @@ export default function CategoryPage() {
           />
           <SectionDivider />
           <CategorySection
-            title="ETC"
+            title={
+              <SectionTitleWithStar>
+                <TitleStar $animate={false}>✦</TitleStar>
+                <span>ETC</span>
+                <TitleStar $animate={false}>✦</TitleStar>
+              </SectionTitleWithStar>
+            }
             viewLabel="VIEW"
             products={etcProducts.slice(0, 4)}
             columns={4}
@@ -381,8 +474,12 @@ export default function CategoryPage() {
           title="DROPS"
           viewLabel="BACK TO ALL"
           products={dropsProducts}
-          columns={4}
+          columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
+          enablePagination
+          itemsPerPage={6}
+          resetKey={activeTab}
+          cardMinHeight="469px"
         />
       );
     }
@@ -393,8 +490,12 @@ export default function CategoryPage() {
           title="ETC"
           viewLabel="BACK TO ALL"
           products={etcProducts}
-          columns={4}
+          columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
+          enablePagination
+          itemsPerPage={6}
+          resetKey={activeTab}
+          cardMinHeight="469px"
         />
       );
     }
@@ -444,4 +545,14 @@ const SectionDivider = styled.div`
     rgba(0, 0, 0, 0.25) 99%,
     transparent 100%
   );
+`;
+
+const SectionTitleWithStar = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[2]};
+`;
+
+const TitleStar = styled(LavStarIcon)`
+  flex-shrink: 0;
 `;

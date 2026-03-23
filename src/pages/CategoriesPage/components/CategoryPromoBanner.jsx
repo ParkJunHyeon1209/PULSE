@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { LavStarIcon } from '../../../assets/icons/BtnIcon';
 
 export default function CategoryPromoBanner({
   sectionTitle = 'PROMOTION',
@@ -6,12 +7,18 @@ export default function CategoryPromoBanner({
   title,
   description,
   price,
-  backgroundImage = 'https://picsum.photos/1200/600',
+  backgroundImage = 'https://i.ibb.co/b5c2fS1B/6893d733d0a2f60f.webp',
 }) {
   return (
     <SectionBlock>
       <SectionHeader>
-        <SectionTitle>{sectionTitle}</SectionTitle>
+        <SectionTitle>
+          <SectionTitleWithStar>
+            <TitleStar $animate={false}>✦</TitleStar>
+            {sectionTitle}
+            <TitleStar $animate={false}>✦</TitleStar>
+          </SectionTitleWithStar>
+        </SectionTitle>
       </SectionHeader>
 
       <PromoBanner backgroundImage={backgroundImage}>
@@ -152,4 +159,14 @@ const SecondaryButton = styled.button`
   background: ${({ theme }) => theme.colors.btn2Bg};
   color: ${({ theme }) => theme.colors.text};
   cursor: pointer;
+`;
+
+const SectionTitleWithStar = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[2]};
+`;
+
+const TitleStar = styled(LavStarIcon)`
+  flex-shrink: 0;
 `;
