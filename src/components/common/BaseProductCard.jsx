@@ -8,7 +8,7 @@ import useCartStore from '../../store/useCartStore';
 
 const CardContainer = styled.article`
   position: relative;
-  min-height: 372px;
+  min-height: ${({ $cardMinHeight }) => $cardMinHeight || '372px'};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   border-radius: ${({ theme }) => theme.radii.xxl};
   background: ${({ $tone, theme }) => theme.card[TONE_BG[$tone]]};
@@ -164,23 +164,21 @@ const categoryToneMap = {
   gear: 'violet',
   headset: 'mint',
   console: 'pink',
-  bundle: 'blue',
   drops: 'mint',
 };
 
-export default function BaseProductCard({ product }) {
+export default function BaseProductCard({ product, cardMinHeight }) {
   const sparkTone = categoryToneMap[product.category] || 'violet';
 
   const [isLiked, setIsLiked] = useState(false);
+  const handleAddToCart = useCartStore((state) => state.addToCart);
 
   const handleClickWishlist = () => {
     setIsLiked((prev) => !prev);
   };
 
-  const handleAddToCart = useCartStore((state) => state.addToCart);
-
   return (
-    <CardContainer $tone={sparkTone}>
+    <CardContainer $tone={sparkTone} $cardMinHeight={cardMinHeight}>
       <CardShim className="card-shim" aria-hidden="true" />
       {product.image ? (
         <CardBackgroundImage src={product.image} alt={product.title} />
@@ -193,9 +191,9 @@ export default function BaseProductCard({ product }) {
       <CardGlow className="card-glow" aria-hidden="true" $tone={sparkTone} />
 
       <CardTop>
-        {product.badge ? (
-          <CardBadge variant="badge" tone={BADGE_TONE[product.badge]} icon={false} height="32px">
-            {product.badge}
+        {product.tag ? (
+          <CardBadge variant="tag" tone={BADGE_TONE[product.tag]} icon={false} height="32px">
+            {product.tag}
           </CardBadge>
         ) : (
           <span />

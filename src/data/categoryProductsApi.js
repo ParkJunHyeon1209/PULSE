@@ -12,15 +12,19 @@ export async function getAllProducts() {
 }
 
 export async function getProductsByCategory(category) {
-  return products.filter((item) => item.category === category);
+  return products.filter((item) => item.category?.toLowerCase() === category?.toLowerCase());
 }
 
 export async function getProductsByType(type) {
-  return products.filter((item) => item.type === type);
+  return products.filter((item) => item.type?.toLowerCase() === type?.toLowerCase());
 }
 
 export async function getProductsByCategoryAndType(category, type) {
-  return products.filter((item) => item.category === category && item.type === type);
+  return products.filter(
+    (item) =>
+      item.category?.toLowerCase() === category?.toLowerCase() &&
+      item.type?.toLowerCase() === type?.toLowerCase()
+  );
 }
 
 export async function getProductById(id) {
