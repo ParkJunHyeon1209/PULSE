@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import BaseProductCard from '../../../components/common/BaseProductCard';
-import { ArrowIcon } from '../../../assets/icons/BtnIcon';
 
 const SectionBlock = styled.section`
   margin-bottom: ${({ theme }) => theme.spacing[18]};
@@ -266,16 +265,19 @@ export default function CategorySection({
 
   return (
     <SectionBlock ref={sectionRef}>
-      <SectionHeader>
-        <SectionTitle>{title}</SectionTitle>
-        <SectionLinkButton type="button" onClick={onClickViewAll}>
-          {viewLabel}
-          <ArrowIconWrap className="section-arrow-icon">
-            <SectionArrowIcon />
-          </ArrowIconWrap>
-        </SectionLinkButton>
-      </SectionHeader>
-
+      {(title || viewLabel) && (
+        <SectionHeader>
+          {title ? <SectionTitle>{title}</SectionTitle> : <div />}
+          {viewLabel && (
+            <SectionLinkButton type="button" onClick={onClickViewAll}>
+              {viewLabel}
+              <ArrowIconWrap className="section-arrow-icon">
+                <SectionArrowIcon />
+              </ArrowIconWrap>
+            </SectionLinkButton>
+          )}
+        </SectionHeader>
+      )}
       <ProductGrid columns={columns}>
         {visibleProducts.map((product, index) => (
           <BaseProductCard

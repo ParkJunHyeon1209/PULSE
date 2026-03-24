@@ -32,7 +32,7 @@ export default function CategoryPage() {
     return categorySections.map((section) => ({
       ...section,
       products: products
-        .filter((product) => product.category.toLowerCase() === section.key)
+        .filter((product) => product.category?.toLowerCase() === section.key.toLowerCase())
         .slice(0, 4),
     }));
   }, [products]);

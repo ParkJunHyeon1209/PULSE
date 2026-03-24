@@ -16,47 +16,42 @@ const categoryConfig = {
     label: 'PULSE GEAR PLATFORM',
     heroImage: 'https://i.ibb.co/WNwGd17s/banner.webp',
     tabs: ['ALL', 'KEYBOARD', 'MOUSE', 'GEARSET'],
-    promoTitle: 'PULSE × VIBE',
-    promoSubtitle: 'EXCLUSIVE DROP',
-    promoDescription: 'Pro Gaming Console Controller',
-    promoPrice: 199000,
   },
   headset: {
     title: 'HEADSET',
     label: 'PULSE HEADSET PLATFORM',
     heroImage: 'https://i.ibb.co/WNwGd17s/banner.webp',
     tabs: ['ALL', 'HEADSET', 'EARPHONE', 'STREAMING'],
-    promoTitle: 'PULSE SOUND',
-    promoSubtitle: 'LIMITED EDITION',
-    promoDescription: 'Immersive Wireless Gaming Headset',
-    promoPrice: 229000,
   },
   console: {
     title: 'CONSOLE',
     label: 'PULSE CONSOLE PLATFORM',
     heroImage: 'https://i.ibb.co/WNwGd17s/banner.webp',
     tabs: ['ALL', 'CONTROLLER', 'CONSOLESET'],
-    promoTitle: 'PULSE SOUND',
-    promoSubtitle: 'LIMITED EDITION',
-    promoDescription: 'Immersive Wireless Gaming Headset',
-    promoPrice: 229000,
   },
   drops: {
     title: 'DROPS',
     label: 'PULSE DROPS PLATFORM',
     heroImage: 'https://i.ibb.co/WNwGd17s/banner.webp',
     tabs: ['ALL', 'DROPS', 'ETC'],
-    promoTitle: 'PULSE SOUND',
-    promoSubtitle: 'LIMITED EDITION',
-    promoDescription: 'Immersive Wireless Gaming Headset',
-    promoPrice: 229000,
   },
 };
+
+// 필터링 목록
+const detailFilters = [
+  { key: 'ALL', label: '전체' },
+  { key: 'NEW', label: '신규' },
+  { key: 'BEST', label: '인기상품' },
+  { key: 'PRICE', label: '가격순' },
+];
 
 export default function CategoriesPage() {
   const { categoryName = 'gear' } = useParams();
   const [activeTab, setActiveTab] = useState('ALL');
   const [products, setProducts] = useState([]);
+
+  const [activeFilter, setActiveFilter] = useState('ALL');
+  const [priceOrder, setPriceOrder] = useState('');
 
   const currentCategory = categoryConfig[categoryName] || categoryConfig.gear;
 
@@ -70,15 +65,24 @@ export default function CategoriesPage() {
     loadProducts();
   }, [categoryName]);
 
-  // 탭 이동시 탭초기화
+  // 탭 이동시 초기화
   useEffect(() => {
     setActiveTab('ALL');
+    setActiveFilter('ALL');
+    setPriceOrder('');
   }, [categoryName]);
 
-  // 이미 카테고리별로 받아온 데이터라서 재필터링하지 않음
+  // 필터만 초기화
+  useEffect(() => {
+    setActiveFilter('ALL');
+    setPriceOrder('');
+  }, [activeTab]);
+
   const categoryProducts = useMemo(() => {
-    return products;
-  }, [products]);
+    return products.filter(
+      (product) => product.category?.toLowerCase() === categoryName?.toLowerCase()
+    );
+  }, [products, categoryName]);
 
   const keyboardProducts = useMemo(
     () => categoryProducts.filter((product) => product.type?.toLowerCase() === 'keyboard'),
@@ -181,12 +185,6 @@ export default function CategoriesPage() {
             onClickViewAll={() => handleClickViewAll('GEARSET')}
           />
           <SectionDivider />
-          <CategoryPromoBanner
-            title="PULSE × VIBE"
-            subtitle="EXCLUSIVE DROP"
-            description="Pro Gaming Console Controller"
-            price={199000}
-          />
         </>
       );
     }
@@ -194,14 +192,14 @@ export default function CategoriesPage() {
     if (activeTab === 'MOUSE') {
       return (
         <CategorySection
-          title="MOUSE"
-          viewLabel="BACK TO ALL"
-          products={mouseProducts}
+          title={null}
+          viewLabel={null}
+          products={getFilteredProducts(mouseProducts)}
           columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
-          resetKey={activeTab}
+          resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
         />
       );
@@ -210,14 +208,14 @@ export default function CategoriesPage() {
     if (activeTab === 'KEYBOARD') {
       return (
         <CategorySection
-          title="KEYBOARD"
-          viewLabel="BACK TO ALL"
-          products={keyboardProducts}
+          title={null}
+          viewLabel={null}
+          products={getFilteredProducts(keyboardProducts)}
           columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
-          resetKey={activeTab}
+          resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
         />
       );
@@ -226,14 +224,14 @@ export default function CategoriesPage() {
     if (activeTab === 'GEARSET') {
       return (
         <CategorySection
-          title="GEARSET"
-          viewLabel="BACK TO ALL"
-          products={gearsetProducts}
+          title={null}
+          viewLabel={null}
+          products={getFilteredProducts(gearsetProducts)}
           columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
-          resetKey={activeTab}
+          resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
         />
       );
@@ -288,12 +286,6 @@ export default function CategoriesPage() {
             onClickViewAll={() => handleClickViewAll('STREAMING')}
           />
           <SectionDivider />
-          <CategoryPromoBanner
-            title="PULSE × VIBE"
-            subtitle="EXCLUSIVE DROP"
-            description="Pro Gaming Console Controller"
-            price={199000}
-          />
         </>
       );
     }
@@ -301,14 +293,14 @@ export default function CategoriesPage() {
     if (activeTab === 'HEADSET') {
       return (
         <CategorySection
-          title="HEADSET"
-          viewLabel="BACK TO ALL"
-          products={headsetProducts}
+          title={null}
+          viewLabel={null}
+          products={getFilteredProducts(headsetProducts)}
           columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
-          resetKey={activeTab}
+          resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
         />
       );
@@ -317,14 +309,14 @@ export default function CategoriesPage() {
     if (activeTab === 'EARPHONE') {
       return (
         <CategorySection
-          title="EARPHONE"
-          viewLabel="BACK TO ALL"
-          products={earphoneProducts}
+          title={null}
+          viewLabel={null}
+          products={getFilteredProducts(earphoneProducts)}
           columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
-          resetKey={activeTab}
+          resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
         />
       );
@@ -333,14 +325,14 @@ export default function CategoriesPage() {
     if (activeTab === 'STREAMING') {
       return (
         <CategorySection
-          title="STREAMING"
-          viewLabel="BACK TO ALL"
-          products={streamingProducts}
+          title={null}
+          viewLabel={null}
+          products={getFilteredProducts(streamingProducts)}
           columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
-          resetKey={activeTab}
+          resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
         />
       );
@@ -381,12 +373,6 @@ export default function CategoriesPage() {
             onClickViewAll={() => handleClickViewAll('CONSOLESET')}
           />
           <SectionDivider />
-          <CategoryPromoBanner
-            title="PULSE × VIBE"
-            subtitle="EXCLUSIVE DROP"
-            description="Pro Gaming Console Controller"
-            price={199000}
-          />
         </>
       );
     }
@@ -394,14 +380,14 @@ export default function CategoriesPage() {
     if (activeTab === 'CONTROLLER') {
       return (
         <CategorySection
-          title="CONTROLLER"
-          viewLabel="BACK TO ALL"
-          products={controllerProducts}
+          title={null}
+          viewLabel={null}
+          products={getFilteredProducts(controllerProducts)}
           columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
-          resetKey={activeTab}
+          resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
         />
       );
@@ -410,14 +396,14 @@ export default function CategoriesPage() {
     if (activeTab === 'CONSOLESET') {
       return (
         <CategorySection
-          title="CONSOLESET"
-          viewLabel="BACK TO ALL"
-          products={consolesetProducts}
+          title={null}
+          viewLabel={null}
+          products={getFilteredProducts(consolesetProducts)}
           columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
-          resetKey={activeTab}
+          resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
         />
       );
@@ -458,12 +444,6 @@ export default function CategoriesPage() {
             onClickViewAll={() => handleClickViewAll('ETC')}
           />
           <SectionDivider />
-          <CategoryPromoBanner
-            title="PULSE × VIBE"
-            subtitle="EXCLUSIVE DROP"
-            description="Pro Gaming Console Controller"
-            price={199000}
-          />
         </>
       );
     }
@@ -471,14 +451,14 @@ export default function CategoriesPage() {
     if (activeTab === 'DROPS') {
       return (
         <CategorySection
-          title="DROPS"
-          viewLabel="BACK TO ALL"
-          products={dropsProducts}
+          title={null}
+          viewLabel={null}
+          products={getFilteredProducts(dropsProducts)}
           columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
-          resetKey={activeTab}
+          resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
         />
       );
@@ -487,20 +467,54 @@ export default function CategoriesPage() {
     if (activeTab === 'ETC') {
       return (
         <CategorySection
-          title="ETC"
-          viewLabel="BACK TO ALL"
-          products={etcProducts}
+          title={null}
+          viewLabel={null}
+          products={getFilteredProducts(etcProducts)}
           columns={3}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
-          resetKey={activeTab}
+          resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
         />
       );
     }
 
     return null;
+  };
+
+  const handleClickFilter = (filterKey) => {
+    if (filterKey === 'PRICE') {
+      if (activeFilter === 'PRICE') {
+        setPriceOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
+      } else {
+        setActiveFilter('PRICE');
+        setPriceOrder('asc');
+      }
+      return;
+    }
+
+    setActiveFilter(filterKey);
+  };
+
+  const getFilteredProducts = (items) => {
+    const list = [...items];
+
+    switch (activeFilter) {
+      case 'NEW':
+        return list.filter((item) => item.tag?.toLowerCase() === 'new');
+
+      case 'BEST':
+        return list.filter((item) => item.tag?.toLowerCase() === 'best');
+
+      case 'PRICE':
+        return [...items].sort((a, b) =>
+          priceOrder === 'asc' ? a.price - b.price : b.price - a.price
+        );
+
+      default:
+        return list;
+    }
   };
 
   return (
@@ -514,10 +528,45 @@ export default function CategoriesPage() {
 
         <CategoryTabs tabs={currentCategory.tabs} activeTab={activeTab} onClickTab={setActiveTab} />
 
+        {activeTab !== 'ALL' && (
+          <FilterBar>
+            {detailFilters.map((filter) => {
+              const isPrice = filter.key === 'PRICE';
+              const label =
+                isPrice && activeFilter === 'PRICE'
+                  ? priceOrder === 'asc'
+                    ? '낮은 가격순'
+                    : '높은 가격순'
+                  : filter.label;
+              return (
+                <FilterBadge
+                  key={filter.key}
+                  type="button"
+                  $active={activeFilter === filter.key}
+                  onClick={() => handleClickFilter(filter.key)}
+                >
+                  {label}
+                </FilterBadge>
+              );
+            })}
+          </FilterBar>
+        )}
+
         {categoryName === 'gear' && renderGearSections()}
         {categoryName === 'headset' && renderHeadsetSections()}
         {categoryName === 'console' && renderConsoleSections()}
         {categoryName === 'drops' && renderDropsSections()}
+
+        {activeTab === 'ALL' && (
+          <>
+            <CategoryPromoBanner
+              title="PULSE × VIBE"
+              subtitle="EXCLUSIVE DROP"
+              description="Pro Gaming Console Controller"
+              price={199000}
+            />
+          </>
+        )}
       </PageInner>
     </PageContainer>
   );
@@ -555,4 +604,35 @@ const SectionTitleWithStar = styled.span`
 
 const TitleStar = styled(LavStarIcon)`
   flex-shrink: 0;
+`;
+
+const FilterBar = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 ${({ theme }) => theme.spacing[8]};
+`;
+
+const FilterBadge = styled.button`
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid
+    ${({ theme, $active }) =>
+      $active ? theme.tones.violet.activeBorder : 'rgba(255, 255, 255, 0.08)'};
+  background: ${({ theme, $active }) =>
+    $active ? theme.tones.violet.tabActiveBg : 'rgba(255, 255, 255, 0.02)'};
+  color: ${({ theme, $active }) =>
+    $active ? theme.tones.violet.activeColor : theme.colors.textSecondary};
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  cursor: pointer;
+  transition:
+    color ${({ theme }) => theme.motion.fast},
+    border-color ${({ theme }) => theme.motion.fast},
+    background ${({ theme }) => theme.motion.fast};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.text};
+    border-color: ${({ theme }) => theme.tones.violet.activeBorder};
+  }
 `;
