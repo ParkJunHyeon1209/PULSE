@@ -55,6 +55,21 @@ const CartButton = styled(BaseButton)`
   justify-content: center;
   align-items: center;
   gap: ${({ theme }) => theme.spacing[3]};
+  color: ${({ theme }) => theme.colors.wColor};
+  background: ${({ theme }) => theme.tones.violet.bg};
+  box-shadow: ${({ theme }) => theme.tones.violet.shadow};
+
+  &:hover {
+    background: ${({ theme }) => theme.tones.violet.hoverBg};
+    box-shadow: ${({ theme }) => theme.tones.violet.hoverShadow};
+  }
+`;
+
+const BuyButton = styled(BaseButton)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[3]};
   background: ${({ theme }) => theme.btn.secondaryBg};
   color: ${({ theme }) => theme.btn.secondaryColor};
   border: 1px solid ${({ theme }) => theme.btn.secondaryBorder};
@@ -65,16 +80,5 @@ const CartButton = styled(BaseButton)`
     color: ${({ theme }) => theme.btn.secondaryHoverColor};
     border-color: ${({ theme }) => theme.btn.secondaryHoverBorder};
     box-shadow: ${({ theme }) => theme.btn.secondaryHoverShadow};
-  }
-`;
-
-const BuyButton = styled(BaseButton)`
-  color: ${({ theme }) => theme.colors.wColor};
-  background: ${({ theme }) => theme.tones.violet.bg};
-  box-shadow: ${({ theme }) => theme.tones.violet.shadow};
-
-  &:hover {
-    background: ${({ theme }) => theme.tones.violet.hoverBg};
-    box-shadow: ${({ theme }) => theme.tones.violet.hoverShadow};
   }
 `;

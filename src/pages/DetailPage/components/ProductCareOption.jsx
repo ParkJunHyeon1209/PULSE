@@ -54,7 +54,7 @@ const Wrapper = styled.div`
 const CareCard = styled.div`
   display: flex;
   align-items: flex-start;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing[4]};
   width: 100%;
   padding: 18px 20px;
   border-radius: 20px;
@@ -85,8 +85,21 @@ const Checkbox = styled.input`
   background: transparent;
 
   &:checked {
-    border-color: ${({ theme }) => theme.colors.primary};
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.gradients.navActive};
+    box-shadow:
+      0 0 0 1px #7c3aed,
+      0 0 0 4px #7c3aed30;
+    border: none;
+  }
+  &:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -58%);
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
   }
 `;
 

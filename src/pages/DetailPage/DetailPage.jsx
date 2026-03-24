@@ -7,6 +7,7 @@ import useCartStore from '../../store/useCartStore';
 import ProductGallery from './components/ProductGallery';
 import ProductDetailPanel from './components/ProductDetailPanel';
 import FeatureSection from './components/features/FeatureSection';
+import { products } from '../../../public/data/categoryProducts';
 
 export default function DetailPage() {
   const { id } = useParams();
@@ -85,7 +86,7 @@ export default function DetailPage() {
           onAddToCart={handleAddToCart}
         />
       </ContentSection>
-      <FeatureSection></FeatureSection>
+      <FeatureSection category={product.category} teamProducts={products} />
     </PageWrapper>
   );
 }

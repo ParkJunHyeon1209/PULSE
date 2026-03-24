@@ -37,7 +37,7 @@ export const mockProducts = [
   {
     id: 2,
     title: 'RGB 게이밍 키보드 2',
-    category: 'keyboard',
+    category: 'mouse',
     price: 92400,
     thumbnail: '상품이미지',
     images: ['상세이미지3', '상세이미지4'],
