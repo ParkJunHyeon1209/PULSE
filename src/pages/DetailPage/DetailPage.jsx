@@ -7,7 +7,7 @@ import useCartStore from '../../store/useCartStore';
 import ProductGallery from './components/ProductGallery';
 import ProductDetailPanel from './components/ProductDetailPanel';
 import FeatureSection from './components/features/FeatureSection';
-import { products } from '../../../public/data/categoryProducts';
+import { products } from '../../data/categoryProducts';
 
 export default function DetailPage() {
   const { id } = useParams();
