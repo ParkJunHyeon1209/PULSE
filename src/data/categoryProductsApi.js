@@ -1,32 +1,57 @@
-import { products } from './categoryProducts';
+const BASE_URL = 'https://api.mylecture.kr/api/team3';
 
-export async function getAllProducts() {
-  return products;
-  /*
-	const res = await fetch('/api/products');
+async function request(path) {
+  const res = await fetch(`${BASE_URL}${path}`);
+
   if (!res.ok) {
-    throw new Error('상품 목록 조회 실패');
+    throw new Error(`API 요청 실패: ${res.status}`);
   }
-  return res.json();
-	*/
+
+  const json = await res.json();
+
+  if (!json.success) {
+    throw new Error('API 응답 실패');
+  }
+
+  return json.data;
+}
+
+// 카테고리 목록
+export async function getCategories() {
+  return request('/categories');
+}
+
+// 전체 상품 목록
+export async function getAllProducts() {
+  return request('/products');
 }
 
 export async function getProductsByCategory(category) {
-  return products.filter((item) => item.category?.toLowerCase() === category?.toLowerCase());
+  const products = await getAllProducts();
+
+  return products.filter(
+    (products) => products.category?.toLowerCase() === category?.toLowerCase()
+  );
 }
 
 export async function getProductsByType(type) {
-  return products.filter((item) => item.type?.toLowerCase() === type?.toLowerCase());
+  const products = await getAllProducts();
+
+  return products.filter((products) => products.type?.toLowerCase() === type?.toLowerCase());
 }
 
 export async function getProductsByCategoryAndType(category, type) {
+  const products = await getAllProducts();
+
   return products.filter(
-    (item) =>
-      item.category?.toLowerCase() === category?.toLowerCase() &&
-      item.type?.toLowerCase() === type?.toLowerCase()
+    (products) =>
+      products.category?.toLowerCase() === category?.toLowerCase() &&
+      products.type?.toLowerCase() === type?.toLowerCase()
   );
 }
 
 export async function getProductById(id) {
-  return products.find((item) => item.id === Number(id));
+  const products = await getAllProducts();
+
+  return products.find((products) => Number(products.id) === Number(id));
 }
