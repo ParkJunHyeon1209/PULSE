@@ -5,7 +5,7 @@ import MainPage from './pages/MainPage/MainPage';
 import CategoryPage from './pages/CategoriesPage/CategoryPage';
 import CategoriesPage from './pages/CategoriesPage/components/CategoriesPage';
 import DetailPage from './pages/DetailPage/DetailPage';
-import LoginPage from './pages/LoginPage';
+import LoginPage from './pages/LogInpage/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ShoppingCart from './pages/ShoppingCart/ShoppingCart';
 
