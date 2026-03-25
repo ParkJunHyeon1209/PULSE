@@ -1,10 +1,9 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import BaseBtn from '../common/BaseBtn';
+
 import AppHeader from '../common/AppHeader';
 import AppFooter from '../common/AppFooter';
-import BaseSection from '../common/BaseSection';
 
 const LayoutContainer = styled.div`
   display: flex;
@@ -18,11 +17,11 @@ const MainContent = styled.main`
   width: 100%;
   flex: 1;
   max-width: ${({ theme }) => theme.grid.max};
-  padding-top: 100px;
+  /* padding-top: 100px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding-top: 140px;
-  }
+  } */
 `;
 
 export default function MainLayout() {
@@ -31,10 +30,6 @@ export default function MainLayout() {
       <AppHeader />
       <MainContent>
         <Outlet />
-        <BaseBtn variant="secondary" tone="violet" padding="12px 24px">
-          공지사항 보러가기
-        </BaseBtn>
-        <BaseSection label="LABEL" title="Test" sub="섹션 설명입니다."></BaseSection>
       </MainContent>
       <AppFooter />
     </LayoutContainer>

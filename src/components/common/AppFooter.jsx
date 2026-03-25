@@ -12,6 +12,10 @@ import AppLogo from './AppLogo';
 const FootScope = styled.div`
   position: relative;
   width: 100%;
+  padding-top: ${({ theme }) => theme.spacing[20]};
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    padding-top: ${({ theme }) => theme.spacing[12]};
+  }
 `;
 
 const FootPlanet = styled.div`
