@@ -7,9 +7,10 @@ import useCartStore from '../../store/useCartStore';
 import ProductGallery from './components/ProductGallery';
 import ProductDetailPanel from './components/ProductDetailPanel';
 import FeatureSection from './components/features/FeatureSection';
-import { products } from '../../data/categoryProducts';
+import { getAllProducts } from '../../data/categoryProductsApi';
 
 export default function DetailPage() {
+  const [products, setProducts] = useState();
   const { id } = useParams();
   const product = mockProducts.find((item) => String(item.id) === String(id));
   const addToCart = useCartStore((state) => state.addToCart);
