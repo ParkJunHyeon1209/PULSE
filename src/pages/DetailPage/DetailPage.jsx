@@ -60,6 +60,10 @@ export default function DetailPage() {
 
   const galleryImages = [product.thumbnail, ...(product.images ?? [])].filter(Boolean);
 
+  console.log('product:', product);
+  console.log('product.category:', product?.category);
+  console.log('product.type:', product?.type);
+
   return (
     <PageWrapper>
       <ContentSection>
@@ -68,6 +72,7 @@ export default function DetailPage() {
           selectedImage={selectedImage}
           onSelectImage={setSelectedImage}
           galleryImages={galleryImages}
+          teamProduct={products}
         />
 
         <ProductDetailPanel
@@ -86,7 +91,11 @@ export default function DetailPage() {
           onAddToCart={handleAddToCart}
         />
       </ContentSection>
-      <FeatureSection category={product.category} teamProducts={products} />
+      <FeatureSection
+        category={product.category?.toLocaleLowerCase()}
+        teamProducts={products}
+        bundleCategory={product.category}
+      />
     </PageWrapper>
   );
 }
