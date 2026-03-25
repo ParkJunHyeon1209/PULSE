@@ -28,6 +28,7 @@ const CardContainer = styled.article`
     left: 0;
     right: 0;
     height: 1.5px;
+    z-index: 2;
     background: ${({ $tone, theme }) => theme.cardLine[$tone]};
     opacity: 0.7;
     transition:
@@ -162,9 +163,10 @@ const CardPrice = styled.strong`
 
 const categoryToneMap = {
   gear: 'violet',
-  headset: 'mint',
+  headset: 'blue',
   console: 'pink',
-  drops: 'mint',
+  bundle: 'mint',
+  drops: 'indigo',
 };
 
 export default function BaseProductCard({ product, cardMinHeight }) {
@@ -187,6 +189,7 @@ export default function BaseProductCard({ product, cardMinHeight }) {
           <BaseSparkIcon tone={sparkTone} />
         </CardSparkPos>
       )}
+
       <CardOverlay className="card-overlay" aria-hidden="true" />
       <CardGlow className="card-glow" aria-hidden="true" $tone={sparkTone} />
 

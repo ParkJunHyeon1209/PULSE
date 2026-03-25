@@ -14,7 +14,7 @@ const navItems = [
   { label: 'DROPS', to: '/categories/drops', isDrops: true },
 ];
 
-const NavRoot = styled.nav`
+const NavWrap = styled.nav`
   position: fixed;
   top: 0;
   left: 0;
@@ -26,7 +26,7 @@ const NavRoot = styled.nav`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
-const NavWrap = styled.div`
+const NavInner = styled.div`
   max-width: ${({ theme }) => theme.grid.max};
   margin: 0 auto;
   padding: ${({ theme }) => `${theme.spacing[5]} ${theme.spacing[20]}`};
@@ -118,7 +118,7 @@ const NavRight = styled.div`
   gap: ${({ theme }) => theme.spacing[4]};
 `;
 
-export default function PulseHeader({ onThemeToggle }) {
+export default function AppHeader({ onThemeToggle }) {
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
   const handleThemeToggle = onThemeToggle || toggleTheme;
@@ -137,9 +137,9 @@ export default function PulseHeader({ onThemeToggle }) {
   };
 
   return (
-    <NavRoot>
-      <NavWrap>
-        <AppLogo size="90px" />
+    <NavWrap>
+      <NavInner>
+        <AppLogo />
 
         <NavLinks>
           {navItems.map((item) => (
@@ -163,7 +163,7 @@ export default function PulseHeader({ onThemeToggle }) {
             onThemeToggle={handleThemeToggle}
           />
         </NavRight>
-      </NavWrap>
-    </NavRoot>
+      </NavInner>
+    </NavWrap>
   );
 }

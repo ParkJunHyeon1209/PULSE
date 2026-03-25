@@ -3,18 +3,21 @@ import BaseSection from '../../../components/common/BaseSection';
 
 const HeroSection = styled.section`
   width: 100vw;
+  min-height: 700px;
+  display: flex;
+
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   position: relative;
   overflow: hidden;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
-    min-height: 360px;
+    min-height: 600px;
     margin-bottom: 0;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    min-height: 280px;
+    min-height: 500px;
     margin-bottom: 0;
   }
 `;
@@ -33,53 +36,31 @@ const HeroOverlay = styled.div`
   background: linear-gradient(
     180deg,
     rgba(9, 6, 19, 0.08) 0%,
-    rgba(9, 6, 19, 0.24) 42%,
+    rgba(9, 6, 19, 0) 42%,
     rgba(9, 6, 19, 0.44) 100%
   );
 `;
 
-const SideFadeLeft = styled.div`
+const SideFade = styled.div`
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 18%;
-  height: 100%;
+  inset: 0;
   z-index: 2;
   pointer-events: none;
   background: linear-gradient(
     to right,
-    ${({ theme }) => theme.colors.background} 0%,
-    rgba(7, 5, 18, 0.92) 18%,
-    rgba(7, 5, 18, 0.68) 38%,
-    rgba(7, 5, 18, 0.32) 62%,
-    rgba(7, 5, 18, 0.08) 82%,
-    transparent 100%
-  );
-`;
-
-const SideFadeRight = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 18%;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(
-    to left,
-    ${({ theme }) => theme.colors.background} 0%,
-    rgba(7, 5, 18, 0.92) 18%,
-    rgba(7, 5, 18, 0.68) 38%,
-    rgba(7, 5, 18, 0.32) 62%,
-    rgba(7, 5, 18, 0.08) 82%,
-    transparent 100%
+    ${({ theme }) => theme.colors.background} 2%,
+    ${({ theme }) => theme.colors.background + '1d'} 18%,
+    transparent 50%,
+    ${({ theme }) => theme.colors.background + '1d'} 80%,
+    ${({ theme }) => theme.colors.background} 98%
   );
 `;
 
 const HeroCenterContent = styled.div`
   position: relative;
   z-index: 1;
-  min-height: 420px;
+  width: 100%;
+  /* height: 420px; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -170,8 +151,7 @@ export default function CategoryHero({ title, label, backgroundImage }) {
         }}
       />
       <HeroOverlay />
-      <SideFadeLeft />
-      <SideFadeRight />
+      <SideFade />
 
       <HeroCenterContent>
         <HeroBlurBand>

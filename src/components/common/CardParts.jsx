@@ -76,7 +76,7 @@ export const CardGlow = styled.div`
   z-index: 1;
 `;
 
-/* 하단 반짝이 */
+/* 카드 슬라이드 반짝이 */
 export const CardShim = styled.div`
   position: absolute;
   inset: 0;

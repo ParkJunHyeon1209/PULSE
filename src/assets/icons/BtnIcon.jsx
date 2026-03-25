@@ -2,19 +2,23 @@ import styled from '@emotion/styled';
 import { keyframes, css } from '@emotion/react';
 
 const starBlink = keyframes`
-  0%, 100% { opacity: 1; transform: rotate(0deg) scale(1); }
-  50%       { opacity: 0.35; transform: rotate(45deg) scale(1.2); }
+  0%, 100% { opacity: 1; transform: scale(0.7); }
+  50%       { opacity: .6; transform: scale(1.2); }
 `;
 
 export const LavStarIcon = styled.span`
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
   color: ${({ theme }) => theme.tones.violet.subtleColor};
-  margin-right: ${({ theme }) => theme.spacing[1]};
+  margin-right: ${({ theme }) => theme.spacing[2]};
   text-shadow: ${({ theme }) => theme.effects.PurpleStar};
+  transform-origin: center;
   animation: ${({ $animate = true }) =>
     $animate
       ? css`
-          ${starBlink} 3s ease-in-out infinite
+          ${starBlink} 1.5s ease infinite
         `
       : 'none'};
 `;
@@ -87,6 +91,7 @@ export default function StarIcon(props) {
   );
 }
 
+// 화살표
 export function ArrowIcon(props) {
   return (
     <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -98,6 +103,25 @@ export function ArrowIcon(props) {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+    </svg>
+  );
+}
+
+export function ArrowIconL(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="36"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="m9 18 6-6-6-6" />
     </svg>
   );
 }

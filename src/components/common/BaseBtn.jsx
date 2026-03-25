@@ -168,7 +168,7 @@ const StyledBtn = styled.button`
  *
  * size     : '36px' 등 — ic-btn 전용, 가로세로 동일 크기
  * padding  : 기본 패딩 12px 사용,
- *   - ex) <BaseBtn $padding='{`${theme.spacing[2]} ${theme.spacing[4]}`}'
+ *   - ex) <BaseBtn padding='{`${theme.spacing[2]} ${theme.spacing[4]}`}'
  *
  * icon     : primary일 때 별 아이콘 표시 여부 (기본값 true) — icon={false}로 숨길 수 있음
  *
@@ -206,7 +206,7 @@ export default function BaseBtn({
       $btnStyle={btnStyled}
     >
       <BtnLabel>
-        {variant === 'secondary' ? (
+        {variant === 'secondary' && icon ? (
           <BtnArrow className="btn-arrow" aria-hidden="true" />
         ) : variant === 'primary' && icon ? (
           <BtnSpark className="btn-spark" aria-hidden="true" />

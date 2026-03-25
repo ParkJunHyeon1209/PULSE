@@ -7,4 +7,7 @@ export const BADGE_TONE = {
 };
 
 // tone → theme.card 배경키 매핑
-export const TONE_BG = { violet: 'th1', mint: 'th2', pink: 'th3', blue: 'th4' };
+export const TONE_BG = { violet: 'ci1', mint: 'ci2', pink: 'ci3', blue: 'ci4', indigo: 'ci5' };
+
+// tone → theme.effects 빔 그라디언트 키 매핑
+export const TONE_BEAM = { violet: 'cb1', mint: 'cb2', pink: 'cb3', blue: 'cb4', indigo: 'cb5' };
