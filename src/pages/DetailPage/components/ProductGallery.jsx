@@ -1,8 +1,27 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { CardBadge } from '../../../components/common/CardParts';
+import { BADGE_TONE } from '../../../utils/toneMap';
 
-export default function ProductGallery({ product, selectedImage, onSelectImage, galleryImages }) {
+export default function ProductGallery({
+  product,
+  selectedImage,
+  onSelectImage,
+  galleryImages,
+  teamProducts,
+}) {
   const currentIndex = galleryImages.findIndex((image) => image === selectedImage);
+  // 뱃지 연결 문제-------------------------------------------------
+  const normalizeTitle = (value) =>
+    String(value || '')
+      .trim()
+      .toLowerCase();
+
+  const matchedProduct = teamProducts?.find(
+    (item) => normalizeTitle(item.title) === normalizeTitle(product.title)
+  );
+
+  const matchedTag = matchedProduct?.tag;
 
   const handlePrev = () => {
     if (!galleryImages.length) return;
@@ -17,12 +36,17 @@ export default function ProductGallery({ product, selectedImage, onSelectImage, 
     const nextIndex = currentIndex === galleryImages.length - 1 ? 0 : currentIndex + 1;
     onSelectImage(galleryImages[nextIndex]);
   };
+  console.log('matchedTag:', matchedTag);
+  console.log('badgeTone:', BADGE_TONE[matchedTag]);
 
   return (
     <ImageSection>
       <MainImageWrapper>
         {selectedImage && <MainImage src={selectedImage} alt={product.title} />}
-        <NewBadge>new</NewBadge>
+        <CardBadge variant="tag" tone={matchedTag} icon={false} height="28px">
+          {/*여기까지 -------------------------------------- */}
+          {matchedTag}
+        </CardBadge>
         <ArrowButton type="button" $left onClick={handlePrev} aria-label="이전 이미지">
           ‹
         </ArrowButton>
@@ -139,24 +163,6 @@ const ThumbnailImage = styled.img`
   height: 100%;
   display: block;
   object-fit: cover;
-`;
-
-const NewBadge = styled.div`
-  position: absolute;
-  top: ${({ theme }) => theme.spacing[4]};
-  left: ${({ theme }) => theme.spacing[4]};
-  z-index: 3;
-  min-width: 52px;
-  height: 28px;
-  padding: 0 ${({ theme }) => theme.spacing[3]};
-  border-radius: ${({ theme }) => theme.radii.pill};
-  background: rgba(52, 211, 153, 0.12);
-  border: 1px solid rgba(52, 211, 153, 0.24);
-  color: ${({ theme }) => theme.status.new};
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const Features = styled.div`

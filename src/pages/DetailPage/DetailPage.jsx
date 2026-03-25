@@ -7,9 +7,10 @@ import useCartStore from '../../store/useCartStore';
 import ProductGallery from './components/ProductGallery';
 import ProductDetailPanel from './components/ProductDetailPanel';
 import FeatureSection from './components/features/FeatureSection';
-import { products } from '../../data/categoryProducts';
+import { getAllProducts } from '../../data/categoryProductsApi';
 
 export default function DetailPage() {
+  const [products, setProducts] = useState();
   const { id } = useParams();
   const product = mockProducts.find((item) => String(item.id) === String(id));
   const addToCart = useCartStore((state) => state.addToCart);
@@ -60,6 +61,10 @@ export default function DetailPage() {
 
   const galleryImages = [product.thumbnail, ...(product.images ?? [])].filter(Boolean);
 
+  console.log('product:', product);
+  console.log('product.category:', product?.category);
+  console.log('product.type:', product?.type);
+
   return (
     <PageWrapper>
       <ContentSection>
@@ -68,6 +73,7 @@ export default function DetailPage() {
           selectedImage={selectedImage}
           onSelectImage={setSelectedImage}
           galleryImages={galleryImages}
+          teamProduct={products}
         />
 
         <ProductDetailPanel
@@ -86,7 +92,11 @@ export default function DetailPage() {
           onAddToCart={handleAddToCart}
         />
       </ContentSection>
-      <FeatureSection category={product.category} teamProducts={products} />
+      <FeatureSection
+        category={product.category?.toLocaleLowerCase()}
+        teamProducts={products}
+        bundleCategory={product.category}
+      />
     </PageWrapper>
   );
 }

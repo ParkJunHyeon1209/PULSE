@@ -1,8 +1,8 @@
 export const mockProducts = [
   {
     id: 1,
-    title: 'RGB 게이밍 키보드',
-    category: 'keyboard',
+    title: 'PHANTOM K2',
+    category: 'Keyboard',
     price: 79000,
     thumbnail: '/images/keyboard/키보드.png',
     images: ['/images/keyboard/키보드1.png'],
@@ -37,7 +37,7 @@ export const mockProducts = [
   {
     id: 2,
     title: 'RGB 게이밍 키보드 2',
-    category: 'mouse',
+    category: 'Mouse',
     price: 92400,
     thumbnail: '상품이미지',
     images: ['상세이미지3', '상세이미지4'],
