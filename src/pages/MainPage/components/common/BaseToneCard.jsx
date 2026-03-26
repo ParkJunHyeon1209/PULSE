@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import BaseSparkIcon from '../../components/common/BaseSparkIcon';
-import BaseBtn from '../../components/common/BaseBtn';
-import { ArrowIcon } from '../../assets/icons/BtnIcon';
-import { TONE_BG, TONE_BEAM } from '../../utils/toneMap';
+import BaseSparkIcon from '../../../../components/common/BaseSparkIcon';
+import BaseBtn from '../../../../components/common/BaseBtn';
+import { ArrowIcon } from '../../../../assets/icons/BtnIcon';
+import { TONE_BG, TONE_BEAM } from '../../../../utils/toneMap';
 
 const Card = styled.article`
   position: relative;

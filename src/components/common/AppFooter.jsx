@@ -249,7 +249,7 @@ export default function AppFooter() {
 
           <FootCol>
             <FootColTitle>
-              <LavStarIcon $animate={false}>✦</LavStarIcon>Products
+              <LavStarIcon>✦</LavStarIcon>Products
             </FootColTitle>
             <FootColBtn type="button">Headset Series</FootColBtn>
             <FootColBtn type="button">Keyboard Series</FootColBtn>
@@ -260,7 +260,7 @@ export default function AppFooter() {
 
           <FootCol>
             <FootColTitle>
-              <LavStarIcon $animate={false}>✦</LavStarIcon>Explore
+              <LavStarIcon>✦</LavStarIcon>Explore
             </FootColTitle>
             <FootColBtn type="button">신제품</FootColBtn>
             <FootColBtn type="button">베스트셀러</FootColBtn>
@@ -271,7 +271,7 @@ export default function AppFooter() {
 
           <FootCol>
             <FootColTitle>
-              <LavStarIcon $animate={false}>✦</LavStarIcon>Brand
+              <LavStarIcon>✦</LavStarIcon>Brand
             </FootColTitle>
             <FootColBtn type="button">브랜드 스토리</FootColBtn>
             <FootColBtn type="button">디자인 시스템</FootColBtn>
@@ -284,7 +284,7 @@ export default function AppFooter() {
         <FootBottom>
           <FootNote>© 2026 PULSE · Gaming Gear Platform · Brand Concept Project</FootNote>
           <FootBadge>
-            <LavStarIcon>✦</LavStarIcon>
+            <LavStarIcon $animate={true}>✦</LavStarIcon>
             Play Your Signal · 2026 S/S
           </FootBadge>
         </FootBottom>

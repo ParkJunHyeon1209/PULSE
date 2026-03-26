@@ -1,13 +1,13 @@
 import { useTheme } from '@emotion/react';
 import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import banner1D from '../../assets/img/banners/1_dark.webp';
-import banner1L from '../../assets/img/banners/1_light.webp';
-import banner2D from '../../assets/img/banners/2_dark.webp';
-import banner2L from '../../assets/img/banners/2_light.webp';
-import banner3D from '../../assets/img/banners/3_dark.webp';
-import banner3L from '../../assets/img/banners/3_light.webp';
-import { ArrowIconL } from '../../assets/icons/BtnIcon';
+import banner1D from '../../../assets/img/banners/1_dark.webp';
+import banner1L from '../../../assets/img/banners/1_light.webp';
+import banner2D from '../../../assets/img/banners/2_dark.webp';
+import banner2L from '../../../assets/img/banners/2_light.webp';
+import banner3D from '../../../assets/img/banners/3_dark.webp';
+import banner3L from '../../../assets/img/banners/3_light.webp';
+import { ArrowIconL } from '../../../assets/icons/BtnIcon';
 
 const BANNER_IMAGES = [
   { id: '1', dark: banner1D, light: banner1L, opacity: 0.6 },

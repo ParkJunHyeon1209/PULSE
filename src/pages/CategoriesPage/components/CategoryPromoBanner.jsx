@@ -14,9 +14,9 @@ export default function CategoryPromoBanner({
       <SectionHeader>
         <SectionTitle>
           <SectionTitleWithStar>
-            <TitleStar $animate={false}>✦</TitleStar>
+            <TitleStar>✦</TitleStar>
             {sectionTitle}
-            <TitleStar $animate={false}>✦</TitleStar>
+            <TitleStar>✦</TitleStar>
           </SectionTitleWithStar>
         </SectionTitle>
       </SectionHeader>

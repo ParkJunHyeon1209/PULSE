@@ -30,14 +30,14 @@ export const CardWish = styled(BaseBtn, {
     fill: ${({ $isLiked }) => ($isLiked ? 'currentColor' : 'none')};
   }
 
-  &:hover:not(:disabled) {
+  &:hover {
     color: ${({ theme }) => theme.iconBtn.wish.hoverColor} !important;
     background: ${({ theme }) => theme.iconBtn.wish.hoverBg} !important;
     border-color: ${({ theme }) => theme.iconBtn.wish.hoverBorder} !important;
     box-shadow: none !important;
     transform: translateY(0) !important;
   }
-  &:active:not(:disabled) {
+  &:active {
     transform: scale(0.88) !important;
   }
 `;
@@ -58,7 +58,7 @@ export const CardBadge = styled(BaseBtn)`
 export const CardAddBtn = styled(BaseBtn)`
   color: ${({ theme }) => theme.colors.primary};
 
-  &:hover:not(:disabled) {
+  &:hover {
     transform: translateY(-1px) scale(1.15) rotate(90deg);
   }
 `;

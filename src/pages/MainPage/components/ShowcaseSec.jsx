@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import BaseSection from '../../components/common/BaseSection';
-import BaseToneCard from './BaseToneCard';
+import BaseSection from '../../../components/common/BaseSection';
+import BaseToneCard from './common/BaseToneCard';
 
 const SectionWrap = styled.section`
   display: grid;

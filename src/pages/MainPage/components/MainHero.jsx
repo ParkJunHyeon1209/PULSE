@@ -1,7 +1,7 @@
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import BaseBtn from '../../components/common/BaseBtn';
-import { LavStarIcon } from '../../assets/icons/BtnIcon';
+import BaseBtn from '../../../components/common/BaseBtn';
+import { LavStarIcon } from '../../../assets/icons/BtnIcon';
 import HeroBannerSlide from './HeroBannerSlide';
 import PulseLineSvg from './HeroPulseSvg';
 
@@ -233,11 +233,11 @@ export default function MainHero() {
       <HeroSection>
         <HeroWrap>
           <HeroDec variant="secondary" spark={true} flex="0" icon={false}>
-            <LavStarIcon className="btn-spark" aria-hidden="true">
+            <LavStarIcon $animate={true} className="btn-spark" aria-hidden="true">
               ✦
             </LavStarIcon>
             2026 S/S · GAMING GEAR PLATFORM
-            <LavStarEnd className="btn-spark" aria-hidden="true">
+            <LavStarEnd $animate={true} className="btn-spark" aria-hidden="true">
               ✦
             </LavStarEnd>
           </HeroDec>

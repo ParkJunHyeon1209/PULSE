@@ -4,6 +4,8 @@ import BaseBtn from './BaseBtn';
 import { UserIcon, CartIcon, LoginIcon, SunIcon, MoonIcon } from '../../assets/icons/BtnIcon';
 import usePanel from '../../hooks/usePanel';
 import useCartStore from '../../store/useCartStore';
+import useOverlayStore from '../../store/useOverlayStore';
+import useThemeStore from '../../store/useThemeStore';
 
 const AvatarButton = styled(BaseBtn)`
   overflow: visible;
@@ -224,9 +226,14 @@ const ToggleButton = styled.div`
   }
 `;
 
-export default function AppHeaderUser({ open, onOpen, onClose, isDarkMode, onThemeToggle }) {
+export default function AppHeaderUser() {
+  const open = useOverlayStore((state) => state.loginOpen);
+  const onOpen = useOverlayStore((state) => state.openLogin);
+  const closeLogin = useOverlayStore((state) => state.closeLogin);
   const cart = useCartStore((state) => state.cart);
-  const wrapRef = usePanel({ open, onClose });
+  const isDarkMode = useThemeStore((state) => state.isDarkMode);
+  const onThemeToggle = useThemeStore((state) => state.toggleTheme);
+  const wrapRef = usePanel({ open, onClose: closeLogin });
   const navigate = useNavigate();
 
   return (
@@ -255,7 +262,6 @@ export default function AppHeaderUser({ open, onOpen, onClose, isDarkMode, onThe
         </Drop>
       </DropWrap>
 
-      {/* data-count: 카트 수량 - data-count={cartCount} */}
       <CartButton
         height={'42px'}
         variant="ic-btn"

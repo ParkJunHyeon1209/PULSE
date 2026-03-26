@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import styled from '@emotion/styled';
-import { LavStarIcon } from '../../assets/icons/BtnIcon';
+import { LavStarIcon } from '../../../assets/icons/BtnIcon';
 
 const BandOverlay = styled.div`
   position: absolute;
@@ -74,7 +74,7 @@ function BandLine({ hidden = false }) {
       {items.map((item) => (
         <Fragment key={`${hidden ? 'ghost' : 'live'}-${item}`}>
           <span>{item}</span>
-          <BandStar>✦</BandStar>
+          <BandStar $animate={true}>✦</BandStar>
         </Fragment>
       ))}
     </BandItem>

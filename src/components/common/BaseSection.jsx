@@ -71,9 +71,9 @@ export default function BaseSection({
   return (
     <SectionHeadWrap $center={isCenter}>
       <SectionLabel $center={isCenter}>
-        <LavStarIcon $animate={false}>✦</LavStarIcon>
+        <LavStarIcon>✦</LavStarIcon>
         {label}
-        {star && <LavStarIcon $animate={false}>✦</LavStarIcon>}
+        {star && <LavStarIcon>✦</LavStarIcon>}
       </SectionLabel>
       {title && (
         <SectionTitle $hasSub={Boolean(colorTitle || sub)} $font={titleFont} $size={titleSize}>

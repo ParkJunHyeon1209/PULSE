@@ -146,9 +146,9 @@ export default function CategoriesPage() {
           <CategorySection
             title={
               <SectionTitleWithStar>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
                 <span>MOUSE</span>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
               </SectionTitleWithStar>
             }
             viewLabel="VIEW"
@@ -160,9 +160,9 @@ export default function CategoriesPage() {
           <CategorySection
             title={
               <SectionTitleWithStar>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
                 <span>KEYBOARD</span>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
               </SectionTitleWithStar>
             }
             viewLabel="VIEW"
@@ -174,9 +174,9 @@ export default function CategoriesPage() {
           <CategorySection
             title={
               <SectionTitleWithStar>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
                 <span>GEARSET</span>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
               </SectionTitleWithStar>
             }
             viewLabel="VIEW"
@@ -247,9 +247,9 @@ export default function CategoriesPage() {
           <CategorySection
             title={
               <SectionTitleWithStar>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
                 <span>HEADSET</span>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
               </SectionTitleWithStar>
             }
             viewLabel="VIEW"
@@ -261,9 +261,9 @@ export default function CategoriesPage() {
           <CategorySection
             title={
               <SectionTitleWithStar>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
                 <span>EARPHONE</span>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
               </SectionTitleWithStar>
             }
             viewLabel="VIEW"
@@ -275,9 +275,9 @@ export default function CategoriesPage() {
           <CategorySection
             title={
               <SectionTitleWithStar>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
                 <span>STREAMING</span>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
               </SectionTitleWithStar>
             }
             viewLabel="VIEW"
@@ -348,9 +348,9 @@ export default function CategoriesPage() {
           <CategorySection
             title={
               <SectionTitleWithStar>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
                 <span>CONTROLLER</span>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
               </SectionTitleWithStar>
             }
             viewLabel="VIEW"
@@ -362,9 +362,9 @@ export default function CategoriesPage() {
           <CategorySection
             title={
               <SectionTitleWithStar>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
                 <span>CONSOLESET</span>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
               </SectionTitleWithStar>
             }
             viewLabel="VIEW"
@@ -419,9 +419,9 @@ export default function CategoriesPage() {
           <CategorySection
             title={
               <SectionTitleWithStar>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
                 <span>DROPS</span>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
               </SectionTitleWithStar>
             }
             viewLabel="VIEW"
@@ -433,9 +433,9 @@ export default function CategoriesPage() {
           <CategorySection
             title={
               <SectionTitleWithStar>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
                 <span>ETC</span>
-                <TitleStar $animate={false}>✦</TitleStar>
+                <TitleStar>✦</TitleStar>
               </SectionTitleWithStar>
             }
             viewLabel="VIEW"

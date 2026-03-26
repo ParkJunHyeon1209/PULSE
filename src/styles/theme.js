@@ -211,6 +211,10 @@ export const darkTheme = {
     cardBgGrad: 'linear-gradient(180deg, transparent 0%, rgba(9, 6, 19, 0.8) 100%)',
     cardBgGradH: 'linear-gradient(180deg, transparent 0%, rgba(9, 6, 19, 1) 100%)',
     cardBorder: 'rgba(255,255,255,0.08)',
+    modalBorder: 'rgba(167,139,250,.16)',
+    modalBg: 'rgba(12,8,32,.97)',
+    dividerStrong: 'linear-gradient(90deg, transparent, rgba(135,95,255,.5), transparent)',
+    modalShadow: '0 0 0 1px rgba(124,58,237,.08), 0 32px 80px rgba(0,0,0,.7)',
     bandBg: 'rgba(120,60,255,.04)',
 
     // btn2Bg = 보조 버튼 배경
@@ -527,6 +531,10 @@ export const lightTheme = {
     cardBgGrad: 'linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.5) 100%)',
     cardBgGradH: 'linear-gradient(180deg, transparent 0%, rgba(255,255,255,1) 100%)',
     cardBorder: 'rgba(124,58,237,0.18)',
+    modalBorder: 'rgba(124,58,237,.18)',
+    modalBg: 'rgba(252,250,255,.97)',
+    dividerStrong: 'linear-gradient(90deg, transparent, rgba(124,58,237,.3), transparent)',
+    modalShadow: '0 0 0 1px rgba(124,58,237,.08), 0 32px 80px rgba(100,60,200,.14)',
     bandBg: 'rgba(124,58,237,.04)',
     btn2Bg: 'rgba(124,58,237,0.10)',
     dimBg: 'rgba(0,0,0,.08)',

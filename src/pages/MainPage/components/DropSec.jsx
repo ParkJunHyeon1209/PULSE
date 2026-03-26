@@ -1,9 +1,9 @@
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import BaseSection from '../../components/common/BaseSection';
-import BaseBtn from '../../components/common/BaseBtn';
-import { LavStarIcon } from '../../assets/icons/BtnIcon';
-import bannerImg from '../../assets/img/banners/main-banner.webp';
+import BaseSection from '../../../components/common/BaseSection';
+import BaseBtn from '../../../components/common/BaseBtn';
+import { LavStarIcon } from '../../../assets/icons/BtnIcon';
+import bannerImg from '../../../assets/img/banners/main-banner.webp';
 
 const dotPulse = keyframes`
   0%, 100% { opacity: 1; transform: scale(0.7); }
@@ -215,7 +215,7 @@ export default function DropSec() {
               {stats.map((s) => (
                 <DropStat key={s.label}>
                   <DropStatLabel>
-                    <LavStarIcon $animate={false}>✦</LavStarIcon>
+                    <LavStarIcon>✦</LavStarIcon>
                     {s.label}
                   </DropStatLabel>
                   <DropStatVal>{s.val}</DropStatVal>
@@ -226,7 +226,7 @@ export default function DropSec() {
             <DropRow>
               <BaseBtn variant="secondary">드롭 알림 신청</BaseBtn>
               <DropTimer>
-                <TimerStar>✦</TimerStar>
+                <TimerStar $animate={true}>✦</TimerStar>
                 Apr 15 · 20:00 KST
               </DropTimer>
             </DropRow>

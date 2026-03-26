@@ -141,11 +141,11 @@ const PagerButton = styled.button`
     transform ${({ theme }) => theme.motion.fast},
     opacity ${({ theme }) => theme.motion.fast};
 
-  &:hover:not(:disabled) .pager-icon-right {
+  &:hover .pager-icon-right {
     transform: translateX(4px);
   }
 
-  &:hover:not(:disabled) .pager-icon-left {
+  &:hover .pager-icon-left {
     transform: translateX(-2px);
   }
 
