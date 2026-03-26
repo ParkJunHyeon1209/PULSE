@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import emptyCart from '../../../assets/empty-cart.svg';
+import emptyCart from '../../../assets/emptyCart1.svg';
 import BaseBtn from '../../../components/common/BaseBtn';
 import useThemeStore from '../../../store/useThemeStore';
 
@@ -14,11 +14,11 @@ const NoItemWrap = styled.div`
   justify-content: center;
   align-items: center;
   white-space: pre-wrap;
-  background-color: ${({ theme }) => theme.tones.violet.hoverColor + '04'};
+  background-color: ${({ theme }) => theme.colors.cardBg};
   > img {
     margin-bottom: ${({ theme }) => theme.spacing[5]};
     width: 150px;
-    opacity: ${({ isDarkMode }) => (isDarkMode ? 0.2 : 1)};
+    opacity: ${({ isDarkMode }) => (isDarkMode ? 0.2 : 0.8)};
   }
   > p {
     text-align: center;

@@ -5,6 +5,23 @@ import { DelIcon, MinusIcon, QtyPlusIcon } from '../../../assets/icons/BtnIcon';
 
 const List = styled.ul``;
 
+// const CategoryBadge = styled.p`
+//   background-color: ${({ $category, theme }) => {
+//     switch ($category) {
+//       case 'HEADSET':
+//         return theme.status.info;
+//       case 'GEAR':
+//         return theme.status.limited;
+//       case 'CONSOLE':
+//         return theme.status.goldSoft;
+//       case 'DROPS':
+//         return theme.colors.primary;
+//       default:
+//         return theme.colors.border;
+//     }
+//   }};
+// `;
+
 const ListItem = styled.li`
   padding: ${({ theme }) => theme.spacing[3]} ${({ theme }) => theme.spacing[6]};
   display: flex;
@@ -13,7 +30,6 @@ const ListItem = styled.li`
     props.$isSelected ? props.theme.colors.primary + '09' : 'inherit'};
   border-left: ${(props) =>
     props.$isSelected ? `2px solid ${props.theme.colors.primary}` : 'none'};
-
   &:not(:last-child) {
     border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   }
@@ -28,10 +44,15 @@ const ListItem = styled.li`
       > img {
         width: ${({ theme }) => theme.spacing[24]};
       }
-      > .primary-info > p:first-of-type {
+      > .primary-info > p.category-badge {
+        width: 70%;
+        padding: ${({ theme }) => theme.spacing[1]} ${({ theme }) => theme.spacing[2]};
+        text-align: center;
         color: ${({ theme }) => theme.colors.textSecondary};
         font-size: ${({ theme }) => theme.fontSize.xxxs};
         margin-bottom: ${({ theme }) => theme.spacing[3]};
+        border: 1px solid ${({ theme }) => theme.colors.border};
+        border-radius: ${({ theme }) => theme.radii.pill};
       }
       > .primary-info > p:nth-of-type(2) {
         color: ${({ theme }) => theme.colors.textSecondary};
@@ -41,6 +62,8 @@ const ListItem = styled.li`
       > .primary-info > p:last-of-type {
         color: ${({ theme }) => theme.colors.primary};
         font-size: ${({ theme }) => theme.fontSize.xs};
+        font-family: ${({ theme }) => theme.fontFamily.mono};
+        font-weight: 600;
       }
       .item-title {
         font-size: ${({ theme }) => theme.fontSize.xs};
@@ -76,8 +99,8 @@ const ListItem = styled.li`
       padding: ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[3]};
       display: flex;
       gap: ${({ theme }) => theme.spacing[5]};
-      background-color: ${({ theme }) => theme.tones.violet.hoverColor + '04'};
-      border: 1px solid ${({ theme }) => theme.tones.violet.hoverColor + '07'};
+      background-color: ${({ theme }) => theme.colors.cardBg};
+      border: 1px solid ${({ theme }) => theme.colors.border};
       border-radius: ${({ theme }) => theme.radii.pill};
       > button {
         padding: ${({ theme }) => theme.spacing[1]} ${({ theme }) => theme.spacing[2]};
@@ -98,11 +121,12 @@ const ListItem = styled.li`
 `;
 
 const GradientCheckbox = styled.input`
+  flex-shrink: 0;
   appearance: none;
   position: relative;
-  width: 18px;
-  height: 18px;
-  border: 1px solid ${({ theme }) => theme.tones.violet.hoverColor + '33'};
+  width: clamp(12px, 1.5vw, 18px);
+  height: clamp(12px, 1.5vw, 18px);
+  border: 1px solid ${({ theme }) => theme.checkbox.border};
   border-radius: 4px;
   cursor: pointer;
 
@@ -144,21 +168,11 @@ export default function ListContent() {
               onChange={() => onChange(item.id)}
             />
             <div className="main-content">
-              <img src={item.thumbnail} alt={item.title} />
+              <img src={item.image} alt={item.title} />
               <div className="primary-info">
-                <p>{item.category}</p>
+                <p className="category-badge">{item.type}</p>
                 <h3 className="item-title">{item.title}</h3>
-                {item.options ? (
-                  <p>
-                    옵션:{' '}
-                    {Object.entries(item.options).map(([key, value], index, array) => (
-                      <span key={key}>
-                        {typeof value === 'boolean' ? key.replace(/^is/, '') : value}
-                        {index !== array.length - 1 && ' • '}
-                      </span>
-                    ))}
-                  </p>
-                ) : null}
+                {item.meta ? <p>{item.meta}</p> : <span />}
                 <p>{(item.price * item.quantity).toLocaleString()}원</p>
               </div>
             </div>

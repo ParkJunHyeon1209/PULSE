@@ -7,9 +7,9 @@ const ListControlWrap = styled.div`
   display: flex;
   justify-content: space-between;
   color: ${({ theme }) => theme.colors.textSecondary};
-  background-color: ${({ theme }) => theme.tones.violet.hoverColor + '04'};
+  background-color: ${({ theme }) => theme.colors.cardBg};
   backdrop-filter: ${({ theme }) => theme.effects.blurPromo};
-
+  border-bottom: 1px solid ${({ theme }) => theme.tones.violet.hoverColor + '08'};
   > .check-box {
     display: flex;
     align-items: center;
@@ -43,9 +43,9 @@ const ListControlWrap = styled.div`
 const GradientCheckbox = styled.input`
   appearance: none;
   position: relative;
-  width: 18px;
-  height: 18px;
-  border: 1px solid ${({ theme }) => theme.tones.violet.hoverColor + '33'};
+  width: clamp(12px, 1.5vw, 18px);
+  height: clamp(12px, 1.5vw, 18px);
+  border: 1px solid ${({ theme }) => theme.checkbox.border};
   border-radius: 4px;
   cursor: pointer;
 
