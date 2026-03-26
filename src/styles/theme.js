@@ -523,7 +523,7 @@ export const lightTheme = {
     promoBg: 'rgba(228,224,255,1)',
     transBg: 'transparent',
     surface: 'rgba(124,58,237,0.08)',
-    cardBg: 'rgba(255,255,255,0.88)',
+    cardBg: 'rgba(255,255,255,0.7)',
     cardBgGrad: 'linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.5) 100%)',
     cardBgGradH: 'linear-gradient(180deg, transparent 0%, rgba(255,255,255,1) 100%)',
     cardBorder: 'rgba(124,58,237,0.18)',

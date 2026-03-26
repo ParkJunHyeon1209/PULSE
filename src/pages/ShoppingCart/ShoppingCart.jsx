@@ -9,35 +9,31 @@ import NoItem from './components/NoItem';
 import BaseSection from '../../components/common/BaseSection';
 
 const ShoppingCartWrap = styled.div`
-  width: 1280px;
-  max-width: 1280px;
-  padding: 80px;
+  width: 100%;
+  margin-top: ${({ theme }) => `calc(${theme.spacing[40]} + 20px)`};
+  padding-inline: ${({ theme }) => theme.grid.margin};
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[10]};
+  gap: ${({ theme }) => theme.grid.gap};
 `;
+
 const CurrentRoute = styled.div`
   display: flex;
   flex-direction: column;
 
-  > p {
+  > div {
     color: ${({ theme }) => theme.colors.textSecondary};
-    font-size: 9px;
+    font-size: ${({ theme }) => theme.fontSize.xxxs} - '3px';
   }
-  /* > h2 {
-    background: linear-gradient(to right, #e2e8f0 0%, #c4b5fd 50%, #a78bfa 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    font-weight: 400;
-    display: inline-block;
-    font-size: 64px;
-  } */
 `;
 
 const MainWrap = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing[6]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    flex-direction: column;
+  }
 `;
 
 const MainLeft = styled.div`
@@ -47,13 +43,11 @@ const MainLeft = styled.div`
 `;
 
 const CartList = styled.div`
-  flex: 2;
   display: flex;
   justify-content: ${({ isEmpty }) => (isEmpty ? 'center' : 'flex-start')};
   align-items: ${({ isEmpty }) => (isEmpty ? 'center' : 'stretch')};
   border: 1px solid ${({ theme }) => theme.tones.violet.hoverColor + '08'};
   border-radius: ${({ theme }) => theme.radii.lg};
-  background-color: ${({ theme }) => theme.colors.cardBg};
   overflow: hidden;
 `;
 
@@ -70,10 +64,7 @@ export default function ShoppingCart() {
   return (
     <ShoppingCartWrap>
       <CurrentRoute>
-        <BaseSection
-          label={`SHOPPING CART • ${cart.length ? cart.length : 0} items`}
-          title="YOUR PULSE"
-        />
+        <BaseSection label={`SHOPPING CART • ${cart.length || 0} items`} title="YOUR PULSE" />
       </CurrentRoute>
       <MainWrap>
         <MainLeft>

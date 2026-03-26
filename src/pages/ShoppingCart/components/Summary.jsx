@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useState } from 'react';
 import useCartStore from '../../../store/useCartStore';
 import BaseBtn from '../../../components/common/BaseBtn';
 import BaseSection from '../../../components/common/BaseSection';
@@ -21,6 +21,15 @@ const SummaryWrap = styled.div`
   border-radius: ${({ theme }) => theme.radii.lg};
   backdrop-filter: ${({ theme }) => theme.effects.blurPromo};
 
+  .shipping-info {
+    cursor: default;
+    opacity: 0.4;
+    transition: opacity 0.3s ease;
+  }
+  .shipping-info:hover {
+    opacity: 0.6;
+  }
+
   .price {
     display: flex;
     flex-direction: column;
@@ -35,6 +44,20 @@ const SummaryWrap = styled.div`
       justify-content: space-between;
       margin-top: ${({ theme }) => theme.spacing[3]};
       font-size: ${({ theme }) => theme.fontSize.xxxs};
+      > span.shipping {
+        display: flex;
+        align-items: center;
+        gap: ${({ theme }) => theme.spacing[1]};
+        position: relative;
+        font-size: ${({ theme }) => theme.fontSize.xxxs};
+        color: ${({ theme }) => theme.colors.textSecondary};
+      }
+      .shipping-fee-info {
+        white-space: nowrap;
+        position: absolute;
+        top: 70%;
+        left: 0;
+      }
       > span {
         color: ${({ theme }) => theme.colors.text};
         font-size: ${({ theme }) => theme.fontSize.xs};
@@ -74,7 +97,7 @@ const SummaryWrap = styled.div`
       padding: ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[3]};
       border: 1px solid ${({ theme }) => theme.tones.violet.hoverColor + '07'};
       border-radius: ${({ theme }) => theme.radii.pill};
-      background-color: ${({ theme }) => theme.tones.violet.hoverColor + '05'};
+      background-color: ${({ theme }) => theme.colors.cardBg};
     }
     > .coupon-btn {
       flex: 1;
@@ -101,7 +124,7 @@ const SummaryWrap = styled.div`
         justify-content: center;
         align-items: center;
         border: 1px solid ${({ theme }) => theme.tones.violet.hoverColor + '07'};
-        background-color: ${({ theme }) => theme.tones.violet.hoverColor + '05'};
+        background-color: ${({ theme }) => theme.colors.cardBg};
         border-radius: ${({ theme }) => theme.radii.full};
       }
     }
@@ -110,6 +133,8 @@ const SummaryWrap = styled.div`
 
 export default function Summary() {
   const totalPrice = useCartStore((state) => state.getTotalPrice);
+  const SHIPPING_FEE = 5000;
+  const [isHover, setIshover] = useState(false);
 
   return (
     <SummaryWrap>
@@ -119,13 +144,41 @@ export default function Summary() {
           상품 합계 <span>{totalPrice() ? totalPrice().toLocaleString() : 0}원</span>
         </p>
         <p>
-          배송비 <span className="free">FREE</span>
+          <span className="shipping">
+            배송비{' '}
+            <BaseBtn
+              variant="ic-btn"
+              size={'16px'}
+              padding={'4px'}
+              className="shipping-info"
+              onMouseEnter={() => {
+                setIshover(true);
+              }}
+              onMouseLeave={() => {
+                setIshover(false);
+              }}
+            >
+              ?
+            </BaseBtn>
+            {isHover ? (
+              <span className="shipping-fee-info">배송비 정보: 5만원 이상 결제 시 배송비 무료</span>
+            ) : null}
+          </span>
+          <span className="free">
+            {totalPrice() && totalPrice() < 50000 ? `${SHIPPING_FEE.toLocaleString()}원` : 'Free'}
+          </span>
         </p>
         <p>
           할인 <span className="discount">-0원</span>
         </p>
         <p>
-          TOTAL <span>{totalPrice() ? totalPrice().toLocaleString() : 0}원</span>
+          TOTAL{' '}
+          <span>
+            {totalPrice() && totalPrice() < 50000
+              ? (totalPrice() + SHIPPING_FEE).toLocaleString()
+              : totalPrice()?.toLocaleString() || 0}
+            원
+          </span>
         </p>
       </div>
 
