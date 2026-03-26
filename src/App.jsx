@@ -21,7 +21,7 @@ export default function App() {
           <Route path="/shoppingcart" element={<ShoppingCart />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/*" element={<NotFoundPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );
