@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
+import useOverlayStore from '../../store/useOverlayStore';
 import { createPortal } from 'react-dom';
 import styled from '@emotion/styled';
 import { SearchIcon } from '../../assets/icons/BtnIcon';
@@ -374,12 +375,15 @@ const SearchDim = styled.div`
   transition: opacity 0.32s ease;
 `;
 
-export default function AppHeaderSearch({ open, onOpen, onClose }) {
+export default function AppHeaderSearch() {
+  const open = useOverlayStore((state) => state.searchOpen);
+  const openSearch = useOverlayStore((state) => state.openSearch);
+  const closeSearch = useOverlayStore((state) => state.closeSearch);
   const [query, setQuery] = useState('');
   const [recent, setRecent] = useState(initialSearch);
   const inputRef = useRef(null);
   const handleClose = () => {
-    onClose();
+    closeSearch();
     setQuery('');
   };
 
@@ -399,7 +403,7 @@ export default function AppHeaderSearch({ open, onOpen, onClose }) {
         size="42px"
         aria-label="검색"
         $open={open}
-        onClick={open ? handleClose : onOpen}
+        onClick={open ? handleClose : openSearch}
       >
         <SearchIcon />
       </SearchButton>

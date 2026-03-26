@@ -15,7 +15,7 @@ export const LavStarIcon = styled.span`
   margin-right: ${({ theme }) => theme.spacing[2]};
   text-shadow: ${({ theme }) => theme.effects.PurpleStar};
   transform-origin: center;
-  animation: ${({ $animate = true }) =>
+  animation: ${({ $animate = false }) =>
     $animate
       ? css`
           ${starBlink} 1.5s ease infinite

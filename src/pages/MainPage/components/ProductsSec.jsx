@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import BaseSection from '../../components/common/BaseSection';
-import BaseProductCard from '../../components/common/BaseProductCard';
+import BaseSection from '../../../components/common/BaseSection';
+import BaseProductCard from '../../../components/common/BaseProductCard';
 
 const SectionWrap = styled.section`
   display: grid;

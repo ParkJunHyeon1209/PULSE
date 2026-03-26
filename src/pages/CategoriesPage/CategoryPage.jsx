@@ -51,9 +51,9 @@ export default function CategoryPage() {
             <CategorySection
               title={
                 <SectionTitleWithStar>
-                  <TitleStar $animate={false}>✦</TitleStar>
+                  <TitleStar>✦</TitleStar>
                   <span>{section.title}</span>
-                  <TitleStar $animate={false}>✦</TitleStar>
+                  <TitleStar>✦</TitleStar>
                 </SectionTitleWithStar>
               }
               viewLabel="VIEW"

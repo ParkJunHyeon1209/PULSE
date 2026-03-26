@@ -1,13 +1,11 @@
-import { useState } from 'react';
 import styled from '@emotion/styled';
 import { NavLink } from 'react-router-dom';
-import useThemeStore from '../../store/useThemeStore';
 import AppLogo from './AppLogo';
 import AppHeaderSearch from './AppHeaderSearch';
 import AppHeaderUser from './AppHeaderUser';
 
 const navItems = [
-  { label: 'Lineup', to: '/categories/' },
+  { label: 'Lineup', to: '/categories/', end: true },
   { label: 'Headset', to: '/categories/headset' },
   { label: 'Gear', to: '/categories/gear' },
   { label: 'Console', to: '/categories/console' },
@@ -118,24 +116,7 @@ const NavRight = styled.div`
   gap: ${({ theme }) => theme.spacing[4]};
 `;
 
-export default function AppHeader({ onThemeToggle }) {
-  const isDarkMode = useThemeStore((state) => state.isDarkMode);
-  const toggleTheme = useThemeStore((state) => state.toggleTheme);
-  const handleThemeToggle = onThemeToggle || toggleTheme;
-
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [loginOpen, setLoginOpen] = useState(false);
-
-  const openSearch = () => {
-    setSearchOpen(true);
-    setLoginOpen(false);
-  };
-
-  const openLogin = () => {
-    setLoginOpen((prev) => !prev);
-    setSearchOpen(false);
-  };
-
+export default function AppHeader() {
   return (
     <NavWrap>
       <NavInner>
@@ -143,25 +124,15 @@ export default function AppHeader({ onThemeToggle }) {
 
         <NavLinks>
           {navItems.map((item) => (
-            <NavItem key={item.to} to={item.to} $isDrops={item.isDrops} data-label={item.label}>
+            <NavItem key={item.to} to={item.to} end={item.end} $isDrops={item.isDrops} data-label={item.label}>
               {item.label}
             </NavItem>
           ))}
         </NavLinks>
 
         <NavRight>
-          <AppHeaderSearch
-            open={searchOpen}
-            onOpen={openSearch}
-            onClose={() => setSearchOpen(false)}
-          />
-          <AppHeaderUser
-            open={loginOpen}
-            onOpen={openLogin}
-            onClose={() => setLoginOpen(false)}
-            isDarkMode={isDarkMode}
-            onThemeToggle={handleThemeToggle}
-          />
+          <AppHeaderSearch />
+          <AppHeaderUser />
         </NavRight>
       </NavInner>
     </NavWrap>

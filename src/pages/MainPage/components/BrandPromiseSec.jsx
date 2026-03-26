@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import bannerImg from '../../assets/img/banners/main-brandBanner.webp';
-import BaseSection from '../../components/common/BaseSection';
+import bannerImg from '../../../assets/img/banners/main-brandBanner.webp';
+import BaseSection from '../../../components/common/BaseSection';
 
 const SectionWrap = styled.section`
   max-width: 1280px;
