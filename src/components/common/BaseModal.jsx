@@ -84,18 +84,22 @@ const ModalWrap = styled.div`
 `;
 
 const CloseBtn = styled(BaseBtn)`
-  background: transparent;
-  box-shadow: none;
-  border-color: transparent;
-  color: ${({ theme }) => theme.iconBtn.wish.color};
+  && {
+    background: transparent;
+    box-shadow: none;
+    border-color: transparent;
+    color: ${({ theme }) => theme.iconBtn.wish.color};
+  }
   transition:
     background ${({ theme }) => theme.motion.normal},
     border-color ${({ theme }) => theme.motion.normal},
+    box-shadow ${({ theme }) => theme.motion.normal},
     color ${({ theme }) => theme.motion.normal};
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: ${({ theme }) => theme.iconBtn.wish.hoverBg};
     border-color: ${({ theme }) => theme.iconBtn.wish.hoverBorder};
+    box-shadow: 0 0 10px ${({ theme }) => theme.iconBtn.wish.hoverColor + 'cc'};
     color: ${({ theme }) => theme.iconBtn.wish.hoverColor};
   }
 `;
@@ -134,8 +138,14 @@ const ModalBody = styled.div`
   line-height: 1.65;
 `;
 
+// props: isOpen, onClose, children
+// label — 타이틀 위 뱃지 텍스트 (선택)
+// title — 모달 제목 (선택)
+// titleSize — 제목 폰트 사이즈 (선택, 기본 theme.fontSize.s)
+// width — 최대 너비 (선택, 기본 360px)
+// closable — X버튼 표시 여부 (선택, 기본 true)
 export default function BaseModal({ isOpen, onClose, children, ...props }) {
-  const { label, title, titleSize, width } = props;
+  const { label, title, titleSize, width, closable = true } = props;
   const [mounted, setMounted] = useState(isOpen);
   const [closing, setClosing] = useState(false);
   const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
@@ -173,16 +183,18 @@ export default function BaseModal({ isOpen, onClose, children, ...props }) {
             )}
             {title && <ModalTitle $titleSize={titleSize}>{title}</ModalTitle>}
           </div>
-          <CloseBtn
-            variant="ic-btn"
-            size="28px"
-            icon={false}
-            flex="0"
-            onClick={handleClose}
-            aria-label="닫기"
-          >
-            <DelIcon size={14} />
-          </CloseBtn>
+          {closable && (
+            <CloseBtn
+              variant="ic-btn"
+              size="28px"
+              icon={false}
+              flex="0"
+              onClick={handleClose}
+              aria-label="닫기"
+            >
+              <DelIcon size={14} />
+            </CloseBtn>
+          )}
         </ModalHeader>
         <ModalBody>{children}</ModalBody>
       </ModalWrap>
