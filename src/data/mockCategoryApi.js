@@ -69,7 +69,7 @@ export const categoryDetailApi = {
     ],
   },
 
-  audioSet: {
+  streaming: {
     image: 'img url',
     specs: [
       { label: 'COMPOSITION', value: '무선 헤드셋 · 게이밍 이어폰 세트' },
@@ -83,7 +83,7 @@ export const categoryDetailApi = {
     ],
   },
 
-  keyboardMouseSet: {
+  gearset: {
     image: 'img url',
     specs: [
       { label: 'COMPOSITION', value: '게이밍 키보드 · 초경량 마우스 세트' },
@@ -111,7 +111,7 @@ export const categoryDetailApi = {
     ],
   },
 
-  accessorySet: {
+  etc: {
     image: 'img url',
     specs: [
       { label: 'COMPOSITION', value: '마우스패드 · 헤드셋 거치대 · 주변기기 세트' },

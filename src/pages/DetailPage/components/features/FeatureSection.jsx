@@ -99,7 +99,7 @@ const BundleCardWrap = styled.div`
   margin-top: ${({ theme }) => theme.spacing[40]};
 `;
 
-export default function FeatureSection({ category, teamProducts, bundleCategory }) {
+export default function FeatureSection({ category, teamProducts, bundleCategory, product }) {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
   if (!category) return <div>category 없음</div>;
@@ -132,7 +132,7 @@ export default function FeatureSection({ category, teamProducts, bundleCategory 
 
       {isDetailOpen && (
         <Suspense fallback={<DetailFallback>상세 정보를 불러오는 중...</DetailFallback>}>
-          <FeatureDetailContent visibleSpecs={visibleSpecs} />
+          <FeatureDetailContent visibleSpecs={visibleSpecs} product={product} />
         </Suspense>
       )}
       <DetailToggleButton type="button" onClick={() => setIsDetailOpen((prev) => !prev)}>

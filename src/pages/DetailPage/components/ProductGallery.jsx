@@ -57,7 +57,7 @@ export default function ProductGallery({
       </MainImageWrapper>
 
       <ThumbnailList>
-        {galleryImages.map((image, index) => (
+        {(galleryImages ?? []).map((image, index) => (
           <ThumbnailButton
             key={`${product.id}-${index}`}
             type="button"
@@ -69,11 +69,14 @@ export default function ProductGallery({
         ))}
       </ThumbnailList>
       <Features>
-        {product.features.map((features, index) => (
-          <p key={`${features}-${index}`}>
-            ✔<span>{features}</span>
-          </p>
-        ))}
+        {/* 임시로 옵션 뿌림 features가 없음 features에서 options로 교체 */}
+        {(product.options ?? [])
+          .flatMap((option) => option.items ?? [])
+          .map((item, index) => (
+            <p key={`${item}-${index}`}>
+              ✔<span>{item}</span>
+            </p>
+          ))}
       </Features>
     </ImageSection>
   );

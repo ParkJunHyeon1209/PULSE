@@ -27,8 +27,13 @@ export default function PurchaseActions({ onAddToCart }) {
 }
 
 const ButtonGroup = styled.div`
+  margin-top: ${({ theme }) => theme.spacing[5]};
   display: flex;
   gap: ${({ theme }) => theme.spacing[3]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    flex-direction: column;
+  }
 `;
 
 const BaseButton = styled.button`

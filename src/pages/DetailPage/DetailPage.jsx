@@ -1,39 +1,71 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
-import { mockProducts } from '../../data/mockData';
+// import { mockProducts } from '../../data/mockData';
 import useCartStore from '../../store/useCartStore';
-
 import ProductGallery from './components/ProductGallery';
 import ProductDetailPanel from './components/ProductDetailPanel';
 import FeatureSection from './components/features/FeatureSection';
 import { getAllProducts } from '../../data/categoryProductsApi';
 
 export default function DetailPage() {
-  const [products, setProducts] = useState();
   const { id } = useParams();
-  const product = mockProducts.find((item) => String(item.id) === String(id));
+  const [products, setProducts] = useState([]);
+  const [product, setProduct] = useState(null);
+  //const product = mockProducts.find((item) => String(item.id) === String(id));
   const addToCart = useCartStore((state) => state.addToCart);
-
   const [selectedImage, setSelectedImage] = useState(product?.thumbnail ?? null);
   const [quantity, setQuantity] = useState(1);
-
-  const [selectedColor, setSelectedColor] = useState(product?.colors?.[0]?.name ?? '');
-  const [selectedPlatform, setSelectedPlatform] = useState(product?.platforms?.[0] ?? '');
-  const [selectedConnection, setSelectedConnection] = useState(product?.connections?.[0]?.id ?? '');
+  // option api명세대로 변경
+  // const [selectedColor, setSelectedColor] = useState(product?.colors?.[0]?.name ?? '');
+  // const [selectedPlatform, setSelectedPlatform] = useState(product?.platforms?.[0] ?? '');
+  // const [selectedConnection, setSelectedConnection] = useState(product?.connections?.[0]?.id ?? '');
+  const [selectedOptions, setSelectedOptions] = useState({});
   const [isCareChecked, setIsCareChecked] = useState(false);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await getAllProducts();
+
+        const productList = Array.isArray(data) ? data : (data?.products ?? []);
+
+        setProducts(productList);
+
+        const foundProduct = productList.find((item) => String(item.id) === String(id));
+        setProduct(foundProduct ?? null);
+      } catch (error) {
+        console.error('상품 불러오기 실패:', error);
+        setProducts([]);
+        setProduct(null);
+      }
+    };
+
+    fetchProducts();
+  }, [id]);
 
   useEffect(() => {
     if (!product) return;
 
-    setSelectedImage(product.thumbnail ?? null);
+    setSelectedImage(product.image ?? null);
     setQuantity(1);
-    setSelectedColor(product.colors?.[0]?.name ?? '');
-    setSelectedPlatform(product.platforms?.[0] ?? '');
-    setSelectedConnection(product.connections?.[0]?.id ?? '');
     setIsCareChecked(false);
-  }, [product]);
 
+    const initialOption = {};
+    (product.options ?? []).forEach((option) => {
+      if (option.items?.length) {
+        initialOption[option.label] = option.items[0];
+      }
+    });
+    setSelectedOptions(initialOption);
+  }, [product]);
+  // 옵션 클릭 핸들러 추가
+  const handleSelectOption = (label, item) => {
+    setSelectedOptions((prev) => ({
+      ...prev,
+      [label]: item,
+    }));
+  };
   if (!product) {
     return (
       <PageWrapper>
@@ -54,16 +86,51 @@ export default function DetailPage() {
     setQuantity((prev) => prev + 1);
   };
 
+  // 추가금 옵션 계산함수
+  const getOptionExtraPrice = (selectedOptions) => {
+    return Object.values(selectedOptions).reduce((total, value) => {
+      const match = String(value).match(/\(\+([\d,]+)\)/);
+
+      if (!match) return total;
+
+      const extraPrice = Number(match[1].replace(/,/g, ''));
+      return total + extraPrice;
+    }, 0);
+  };
+  // 옵션, 서비스 체크 유무 가격 변경
   const handleAddToCart = () => {
-    addToCart(product, quantity);
-    alert(`${product.title} 상품이 ${quantity}개 담겼습니다.`);
+    //addToCart(product, quantity);
+    const careService = product.additionalServices?.[0] ?? null;
+    const carePrice = isCareChecked ? (careService?.price ?? 0) : 0;
+    const optionExtraPrice = getOptionExtraPrice(selectedOptions);
+
+    // 요금 추가 확인용 콘솔로그
+    console.log('기본 상품 price:', product.price);
+    console.log('선택된 옵션들:', selectedOptions);
+    console.log('옵션 추가금:', optionExtraPrice);
+    console.log('케어 체크 여부:', isCareChecked);
+    console.log('케어 가격:', carePrice);
+    console.log('최종 장바구니 price:', product.price + carePrice + optionExtraPrice);
+
+    const cartItem = {
+      ...product,
+      selectedOptions,
+      careService: isCareChecked ? careService : null,
+      carePrice,
+
+      basePrice: product.price,
+      price: product.price + carePrice + optionExtraPrice,
+    };
+    addToCart(cartItem, quantity);
+    //alert(`${product.title} 상품이 ${quantity}개 담겼습니다.`);
+    alert(
+      `${product.title} 상품이 ${quantity}개 담겼습니다.${
+        optionExtraPrice > 0 ? ` (옵션 추가금 ${optionExtraPrice.toLocaleString()}원 포함)` : ''
+      }${isCareChecked && careService ? ` (+ ${careService.title})` : ''}`
+    );
   };
 
-  const galleryImages = [product.thumbnail, ...(product.images ?? [])].filter(Boolean);
-
-  console.log('product:', product);
-  console.log('product.category:', product?.category);
-  console.log('product.type:', product?.type);
+  const galleryImages = [product.image, ...(product.src ?? [])].filter(Boolean);
 
   return (
     <PageWrapper>
@@ -79,13 +146,9 @@ export default function DetailPage() {
         <ProductDetailPanel
           product={product}
           quantity={quantity}
-          selectedColor={selectedColor}
-          selectedPlatform={selectedPlatform}
-          selectedConnection={selectedConnection}
+          selectedOptions={selectedOptions}
           isCareChecked={isCareChecked}
-          onSelectColor={setSelectedColor}
-          onSelectPlatform={setSelectedPlatform}
-          onSelectConnection={setSelectedConnection}
+          onSelectOption={handleSelectOption}
           onToggleCare={setIsCareChecked}
           onDecrease={handleDecrease}
           onIncrease={handleIncrease}
@@ -93,9 +156,10 @@ export default function DetailPage() {
         />
       </ContentSection>
       <FeatureSection
-        category={product.category?.toLocaleLowerCase()}
+        category={product.type.toLocaleLowerCase()}
         teamProducts={products}
         bundleCategory={product.category}
+        product={product}
       />
     </PageWrapper>
   );

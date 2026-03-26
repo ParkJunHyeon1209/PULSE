@@ -1,93 +1,97 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-export default function ProductOptions({
-  product,
-  selectedColor,
-  selectedPlatform,
-  selectedConnection,
-  onSelectColor,
-  onSelectPlatform,
-  onSelectConnection,
-}) {
+export default function ProductOptions({ options = [], selectedOptions = {}, onSelectOption }) {
+  if (!options.length) return null;
+
+  const isColorOption = (label = '') => {
+    const normalized = String(label).trim().toLowerCase();
+    return ['색상', '컬러', 'color'].includes(normalized);
+  };
+
+  const getColorValue = (item) => {
+    const colorMap = {
+      블랙: '#000000',
+      화이트: '#ffffff',
+      레드: '#ef4444',
+      블루: '#3b82f6',
+      그린: '#22c55e',
+      옐로우: '#eab308',
+      퍼플: '#8b5cf6',
+      핑크: '#ec4899',
+      실버: '#9ca3af',
+      그레이: '#6b7280',
+      네이비: '#1e3a8a',
+    };
+
+    return colorMap[item] ?? '#ffffff';
+  };
+
   return (
     <>
-      <Section>
-        <Label>
-          색상 : <LabelValue>{selectedColor}</LabelValue>
-        </Label>
+      {options.map((option) => {
+        if (!option?.items?.length) return null;
 
-        <ColorList>
-          {product.colors?.map((color) => (
-            <ColorButton
-              key={color.name}
-              type="button"
-              $active={selectedColor === color.name}
-              $color={color.value}
-              onClick={() => onSelectColor(color.name)}
-              aria-label={color.name}
-              title={color.name}
-            >
-              {selectedColor === color.name ? '✓' : ''}
-            </ColorButton>
-          ))}
-        </ColorList>
-      </Section>
-
-      <Section>
-        <Label>플랫폼</Label>
-
-        <ButtonList>
-          {product.platforms?.map((platform) => (
-            <OptionButton
-              key={platform}
-              type="button"
-              $active={selectedPlatform === platform}
-              onClick={() => onSelectPlatform(platform)}
-            >
-              {platform}
-            </OptionButton>
-          ))}
-        </ButtonList>
-      </Section>
-
-      <Section>
-        <Label>연결</Label>
-
-        <ButtonList>
-          {product.connections?.map((connection) => (
-            <ConnectionButton
-              key={connection.id}
-              type="button"
-              disabled={connection.soldOut}
-              $active={selectedConnection === connection.id}
-              $soldOut={connection.soldOut}
-              onClick={() => onSelectConnection(connection.id)}
-            >
-              <ConnectionText $soldOut={connection.soldOut}>{connection.label}</ConnectionText>
-              {connection.soldOut && <SoldOutText>품절</SoldOutText>}
-            </ConnectionButton>
-          ))}
-        </ButtonList>
-      </Section>
+        const currentValue = selectedOptions[option.label] ?? '';
+        const colorType = isColorOption(option.label);
+        return (
+          <Section key={option.label}>
+            <Label>
+              {option.label} : <LabelValue>{currentValue}</LabelValue>
+            </Label>
+            {colorType ? (
+              <ColorList>
+                {option.items.map((item) => (
+                  <ColorButton
+                    key={item}
+                    type="button"
+                    $active={currentValue === item}
+                    $color={getColorValue(item)}
+                    onClick={() => onSelectOption(option.label, item)}
+                    aria-label={item}
+                    title={item}
+                  >
+                    {currentValue === item ? '✓' : ''}
+                  </ColorButton>
+                ))}
+              </ColorList>
+            ) : (
+              <ButtonList>
+                {option.items.map((item) => (
+                  <OptionButton
+                    key={item}
+                    type="button"
+                    $active={currentValue === item}
+                    onClick={() => onSelectOption(option.label, item)}
+                  >
+                    {item}
+                  </OptionButton>
+                ))}
+              </ButtonList>
+            )}
+          </Section>
+        );
+      })}
     </>
   );
 }
 
 const Section = styled.div`
+  margin-bottom: ${({ theme }) => theme.spacing[6]};
   display: flex;
   flex-direction: column;
   gap: 12px;
 `;
 
 const Label = styled.p`
-  margin: 0;
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   color: ${({ theme }) => theme.colors.textSecondary};
+  font-weight: 400;
 `;
 
 const LabelValue = styled.span`
   color: ${({ theme }) => theme.colors.text};
+  padding-left: ${({ theme }) => theme.spacing[2]};
 `;
 
 const ColorList = styled.div`
@@ -124,7 +128,10 @@ const ColorButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) => theme.colors.wColor};
+  color: ${({ $color, theme }) =>
+    String($color).toLowerCase() === '#ffffff' || String($color).toLowerCase() === 'white'
+      ? theme.colors.background
+      : theme.colors.wColor};
   font-size: 16px;
   font-weight: 700;
 `;

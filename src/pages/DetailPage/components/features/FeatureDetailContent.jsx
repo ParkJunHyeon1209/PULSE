@@ -56,12 +56,29 @@ const SectionTextGroup = styled.div`
 
 const SpecList = styled.div`
   width: 100%;
+  height: 390px;
   margin-top: ${({ theme }) => theme.spacing[20]};
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: ${({ theme }) => theme.spacing[14]};
+  align-items: stretch;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+  }
 `;
+const SpecPreviewImage = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: ${({ theme }) => theme.radii.xl};
+  background: ${({ theme }) => theme.checkbox.bg};
+  object-fit: cover;
+  display: block;
+`;
+
 const SpecItem = styled.div`
   width: 100%;
+  height: 100%;
   padding: ${({ theme }) => theme.spacing[12]} 0;
 `;
 const SpecLine = styled.p`
@@ -86,10 +103,10 @@ const SpecLine = styled.p`
     }
   }
 `;
-export default function FeatureDetailContent({ visibleSpecs = [] }) {
+export default function FeatureDetailContent({ visibleSpecs = [], product }) {
   return (
     <DetailContent>
-      <FeatureImage src="https://placehold.co/1200x600" alt="임시" />
+      <FeatureImage src={product.image} alt={product.title} />
       <SectionHeader>
         <SectionLabel>
           <span>✦</span> PLAYED BY REAL PLAYERS <span>✦</span>
@@ -100,7 +117,8 @@ export default function FeatureDetailContent({ visibleSpecs = [] }) {
         </SectionTextGroup>
       </SectionHeader>
       <SpecList>
-        <img src="https://placehold.co/528x395" alt="임시" />
+        <SpecPreviewImage src={product.image} alt={product.title} />
+
         <SpecItem>
           {visibleSpecs.map((item, index) => (
             <SpecLine key={`${item.label}-${index}`}>
