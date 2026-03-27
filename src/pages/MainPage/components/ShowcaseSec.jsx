@@ -1,6 +1,9 @@
 import styled from '@emotion/styled';
 import BaseSection from '../../../components/common/BaseSection';
 import BaseToneCard from './common/BaseToneCard';
+import { getDropProducts } from '../../../data/mainApi';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SectionWrap = styled.section`
   display: grid;
@@ -26,6 +29,7 @@ const Grid = styled.div`
 
 const cards = [
   {
+    id: 1,
     label: 'Headset',
     name: 'PULSE PRO H1',
     count: '몰입형 공간감과 저지연 무선 사운드',
@@ -33,6 +37,7 @@ const cards = [
     height: '430px',
   },
   {
+    id: 2,
     label: 'PULSE × VIBE',
     name: 'SIGNAL EDITION',
     count: '한정 100개 드롭 스페셜 글로우',
@@ -42,6 +47,7 @@ const cards = [
     arrow: true,
   },
   {
+    id: 3,
     label: 'Keyboard',
     name: 'KEY MATRIX',
     count: '75% 배열 커스텀 RGB 셋업',
@@ -51,6 +57,25 @@ const cards = [
 ];
 
 export default function ShowcaseSec() {
+  const [cardList, setCardList] = useState(cards);
+  const [dropProducts, setDropProducts] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchDropProducts = async () => {
+      const products = await getDropProducts();
+      setDropProducts(products);
+    };
+
+    fetchDropProducts();
+  }, []);
+
+  const handleClick = (index, id) => {
+    if (index === 0) setCardList((prev) => [prev[2], prev[0], prev[1]]);
+    if (index === 1) navigate(`product/${id}`);
+    if (index === 2) setCardList((prev) => [prev[1], prev[2], prev[0]]);
+  };
+
   return (
     <SectionWrap>
       <HeadWrap>
@@ -66,16 +91,17 @@ export default function ShowcaseSec() {
       </HeadWrap>
 
       <Grid>
-        {cards.map((card) => (
+        {cardList.map((card, i) => (
           <BaseToneCard
-            key={card.name}
+            key={card.id}
             label={card.label}
             name={card.name}
             count={card.count}
             tone={card.tone}
-            height={card.height}
+            height={i === 1 ? '510px' : '430px'}
             badge={card.badge}
             arrow={card.arrow}
+            onClick={() => handleClick(i, card.id)}
           />
         ))}
       </Grid>
