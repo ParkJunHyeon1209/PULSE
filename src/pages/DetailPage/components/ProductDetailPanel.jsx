@@ -1,40 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import BaseBtn from '../../../components/common/BaseBtn';
 import ProductOptions from './ProductOptions';
 import ProductCareOption from './ProductCareOption';
 import QuantitySelector from './QuantitySelector';
 import PurchaseActions from './PurchaseActions';
+import { CardWish } from '../../../components/common/CardParts';
 
 export default function ProductDetailPanel({
   product,
   quantity,
-  selectedColor,
-  selectedPlatform,
-  selectedConnection,
+  selectedOptions,
   isCareChecked,
-  onSelectColor,
-  onSelectPlatform,
-  onSelectConnection,
+  onSelectOption,
   onToggleCare,
   onDecrease,
   onIncrease,
   onAddToCart,
 }) {
-  const CARE_DISCOUNT_RATE = 20;
+  const [isLiked, setIsLiked] = useState(false);
 
-  const getDiscountedPrice = (price, discountRate) => {
-    return Math.round(price * (1 - discountRate / 100));
+  const handleToggleLike = () => {
+    setIsLiked((prev) => !prev);
   };
-
-  const getMonthlyInstallment = (price, months) => {
-    return Math.floor(price / months);
-  };
+  // id 311부터는 빠진 정보가 많음
+  const logisiticsInfo = product.logisiticsInfo ?? {};
 
   return (
     <InfoSection>
       <HeaderRow>
-        <CategoryBadge>✦ {product.category}</CategoryBadge>
-        <LikeButton>
+        <CategoryBadge>✦ {product.type}</CategoryBadge>
+        <LikeButton
+          type="button"
+          variant="ic-btn"
+          size="36px"
+          flex="0 0 auto"
+          icon={false}
+          $isLiked={isLiked}
+          onClick={handleToggleLike}
+          aria-label="찜하기"
+        >
           <svg
             width="15"
             height="13"
@@ -44,9 +49,8 @@ export default function ProductDetailPanel({
           >
             <path
               d="M12.6196 1.56989C12.3003 1.25052 11.9213 0.99717 11.5042 0.824318C11.087 0.651467 10.6399 0.5625 10.1883 0.5625C9.73675 0.5625 9.28962 0.651467 8.87246 0.824318C8.4553 0.99717 8.07628 1.25052 7.75706 1.56989L7.09456 2.23239L6.43206 1.56989C5.78725 0.925083 4.9127 0.562834 4.00081 0.562834C3.08891 0.562834 2.21436 0.925083 1.56956 1.56989C0.924749 2.2147 0.5625 3.08925 0.5625 4.00114C0.5625 4.91304 0.924749 5.78758 1.56956 6.43239L2.23206 7.09489L7.09456 11.9574L11.9571 7.09489L12.6196 6.43239C12.9389 6.11317 13.1923 5.73415 13.3651 5.31699C13.538 4.89983 13.6269 4.4527 13.6269 4.00114C13.6269 3.54959 13.538 3.10246 13.3651 2.68529C13.1923 2.26813 12.9389 1.88911 12.6196 1.56989Z"
-              stroke="#C8CDFF"
-              stroke-opacity="0.42"
-              stroke-width="1.125"
+              stroke="currentColor"
+              strokeWidth="1.125"
             />
           </svg>
         </LikeButton>
@@ -54,49 +58,45 @@ export default function ProductDetailPanel({
 
       <Title>{product.title}</Title>
       <Price>₩{product.price.toLocaleString()}</Price>
-      <Description>{product.description}</Description>
 
-      <ProductMeta>
-        <span>VAT 포함</span>
-        <span>무료 배송</span>
-        <span>한정판</span>
-      </ProductMeta>
+      <DescWrap>
+        <ProductMeta>
+          {(product.priceBadges ?? []).map((badge, index) => (
+            <span key={index}>{badge.text}</span>
+          ))}
+        </ProductMeta>
 
+        <Description>{product.desc}</Description>
+      </DescWrap>
+      {/* api명세에 없음 ↓ */}
       <FeatureTagList>
         <TagButton $tone="mint">✔ 직로배송</TagButton>
         <TagButton $tone="violet">햅틱 피드백</TagButton>
         <TagButton $tone="blue">한정 수량</TagButton>
       </FeatureTagList>
-
-      <ProductOptions
-        product={product}
-        selectedColor={selectedColor}
-        selectedPlatform={selectedPlatform}
-        selectedConnection={selectedConnection}
-        onSelectColor={onSelectColor}
-        onSelectPlatform={onSelectPlatform}
-        onSelectConnection={onSelectConnection}
-      />
-
+      <ProductOptionsWrap>
+        <ProductOptions
+          options={product.options ?? []}
+          selectedOptions={selectedOptions}
+          onSelectOption={onSelectOption}
+        />
+      </ProductOptionsWrap>
       <ProductCareOption product={product} isCareChecked={isCareChecked} onToggle={onToggleCare} />
 
       <MetaInfo>
         <p>
           <span>배송비</span>
-          <Free>무료배송</Free>
+          <Free>{logisiticsInfo.deliveryFee ?? '-'}</Free>
         </p>
 
         <p>
           <span>도착</span>
-          <span>3일 이내 배송 시작</span>
+          <span>{logisiticsInfo.expectedDispatch ?? '-'}</span>
         </p>
 
         <p>
           <span>할부</span>
-          <span>
-            최대 12개월 무이자 · 월{' '}
-            {getMonthlyInstallment(getDiscountedPrice(product.price, CARE_DISCOUNT_RATE), 12)}원
-          </span>
+          <span>{logisiticsInfo.installment ?? '-'}</span>
         </p>
       </MetaInfo>
 
@@ -108,17 +108,17 @@ export default function ProductDetailPanel({
 }
 
 const InfoSection = styled.aside`
-  padding: ${({ theme }) => `${theme.spacing[3]} ${theme.spacing[1]}`};
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[5]};
+  gap: ${({ theme }) => theme.spacing[2]};
   color: ${({ theme }) => theme.colors.text};
 `;
-const LikeButton = styled.button`
-  width: 36px;
-  height: 36px;
-  border-radius: ${({ theme }) => theme.radii.full};
-  border: 1px solid red;
+const LikeButton = styled(CardWish)`
+  position: static;
+  top: auto;
+  right: auto;
+  opacity: 1;
+  transform: translateY(0);
 `;
 
 const HeaderRow = styled.div`
@@ -130,30 +130,29 @@ const HeaderRow = styled.div`
 const CategoryBadge = styled.span`
   width: fit-content;
   color: ${({ theme }) => theme.colors.primary};
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  font-weight: 400;
 `;
 
 const Title = styled.h1`
-  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-size: ${({ theme }) => theme.fontSize.s};
   font-weight: 700;
   color: ${({ theme }) => theme.colors.text};
 `;
 
 const Price = styled.p`
-  margin: 0;
   font-size: ${({ theme }) => theme.fontSize.xxl};
   font-weight: 400;
   line-height: 1;
   color: ${({ theme }) => theme.colors.success};
 `;
 
-const Description = styled.p`
-  margin: 0;
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  color: ${({ theme }) => theme.colors.textSecondary};
+const DescWrap = styled.div`
+  margin-top: ${({ theme }) => theme.spacing[1]};
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[5]};
 `;
-
 const ProductMeta = styled.p`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   color: ${({ theme }) => theme.colors.textSecondary};
@@ -176,13 +175,22 @@ const ProductMeta = styled.p`
     background: currentColor;
   }
 `;
+const Description = styled.p`
+  margin: 0;
+  font-size: ${({ theme }) => theme.fontSize.xxs};
+  color: ${({ theme }) => theme.colors.textSecondary};
+`;
 
 const FeatureTagList = styled.div`
+  margin-top: ${({ theme }) => theme.spacing[3]};
   font-weight: 400;
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+`;
+const ProductOptionsWrap = styled.div`
+  margin-top: ${({ theme }) => theme.spacing[8]};
 `;
 
 const TagButton = styled.button`
@@ -210,6 +218,7 @@ const TagButton = styled.button`
 `;
 
 const MetaInfo = styled.div`
+  margin-top: ${({ theme }) => theme.spacing[3]};
   display: flex;
   flex-direction: column;
   gap: 10px;

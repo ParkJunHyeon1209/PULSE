@@ -4,10 +4,12 @@ import styled from '@emotion/styled';
 export default function ProductCareOption({ product, isChecked, onToggle }) {
   const CARE_DISCOUNT_RATE = 20;
 
-  const getDiscountedPrice = (price, discountRate) => {
+  /*const getDiscountedPrice = (price, discountRate) => {
     return Math.round(price * (1 - discountRate / 100));
-  };
-
+  };*/
+  // 케어서비스 옵션
+  const careService = product.additionalServices?.[0];
+  if (!careService) return null;
   return (
     <Wrapper>
       <CareCard $checked={isChecked}>
@@ -20,14 +22,11 @@ export default function ProductCareOption({ product, isChecked, onToggle }) {
         </CheckboxRow>
 
         <CareContent>
-          <CareTitle>PULSE CARE+ for {product.category}</CareTitle>
-          <CareDesc>조이스틱 드리프트·파손·침수 보상 포함</CareDesc>
+          <CareTitle>{careService.title}</CareTitle>
+          <CareDesc>{careService.desc}</CareDesc>
 
           <CarePriceRow>
-            <Discount>{CARE_DISCOUNT_RATE}%↓</Discount>
-            <Priced>
-              {getDiscountedPrice(product.price, CARE_DISCOUNT_RATE).toLocaleString()}원
-            </Priced>
+            <Priced>+ {careService.price.toLocaleString()}원</Priced>
           </CarePriceRow>
         </CareContent>
       </CareCard>

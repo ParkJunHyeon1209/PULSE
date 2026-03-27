@@ -27,13 +27,19 @@ export default function PurchaseActions({ onAddToCart }) {
 }
 
 const ButtonGroup = styled.div`
+  margin-top: ${({ theme }) => theme.spacing[5]};
   display: flex;
   gap: ${({ theme }) => theme.spacing[3]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    flex-direction: column;
+  }
 `;
 
 const BaseButton = styled.button`
   flex: 1;
-  height: 38px;
+
+  min-height: 38px;
   border: none;
   border-radius: ${({ theme }) => theme.radii.pill};
   font-size: ${({ theme }) => theme.fontSize.xs};
@@ -47,6 +53,10 @@ const BaseButton = styled.button`
 
   &:hover {
     transform: translateY(-2px);
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: ${({ theme }) => `${theme.spacing[2]}`} 0;
+    height: auto;
   }
 `;
 

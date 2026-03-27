@@ -28,6 +28,17 @@ const FeatureTop = styled.div`
   > p:nth-of-type(2) {
     font-size: ${({ theme }) => theme.fontSize.md};
     color: ${({ theme }) => theme.colors.text};
+    line-height: 1.15;
+    word-break: keep-all;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+      font-size: ${({ theme }) => theme.fontSize.md};
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+      font-size: ${({ theme }) => theme.fontSize.sm};
+      line-height: 1.2;
+    }
   }
   > p:nth-of-type(3) {
     font-size: ${({ theme }) => theme.fontSize.xxs};
@@ -41,8 +52,10 @@ const SpecTable = styled.div`
   border: 1px solid ${({ theme }) => theme.Line};
 `;
 const SpecRow = styled.div`
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  align-items: start;
+  column-gap: ${({ theme }) => theme.spacing[6]};
   padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[5]};
   border-bottom: 1px solid ${({ theme }) => theme.Line};
   font-size: ${({ theme }) => theme.fontSize.xs};
@@ -50,16 +63,56 @@ const SpecRow = styled.div`
   &:last-of-type {
     border-bottom: none;
   }
+
   > span:first-of-type {
-    width: 200px;
     font-size: ${({ theme }) => theme.fontSize.xxs};
     color: ${({ theme }) => theme.colors.textSecondary};
+    line-height: 1.5;
   }
+
+  > span:last-of-type {
+    min-width: 0;
+    line-height: 1.5;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+    text-align: left;
+  }
+
   &:nth-of-type(2),
   &:nth-of-type(4) {
     background: rgba(${({ theme }) => theme.colors.primaryRgb}, 0.1);
+
     > span:first-of-type {
       color: ${({ theme }) => theme.colors.primary};
+    }
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    grid-template-columns: 140px minmax(0, 1fr);
+    column-gap: ${({ theme }) => theme.spacing[4]};
+    padding: ${({ theme }) => theme.spacing[4]};
+
+    > span:first-of-type {
+      font-size: ${({ theme }) => theme.fontSize.xxxs};
+    }
+
+    > span:last-of-type {
+      font-size: ${({ theme }) => theme.fontSize.xxs};
+    }
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    row-gap: ${({ theme }) => theme.spacing[2]};
+    padding: ${({ theme }) => theme.spacing[4]};
+
+    > span:first-of-type {
+      font-size: ${({ theme }) => theme.fontSize.xxxs};
+    }
+
+    > span:last-of-type {
+      font-size: ${({ theme }) => theme.fontSize.xs};
     }
   }
 `;
@@ -99,7 +152,7 @@ const BundleCardWrap = styled.div`
   margin-top: ${({ theme }) => theme.spacing[40]};
 `;
 
-export default function FeatureSection({ category, teamProducts, bundleCategory }) {
+export default function FeatureSection({ category, teamProducts, bundleCategory, product }) {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
   if (!category) return <div>category 없음</div>;
@@ -132,7 +185,7 @@ export default function FeatureSection({ category, teamProducts, bundleCategory 
 
       {isDetailOpen && (
         <Suspense fallback={<DetailFallback>상세 정보를 불러오는 중...</DetailFallback>}>
-          <FeatureDetailContent visibleSpecs={visibleSpecs} />
+          <FeatureDetailContent visibleSpecs={visibleSpecs} product={product} />
         </Suspense>
       )}
       <DetailToggleButton type="button" onClick={() => setIsDetailOpen((prev) => !prev)}>
