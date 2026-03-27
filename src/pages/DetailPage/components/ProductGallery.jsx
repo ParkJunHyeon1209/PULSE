@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from '@emotion/styled';
 import { CardBadge } from '../../../components/common/CardParts';
 import { BADGE_TONE } from '../../../utils/toneMap';
@@ -9,6 +9,7 @@ export default function ProductGallery({
   onSelectImage,
   galleryImages,
   teamProducts,
+  categoryDetail,
 }) {
   const currentIndex = galleryImages.findIndex((image) => image === selectedImage);
 
@@ -39,8 +40,14 @@ export default function ProductGallery({
     const nextIndex = currentIndex === galleryImages.length - 1 ? 0 : currentIndex + 1;
     onSelectImage(galleryImages[nextIndex]);
   };
-  // 옵션이 없는 상품이 있어서  렌더 x
-  const featureItems = (product.options ?? []).flatMap((option) => option.items ?? []);
+  const featureItems = useMemo(() => {
+    const shuffledSpecs = [...(categoryDetail?.specs ?? [])].sort(() => Math.random() - 0.5);
+
+    return shuffledSpecs
+      .map((spec) => spec.value)
+      .filter(Boolean)
+      .slice(0, 4);
+  }, [categoryDetail]);
 
   return (
     <ImageSection>

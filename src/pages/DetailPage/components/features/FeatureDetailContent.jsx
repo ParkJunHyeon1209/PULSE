@@ -7,10 +7,18 @@ const DetailContent = styled.div`
 
 const FeatureImage = styled.img`
   width: 100%;
-  height: 800px;
-  background: ${({ theme }) => theme.checkbox.bg};
+  height: auto;
+  display: block;
   margin-top: ${({ theme }) => theme.spacing[14]};
   border-radius: ${({ theme }) => theme.radii.xl};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    object-fit: contain;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    object-fit: contain;
+  }
 `;
 
 const SectionHeader = styled.div`
@@ -194,10 +202,12 @@ const SpecLine = styled.p`
     }
   }
 `;
-export default function FeatureDetailContent({ visibleSpecs = [], product }) {
+export default function FeatureDetailContent({ visibleSpecs = [], product, categoryDetail }) {
+  const images = categoryDetail?.images ?? [];
   return (
     <DetailContent>
-      <FeatureImage src={product.image} alt={product.title} />
+      <FeatureImage src={images[0]} alt={product.title} />
+      {/*
       <SectionHeader>
         <SectionLabel>
           <span>✦</span> PLAYED BY REAL PLAYERS <span>✦</span>
@@ -207,9 +217,10 @@ export default function FeatureDetailContent({ visibleSpecs = [], product }) {
           <p>프로게이머가 검증한 성능</p>
         </SectionTextGroup>
       </SectionHeader>
+       */}
       <SpecList>
         <SpecPreview>
-          <SpecPreviewImage src={product.image} alt={product.title} />
+          <SpecPreviewImage src={images[1]} alt={product.title} />
         </SpecPreview>
         <SpecItem>
           {visibleSpecs.map((item, index) => (

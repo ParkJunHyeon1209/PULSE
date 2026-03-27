@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useState } from 'react';
 import styled from '@emotion/styled';
-import { categoryDetailApi } from '../../../../data/mockCategoryApi';
+// import { categoryDetailApi } from '../../../../data/mockCategoryApi';
 import BundleCard from './BundleCard';
 
 const FeatureDetailContent = lazy(() => import('./FeatureDetailContent'));
@@ -152,12 +152,19 @@ const BundleCardWrap = styled.div`
   margin-top: ${({ theme }) => theme.spacing[40]};
 `;
 
-export default function FeatureSection({ category, teamProducts, bundleCategory, product }) {
+export default function FeatureSection({
+  category,
+  teamProducts,
+  bundleCategory,
+  product,
+  categoryDetail,
+}) {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
   if (!category) return <div>category 없음</div>;
-  const featureData = categoryDetailApi[category];
-  const specs = featureData?.specs ?? [];
+  //  const featureData = categoryDetailApi[category];
+  //  const specs = featureData?.specs ?? [];
+  const specs = categoryDetail?.specs ?? [];
 
   const visibleSpecs = [...specs.slice(0, 3), ...specs.slice(-3)];
 
@@ -185,7 +192,11 @@ export default function FeatureSection({ category, teamProducts, bundleCategory,
 
       {isDetailOpen && (
         <Suspense fallback={<DetailFallback>상세 정보를 불러오는 중...</DetailFallback>}>
-          <FeatureDetailContent visibleSpecs={visibleSpecs} product={product} />
+          <FeatureDetailContent
+            visibleSpecs={visibleSpecs}
+            product={product}
+            categoryDetail={categoryDetail}
+          />
         </Suspense>
       )}
       <DetailToggleButton type="button" onClick={() => setIsDetailOpen((prev) => !prev)}>

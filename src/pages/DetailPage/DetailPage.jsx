@@ -6,7 +6,11 @@ import useCartStore from '../../store/useCartStore';
 import ProductGallery from './components/ProductGallery';
 import ProductDetailPanel from './components/ProductDetailPanel';
 import FeatureSection from './components/features/FeatureSection';
-import { getAllProducts, getProductDetailById } from '../../data/categoryProductsApi';
+import {
+  getAllProducts,
+  getProductDetailById,
+  getCategoryDetailByType,
+} from '../../data/categoryProductsApi';
 
 export default function DetailPage() {
   const { id } = useParams();
@@ -17,7 +21,7 @@ export default function DetailPage() {
   const [quantity, setQuantity] = useState(1);
   const [isCareChecked, setIsCareChecked] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState({});
-
+  const [categoryDetail, setCategoryDetail] = useState(null);
   const addToCart = useCartStore((state) => state.addToCart);
 
   const [toastMessage, setToastMessage] = useState('');
@@ -37,17 +41,45 @@ export default function DetailPage() {
 
     fetchProducts();
   }, [id]);
+
+  const mapCategoryDetailType = (type) => {
+    const normalizedType = type?.toLowerCase();
+
+    const typeMap = {
+      etc: 'dropsEtc',
+      gearset: 'gearSet',
+      consoleset: 'consoleSet',
+    };
+
+    return typeMap[normalizedType] || normalizedType;
+  };
+
   // 현재 상세 상품
   useEffect(() => {
     const fetchProductDetail = async () => {
       try {
         const detailData = await getProductDetailById(id);
+        console.log('detailData:', detailData);
+        console.log('detailData.type:', detailData?.type);
         setProduct(detailData);
+
+        // 상품상세정보
+        if (detailData?.type) {
+          const categoryDetailType = mapCategoryDetailType(detailData.type);
+
+          const categoryData = await getCategoryDetailByType(categoryDetailType);
+
+          setCategoryDetail({
+            images: categoryData.images || categoryData.image || [],
+            specs: categoryData.specs || [],
+          });
+        }
       } catch (error) {
         console.error('상세 상품 불러오기 실패', error);
         setProduct(null);
       }
     };
+
     fetchProductDetail();
   }, [id]);
   // 상품 바뀔때 초기 상태
@@ -155,7 +187,6 @@ export default function DetailPage() {
       // 장바구니에서 바로 렌더 가능한 문자열만 따로 제공
       optionSummary,
       careTitle: isCareChecked ? (careService?.title ?? '') : '',
-
       // 나중에 필요하면 쓰라고 남겨두는 값
       options: selectedOptions,
       isCareChecked,
@@ -178,8 +209,7 @@ export default function DetailPage() {
   };
 
   const galleryImages = (product.src ?? []).filter(Boolean);
-  console.log('galleryImages:', galleryImages);
-  console.log('productDetail:', product);
+
   return (
     <PageWrapper>
       <ContentSection>
@@ -189,6 +219,7 @@ export default function DetailPage() {
           onSelectImage={setSelectedImage}
           galleryImages={galleryImages}
           teamProduct={products}
+          categoryDetail={categoryDetail}
         />
 
         <ProductDetailPanel
@@ -208,6 +239,7 @@ export default function DetailPage() {
         teamProducts={products}
         bundleCategory={product.category}
         product={product}
+        categoryDetail={categoryDetail}
       />
       {toastMessage && <ToastMessage>{toastMessage}</ToastMessage>}
     </PageWrapper>
