@@ -11,7 +11,7 @@ export default function ProductGallery({
   teamProducts,
 }) {
   const currentIndex = galleryImages.findIndex((image) => image === selectedImage);
-  // 뱃지 연결 문제-------------------------------------------------
+
   const normalizeTitle = (value) =>
     String(value || '')
       .trim()
@@ -21,7 +21,10 @@ export default function ProductGallery({
     (item) => normalizeTitle(item.title) === normalizeTitle(product.title)
   );
 
-  const matchedTag = matchedProduct?.tag;
+  const rawTag = matchedProduct?.tag ?? product?.tag ?? '';
+  const normalizedTag = String(rawTag).trim().toUpperCase();
+  const badgeTone = BADGE_TONE[normalizedTag];
+  const badgeLabel = rawTag ? String(rawTag).toUpperCase() : '';
 
   const handlePrev = () => {
     if (!galleryImages.length) return;
@@ -36,17 +39,19 @@ export default function ProductGallery({
     const nextIndex = currentIndex === galleryImages.length - 1 ? 0 : currentIndex + 1;
     onSelectImage(galleryImages[nextIndex]);
   };
-  console.log('matchedTag:', matchedTag);
-  console.log('badgeTone:', BADGE_TONE[matchedTag]);
+  // 옵션이 없는 상품이 있어서  렌더 x
+  const featureItems = (product.options ?? []).flatMap((option) => option.items ?? []);
 
   return (
     <ImageSection>
       <MainImageWrapper>
         {selectedImage && <MainImage src={selectedImage} alt={product.title} />}
-        <CardBadge variant="tag" tone={matchedTag} icon={false} height="28px">
-          {/*여기까지 -------------------------------------- */}
-          {matchedTag}
-        </CardBadge>
+
+        {badgeTone && (
+          <GalleryBadge variant="tag" tone={badgeTone} icon={false} height="28px">
+            {badgeLabel}
+          </GalleryBadge>
+        )}
         <ArrowButton type="button" $left onClick={handlePrev} aria-label="이전 이미지">
           ‹
         </ArrowButton>
@@ -68,16 +73,16 @@ export default function ProductGallery({
           </ThumbnailButton>
         ))}
       </ThumbnailList>
-      <Features>
-        {/* 임시로 옵션 뿌림 features가 없음 features에서 options로 교체 */}
-        {(product.options ?? [])
-          .flatMap((option) => option.items ?? [])
-          .map((item, index) => (
+      {/* 임시로 옵션 뿌림 features가 없음 features에서 options로 교체 */}
+      {featureItems.length > 0 && (
+        <Features>
+          {featureItems.map((item, index) => (
             <p key={`${item}-${index}`}>
               ✔<span>{item}</span>
             </p>
           ))}
-      </Features>
+        </Features>
+      )}
     </ImageSection>
   );
 }
@@ -86,6 +91,13 @@ const ImageSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[5]};
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    gap: ${({ theme }) => theme.spacing[4]};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    gap: ${({ theme }) => theme.spacing[3]};
+  }
 `;
 
 const MainImageWrapper = styled.div`
@@ -94,8 +106,32 @@ const MainImageWrapper = styled.div`
   aspect-ratio: 1 / 1;
   overflow: hidden;
   border-radius: ${({ theme }) => theme.radii.xxl};
-  background: ${({ theme }) => theme.card?.ci1 ?? theme.colors.cardBg};
+  background: ${({ theme }) => theme.colors.cardBg};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+`;
+const GalleryBadge = styled(CardBadge)`
+  top: ${({ theme }) => theme.spacing[5]};
+  left: ${({ theme }) => theme.spacing[5]};
+  z-index: 4;
+  min-width: 50px;
+  justify-content: center;
+  padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[4]}`};
+  font-family: ${({ theme }) => theme.fontFamily.mono};
+  letter-spacing: 0.1em;
+  backdrop-filter: ${({ theme }) => theme.effects.blurSoft};
+  box-shadow: ${({ theme }) => theme.effects.hoverShadowCategoryBase};
+  flex: none;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    top: ${({ theme }) => theme.spacing[4]};
+    left: ${({ theme }) => theme.spacing[4]};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    top: ${({ theme }) => theme.spacing[3]};
+    left: ${({ theme }) => theme.spacing[3]};
+    padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[3]}`};
+  }
 `;
 
 const MainImage = styled.img`
@@ -131,6 +167,17 @@ const ArrowButton = styled.button`
     background: rgba(0, 0, 0, 0.7);
     border-color: ${({ theme }) => theme.colors.primary};
   }
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    ${({ $left }) => ($left ? 'left: 12px;' : 'right: 12px;')}
+    width: 38px;
+    height: 38px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    ${({ $left }) => ($left ? 'left: 10px;' : 'right: 10px;')}
+    width: 32px;
+    height: 32px;
+  }
 `;
 
 const ThumbnailList = styled.div`
@@ -159,6 +206,18 @@ const ThumbnailButton = styled.button`
     transform: translateY(-2px);
     border-color: ${({ theme }) => theme.colors.primary};
   }
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    width: 76px;
+    height: 76px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    width: calc((100% - ${({ theme }) => theme.spacing[2]} * 3) / 4);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    min-width: 64px;
+    border-radius: ${({ theme }) => theme.radii.md};
+  }
 `;
 
 const ThumbnailImage = styled.img`
@@ -173,7 +232,7 @@ const Features = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[2]};
   width: 100%;
-  border: 1px solid red;
+
   padding: ${({ theme }) => theme.spacing[4]};
   color: ${({ theme }) => theme.colors.success};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
@@ -185,5 +244,29 @@ const Features = styled.div`
   p span {
     padding-left: ${({ theme }) => theme.spacing[2]};
     color: ${({ theme }) => theme.colors.textSecondary};
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    gap: ${({ theme }) => theme.spacing[2]};
+    padding: ${({ theme }) => theme.spacing[3]};
+
+    > p {
+      font-size: ${({ theme }) => theme.fontSize.xxs};
+    }
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    gap: ${({ theme }) => theme.spacing[1]};
+    padding: ${({ theme }) => theme.spacing[3]};
+
+    > p {
+      font-size: ${({ theme }) => theme.fontSize.xxs};
+
+      > span {
+        padding-left: ${({ theme }) => theme.spacing[1]};
+      }
+    }
   }
 `;

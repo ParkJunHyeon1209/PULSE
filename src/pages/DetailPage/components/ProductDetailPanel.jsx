@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import BaseBtn from '../../../components/common/BaseBtn';
 import ProductOptions from './ProductOptions';
 import ProductCareOption from './ProductCareOption';
 import QuantitySelector from './QuantitySelector';
 import PurchaseActions from './PurchaseActions';
+import { CardWish } from '../../../components/common/CardParts';
 
 export default function ProductDetailPanel({
   product,
@@ -16,11 +18,28 @@ export default function ProductDetailPanel({
   onIncrease,
   onAddToCart,
 }) {
+  const [isLiked, setIsLiked] = useState(false);
+
+  const handleToggleLike = () => {
+    setIsLiked((prev) => !prev);
+  };
+  // id 311부터는 빠진 정보가 많음
+  const logisiticsInfo = product.logisiticsInfo ?? {};
+
   return (
     <InfoSection>
       <HeaderRow>
         <CategoryBadge>✦ {product.type}</CategoryBadge>
-        <LikeButton>
+        <LikeButton
+          type="button"
+          variant="ic-btn"
+          size="36px"
+          flex="0 0 auto"
+          icon={false}
+          $isLiked={isLiked}
+          onClick={handleToggleLike}
+          aria-label="찜하기"
+        >
           <svg
             width="15"
             height="13"
@@ -30,8 +49,7 @@ export default function ProductDetailPanel({
           >
             <path
               d="M12.6196 1.56989C12.3003 1.25052 11.9213 0.99717 11.5042 0.824318C11.087 0.651467 10.6399 0.5625 10.1883 0.5625C9.73675 0.5625 9.28962 0.651467 8.87246 0.824318C8.4553 0.99717 8.07628 1.25052 7.75706 1.56989L7.09456 2.23239L6.43206 1.56989C5.78725 0.925083 4.9127 0.562834 4.00081 0.562834C3.08891 0.562834 2.21436 0.925083 1.56956 1.56989C0.924749 2.2147 0.5625 3.08925 0.5625 4.00114C0.5625 4.91304 0.924749 5.78758 1.56956 6.43239L2.23206 7.09489L7.09456 11.9574L11.9571 7.09489L12.6196 6.43239C12.9389 6.11317 13.1923 5.73415 13.3651 5.31699C13.538 4.89983 13.6269 4.4527 13.6269 4.00114C13.6269 3.54959 13.538 3.10246 13.3651 2.68529C13.1923 2.26813 12.9389 1.88911 12.6196 1.56989Z"
-              stroke="#C8CDFF"
-              strokeOpacity="0.42"
+              stroke="currentColor"
               strokeWidth="1.125"
             />
           </svg>
@@ -68,17 +86,17 @@ export default function ProductDetailPanel({
       <MetaInfo>
         <p>
           <span>배송비</span>
-          <Free>{product.logisticsInfo.deliveryFee}</Free>
+          <Free>{logisiticsInfo.deliveryFee ?? '-'}</Free>
         </p>
 
         <p>
           <span>도착</span>
-          <span>{product.logisticsInfo.expectedDispatch}</span>
+          <span>{logisiticsInfo.expectedDispatch ?? '-'}</span>
         </p>
 
         <p>
           <span>할부</span>
-          <span>{product.logisticsInfo.installment}</span>
+          <span>{logisiticsInfo.installment ?? '-'}</span>
         </p>
       </MetaInfo>
 
@@ -95,11 +113,12 @@ const InfoSection = styled.aside`
   gap: ${({ theme }) => theme.spacing[2]};
   color: ${({ theme }) => theme.colors.text};
 `;
-const LikeButton = styled.button`
-  width: 36px;
-  height: 36px;
-  border-radius: ${({ theme }) => theme.radii.full};
-  border: 1px solid red;
+const LikeButton = styled(CardWish)`
+  position: static;
+  top: auto;
+  right: auto;
+  opacity: 1;
+  transform: translateY(0);
 `;
 
 const HeaderRow = styled.div`

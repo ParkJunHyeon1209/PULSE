@@ -81,12 +81,24 @@ const Section = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    margin-bottom: ${({ theme }) => theme.spacing[5]};
+    gap: 10px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    margin-bottom: ${({ theme }) => theme.spacing[4]};
+    gap: 8px;
+  }
 `;
 
 const Label = styled.p`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   color: ${({ theme }) => theme.colors.textSecondary};
   font-weight: 400;
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    line-height: 1.4;
+  }
 `;
 
 const LabelValue = styled.span`
@@ -98,12 +110,26 @@ const ColorList = styled.div`
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    gap: 10px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    gap: 8px;
+  }
 `;
 
 const ButtonList = styled.div`
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    gap: 10px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    gap: 8px;
+  }
 `;
 
 const ColorButton = styled.button`
@@ -134,6 +160,17 @@ const ColorButton = styled.button`
       : theme.colors.wColor};
   font-size: 16px;
   font-weight: 700;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
 `;
 
 const OptionButton = styled.button`
@@ -154,29 +191,12 @@ const OptionButton = styled.button`
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary};
   }
-`;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    padding: 8px 14px;
+  }
 
-const ConnectionButton = styled(OptionButton)`
-  opacity: ${({ $soldOut }) => ($soldOut ? 0.45 : 1)};
-  cursor: ${({ $soldOut }) => ($soldOut ? 'not-allowed' : 'pointer')};
-  position: relative;
-`;
-
-const ConnectionText = styled.span`
-  display: inline-block;
-  text-decoration: ${({ $soldOut }) => ($soldOut ? 'line-through' : 'none')};
-  text-decoration-thickness: 1.5px;
-  text-decoration-color: currentColor;
-`;
-
-const SoldOutText = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
-  padding: 4px 10px;
-  border-radius: 12px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  transform: translateY(-50%) translateX(50%);
-  color: ${({ theme }) => theme.colors.textSecondary};
-  background-color: #000000;
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: 7px 12px;
+    border-radius: 10px;
+  }
 `;
