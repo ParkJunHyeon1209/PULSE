@@ -7,9 +7,11 @@ import { getAllProducts } from '../../../data/categoryProductsApi';
 const RecommendWrap = styled.div`
   ul {
     display: flex;
+    flex-wrap: wrap;
     gap: ${({ theme }) => theme.spacing[3]};
     > li {
       flex: 1;
+      min-width: 200px;
     }
     > li > article {
       min-height: 280px;

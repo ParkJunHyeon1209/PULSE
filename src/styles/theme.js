@@ -509,6 +509,7 @@ export const darkTheme = {
     hot: { bg: 'rgba(97, 0, 48, 0.18)', border: 'rgba(236,72,153,.38)', color: '#ff008c' },
     best: { bg: 'rgba(59, 43, 0, 0.13)', border: 'rgba(251,191,36,.3)', color: '#ffb700' },
     new: { bg: 'rgba(0, 41, 26, 0.12)', border: 'rgba(52,211,153,.3)', color: '#00ff99' },
+    info: { bg: 'rgba(0, 68, 153, 0.2)', border: 'rgba(56,189,248,.38)', color: '#38bdf8' },
   },
   cart: {
     ...baseTokens.cart,
@@ -776,6 +777,7 @@ export const lightTheme = {
     hot: { bg: 'rgba(236,72,153,.12)', border: 'rgba(236,72,153,.25)', color: '#be185d' },
     best: { bg: 'rgba(251,191,36,.12)', border: 'rgba(251,191,36,.25)', color: '#92400e' },
     new: { bg: 'rgba(52,211,153,.10)', border: 'rgba(52,211,153,.22)', color: '#065f46' },
+    info: { bg: 'rgba(56,189,248,.10)', border: 'rgba(56,189,248,.25)', color: '#0369a1' },
   },
   cart: {
     ...baseTokens.cart,
