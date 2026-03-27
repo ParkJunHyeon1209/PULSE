@@ -1,9 +1,10 @@
 // badge 라벨 → theme.badge tone 매핑
+// c-badge variant 사용 시 cStatus tone으로 매핑됨
 export const BADGE_TONE = {
-  NEW: 'new',
-  HOT: 'hot',
-  BEST: 'best',
-  COLLAB: 'col',
+  new: 'mint',
+  hot: 'rose',
+  best: 'gold',
+  collab: 'col',
 };
 
 // 카테고리(item.category) → theme.badge tone 매핑

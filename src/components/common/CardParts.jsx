@@ -10,12 +10,12 @@ export const CardWish = styled(BaseBtn, {
   right: ${({ theme }) => theme.spacing[3]};
   backdrop-filter: ${({ theme }) => theme.effects.blurSoft};
   background: ${({ $isLiked, theme }) =>
-    $isLiked ? theme.iconBtn.wish.activeBg : theme.iconBtn.wish.bg} !important;
+    $isLiked ? theme.btn.cardWish.activeBg : theme.btn.cardWish.bg};
   border-color: ${({ $isLiked, theme }) =>
-    $isLiked ? theme.iconBtn.wish.activeBorder : theme.iconBtn.wish.border} !important;
+    $isLiked ? theme.btn.cardWish.activeBorder : theme.btn.cardWish.border};
   color: ${({ $isLiked, theme }) =>
-    $isLiked ? theme.iconBtn.wish.activeColor : theme.iconBtn.wish.color} !important;
-  box-shadow: none !important;
+    $isLiked ? theme.btn.cardWish.activeColor : theme.btn.cardWish.color};
+  box-shadow: none;
   opacity: ${({ $isLiked }) => ($isLiked ? 1 : 0)};
   transform: translateY(${({ $isLiked }) => ($isLiked ? '0' : '-4px')});
   transition:
@@ -23,22 +23,22 @@ export const CardWish = styled(BaseBtn, {
     transform 0.2s,
     color 0.2s,
     background 0.2s,
-    border-color 0.2s !important;
+    border-color 0.2s;
   z-index: 4;
 
   svg {
     fill: ${({ $isLiked }) => ($isLiked ? 'currentColor' : 'none')};
   }
 
-  &:hover {
-    color: ${({ theme }) => theme.iconBtn.wish.hoverColor} !important;
-    background: ${({ theme }) => theme.iconBtn.wish.hoverBg} !important;
-    border-color: ${({ theme }) => theme.iconBtn.wish.hoverBorder} !important;
-    box-shadow: none !important;
-    transform: translateY(0) !important;
+  &:hover:not(:disabled) {
+    color: ${({ theme }) => theme.btn.cardWish.hoverColor};
+    background: ${({ theme }) => theme.btn.cardWish.hoverBg};
+    border-color: ${({ theme }) => theme.btn.cardWish.hoverBorder};
+    box-shadow: none;
+    transform: translateY(0);
   }
-  &:active {
-    transform: scale(0.88) !important;
+  &:active:not(:disabled) {
+    transform: scale(0.88);
   }
 `;
 
@@ -60,10 +60,20 @@ export const CardAddBtn = styled(BaseBtn)`
   bottom: ${({ theme }) => theme.spacing[6]};
   right: ${({ theme }) => theme.spacing[6]};
   z-index: 3;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.btn.cardAdd.color};
+  background: ${({ theme }) => theme.btn.cardAdd.bg};
+  border-color: ${({ theme }) => theme.btn.cardAdd.border};
+  box-shadow: ${({ theme }) => theme.btn.cardAdd.shadow};
 
-  &:hover {
-    transform: translateY(-1px) scale(1.15) rotate(90deg);
+  &:hover:not(:disabled) {
+    color: ${({ theme }) => theme.btn.cardAdd.hoverColor};
+    background: ${({ theme }) => theme.btn.cardAdd.hoverBg};
+    border-color: ${({ theme }) => theme.btn.cardAdd.hoverBorder};
+    box-shadow: ${({ theme }) => theme.btn.cardAdd.hoverShadow};
+    transform: translateY(-1px) scale(1.1) rotate(90deg);
+  }
+  &:active:not(:disabled) {
+    transform: scale(0.95) rotate(90deg);
   }
 `;
 

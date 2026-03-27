@@ -246,7 +246,7 @@ export default function AppHeaderUser() {
 
         <Drop $open={open}>
           <DropLabel>PULSE ACCOUNT</DropLabel>
-          <DropItem type="button">
+          <DropItem type="button" onClick={() => { closeLogin(); navigate('/login'); }}>
             <LoginIcon />
             로그인 / 회원가입
           </DropItem>

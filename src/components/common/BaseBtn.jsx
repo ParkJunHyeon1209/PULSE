@@ -19,12 +19,11 @@ const btnStyle = (theme, variant, tone) => {
   }
 
   if (variant === 'badge') {
-    const b = theme.badge?.[tone] ?? theme.badge?.ltd;
+    const b = theme.badge?.[tone] ?? theme.badge?.col;
     return {
       border: b.border,
       bg: b.bg,
       color: b.color,
-      wColor: b.color,
       shadow: 'none',
       hoverBg: b.bg,
       hoverBorder: b.border,
@@ -34,18 +33,36 @@ const btnStyle = (theme, variant, tone) => {
     };
   }
 
+  if (variant === 'c-badge') {
+    const b = theme.badge?.[tone] ?? theme.badge?.col;
+    const c = theme.cStatus?.[tone];
+    const textColor = b?.color ?? theme.colors.wColor;
+    return {
+      border: c ? 'transparent' : b.border,
+      bg: c ? c.bg : b.bg,
+      color: theme.colors.wColor,
+      wColor: theme.colors.wColor,
+      shadow: c ? c.shadow : 'none',
+      hoverBg: c ? c.hoverBg : b.bg,
+      hoverBorder: c ? 'transparent' : b.border,
+      hoverColor: c ? theme.colors.wColor : textColor,
+      hoverShadow: c ? c.hoverShadow : 'none',
+      activeBg: c ? c.btnActiveBg : b.bg,
+    };
+  }
+
   const toneStyle = theme.tones[tone] || theme.tones.violet;
 
   return {
     border: 'transparent',
     bg: toneStyle.bg,
-    color: toneStyle.wColor,
+    color: theme.colors.wColor,
     shadow: toneStyle.shadow,
     hoverBg: toneStyle.hoverBg,
     hoverBorder: 'transparent',
-    hoverColor: toneStyle.wColor,
+    hoverColor: theme.colors.wColor,
     hoverShadow: toneStyle.hoverShadow,
-    activeBg: toneStyle.activeBg,
+    activeBg: toneStyle.btnActiveBg,
   };
 };
 
@@ -96,7 +113,8 @@ const StyledBtn = styled.button`
   min-width: ${({ $size }) => $size || 'auto'};
   height: ${({ $size, $height }) => $size || $height};
   padding: ${({ theme, $padding }) => $padding || `${theme.spacing[3]} ${theme.spacing[3]}`};
-  font-size: ${({ $variant, theme }) => ($variant === 'badge' ? theme.fontSize.xxxs : undefined)};
+  font-size: ${({ $variant, theme }) =>
+    $variant === 'badge' || $variant === 'c-badge' ? theme.fontSize.xxxs : undefined};
   border-radius: ${({ theme }) => theme.radii.pill};
 
   backdrop-filter: ${({ theme }) => theme.effects.blurBtn};
@@ -160,7 +178,8 @@ const StyledBtn = styled.button`
  *   - primary  : 톤 컬러 배경 (기본값)
  *   - secondary: 테두리형 버튼
  *   - ic-btn   : 아이콘 전용 원형 버튼 (size로 크기 지정)
- *   - badge    : 태그 버튼 (limited / hot / collab / new)
+ *   - badge    : 플랫 태그 버튼
+ *   - c-badge  : 그라디언트 태그 버튼 (카드 배지)
  *
  * tone     : 'violet' | 'blue' | 'col' | 'hot' | 'best' | 'new'
  *   — primary일 때: 'violet' | 'blue' (기본값 'violet')
