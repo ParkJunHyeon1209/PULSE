@@ -27,37 +27,36 @@ const Grid = styled.div`
   }
 `;
 
-const cards = [
-  {
-    id: 1,
-    label: 'Headset',
-    name: 'PULSE PRO H1',
-    count: '몰입형 공간감과 저지연 무선 사운드',
-    tone: 'violet',
-    height: '430px',
-  },
-  {
-    id: 2,
-    label: 'PULSE × VIBE',
-    name: 'SIGNAL EDITION',
-    count: '한정 100개 드롭 스페셜 글로우',
-    tone: 'indigo',
-    height: '510px',
-    badge: 'col',
-    arrow: true,
-  },
-  {
-    id: 3,
-    label: 'Keyboard',
-    name: 'KEY MATRIX',
-    count: '75% 배열 커스텀 RGB 셋업',
-    tone: 'blue',
-    height: '430px',
-  },
-];
+// const cards = [
+//   {
+//     id: 1,
+//     label: 'Headset',
+//     name: 'PULSE PRO H1',
+//     count: '몰입형 공간감과 저지연 무선 사운드',
+//     tone: 'violet',
+//     height: '430px',
+//   },
+//   {
+//     id: 2,
+//     label: 'PULSE × VIBE',
+//     name: 'SIGNAL EDITION',
+//     count: '한정 100개 드롭 스페셜 글로우',
+//     tone: 'indigo',
+//     height: '510px',
+//     badge: 'col',
+//     arrow: true,
+//   },
+//   {
+//     id: 3,
+//     label: 'Keyboard',
+//     name: 'KEY MATRIX',
+//     count: '75% 배열 커스텀 RGB 셋업',
+//     tone: 'blue',
+//     height: '430px',
+//   },
+// ];
 
 export default function ShowcaseSec() {
-  const [cardList, setCardList] = useState(cards);
   const [dropProducts, setDropProducts] = useState([]);
   const navigate = useNavigate();
 
@@ -71,10 +70,11 @@ export default function ShowcaseSec() {
   }, []);
 
   const handleClick = (index, id) => {
-    if (index === 0) setCardList((prev) => [prev[2], prev[0], prev[1]]);
+    if (index === 0) setDropProducts((prev) => [prev[2], prev[0], prev[1]]);
     if (index === 1) navigate(`product/${id}`);
-    if (index === 2) setCardList((prev) => [prev[1], prev[2], prev[0]]);
+    if (index === 2) setDropProducts((prev) => [prev[1], prev[2], prev[0]]);
   };
+  // console.log(dropProducts);
 
   return (
     <SectionWrap>
@@ -91,15 +91,18 @@ export default function ShowcaseSec() {
       </HeadWrap>
 
       <Grid>
-        {cardList.map((card, i) => (
+        {dropProducts.map((card, i) => (
+          // console.log(card.tag),
           <BaseToneCard
             key={card.id}
-            label={card.label}
-            name={card.name}
-            count={card.count}
+            img={card.image}
+            label={card.meta}
+            name={card.title}
+            count={card.desc}
             tone={card.tone}
             height={i === 1 ? '510px' : '430px'}
-            badge={card.badge}
+            badge={card.tag}
+            beamOver
             arrow={card.arrow}
             onClick={() => handleClick(i, card.id)}
           />

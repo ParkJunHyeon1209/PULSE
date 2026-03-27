@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import BaseSparkIcon from '../../../../components/common/BaseSparkIcon';
 import BaseBtn from '../../../../components/common/BaseBtn';
 import { ArrowIcon } from '../../../../assets/icons/BtnIcon';
-import { TONE_BG, TONE_BEAM } from '../../../../utils/toneMap';
+import { TONE_BG, TONE_BEAM, BADGE_TONE } from '../../../../utils/toneMap';
 
 const Card = styled.article`
   position: relative;
@@ -19,24 +19,6 @@ const Card = styled.article`
     box-shadow 320ms ease;
   will-change: transform;
 
-  /* &.prev {
-    height: 430px;
-    opacity: 0.82;
-    z-index: 1;
-  }
-
-  &.active {
-    height: 510px;
-    opacity: 1;
-    z-index: 2;
-  }
-
-  &.next {
-    height: 430px;
-    opacity: 0.82;
-    z-index: 1;
-  } */
-
   &:hover {
     transform: scale(1.03);
     box-shadow: ${({ theme, $tone }) =>
@@ -46,6 +28,11 @@ const Card = styled.article`
   &:active {
     transform: scale(0.97);
     transition: transform 0.1s;
+  }
+
+  &:hover .card-img {
+    opacity: 1;
+    transform: scale(1.08);
   }
 
   &:hover .card-beam {
@@ -141,6 +128,8 @@ const Name = styled.div`
   font-size: ${({ theme }) => theme.fontSize.m};
   letter-spacing: 0.08em;
   color: ${({ theme }) => theme.colors.text};
+  text-shadow: ${({ theme }) =>
+    theme.mode === 'light' ? `0 0px 8px rgba(200, 174, 255, 0.4)` : 'none'};
 `;
 
 const Count = styled.div`
@@ -148,6 +137,19 @@ const Count = styled.div`
   font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   color: ${({ theme }) => theme.colors.textSecondary};
+`;
+
+const BrowseImg = styled.div`
+  position: absolute;
+  inset: 0;
+  background-image: ${({ $img }) => ($img ? `url(${$img})` : 'none')};
+  background-size: cover;
+  background-position: center;
+  opacity: 0.6;
+  transform: scale(1);
+  transition:
+    opacity ${({ theme }) => theme.motion.slow},
+    transform ${({ theme }) => theme.motion.slow};
 `;
 
 export default function BaseToneCard({
@@ -158,12 +160,24 @@ export default function BaseToneCard({
   height,
   badge,
   arrow,
+  img,
+  beamOver = false,
   ...props
 }) {
   return (
     <Card $tone={tone} $height={height} {...props}>
       <Inner $bg={TONE_BG[tone]} />
-      <Beam className="card-beam" $bg={TONE_BEAM[tone]} />
+      {beamOver ? (
+        <>
+          <BrowseImg className="card-img" $img={img} />
+          <Beam className="card-beam" $bg={TONE_BEAM[tone]} />
+        </>
+      ) : (
+        <>
+          <Beam className="card-beam" $bg={TONE_BEAM[tone]} />
+          <BrowseImg className="card-img" $img={img} />
+        </>
+      )}
       <SparkContainer className="card-spark">
         <BaseSparkIcon tone={tone} />
       </SparkContainer>
@@ -171,14 +185,14 @@ export default function BaseToneCard({
       {badge && (
         <BadgeWrap>
           <BaseBtn
-            variant="badge"
-            tone={badge}
+            variant="c-badge"
+            tone={BADGE_TONE[badge]}
             flex="0"
             icon={false}
-            padding="4px 10px"
-            height="auto"
+            padding="8px 16px"
+            height="32px"
           >
-            {badge === 'col' ? 'COLLAB' : badge}
+            {badge}
           </BaseBtn>
         </BadgeWrap>
       )}
