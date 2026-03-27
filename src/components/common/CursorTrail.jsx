@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
+import useThemeStore from '../../store/useThemeStore';
 
 const sparkle = keyframes`
   0% {
@@ -9,6 +10,20 @@ const sparkle = keyframes`
   }
   20% {
     opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.8) rotate(180deg);
+    opacity: 0;
+  }
+`;
+
+const sparkleDot = keyframes`
+  0% {
+    transform: translate(-50%, -50%) scale(0.4) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.4;
   }
   100% {
     transform: translate(-50%, -50%) scale(1.8) rotate(180deg);
@@ -48,22 +63,22 @@ const MainCursor = styled.div`
   background:
     radial-gradient(
       circle at 30% 30%,
-      rgba(255, 255, 255, 0.95),
-      rgba(255, 255, 255, 0.2) 25%,
+      ${({ isDark }) => (isDark ? 'rgba(196,181,253,0.7)' : 'rgba(255, 255, 255, 0.95)')},
+      ${({ isDark }) => (isDark ? 'rgba(124,58,237,0.15)' : 'rgba(255, 255, 255, 0.2)')} 25%,
       transparent 40%
     ),
     radial-gradient(
       circle,
-      rgba(147, 51, 234, 0.9) 0%,
-      rgba(59, 130, 246, 0.75) 45%,
-      rgba(34, 211, 238, 0.35) 70%,
+      rgba(132, 0, 255, 0.6) 0%,
+      rgba(59, 130, 246, 0.4) 45%,
+      rgba(34, 211, 238, 0.2) 70%,
       transparent 100%
     );
 
   box-shadow:
-    0 0 12px rgba(147, 51, 234, 0.9),
-    0 0 28px rgba(59, 130, 246, 0.75),
-    0 0 48px rgba(34, 211, 238, 0.4);
+    0 0 12px rgba(132, 0, 255, 0.6),
+    0 0 28px rgba(59, 130, 246, 0.4),
+    0 0 48px rgba(34, 211, 238, 0.2);
 
   mix-blend-mode: screen;
   animation: ${pulse} 1.8s ease-in-out infinite;
@@ -102,26 +117,25 @@ const Particle = styled.span`
   height: ${({ size }) => size}px;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  animation: ${sparkle} 700ms ease-out forwards;
+  animation: ${({ shape }) => (shape === 'star' ? sparkle : sparkleDot)} 700ms ease-out forwards;
 
   ${({ shape }) =>
     shape === 'star'
       ? `
         clip-path: polygon(
           50% 0%,
-          61% 35%,
-          98% 35%,
-          68% 57%,
-          79% 91%,
-          50% 70%,
-          21% 91%,
-          32% 57%,
-          2% 35%,
-          39% 35%
+          65% 35%,
+          100% 50%,
+          65% 65%,
+          50% 100%,
+          35% 65%,
+          0% 50%,
+          35% 35%
         );
       `
       : `
         border-radius: 50%;
+        opacity: 0.4;
       `}
 
   background: ${({ color }) => color};
@@ -131,22 +145,46 @@ const Particle = styled.span`
     0 0 20px ${({ glow }) => glow};
 `;
 
+// 라이트모드: 흰색 시작 → 테마 핵심 컬러
 const COLORS = [
   {
-    fill: 'linear-gradient(135deg, rgba(255,255,255,1), rgba(196,181,253,0.95), rgba(96,165,250,0.9))',
-    glow: 'rgba(167, 139, 250, 0.9)',
+    fill: 'linear-gradient(135deg, rgba(236,233,255,0.9) 0%, rgba(196,181,253,0.95) 50%, rgba(124,58,237,0.9) 100%)',
+    glow: 'rgba(167,139,250,0.9)',
   },
   {
-    fill: 'linear-gradient(135deg, rgba(255,255,255,1), rgba(125,211,252,0.95), rgba(34,211,238,0.85))',
-    glow: 'rgba(34, 211, 238, 0.9)',
+    fill: 'linear-gradient(135deg, rgba(236,233,255,0.9) 0%, rgba(244,114,182,0.95) 50%, rgba(236,72,153,0.88) 100%)',
+    glow: 'rgba(244,114,182,0.9)',
   },
   {
-    fill: 'linear-gradient(135deg, rgba(255,255,255,1), rgba(244,114,182,0.95), rgba(192,132,252,0.9))',
-    glow: 'rgba(244, 114, 182, 0.9)',
+    fill: 'linear-gradient(135deg, rgba(236,233,255,0.9) 0%, rgba(147,197,253,0.95) 50%, rgba(56,130,255,0.88) 100%)',
+    glow: 'rgba(96,165,250,0.9)',
+  },
+];
+
+// 다크모드: 테마 컬러만, 흰색 없음
+const DARK_COLORS = [
+  {
+    fill: 'linear-gradient(135deg, rgba(167,139,250,0.25) 0%, rgba(124,58,237,0.92) 55%, rgba(150,70,255,0.98) 100%)',
+    glow: 'rgba(167,139,250,0.85)',
+  },
+  {
+    fill: 'linear-gradient(135deg, rgba(244,114,182,0.25) 0%, rgba(236,72,153,0.88) 55%, rgba(192,72,234,0.95) 100%)',
+    glow: 'rgba(244,114,182,0.85)',
+  },
+  {
+    fill: 'linear-gradient(135deg, rgba(96,165,250,0.25) 0%, rgba(56,130,255,0.88) 55%, rgba(99,102,241,0.95) 100%)',
+    glow: 'rgba(96,165,250,0.85)',
   },
 ];
 
 export default function CursorTrail() {
+  const isDarkMode = useThemeStore((s) => s.isDarkMode);
+  const colorSetRef = useRef(COLORS);
+
+  useEffect(() => {
+    colorSetRef.current = isDarkMode ? DARK_COLORS : COLORS;
+  }, [isDarkMode]);
+
   const [mouse, setMouse] = useState({
     x: window.innerWidth / 2,
     y: window.innerHeight / 2,
@@ -184,7 +222,7 @@ export default function CursorTrail() {
 
         const count = Math.random() > 0.65 ? 2 : 1;
         const newParticles = Array.from({ length: count }).map(() => {
-          const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+          const color = colorSetRef.current[Math.floor(Math.random() * colorSetRef.current.length)];
           return {
             id: particleId.current++,
             x: e.clientX + (Math.random() * 18 - 9),
@@ -236,7 +274,7 @@ export default function CursorTrail() {
   // <Follower x={follower.x} y={follower.y} />
   return (
     <TrailRoot aria-hidden="true">
-      <MainCursor x={mouse.x} y={mouse.y} />
+      <MainCursor x={mouse.x} y={mouse.y} isDark={isDarkMode} />
       {particles.map((particle) => (
         <Particle
           key={particle.id}

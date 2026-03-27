@@ -69,6 +69,10 @@ const CardContainer = styled.article`
     opacity: 1;
     transform: translateY(0);
   }
+
+  &:hover .card-bg-img {
+    transform: scale(1.08);
+  }
 `;
 
 const CardBackgroundImage = styled.img`
@@ -79,6 +83,8 @@ const CardBackgroundImage = styled.img`
   display: block;
   object-fit: cover;
   z-index: 0;
+  transform: scale(1);
+  transition: transform ${({ theme }) => theme.motion.slow};
 `;
 
 const CardSparkPos = styled.div`
@@ -196,7 +202,7 @@ export default function BaseProductCard({ product, cardMinHeight }) {
     <CardContainer $tone={sparkTone} $cardMinHeight={cardMinHeight} onClick={handleMoveDetail}>
       <CardShim className="card-shim" aria-hidden="true" />
       {product.image ? (
-        <CardBackgroundImage src={product.image} alt={product.title} />
+        <CardBackgroundImage className="card-bg-img" src={product.image} alt={product.title} />
       ) : (
         <CardSparkPos>
           <BaseSparkIcon tone={sparkTone} />

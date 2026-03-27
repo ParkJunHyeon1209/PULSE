@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
-import bannerImg from '../../../assets/img/banners/main-brandBanner.webp';
+import lightBannerImg from '../../../assets/img/banners/L_main_brandBanner.webp';
+import darkBannerImg from '../../../assets/img/banners/D_main_brandBanner.webp';
 import BaseSection from '../../../components/common/BaseSection';
+import useThemeStore from '../../../store/useThemeStore';
 
 const SectionWrap = styled.section`
   max-width: 1280px;
@@ -20,6 +22,10 @@ const ImgSide = styled.div`
   position: relative;
   min-height: 480px;
   overflow: hidden;
+
+  &:hover .banner-img {
+    transform: scale(1.06);
+  }
 `;
 
 const Img = styled.img`
@@ -29,6 +35,8 @@ const Img = styled.img`
   height: 100%;
   object-fit: cover;
   object-position: center;
+  transform: scale(1);
+  transition: transform ${({ theme }) => theme.motion.slow};
 `;
 
 const ImgTextWrap = styled.div`
@@ -151,10 +159,13 @@ const items = [
 ];
 
 export default function BrandPromiseSec() {
+  const isDarkMode = useThemeStore((s) => s.isDarkMode);
+  const bannerImg = isDarkMode ? darkBannerImg : lightBannerImg;
+
   return (
     <SectionWrap>
       <ImgSide>
-        <Img src={bannerImg} alt="Why Pulse" />
+        <Img className="banner-img" src={bannerImg} alt="Why Pulse" />
         <ImgTextWrap>
           <BaseSection
             label="Brand Promise"

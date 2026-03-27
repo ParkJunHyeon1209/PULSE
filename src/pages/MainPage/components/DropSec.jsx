@@ -3,7 +3,9 @@ import styled from '@emotion/styled';
 import BaseSection from '../../../components/common/BaseSection';
 import BaseBtn from '../../../components/common/BaseBtn';
 import { LavStarIcon } from '../../../assets/icons/BtnIcon';
-import bannerImg from '../../../assets/img/banners/main-banner.webp';
+import lightBannerImg from '../../../assets/img/banners/L_main-DorpBanner.webp';
+import darkBannerImg from '../../../assets/img/banners/D_main-DorpBanner.webp';
+import useThemeStore from '../../../store/useThemeStore';
 
 const dotPulse = keyframes`
   0%, 100% { opacity: 1; transform: scale(0.7); }
@@ -27,7 +29,7 @@ const PromoCard = styled.div`
   min-height: 380px;
   display: flex;
   align-items: center;
-  background: ${({ theme }) => theme.colors.surface};
+  background: ${({ theme }) => (theme.mode === 'light' ? '#ece9ff' : theme.colors.surface)};
   border: 1px solid rgba(${({ theme }) => theme.colors.primaryRgb}, 0.15);
   cursor: pointer;
   box-shadow:
@@ -41,6 +43,10 @@ const PromoCard = styled.div`
     box-shadow:
       0 0 36px rgba(${({ theme }) => theme.colors.primaryRgb}, 0.3),
       0 0 72px rgba(${({ theme }) => theme.colors.primaryRgb}, 0.1);
+  }
+
+  &:hover .banner-img {
+    transform: scale(1.06);
   }
 `;
 
@@ -181,6 +187,9 @@ const BannerImg = styled.img`
   object-position: center;
   z-index: 0;
   pointer-events: none;
+  filter: ${({ theme }) => (theme.mode === 'light' ? 'brightness(1.2)' : 'none')};
+  transform: scale(1);
+  transition: transform ${({ theme }) => theme.motion.slow};
 `;
 
 const stats = [
@@ -190,6 +199,9 @@ const stats = [
 ];
 
 export default function DropSec() {
+  const isDarkMode = useThemeStore((s) => s.isDarkMode);
+  const bannerImg = isDarkMode ? darkBannerImg : lightBannerImg;
+
   return (
     <SectionWrap>
       <BaseSection label="Limited Drop" />
@@ -233,7 +245,7 @@ export default function DropSec() {
           </DropBottom>
         </PromoText>
 
-        <BannerImg src={bannerImg} alt="PULSE × VIBE" />
+        <BannerImg className="banner-img" src={bannerImg} alt="PULSE × VIBE" />
       </PromoCard>
     </SectionWrap>
   );
