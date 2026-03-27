@@ -234,18 +234,18 @@ export default function BaseProductCard({ product, cardMinHeight }) {
           <CardMeta>{product.meta}</CardMeta>
           <CardPrice>{product.price.toLocaleString()}원</CardPrice>
         </CardTextGroup>
-
-        <CardAddBtn
-          variant="ic-btn"
-          size="36px"
-          flex="0 0 auto"
-          icon={false}
-          type="button"
-          onClick={handleClickAddCart}
-        >
-          <PluseIcon />
-        </CardAddBtn>
       </CardContent>
+
+      <CardAddBtn
+        variant="ic-btn"
+        size="36px"
+        flex="0 0 auto"
+        icon={false}
+        type="button"
+        onClick={handleClickAddCart}
+      >
+        <PluseIcon />
+      </CardAddBtn>
     </CardContainer>
   );
 }

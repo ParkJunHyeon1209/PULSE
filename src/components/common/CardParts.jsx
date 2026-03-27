@@ -56,6 +56,10 @@ export const CardBadge = styled(BaseBtn)`
 
 /* 장바구니 추가 버튼 */
 export const CardAddBtn = styled(BaseBtn)`
+  position: absolute;
+  bottom: ${({ theme }) => theme.spacing[6]};
+  right: ${({ theme }) => theme.spacing[6]};
+  z-index: 3;
   color: ${({ theme }) => theme.colors.primary};
 
   &:hover {

@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React from 'react';
 import useCartStore from '../../../store/useCartStore';
 import BaseBtn from '../../../components/common/BaseBtn';
 import BaseSection from '../../../components/common/BaseSection';
+import BaseTooltip from '../../../components/common/BaseTooltip';
 import {
   VisaIcon,
   MasterCardIcon,
@@ -11,8 +12,8 @@ import {
 } from '../../../assets/icons/BtnIcon';
 
 const SummaryWrap = styled.div`
-  padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[10]};
-  ${({ theme }) => theme.spacing[8]};
+  padding: ${({ theme }) => theme.spacing[8]}
+    clamp(${({ theme }) => theme.spacing[5]}, 4vw, ${({ theme }) => theme.spacing[10]});
   max-height: max-content;
   position: sticky;
   top: 120px;
@@ -44,19 +45,35 @@ const SummaryWrap = styled.div`
       justify-content: space-between;
       margin-top: ${({ theme }) => theme.spacing[3]};
       font-size: ${({ theme }) => theme.fontSize.xxxs};
+      font-weight: 700;
+      > span.miniPrice {
+        opacity: 0.6;
+      }
       > span.shipping {
         display: flex;
         align-items: center;
-        gap: ${({ theme }) => theme.spacing[1]};
+        gap: ${({ theme }) => `calc(${theme.spacing[1]} + 2px)`};
         position: relative;
         font-size: ${({ theme }) => theme.fontSize.xxxs};
         color: ${({ theme }) => theme.colors.textSecondary};
-      }
-      .shipping-fee-info {
-        white-space: nowrap;
-        position: absolute;
-        top: 70%;
-        left: 0;
+
+        .shipping-trigger {
+          position: relative;
+          display: inline-flex;
+
+          &:hover .shipping-tooltip,
+          &:focus-within .shipping-tooltip {
+            opacity: 1;
+            transform: translateX(calc(-50% + var(--tooltip-shift-x, 0px))) translateY(0) scale(1);
+            pointer-events: auto;
+          }
+
+          &:hover .shipping-tooltip > *,
+          &:focus-within .shipping-tooltip > * {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
       }
       > span {
         color: ${({ theme }) => theme.colors.text};
@@ -84,6 +101,7 @@ const SummaryWrap = styled.div`
       margin-bottom: ${({ theme }) => theme.spacing[8]};
       > span {
         font-size: ${({ theme }) => theme.fontSize.sm};
+        font-weight: 600;
       }
     }
   }
@@ -94,10 +112,25 @@ const SummaryWrap = styled.div`
     margin-bottom: ${({ theme }) => theme.spacing[5]};
     > input {
       flex: 3;
-      padding: ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[3]};
+      min-width: 0;
+      padding: ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[5]};
       border: 1px solid ${({ theme }) => theme.tones.violet.hoverColor + '07'};
       border-radius: ${({ theme }) => theme.radii.pill};
       background-color: ${({ theme }) => theme.colors.cardBg};
+      font-size: ${({ theme }) => theme.fontSize.xxs};
+      transition: font-size 0.3s ease;
+
+      &::placeholder {
+        font-size: ${({ theme }) => theme.fontSize.xxs};
+        transition: font-size 0.3s ease;
+      }
+
+      @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+        font-size: ${({ theme }) => theme.fontSize.xxxs};
+        &::placeholder {
+          font-size: ${({ theme }) => theme.fontSize.xxxs};
+        }
+      }
     }
     > .coupon-btn {
       flex: 1;
@@ -130,39 +163,29 @@ const SummaryWrap = styled.div`
     }
   }
 `;
-
 export default function Summary() {
   const totalPrice = useCartStore((state) => state.getTotalPrice);
   const SHIPPING_FEE = 5000;
-  const [isHover, setIshover] = useState(false);
 
   return (
     <SummaryWrap>
       <div className="price">
         <h3>ORDER SUMMARY</h3>
         <p>
-          상품 합계 <span>{totalPrice() ? totalPrice().toLocaleString() : 0}원</span>
+          상품 합계{' '}
+          <span className="miniPrice">{totalPrice() ? totalPrice().toLocaleString() : 0}원</span>
         </p>
         <p>
           <span className="shipping">
             배송비{' '}
-            <BaseBtn
-              variant="ic-btn"
-              size={'16px'}
-              padding={'4px'}
-              className="shipping-info"
-              onMouseEnter={() => {
-                setIshover(true);
-              }}
-              onMouseLeave={() => {
-                setIshover(false);
-              }}
-            >
-              ?
-            </BaseBtn>
-            {isHover ? (
-              <span className="shipping-fee-info">배송비 정보: 5만원 이상 결제 시 배송비 무료</span>
-            ) : null}
+            <span className="shipping-trigger">
+              <BaseBtn variant="ic-btn" size={'16px'} padding={'4px'} className="shipping-info">
+                ?
+              </BaseBtn>
+              <BaseTooltip className="shipping-tooltip" position="bottom" mobileShift="48px">
+                <span>배송비 정보: 5만원 이상 결제 시 배송비 무료</span>
+              </BaseTooltip>
+            </span>
           </span>
           <span className="free">
             {totalPrice() && totalPrice() < 50000 ? `${SHIPPING_FEE.toLocaleString()}원` : 'Free'}

@@ -43,8 +43,8 @@ const ListControlWrap = styled.div`
 const GradientCheckbox = styled.input`
   appearance: none;
   position: relative;
-  width: clamp(12px, 1.5vw, 18px);
-  height: clamp(12px, 1.5vw, 18px);
+  width: 16px;
+  height: 16px;
   border: 1px solid ${({ theme }) => theme.checkbox.border};
   border-radius: 4px;
   cursor: pointer;
