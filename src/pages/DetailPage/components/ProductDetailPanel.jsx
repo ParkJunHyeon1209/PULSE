@@ -24,7 +24,7 @@ export default function ProductDetailPanel({
     setIsLiked((prev) => !prev);
   };
   // id 311부터는 빠진 정보가 많음
-  const logisiticsInfo = product.logisiticsInfo ?? {};
+  const logisticsInfo = product.logisticsInfo ?? {};
 
   return (
     <InfoSection>
@@ -86,17 +86,17 @@ export default function ProductDetailPanel({
       <MetaInfo>
         <p>
           <span>배송비</span>
-          <Free>{logisiticsInfo.deliveryFee ?? '-'}</Free>
+          <Free>{logisticsInfo.deliveryFee ?? '-'}</Free>
         </p>
 
         <p>
           <span>도착</span>
-          <span>{logisiticsInfo.expectedDispatch ?? '-'}</span>
+          <span>{logisticsInfo.expectedDispatch ?? '-'}</span>
         </p>
 
         <p>
           <span>할부</span>
-          <span>{logisiticsInfo.installment ?? '-'}</span>
+          <span>{logisticsInfo.installment ?? '-'}</span>
         </p>
       </MetaInfo>
 
