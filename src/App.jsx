@@ -8,10 +8,14 @@ import DetailPage from './pages/DetailPage/DetailPage';
 import LoginPage from './pages/LogInpage/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ShoppingCart from './pages/ShoppingCart/ShoppingCart';
+import CursorTrail from './components/common/CursorTrail';
+import ScrollToTop from './components/common/ScrollToTop';
 
 export default function App() {
   return (
     <>
+      <CursorTrail />
+      <ScrollToTop />
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<MainPage />} />

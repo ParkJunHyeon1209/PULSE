@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CardWish, CardBadge, CardAddBtn, CardGlow, CardShim } from './CardParts';
 import BaseSparkIcon from './BaseSparkIcon';
 import { HeartIcon, PluseIcon } from '../../assets/icons/BtnIcon';
@@ -20,6 +21,7 @@ const CardContainer = styled.article`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  cursor: pointer;
 
   &::after {
     content: '';
@@ -170,17 +172,28 @@ const categoryToneMap = {
 };
 
 export default function BaseProductCard({ product, cardMinHeight }) {
+  const navigate = useNavigate();
   const sparkTone = categoryToneMap[product.category] || 'violet';
 
   const [isLiked, setIsLiked] = useState(false);
   const handleAddToCart = useCartStore((state) => state.addToCart);
 
-  const handleClickWishlist = () => {
+  const handleClickWishlist = (e) => {
+    e.stopPropagation();
     setIsLiked((prev) => !prev);
   };
 
+  const handleClickAddCart = (e) => {
+    e.stopPropagation();
+    handleAddToCart(product);
+  };
+
+  const handleMoveDetail = () => {
+    navigate(`/product/${product.id}`);
+  };
+
   return (
-    <CardContainer $tone={sparkTone} $cardMinHeight={cardMinHeight}>
+    <CardContainer $tone={sparkTone} $cardMinHeight={cardMinHeight} onClick={handleMoveDetail}>
       <CardShim className="card-shim" aria-hidden="true" />
       {product.image ? (
         <CardBackgroundImage src={product.image} alt={product.title} />
@@ -228,7 +241,7 @@ export default function BaseProductCard({ product, cardMinHeight }) {
           flex="0 0 auto"
           icon={false}
           type="button"
-          onClick={() => handleAddToCart(product)}
+          onClick={handleClickAddCart}
         >
           <PluseIcon />
         </CardAddBtn>
