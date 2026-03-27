@@ -8,31 +8,132 @@ import CategoryHero from './CategoryHero';
 import CategoryTabs from './CategoryTabs';
 import CategorySection from './CategorySection';
 import CategoryPromoBanner from './CategoryPromoBanner';
+import useThemeStore from '../../../store/useThemeStore';
+
+// 히어로 이미지 모음
+import gearBannerDark from '../../../assets/img/banners/D_mouse&keySey.webp';
+import gearBannerLight from '../../../assets/img/banners/L_mouse&keySey.webp';
+import gearKeyboardBannerDark from '../../../assets/img/banners/D_Keyboard.webp';
+import gearKeyboardBannerLight from '../../../assets/img/banners/L_Keyboard.webp';
+import gearMouseBannerDark from '../../../assets/img/banners/D_Mouse.webp';
+import gearMouseBannerLight from '../../../assets/img/banners/L_Mouse.webp';
+import headsetBannerDark from '../../../assets/img/banners/D_Headset.webp';
+import headsetBannerLight from '../../../assets/img/banners/L_Headset.webp';
+import earphoneBannerDark from '../../../assets/img/banners/D_Earphones.webp';
+import earphoneBannerLight from '../../../assets/img/banners/L_Earphones.webp';
+import streamingBannerDark from '../../../assets/img/banners/D_Streaming.webp';
+import streamingBannerLight from '../../../assets/img/banners/L_Streaming.webp';
+import consoleBannerDark from '../../../assets/img/banners/D_ConsoleSet.webp';
+import consoleBannerLight from '../../../assets/img/banners/L_ConsoleSet.webp';
+import controllerBannerDark from '../../../assets/img/banners/D_Controller.webp';
+import controllerBannerLight from '../../../assets/img/banners/L_Controller.webp';
+import dropsBannerDark from '../../../assets/img/banners/1_dark.webp';
+import dropsBannerLight from '../../../assets/img/banners/1_light.webp';
+import dropsOnlyBannerDark from '../../../assets/img/banners/D_Drops.webp';
+import dropsOnlyBannerLight from '../../../assets/img/banners/L_Drops.webp';
+import etcBannerDark from '../../../assets/img/banners/D_DropsExtras.webp';
+import etcBannerLight from '../../../assets/img/banners/L_DropsExtras.webp';
 
 // 카테고리 메뉴 분류
 const categoryConfig = {
   gear: {
     title: 'GEAR',
     label: 'PULSE GEAR PLATFORM',
-    heroImage: 'https://i.ibb.co/WNwGd17s/banner.webp',
+    heroImage: {
+      dark: gearBannerDark,
+      light: gearBannerLight,
+    },
+    tabHeroImages: {
+      ALL: {
+        dark: gearBannerDark,
+        light: gearBannerLight,
+      },
+      KEYBOARD: {
+        dark: gearKeyboardBannerDark,
+        light: gearKeyboardBannerLight,
+      },
+      MOUSE: {
+        dark: gearMouseBannerDark,
+        light: gearMouseBannerLight,
+      },
+      GEARSET: {
+        dark: gearBannerDark,
+        light: gearBannerLight,
+      },
+    },
     tabs: ['ALL', 'KEYBOARD', 'MOUSE', 'GEARSET'],
   },
   headset: {
     title: 'HEADSET',
     label: 'PULSE HEADSET PLATFORM',
-    heroImage: 'https://i.ibb.co/WNwGd17s/banner.webp',
+    heroImage: {
+      dark: headsetBannerDark,
+      light: headsetBannerLight,
+    },
+    tabHeroImages: {
+      ALL: {
+        dark: headsetBannerDark,
+        light: headsetBannerLight,
+      },
+      HEADSET: {
+        dark: headsetBannerDark,
+        light: headsetBannerLight,
+      },
+      EARPHONE: {
+        dark: earphoneBannerDark,
+        light: earphoneBannerLight,
+      },
+      STREAMING: {
+        dark: streamingBannerDark,
+        light: streamingBannerLight,
+      },
+    },
     tabs: ['ALL', 'HEADSET', 'EARPHONE', 'STREAMING'],
   },
   console: {
     title: 'CONSOLE',
     label: 'PULSE CONSOLE PLATFORM',
-    heroImage: 'https://i.ibb.co/WNwGd17s/banner.webp',
+    heroImage: {
+      dark: consoleBannerDark,
+      light: consoleBannerLight,
+    },
+    tabHeroImages: {
+      ALL: {
+        dark: consoleBannerDark,
+        light: consoleBannerLight,
+      },
+      CONTROLLER: {
+        dark: controllerBannerDark,
+        light: controllerBannerLight,
+      },
+      CONSOLESET: {
+        dark: consoleBannerDark,
+        light: consoleBannerLight,
+      },
+    },
     tabs: ['ALL', 'CONTROLLER', 'CONSOLESET'],
   },
   drops: {
     title: 'DROPS',
     label: 'PULSE DROPS PLATFORM',
-    heroImage: 'https://i.ibb.co/WNwGd17s/banner.webp',
+    heroImage: {
+      dark: dropsBannerDark,
+      light: dropsBannerLight,
+    },
+    tabHeroImages: {
+      ALL: {
+        dark: dropsBannerDark,
+        light: dropsBannerLight,
+      },
+      DROPS: {
+        dark: dropsOnlyBannerDark,
+        light: dropsOnlyBannerLight,
+      },
+      ETC: {
+        dark: etcBannerDark,
+        light: etcBannerLight,
+      },
+    },
     tabs: ['ALL', 'DROPS', 'ETC'],
   },
 };
@@ -53,7 +154,11 @@ export default function CategoriesPage() {
   const [activeFilter, setActiveFilter] = useState('ALL');
   const [priceOrder, setPriceOrder] = useState('');
 
+  const isDarkMode = useThemeStore((state) => state.isDarkMode);
+
   const currentCategory = categoryConfig[categoryName] || categoryConfig.gear;
+  const currentHeroImage = currentCategory.tabHeroImages?.[activeTab] || currentCategory.heroImage;
+  const currentHeroBackground = isDarkMode ? currentHeroImage.dark : currentHeroImage.light;
 
   // 카테고리 API
   useEffect(() => {
@@ -523,7 +628,7 @@ export default function CategoriesPage() {
         <CategoryHero
           title={currentCategory.title}
           label={currentCategory.label}
-          backgroundImage={currentCategory.heroImage}
+          backgroundImage={currentHeroBackground}
         />
 
         <CategoryTabs tabs={currentCategory.tabs} activeTab={activeTab} onClickTab={setActiveTab} />

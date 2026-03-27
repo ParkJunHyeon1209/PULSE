@@ -7,6 +7,9 @@ import { LavStarIcon } from '../../assets/icons/BtnIcon';
 import CategorySection from './components/CategorySection';
 import CategoryHero from './components/CategoryHero';
 import CategoryPromoBanner from './components/CategoryPromoBanner';
+import useThemeStore from '../../store/useThemeStore';
+import categoryBannerDark from '../../assets/img/banners/1_dark.webp';
+import categoryBannerLight from '../../assets/img/banners/1_light.webp';
 
 const categorySections = [
   { key: 'gear', title: 'GEAR' },
@@ -18,6 +21,8 @@ const categorySections = [
 export default function CategoryPage() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  const isDarkMode = useThemeStore((state) => state.isDarkMode);
+  const heroBackgroundImage = isDarkMode ? categoryBannerDark : categoryBannerLight;
 
   useEffect(() => {
     async function loadProducts() {
@@ -40,11 +45,7 @@ export default function CategoryPage() {
   return (
     <PageContainer>
       <PageInner>
-        <CategoryHero
-          title="PULSE"
-          label="PULSE PLATFORM"
-          backgroundImage="https://i.ibb.co/WNwGd17s/banner.webp"
-        />
+        <CategoryHero title="PULSE" label="PULSE PLATFORM" backgroundImage={heroBackgroundImage} />
 
         {productsGroup.map((section, index) => (
           <SectionWrap key={section.key}>

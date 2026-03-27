@@ -103,7 +103,7 @@ const HeroSectionHead = styled.div`
   display: flex;
   justify-content: center;
 
-  /* BaseSection의 root div */
+  // BaseSection div
   & > div {
     display: flex;
     flex-direction: column;
@@ -111,7 +111,7 @@ const HeroSectionHead = styled.div`
     text-align: center;
   }
 
-  /* title(h2)를 위로 */
+  // title 위로 올리기
   & > div > h2 {
     order: 1;
     margin: 0 0 ${({ theme }) => theme.spacing[3]} 0;
@@ -124,7 +124,7 @@ const HeroSectionHead = styled.div`
     text-shadow: 0 0 18px rgba(167, 139, 250, 0.16);
   }
 
-  /* label(div)를 아래로 */
+  // label 아래로 내리기
   & > div > div {
     order: 2;
     margin-bottom: 0;
@@ -136,7 +136,7 @@ const HeroSectionHead = styled.div`
     color: ${({ theme }) => theme.colors.secondary};
   }
 
-  /* sub가 있으면 마지막 */
+  // sub 제일 아래로
   & > div > p {
     order: 3;
   }
