@@ -4,6 +4,42 @@ const breakpoints = {
   desktop: '992px',
 };
 
+const violetBtnTone = {
+  bg: 'linear-gradient(135deg,rgba(150,70,255,0.95) 0%,rgba(109,40,217,0.9) 40%,rgba(150,70,255,0.88) 100%)',
+  shadow:
+    '0 0 0 1px rgba(190,130,255,0.35),0 0 14px 4px rgba(150,70,255,0.3),0 0 36px 12px rgba(150,70,255,0.2),0 4px 20px rgba(80,40,200,0.2)',
+  hoverBg:
+    'linear-gradient(135deg,rgba(165,85,255,1) 0%,rgba(150,70,255,0.98) 40%,rgba(165,85,255,0.95) 100%)',
+  hoverShadow:
+    '0 0 0 1px rgba(93, 0, 255, 0.8),0 0 22px 7px rgba(119, 0, 255, 0.5),0 0 55px 20px rgba(150,70,255,0.2),0 8px 30px rgba(109,40,217,0.1),inset 0 0 20px rgba(190,130,255,0.05)',
+  btnActiveBg:
+    'linear-gradient(135deg,rgba(150,70,255,0.88) 0%,rgba(150,70,255,0.95) 40%,rgba(109,40,217,0.9) 100%)',
+};
+
+// 다크/라이트 공통 블루 버튼 톤 — bg/hoverBg/btnActiveBg/spark 다크·라이트 동일
+const blueBtnTone = {
+  bg: 'linear-gradient(135deg, rgba(56, 130, 255, 0.95) 0%, rgba(99, 102, 241, 0.92) 45%, rgba(56, 130, 255, 0.88) 100%)',
+  hoverBg:
+    'linear-gradient(135deg, rgba(96, 165, 250, 1) 0%, rgba(129, 140, 248, 0.98) 45%, rgba(96, 165, 250, 0.95) 100%)',
+  btnActiveBg:
+    'linear-gradient(135deg, rgba(56, 130, 255, 0.95) 0%, rgba(99, 102, 241, 0.92) 45%, rgba(56, 130, 255, 0.88) 100%)',
+  spark: '0 0 8px rgba(255,255,255,0.8), 0 0 18px rgba(147,197,253,0.8)',
+};
+
+// 카드 위 + 버튼(cardAdd) 및 다크 secondary 버튼에서 공통으로 사용하는 값
+const darkSecondaryBtn = {
+  bg: 'rgba(20,10,60,0.65)',
+  border: 'rgba(167,139,250,0.38)',
+  color: 'rgba(200,180,255,0.9)',
+  shadow:
+    '0 0 0 1px rgba(124,58,237,0.15),0 0 12px 3px rgba(124,58,237,0.18),inset 0 1px 0 rgba(255,255,255,0.08)',
+  hoverBg: 'rgba(49,15,70,0.7)',
+  hoverBorder: 'rgba(167,139,250,0.75)',
+  hoverColor: 'rgba(220,200,255,1)',
+  hoverShadow:
+    '0 0 0 1px rgba(167,139,250,0.45),0 0 20px 6px rgba(150,70,255,0.3),0 0 45px 15px rgba(109,40,217,0.15),inset 0 1px 0 rgba(255,255,255,0.12)',
+};
+
 const baseTokens = {
   effects: {
     // blur = backdrop-filter 강도
@@ -41,16 +77,68 @@ const baseTokens = {
     // badge, promise card title, 작은 아이콘 상태색
     new: '#34d399', // 신규/활성 상태 배지, 민트 포인트
     // hot 상태는 theme.colors.accent 사용
-    limited: '#fbbf24', // 한정/마감 임박 배지, 골드 포인트
+    col: '#fbbf24', // 한정/마감 임박 배지, 골드 포인트
+    // limited: '#fbbf24', // 한정/마감 임박 배지, 골드 포인트
     info: '#38bdf8', // 정보성 배지, 블루 포인트
     mint: '#6ee7b7', // 보조 민트 장식, 스파크/아이콘 보조색
     rose: '#f9a8d4', // 보조 핑크 장식, 카드 장식/스파크 보조색
-    goldSoft: '#fcd34d', // 연한 골드 장식, 보조 강조선/잔광
+    // goldSoft: '#fcd34d', // 연한 골드 장식, 보조 강조선/잔광
+  },
+  cStatus: {
+    // badge, promise card title, 작은 아이콘 상태색
+    col: { ...violetBtnTone },
+    mint: {
+      bg: 'linear-gradient(135deg,rgba(14,168,112,0.32) 0%,rgba(8,140,90,0.28) 40%,rgba(14,168,112,0.24) 100%)',
+      // bg: 'linear-gradient(135deg,rgba(14,168,112,0.92) 0%,rgba(8,140,90,0.88) 40%,rgba(14,168,112,0.84) 100%)',
+      shadow:
+        '0 0 0 1px rgba(52,211,153,0.28),0 0 12px 4px rgba(16,185,129,0.22),0 0 28px 10px rgba(16,185,129,0.12),0 4px 16px rgba(8,140,90,0.18)',
+      hoverBg:
+        'linear-gradient(135deg,rgba(18,185,125,0.96) 0%,rgba(14,168,112,0.92) 40%,rgba(18,185,125,0.88) 100%)',
+      hoverShadow:
+        '0 0 0 1px rgba(16,185,129,0.5),0 0 18px 6px rgba(52,211,153,0.32),0 0 40px 14px rgba(16,185,129,0.14),0 6px 22px rgba(8,140,90,0.12)',
+      btnActiveBg:
+        'linear-gradient(135deg,rgba(10,148,98,0.90) 0%,rgba(14,168,112,0.94) 40%,rgba(8,140,90,0.88) 100%)',
+    },
+    rose: {
+      bg: 'linear-gradient(135deg,rgba(185,40,70,0.38) 0%,rgba(165,25,55,0.34) 40%,rgba(185,40,70,0.34) 100%)',
+      // bg: 'linear-gradient(135deg,rgba(185,40,70,0.88) 0%,rgba(165,25,55,0.84) 40%,rgba(185,40,70,0.80) 100%)',
+      shadow:
+        '0 0 0 1px rgba(244,100,130,0.22),0 0 10px 3px rgba(220,60,90,0.18),0 0 24px 8px rgba(220,60,90,0.1),0 4px 14px rgba(165,25,55,0.15)',
+      hoverBg:
+        'linear-gradient(135deg,rgba(205,50,80,0.94) 0%,rgba(185,40,70,0.90) 40%,rgba(205,50,80,0.86) 100%)',
+      hoverShadow:
+        '0 0 0 1px rgba(220,60,90,0.45),0 0 16px 5px rgba(244,100,130,0.28),0 0 36px 12px rgba(220,60,90,0.12),0 6px 20px rgba(165,25,55,0.1)',
+      btnActiveBg:
+        'linear-gradient(135deg,rgba(170,35,62,0.86) 0%,rgba(185,40,70,0.90) 40%,rgba(165,25,55,0.84) 100%)',
+    },
+    indigo: {
+      bg: 'linear-gradient(135deg,rgba(80,85,210,0.88) 0%,rgba(65,68,190,0.84) 40%,rgba(80,85,210,0.80) 100%)',
+      shadow:
+        '0 0 0 1px rgba(148,160,240,0.22),0 0 10px 3px rgba(99,102,241,0.18),0 0 24px 8px rgba(99,102,241,0.1),0 4px 14px rgba(65,68,190,0.15)',
+      hoverBg:
+        'linear-gradient(135deg,rgba(95,100,228,0.94) 0%,rgba(80,85,210,0.90) 40%,rgba(95,100,228,0.86) 100%)',
+      hoverShadow:
+        '0 0 0 1px rgba(99,102,241,0.45),0 0 16px 5px rgba(148,160,240,0.28),0 0 36px 12px rgba(99,102,241,0.12),0 6px 20px rgba(65,68,190,0.1)',
+      btnActiveBg:
+        'linear-gradient(135deg,rgba(68,72,195,0.86) 0%,rgba(80,85,210,0.90) 40%,rgba(65,68,190,0.84) 100%)',
+    },
+    gold: {
+      bg: 'linear-gradient(135deg,rgba(222,88,12,0.62) 0%,rgba(194,65,8,0.48) 40%,rgba(222,88,12,0.54) 100%)',
+      // bg: 'linear-gradient(135deg,rgba(222,88,12,0.92) 0%,rgba(194,65,8,0.88) 40%,rgba(222,88,12,0.84) 100%)',
+      shadow:
+        '0 0 0 1px rgba(251,146,60,0.38),0 0 12px 4px rgba(234,88,12,0.32),0 0 28px 10px rgba(234,88,12,0.22),0 4px 16px rgba(194,65,8,0.28)',
+      hoverBg:
+        'linear-gradient(135deg,rgba(237,100,18,0.96) 0%,rgba(222,88,12,0.92) 40%,rgba(237,100,18,0.88) 100%)',
+      hoverShadow:
+        '0 0 0 1px rgba(234,88,12,0.5),0 0 18px 6px rgba(251,146,60,0.32),0 0 40px 14px rgba(234,88,12,0.14),0 6px 22px rgba(194,65,8,0.12)',
+      btnActiveBg:
+        'linear-gradient(135deg,rgba(180,58,8,0.90) 0%,rgba(222,88,12,0.94) 40%,rgba(194,65,8,0.88) 100%)',
+    },
   },
 
   // 라이트/다크 공통 색상
   colors: {
-    wColor: '#fff',
+    wColor: '#eeeeff',
     secondary: '#c4b5fd',
     primaryRgb: '124,58,237',
     accentRgb: '236,72,153',
@@ -63,15 +151,9 @@ const baseTokens = {
   },
   // 라이트/다크 공통 그라디언트
   gradients: {
-    // textViolet = 바이올렛 계열 텍스트 그라디언트
-    textViolet: 'linear-gradient(135deg, #6d28d9, #5b21b6)',
-    // statNum = 숫자 그라디언트
-    statNum: 'linear-gradient(135deg, #c4b5fd, #818cf8, #60a5fa)',
-    // 텍스트 그라디언트
+    cardTextG: 'linear-gradient(135deg, #c4b5fd, #9c7bff, #6d3cff)',
     // violetPink: 'linear-gradient(135deg, #6d28d9, #ec4899)',
     violetBlue: 'linear-gradient(135deg, #6d28d9, #3b82f6)',
-    // 히어로 베너 그라디언트
-    heroSpectrum: 'linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #f472b6 100%)',
   },
   // input 공통 state 토큰
   input: {
@@ -85,6 +167,20 @@ const baseTokens = {
   btn: {
     // overlay = primary 버튼 공통 상단 하이라이트
     overlay: 'linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, transparent 55%)',
+    // cardWish = 카드 위 찜 버튼 전용 토큰 — 다크 wish 값 고정 (다크/라이트 동일)
+    cardWish: {
+      bg: 'rgba(0,0,0,0.35)',
+      border: 'rgba(255,255,255,0.1)',
+      color: 'rgba(255,255,255,0.55)',
+      hoverBg: 'rgba(236,72,153,0.2)',
+      hoverBorder: 'rgba(236,72,153,0.3)',
+      hoverColor: '#f472b6',
+      activeBg: 'rgba(236,72,153,0.18)',
+      activeBorder: 'rgba(236,72,153,0.35)',
+      activeColor: '#ec4899',
+    },
+    // cardAdd = 카드 위 장바구니 버튼 전용 토큰 — 다크 secondary 값 고정 (다크/라이트 동일)
+    cardAdd: { ...darkSecondaryBtn },
   },
   // cardLine = BaseCard 하단 컬러 라인
   cardLine: {
@@ -201,14 +297,11 @@ export const darkTheme = {
     navBg: 'rgba(10, 5, 24, 0.88)', //rgba(6,6,14,0.78)
     // promoBg = 인풋 tabs 호버색
     promoBg: 'rgba(9, 6, 19, 0.6)',
-    // 인풋 투명배경
-    transBg: 'transparent',
-
     surface: 'rgba(255,255,255,0.04)',
 
     // 반투명 카드 배경/테두리 색상
     cardBg: 'rgba(255,255,255,0.04)',
-    cardBgGrad: 'linear-gradient(180deg, transparent 0%, rgba(9, 6, 19, 0.8) 100%)',
+    cardBgGrad: 'linear-gradient(180deg, transparent 0%, rgba(12,8,32,3) 100%)',
     cardBgGradH: 'linear-gradient(180deg, transparent 0%, rgba(9, 6, 19, 1) 100%)',
     cardBorder: 'rgba(255,255,255,0.08)',
     modalBorder: 'rgba(167,139,250,.16)',
@@ -255,16 +348,9 @@ export const darkTheme = {
   },
   gradients: {
     ...baseTokens.gradients,
-    // textLav = 라벤더 계열 텍스트 그라디언트
-    textLav: 'linear-gradient(135deg, #c4b5fd, #a78bfa)',
-    textLavender: 'linear-gradient(135deg, #c4b5fd, #9c7bff, #6d3cff)',
-    // textLavBlue = 라벤더에서 블루로 이어지는 텍스트 그라디언트
-    textLavBlue: 'linear-gradient(135deg, #c4b5fd, #93c5fd, #a78bfa)',
     // lavBlue = 라벤더에서 블루로 가는 그라디언트
     lavBlue: 'linear-gradient(90deg, #a78bfa, #60a5fa)',
     Headline: 'linear-gradient(90deg, #a78bfa, #ec4899)',
-    // lavBlueDiag = 대각선 라벤더-블루 그라디언트
-    lavBlueDiag: 'linear-gradient(135deg, #a78bfa, #60a5fa)',
     navActive: 'linear-gradient(90deg, #a78bfa, #7c3aed)',
     bgMesh: `
       radial-gradient(ellipse 60% 45% at 1% 55%,rgba(100,40,220,0.22) 0%,transparent 62%),
@@ -325,15 +411,7 @@ export const darkTheme = {
       focusShadow: '0 1px 0 0 rgba(167, 139, 250, 0.35)',
       iconHover: '#a78bfa',
       // btn
-      bg: 'linear-gradient(135deg,rgba(150,70,255,0.95) 0%,rgba(109,40,217,0.9) 40%,rgba(150,70,255,0.88) 100%)',
-      shadow:
-        '0 0 0 1px rgba(190,130,255,0.35),0 0 14px 4px rgba(150,70,255,0.3),0 0 36px 12px rgba(150,70,255,0.2),0 4px 20px rgba(80,40,200,0.2)',
-      hoverBg:
-        'linear-gradient(135deg,rgba(165,85,255,1) 0%,rgba(150,70,255,0.98) 40%,rgba(165,85,255,0.95) 100%)',
-      hoverShadow:
-        '0 0 0 1px rgba(93, 0, 255, 0.8),0 0 22px 7px rgba(119, 0, 255, 0.5),0 0 55px 20px rgba(150,70,255,0.2),0 8px 30px rgba(109,40,217,0.1),inset 0 0 20px rgba(190,130,255,0.05)',
-      btnActiveBg:
-        'linear-gradient(135deg,rgba(150,70,255,0.95) 0%,rgba(109,40,217,0.9) 40%,rgba(150,70,255,0.88) 100%)',
+      ...violetBtnTone,
       spark: '0 0 8px rgba(255,255,255,0.8), 0 0 18px rgba(220,180,255,0.7)',
     },
     blue: {
@@ -356,21 +434,15 @@ export const darkTheme = {
       focusShadow: '0 1px 0 0 rgba(56, 130, 255, 0.3)',
       iconHover: '#60a5fa',
       // btn
-      bg: 'linear-gradient(135deg, rgba(56, 130, 255, 0.95) 0%, rgba(99, 102, 241, 0.92) 45%, rgba(56, 130, 255, 0.88) 100%)',
+      ...blueBtnTone,
       shadow:
         '0 0 0 1px rgba(147, 197, 253, 0.4), 0 0 14px 4px rgba(96, 165, 250, 0.4), 0 0 36px 12px rgba(99, 102, 241, 0.2), 0 4px 20px rgba(56, 100, 240, 0.38)',
-      hoverBg:
-        'linear-gradient(135deg, rgba(96, 165, 250, 1) 0%, rgba(129, 140, 248, 0.98) 45%, rgba(96, 165, 250, 0.95) 100%)',
       hoverShadow:
         '0 0 0 1.5px rgba(108, 200, 250, 0.5), 0 0 22px 7px rgba(31, 132, 255, 0.4), 0 0 55px 20px rgba(99, 102, 241, 0.3), 0 8px 30px rgba(56, 100, 240, 0.1)',
-      btnActiveBg:
-        'linear-gradient(135deg, rgba(56, 130, 255, 0.95) 0%, rgba(99, 102, 241, 0.92) 45%, rgba(56, 130, 255, 0.88) 100%)',
-      spark: '0 0 8px rgba(255,255,255,0.8), 0 0 18px rgba(147,197,253,0.8)',
     },
   },
   iconBtn: {
     // auth 소셜 로그인 버튼, 원형 아이콘 액션 버튼 같은 UI에 사용
-    ...baseTokens.iconBtn,
     socialBg: 'rgba(167, 139, 250, 0.05)',
     socialBorder: 'rgba(167, 139, 250, 0.15)',
     socialColor: 'rgba(167, 139, 250, 0.5)',
@@ -378,18 +450,8 @@ export const darkTheme = {
     socialHoverBorder: 'rgba(167, 139, 250, 0.4)',
     socialHoverColor: '#a78bfa',
     socialHoverShadow: '0 6px 20px rgba(124, 58, 237, 0.2)',
-    // 좋아요 아이콘
-    wish: {
-      bg: 'rgba(0,0,0,.35)',
-      border: 'rgba(255,255,255,.1)',
-      color: 'rgba(255,255,255,.55)',
-      hoverBg: 'rgba(236,72,153,.2)',
-      hoverBorder: 'rgba(236,72,153,.3)',
-      hoverColor: '#f472b6',
-      activeBg: 'rgba(236,72,153,.18)',
-      activeBorder: 'rgba(236,72,153,.35)',
-      activeColor: '#ec4899',
-    },
+    // 좋아요 아이콘 — cardWish 토큰과 동일, baseTokens에서 참조
+    wish: { ...baseTokens.btn.cardWish },
   },
   tabs: {
     // Tabs 컴포넌트 공용 토큰
@@ -409,16 +471,14 @@ export const darkTheme = {
   btn: {
     // Button 컴포넌트 공용 토큰
     ...baseTokens.btn,
-    secondaryBg: 'rgba(20,10,60,0.65)',
-    secondaryBorder: 'rgba(167,139,250,0.38)',
-    secondaryColor: 'rgba(200,180,255,0.9)',
-    secondaryShadow:
-      '0 0 0 1px rgba(124,58,237,0.15),0 0 12px 3px rgba(124,58,237,0.18),inset 0 1px 0 rgba(255,255,255,0.08)',
-    secondaryHoverBg: 'rgba(49,15,70,0.7)',
-    secondaryHoverBorder: 'rgba(167,139,250,0.75)',
-    secondaryHoverColor: 'rgba(220,200,255,1)',
-    secondaryHoverShadow:
-      '0 0 0 1px rgba(167,139,250,0.45),0 0 20px 6px rgba(150,70,255,0.3),0 0 45px 15px rgba(109,40,217,0.15),inset 0 1px 0 rgba(255,255,255,0.12)',
+    secondaryBg: darkSecondaryBtn.bg,
+    secondaryBorder: darkSecondaryBtn.border,
+    secondaryColor: darkSecondaryBtn.color,
+    secondaryShadow: darkSecondaryBtn.shadow,
+    secondaryHoverBg: darkSecondaryBtn.hoverBg,
+    secondaryHoverBorder: darkSecondaryBtn.hoverBorder,
+    secondaryHoverColor: darkSecondaryBtn.hoverColor,
+    secondaryHoverShadow: darkSecondaryBtn.hoverShadow,
   },
   // toggle.thumb = 테마 토글 핸들(원형 버튼)
   // toggle.track = 토글 pill 트랙 자체
@@ -498,19 +558,20 @@ export const darkTheme = {
     ci5: 'linear-gradient(145deg, #1e0638 0%, #0d1a50 60%, #040c28 100%)', // 카드 안쪽/보조 카드 5
   },
   // badge = 태그 버튼 배지 토큰 (limited / hot / collab / new)
-  // badge: {
-  //   col: { bg: 'rgba(124,58,237,.22)', border: 'rgba(124,58,237,.38)', color: '#c4b5fd' },
-  //   hot: { bg: 'rgba(236,72,153,.18)', border: 'rgba(236,72,153,.38)', color: '#f9a8d4' },
-  //   best: { bg: 'rgba(251,191,36,.13)', border: 'rgba(251,191,36,.3)', color: '#fbbf24' },
-  //   new: { bg: 'rgba(52,211,153,.12)', border: 'rgba(52,211,153,.3)', color: '#6ee7b7' },
-  // },
   badge: {
-    col: { bg: 'rgba(42, 0, 116, 0.22)', border: 'rgba(124,58,237,.38)', color: '#6e4aff' },
-    hot: { bg: 'rgba(97, 0, 48, 0.18)', border: 'rgba(236,72,153,.38)', color: '#ff008c' },
-    best: { bg: 'rgba(59, 43, 0, 0.13)', border: 'rgba(251,191,36,.3)', color: '#ffb700' },
-    new: { bg: 'rgba(0, 41, 26, 0.12)', border: 'rgba(52,211,153,.3)', color: '#00ff99' },
+    col: { bg: 'rgba(124,58,237,.22)', border: 'rgba(124,58,237,.38)', color: '#c4b5fd' },
+    hot: { bg: 'rgba(236,72,153,.18)', border: 'rgba(236,72,153,.38)', color: '#f9a8d4' },
+    best: { bg: 'rgba(251,191,36,.13)', border: 'rgba(251,191,36,.3)', color: '#fbbf24' },
+    new: { bg: 'rgba(52,211,153,.12)', border: 'rgba(52,211,153,.3)', color: '#6ee7b7' },
     info: { bg: 'rgba(0, 68, 153, 0.2)', border: 'rgba(56,189,248,.38)', color: '#38bdf8' },
   },
+  // badge: {
+  //   col: { bg: 'rgba(42, 0, 116, 0.22)', border: 'rgba(124,58,237,.38)', color: '#6e4aff' },
+  //   hot: { bg: 'rgba(97, 0, 48, 0.18)', border: 'rgba(236,72,153,.38)', color: '#ff008c' },
+  //   best: { bg: 'rgba(59, 43, 0, 0.13)', border: 'rgba(251,191,36,.3)', color: '#ffb700' },
+  //   new: { bg: 'rgba(0, 41, 26, 0.12)', border: 'rgba(52,211,153,.3)', color: '#00ff99' },
+  //   info: { bg: 'rgba(0, 68, 153, 0.2)', border: 'rgba(56,189,248,.38)', color: '#38bdf8' },
+  // },
   cart: {
     ...baseTokens.cart,
     topBorder: 'rgba(167,139,250,.3)',
@@ -526,11 +587,10 @@ export const lightTheme = {
     background: '#ece9ff', // 기존 색상 #e4e0ff
     navBg: 'rgba(236,233,255,0.92)',
     promoBg: 'rgba(228,224,255,1)',
-    transBg: 'transparent',
     surface: 'rgba(124,58,237,0.08)',
     cardBg: 'rgba(255,255,255,0.7)',
-    cardBgGrad: 'linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.5) 100%)',
-    cardBgGradH: 'linear-gradient(180deg, transparent 0%, rgba(255,255,255,1) 100%)',
+    cardBgGrad: 'linear-gradient(180deg, transparent 20%, rgba(49, 49, 49, 0.7) 90%)',
+    cardBgGradH: 'linear-gradient(180deg, transparent 10%, rgba(49, 49, 49, 0.9) 100%)',
     cardBorder: 'rgba(124,58,237,0.18)',
     modalBorder: 'rgba(124,58,237,.18)',
     modalBg: 'rgba(252,250,255,.97)',
@@ -560,14 +620,9 @@ export const lightTheme = {
   },
   gradients: {
     ...baseTokens.gradients,
-    textLav: 'linear-gradient(135deg, #c4b5fd, #7c3aed)',
-    textLavender: 'linear-gradient(135deg, #a48eff, #7c3aed)',
-
-    textLavBlue: 'linear-gradient(135deg, #c4b5fd, #93c5fd, #7c3aed)',
     lavBlue: 'linear-gradient(90deg, #7c3aed, #60a5fa)',
     // lavPink = 라벤더에서 핑크로 가는 그라디언트
     Headline: 'linear-gradient(90deg, #7c3aed, #ec4899)',
-    lavBlueDiag: 'linear-gradient(135deg, #7c3aed, #60a5fa)',
     navActive: 'linear-gradient(90deg, #7c3aed, #6d28d9)',
     bgMesh: `
       radial-gradient(ellipse 55% 45% at 18% 55%,rgba(100,40,220,0.06) 0%,transparent 62%),
@@ -628,7 +683,8 @@ export const lightTheme = {
       hoverBg: 'linear-gradient(135deg,rgba(139,70,255,1),rgba(110,45,240,0.98))',
       hoverShadow:
         '0 0 0 1px rgba(180,140,255,0.4),0 0 20px 6px rgba(140,80,255,0.2),0 8px 28px rgba(110,30,230,0.05)',
-      btnActiveBg: 'radial-gradient(ellipse at 50% 30%, #a083f7 0%, #6d28d9 48%, #27009d 100%)',
+      btnActiveBg:
+        'linear-gradient(135deg,rgba(150,70,255,0.88) 0%,rgba(150,70,255,0.95) 40%,rgba(109,40,217,0.9) 100%)',
       spark: '0 0 8px rgba(255,255,255,0.8), 0 0 18px rgba(220,180,255,0.7)',
     },
     blue: {
@@ -651,19 +707,13 @@ export const lightTheme = {
       focusShadow: '0 1px 0 0 rgba(56, 130, 255, 0.3)',
       iconHover: '#3b82f6',
       // btn
-      bg: 'linear-gradient(135deg, rgba(56, 130, 255, 0.95) 0%, rgba(99, 102, 241, 0.92) 45%, rgba(56, 130, 255, 0.88) 100%)',
+      ...blueBtnTone,
       shadow: '0 0 0 0.8px rgba(147, 197, 253, 0.4), 0 4px 16px rgba(56, 130, 255, 0.25)',
-      hoverBg:
-        'linear-gradient(135deg, rgba(96, 165, 250, 1) 0%, rgba(129, 140, 248, 0.98) 45%, rgba(96, 165, 250, 0.95) 100%)',
       hoverShadow:
         '0 0 0 1px rgba(147, 197, 253, 0.4), 0 0 20px rgba(56, 130, 255, 0.2), 0 8px 24px rgba(56, 130, 255, 0.05)',
-      btnActiveBg:
-        'linear-gradient(135deg, rgba(56, 130, 255, 0.95) 0%, rgba(99, 102, 241, 0.92) 45%, rgba(56, 130, 255, 0.88) 100%)',
-      spark: '0 0 8px rgba(255,255,255,0.8), 0 0 18px rgba(147,197,253,0.8)',
     },
   },
   iconBtn: {
-    ...baseTokens.iconBtn,
     socialBg: '#ffffffcc',
     socialBorder: 'rgba(124, 58, 237, 0.15)',
     socialColor: 'rgba(45, 27, 105, 0.7)',

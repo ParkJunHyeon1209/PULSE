@@ -135,7 +135,7 @@ const CardTextGroup = styled.div`
 
 const CardTitle = styled.h3`
   margin: 0;
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ theme }) => theme.colors.wColor};
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: 800;
   line-height: 1;
@@ -147,14 +147,14 @@ const CardTitle = styled.h3`
 
 const CardMeta = styled.p`
   margin: 6px 0 0;
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: ${({ theme }) => theme.colors.secondary + 'cc'};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
 `;
 
 const CardPrice = styled.strong`
   display: inline-block;
   margin-top: ${({ theme }) => theme.spacing[3]};
-  background: ${({ theme }) => theme.gradients.textLavender};
+  background: ${({ theme }) => theme.gradients.cardTextG};
   -webkit-background-clip: text;
   background-clip: text;
   font-family: ${({ theme }) => theme.fontFamily.mono};
@@ -208,7 +208,7 @@ export default function BaseProductCard({ product, cardMinHeight }) {
 
       <CardTop>
         {product.tag ? (
-          <CardBadge variant="tag" tone={BADGE_TONE[product.tag]} icon={false} height="32px">
+          <CardBadge variant="c-badge" tone={BADGE_TONE[product.tag]} icon={false} height="32px">
             {product.tag}
           </CardBadge>
         ) : (
