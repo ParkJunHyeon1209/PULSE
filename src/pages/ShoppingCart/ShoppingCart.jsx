@@ -68,8 +68,9 @@ const CartList = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing[10]};
   justify-content: ${({ isEmpty }) => (isEmpty ? 'center' : 'flex-start')};
   align-items: ${({ isEmpty }) => (isEmpty ? 'center' : 'stretch')};
-  border: 1px solid ${({ theme }) => theme.tones.violet.hoverColor + '08'};
+  border: 1px solid ${({ theme }) => theme.checkbox.border + '35'};
   border-radius: ${({ theme }) => theme.radii.lg};
+  box-shadow: 0 1px 20px ${({ theme }) => theme.checkbox.border + '20'};
   overflow: hidden;
 `;
 

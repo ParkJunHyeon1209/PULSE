@@ -72,7 +72,7 @@ const GradientCheckbox = styled.input`
 export default function ListControl() {
   const cart = useCartStore((state) => state.cart);
   const removeSelected = useCartStore((state) => state.removeSelected);
-  const handleAllChange = useCartStore((state) => state.handleAllChange);
+  const handleAllChange = useCartStore((state) => state.toggleAllChecked);
   const isAllChecked = cart.every((item) => item.checked);
   const resetCart = useCartStore((state) => state.clearCart);
 

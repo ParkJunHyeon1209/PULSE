@@ -19,7 +19,9 @@ const SummaryWrap = styled.div`
   top: 120px;
   flex: 1;
   background-color: ${({ theme }) => theme.colors.cardBg};
+  border: 1px solid ${({ theme }) => theme.checkbox.border + '35'};
   border-radius: ${({ theme }) => theme.radii.lg};
+  box-shadow: 0 1px 20px ${({ theme }) => theme.checkbox.border + '20'};
   backdrop-filter: ${({ theme }) => theme.effects.blurPromo};
 
   .shipping-info {
@@ -183,7 +185,9 @@ export default function Summary() {
                 ?
               </BaseBtn>
               <BaseTooltip className="shipping-tooltip" position="bottom" mobileShift="48px">
-                <span>배송비 정보: 5만원 이상 결제 시 배송비 무료</span>
+                <span>배송비 정보:</span>
+                <span> 5만원 이상 결제 시 배송비 무료</span>
+                <span>5만원 미만 5,000원</span>
               </BaseTooltip>
             </span>
           </span>

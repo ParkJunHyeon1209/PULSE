@@ -4,18 +4,132 @@ import styled from '@emotion/styled';
 import { DelIcon, MinusIcon, QtyPlusIcon } from '../../../assets/icons/BtnIcon';
 import BaseBtn from '../../../components/common/BaseBtn';
 import { CATEGORY_TONE } from '../../../utils/toneMap';
+import useThemeStore from '../../../store/useThemeStore';
+import useOverlayStore from '../../../store/useOverlayStore';
+import BaseModal from '../../../components/common/BaseModal';
 
-const List = styled.ul``;
+function AlertModal() {
+  const isOpen = useOverlayStore((state) => Boolean(state.modals.alert));
+  const closeModal = useOverlayStore((state) => state.closeModal);
+  return (
+    <BaseModal
+      isOpen={isOpen}
+      label="PULSE PLATFORM"
+      onClose={() => closeModal('alert')}
+      title="최소 1개 이상 선택해주세요."
+    >
+      <p>
+        최소 1개 이상의 상품이 필요합니다. 상품을 <br />
+        제거하려면 삭제 버튼을 이용해 주세요.
+      </p>
+    </BaseModal>
+  );
+}
+
+export default function ListContent() {
+  const cart = useCartStore((state) => state.cart);
+  const removeCart = useCartStore((state) => state.removeCart);
+  const onChange = useCartStore((state) => state.toggleItemChecked);
+  const decreaseQuantity = useCartStore((state) => state.decreaseQuantity);
+  const increaseQuantity = useCartStore((state) => state.addToCart);
+  const isDarkMode = useThemeStore((state) => state.isDarkMode);
+
+  return (
+    <List isDarkMode={isDarkMode}>
+      {cart.map((item) => (
+        <ListItem
+          key={`${item.id}${item.optionSummary ? `-${item?.optionSummary}` : null}`}
+          $isSelected={item.checked}
+        >
+          <div className="content-info">
+            <GradientCheckbox
+              type="checkbox"
+              checked={item.checked}
+              onChange={() => onChange(item)}
+            />
+            <img src={item.image} alt={item.title} />
+            <div className="primary-info">
+              <div className="top-row">
+                <CategoryBadge
+                  variant="badge"
+                  tone={CATEGORY_TONE[item.category] ?? 'col'}
+                  icon={false}
+                  height="auto"
+                  flex="0 0 auto"
+                  padding="6px 12px"
+                >
+                  {item.type}
+                </CategoryBadge>
+                {/* <button className="del-btn" onClick={() => removeCart(item.id)}>
+                  <DelIcon />
+                </button> */}
+
+                <CloseBtn
+                  variant="ic-btn"
+                  onClick={() => removeCart(item)}
+                  icon={false}
+                  flex="0"
+                  size="28px"
+                  aria-label="닫기"
+                >
+                  <DelIcon size={14} />
+                </CloseBtn>
+              </div>
+              <div className="title-group">
+                <h3 className="item-title">{item.title}</h3>
+                {item.optionSummary ? (
+                  <p>
+                    {item.optionSummary}
+                    {item.isCareChecked ? ` / ${item.careTitle}` : null}
+                  </p>
+                ) : (
+                  <p>{item.meta}</p>
+                )}
+              </div>
+              <div className="bottom-row">
+                <p>{(item.price * item.quantity).toLocaleString()}원</p>
+                <div className="qty">
+                  <button onClick={() => decreaseQuantity(item)}>
+                    <MinusIcon />
+                  </button>
+                  <span>{item.quantity}</span>
+                  <button onClick={() => increaseQuantity(item)}>
+                    <QtyPlusIcon />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ListItem>
+      ))}
+      <AlertModal />
+    </List>
+  );
+}
+
+const List = styled.ul`
+  background-color: ${({ isDarkMode }) => (isDarkMode ? null : '#ffffff30')};
+`;
 
 const ListItem = styled.li`
   padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[6]};
   display: flex;
+  position: relative;
   background-color: ${(props) =>
     props.$isSelected ? props.theme.colors.primary + '09' : 'inherit'};
-  border-left: ${(props) =>
-    props.$isSelected ? `2px solid ${props.theme.colors.primary}` : 'none'};
   &:not(:last-child) {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+    border-bottom: 1px solid ${({ theme }) => theme.checkbox.border + '35'};
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background-color: ${({ theme }) => theme.colors.primary};
+    opacity: ${(props) => (props.$isSelected ? '1' : '0')};
   }
 
   > .content-info {
@@ -231,72 +345,3 @@ const GradientCheckbox = styled.input`
     color: white;
   }
 `;
-
-export default function ListContent() {
-  const cart = useCartStore((state) => state.cart);
-  const removeCart = useCartStore((state) => state.removeCart);
-  const onChange = useCartStore((state) => state.onChange);
-  const decreaseQuantity = useCartStore((state) => state.decreaseQuantity);
-  const increaseQuantity = useCartStore((state) => state.addToCart);
-
-  return (
-    <List>
-      {cart.map((item) => (
-        <ListItem key={item.id} $isSelected={item.checked}>
-          <div className="content-info">
-            <GradientCheckbox
-              type="checkbox"
-              checked={item.checked}
-              onChange={() => onChange(item.id)}
-            />
-            <img src={item.image} alt={item.title} />
-            <div className="primary-info">
-              <div className="top-row">
-                <CategoryBadge
-                  variant="badge"
-                  tone={CATEGORY_TONE[item.category] ?? 'col'}
-                  icon={false}
-                  height="auto"
-                  flex="0 0 auto"
-                  padding="6px 12px"
-                >
-                  {item.type}
-                </CategoryBadge>
-                {/* <button className="del-btn" onClick={() => removeCart(item.id)}>
-                  <DelIcon />
-                </button> */}
-
-                <CloseBtn
-                  variant="ic-btn"
-                  onClick={() => removeCart(item.id)}
-                  icon={false}
-                  flex="0"
-                  size="28px"
-                  aria-label="닫기"
-                >
-                  <DelIcon size={14} />
-                </CloseBtn>
-              </div>
-              <div className="title-group">
-                <h3 className="item-title">{item.title}</h3>
-                {item.meta ? <p>{item.meta}</p> : null}
-              </div>
-              <div className="bottom-row">
-                <p>{(item.price * item.quantity).toLocaleString()}원</p>
-                <div className="qty">
-                  <button onClick={() => decreaseQuantity(item)}>
-                    <MinusIcon />
-                  </button>
-                  <span>{item.quantity}</span>
-                  <button onClick={() => increaseQuantity(item)}>
-                    <QtyPlusIcon />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </ListItem>
-      ))}
-    </List>
-  );
-}
