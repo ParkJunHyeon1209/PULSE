@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import BaseSection from '../../../components/common/BaseSection';
 import BaseProductCard from '../../../components/common/BaseProductCard';
+import { useEffect, useMemo, useState } from 'react';
+import { getColProducts } from '../../../data/mainApi';
 
 const SectionWrap = styled.section`
   display: grid;
@@ -9,9 +11,18 @@ const SectionWrap = styled.section`
 `;
 
 const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
+  overflow-x: scroll;
   gap: ${({ theme }) => theme.spacing[5]};
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+
+  > article {
+    flex-shrink: 0;
+    flex-basis: 250px;
+  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -22,38 +33,28 @@ const Grid = styled.div`
   }
 `;
 
-const items = [
-  {
-    title: 'PULSE Pro H1',
-    meta: '7.1ch 서라운드 + 초저지연 ANC',
-    price: 249000,
-    badge: 'NEW',
-    category: 'headset',
-  },
-  {
-    title: 'PULSE Key K2',
-    meta: '광축 스위치 + 커스텀 RGB 모드',
-    price: 179000,
-    badge: 'HOT',
-    category: 'gear',
-  },
-  {
-    title: 'PULSE Click M3',
-    meta: '26K DPI 센서 + 초경량 58g',
-    price: 189000,
-    badge: 'BEST',
-    category: 'console',
-  },
-  {
-    title: 'PULSE SETUP',
-    meta: '아티스트 시그니처 한정 50개',
-    price: 299000,
-    badge: 'COLLAB',
-    category: 'bundle',
-  },
-];
-
 export default function ProductsSec() {
+  const [productsList, setProductsList] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await getColProducts();
+        setProductsList(data);
+      } catch (error) {
+        console.error('데이터 로드 실패:', error);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  const recommendedProducts = useMemo(() => {
+    if (!productsList || productsList.length === 0) return [];
+
+    // eslint-disable-next-line
+    return [...productsList].sort(() => Math.random() - 0.5).slice(0, 8);
+  }, [productsList]);
+
   return (
     <SectionWrap>
       <BaseSection
@@ -62,8 +63,8 @@ export default function ProductsSec() {
         sub="게임과 작업 문화를 위한 PULSE 2026 S/S 기어 라인업."
       />
       <Grid>
-        {items.map((item) => (
-          <BaseProductCard key={item.title} product={item} />
+        {recommendedProducts.map((item) => (
+          <BaseProductCard key={item.id} product={item} />
         ))}
       </Grid>
     </SectionWrap>

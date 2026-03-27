@@ -13,7 +13,29 @@ const Card = styled.article`
   box-shadow: ${({ theme }) => theme.effects.hoverShadowCategoryBase};
   transition:
     transform ${({ theme }) => theme.motion.slow},
-    box-shadow ${({ theme }) => theme.motion.slow};
+    box-shadow ${({ theme }) => theme.motion.slow},
+    opacity 320ms ease,
+    filter 320ms ease,
+    box-shadow 320ms ease;
+  will-change: transform;
+
+  /* &.prev {
+    height: 430px;
+    opacity: 0.82;
+    z-index: 1;
+  }
+
+  &.active {
+    height: 510px;
+    opacity: 1;
+    z-index: 2;
+  }
+
+  &.next {
+    height: 430px;
+    opacity: 0.82;
+    z-index: 1;
+  } */
 
   &:hover {
     transform: scale(1.03);
@@ -136,9 +158,10 @@ export default function BaseToneCard({
   height,
   badge,
   arrow,
+  ...props
 }) {
   return (
-    <Card $tone={tone} $height={height}>
+    <Card $tone={tone} $height={height} {...props}>
       <Inner $bg={TONE_BG[tone]} />
       <Beam className="card-beam" $bg={TONE_BEAM[tone]} />
       <SparkContainer className="card-spark">
