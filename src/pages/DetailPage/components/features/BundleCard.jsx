@@ -10,10 +10,7 @@ import {
 import BaseSparkIcon from '../../../../components/common/BaseSparkIcon';
 import { HeartIcon, PluseIcon } from '../../../../assets/icons/BtnIcon';
 import useCartStore from '../../../../store/useCartStore';
-
-/* -------------------------------------------------------------------------- */
-/* 레이아웃 영역 */
-/* -------------------------------------------------------------------------- */
+import { useNavigate } from 'react-router-dom';
 
 /* 번들 전체 섹션 감싸는 영역 */
 const BundleCardLayout = styled.section`
@@ -263,21 +260,22 @@ const getToneByCategory = (item) => {
 /* -------------------------------------------------------------------------- */
 
 function BundleItemCard({ item }) {
+  const navigate = useNavigate();
   const [liked, setLiked] = useState(false);
   const addToCart = useCartStore((state) => state.addToCart);
 
   /* 현재는 전부 블루 계열 무드로 맞춤 */
   const tone = getToneByCategory(item);
-
-  /*
-    뱃지 텍스트
-    - item.badge 있으면 사용
-    - 없으면 NEW 고정
-  */
   const badgeText = item.tag || item.badge || 'new';
 
+  const handleMoveDetail = () => {
+    console.log('bundle item:', item);
+    console.log('move id:', item.id);
+    navigate(`/product/${item.id}`);
+  };
+
   return (
-    <Card>
+    <Card onClick={handleMoveDetail}>
       {/* hover 시 지나가는 반짝 광택 */}
       <CardShim className="card-shim" aria-hidden="true" />
 
@@ -310,7 +308,10 @@ function BundleItemCard({ item }) {
           flex="0 0 auto"
           icon={false}
           aria-label="찜하기"
-          onClick={() => setLiked((prev) => !prev)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setLiked((prev) => !prev);
+          }}
           $isLiked={liked}
         >
           <HeartIcon />
@@ -331,7 +332,10 @@ function BundleItemCard({ item }) {
           flex="0 0 auto"
           icon={false}
           aria-label="장바구니 담기"
-          onClick={() => addToCart(item)}
+          onClick={(e) => {
+            e.stopPropagation();
+            addToCart(item);
+          }}
         >
           <PluseIcon />
         </CardAddBtn>

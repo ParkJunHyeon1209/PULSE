@@ -141,9 +141,10 @@ const Title = styled.h1`
 `;
 
 const Price = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.xxl};
+  font-size: ${({ theme }) => theme.fontSize.lg};
   font-weight: 400;
   line-height: 1;
+  letter-spacing: 0;
   color: ${({ theme }) => theme.colors.success};
 `;
 
