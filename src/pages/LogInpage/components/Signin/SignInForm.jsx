@@ -36,7 +36,6 @@ const SubText = styled.p`
 `;
 
 const FindLink = styled.a`
-  color: #888;
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   text-decoration: none;
   align-self: flex-end;
@@ -122,6 +121,7 @@ export default function SignInForm({ onClick }) {
           type="submit"
           height="42px"
           flex="none"
+          icon={false}
         >
           SIGN IN
         </BaseBtn>

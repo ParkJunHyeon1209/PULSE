@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import React from 'react';
 
 const InputLabel = styled.label`
-  color: #fff;
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   font-weight: bold;
   margin-bottom: ${({ theme }) => theme.spacing[1]};
@@ -20,7 +19,6 @@ const Input = styled.input`
   border: none;
   border-bottom: 2px solid #333;
   padding: ${({ theme }) => theme.spacing[3]} 0;
-  color: #fff;
   outline: none;
   width: 100%;
 
