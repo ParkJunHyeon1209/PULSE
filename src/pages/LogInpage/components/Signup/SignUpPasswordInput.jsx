@@ -1,16 +1,17 @@
 import styled from '@emotion/styled';
 import React from 'react';
+import CloseSvg from '../common/CloseSvg';
+import ShowBtn from '../common/ShowBtn';
 
 const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: ${({ theme }) => theme.spacing[5]};
   width: 100%;
   position: relative;
 `;
 
 const InputLabel = styled.label`
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  font-size: ${({ theme }) => theme.fontSize.xxs};
   font-weight: bold;
   margin-bottom: ${({ theme }) => theme.spacing[1]};
   letter-spacing: 1px;
@@ -19,7 +20,8 @@ const InputLabel = styled.label`
 const Input = styled.input`
   background: transparent;
   border: none;
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid
+    ${(props) => (props.$pwError || props.$isMatcError ? props.theme.colors.error : '#333')};
   padding: ${({ theme }) => theme.spacing[3]} 0;
   outline: none;
   width: 100%;
@@ -29,46 +31,78 @@ const Input = styled.input`
   }
 `;
 
-const StrengthBarContainer = styled.div`
-  width: 100%;
-  height: 4px;
-  background-color: ${({ theme }) => theme.colors.textSecondary};
-  margin-top: ${({ theme }) => theme.spacing[3]};
-  border-radius: 2px;
-  overflow: hidden;
-`;
-
-const Gauge = styled.div`
-  height: 100%;
-  width: ${(props) => props.width};
-  background-color: ${(props) => props.color};
-  transition: all 0.3s ease;
-`;
-
 const ErrorMessage = styled.p`
-  color: #ff4d4d;
+  color: ${({ theme }) => theme.colors.error};
+  font-size: 12px;
+  margin-top: ${({ theme }) => theme.spacing[1]};
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+`;
+const SuccessMessage = styled.p`
+  color: ${({ theme }) => theme.colors.success};
   font-size: 12px;
   margin-top: ${({ theme }) => theme.spacing[1]};
 `;
 
-const ShowButton = styled.button`
-  position: absolute;
-  bottom: 10px;
-  background: none;
-  border: none;
-  color: #fff;
-  padding: 0;
+const MatchMessage = styled.p`
+  color: ${(props) => (props.$isMatcError ? props.theme.colors.success : props.theme.colors.error)};
+  font-size: 12px;
+  margin-top: 5px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  white-space: nowrap;
   display: flex;
   align-items: center;
+  gap: 2px;
+`;
 
-  right: 10px;
-  top: 60%;
-  transform: translateY(-50%);
+const StrengthContainer = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing[1]};
+  width: 100%;
+  height: 4px;
+  margin-bottom: ${({ theme }) => theme.spacing[3]};
+`;
 
-  svg {
-    width: 18px;
-    height: 18px;
-    margin-bottom: ${({ theme }) => theme.spacing[8]};
+const getActiveColor = (props) => {
+  const { $score, theme } = props;
+  if ($score >= 3) return theme.status.info;
+  if ($score >= 2) return theme.colors.primary;
+  if ($score >= 1) return theme.colors.error;
+  return '#333';
+};
+
+const StrengthBar = styled.div`
+  flex: 1;
+  border-radius: 2px;
+  background-color: #333;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    background-color: ${(props) => getActiveColor(props)};
+    transition: width 0.3s ease-in-out;
+  }
+
+  &.weak::after {
+    width: ${(props) => (props.$score >= 1 ? '100%' : '0%')};
+    transition-delay: 0s;
+  }
+  &.medium::after {
+    width: ${(props) => (props.$score >= 2 ? '100%' : '0%')};
+    transition-delay: ${(props) => (props.$score >= 2 ? '0.1s' : '0s')};
+  }
+  &.strong::after {
+    width: ${(props) => (props.$score >= 3 ? '100%' : '0%')};
+    transition-delay: ${(props) => (props.$score >= 3 ? '0.2s' : '0s')};
   }
 `;
 
@@ -79,15 +113,11 @@ export default function SignUpPasswordInput({
   pwError,
   showPw,
   setShowPw,
-  validatePw,
   showPwConfirm,
   setShowPwConfirm,
+  pwScore,
+  isPwValid,
 }) {
-  const getGaugeStyle = () => {
-    if (!pwConfirm) return { width: '0%', color: '#333' };
-    if (pw === pwConfirm) return { width: '100%', color: '#2ecc71' };
-    return { width: '50%', color: '#ff4d4f' };
-  };
   return (
     <>
       {/* 비밀번호 입력란 */}
@@ -98,66 +128,30 @@ export default function SignUpPasswordInput({
           id="password"
           name="password"
           type={showPw ? 'text' : 'password'}
-          placeholder="8자 이상"
           value={pw}
-          onChange={(e) => validatePw(e.target.value)}
+          placeholder="8자 이상"
+          $pwError={pwError}
+          onChange={(e) => isPwValid(e.target.value)}
         />
-        {pwError && (
-          <ErrorMessage>8~15자의 영대문자, 숫자, 특수문자만을 포함하여 만드세요.</ErrorMessage>
-        )}
-        <ShowButton type="button" onClick={() => setShowPw(!showPw)}>
-          {showPw ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
-              <circle cx="12" cy="12" r="3" />
-            </svg>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="m15 18-.722-3.25" />
-              <path d="M2 8a10.645 10.645 0 0 0 20 0" />
-              <path d="m20 15-1.726-2.05" />
-              <path d="m4 15 1.726-2.05" />
-              <path d="m9 18 .722-3.25" />
-            </svg>
+        <div className="message-container">
+          {pwError && (
+            <ErrorMessage>
+              <CloseSvg />
+              8~15자의 영대문자, 숫자, 특수문자만을 포함하여 만드세요.
+            </ErrorMessage>
           )}
-        </ShowButton>
+          {!pwError && pw.length > 0 && (
+            <SuccessMessage>사용 가능한 비밀번호입니다.</SuccessMessage>
+          )}
+        </div>
+        <ShowBtn showPw={showPw} setShowPw={setShowPw} />
       </InputGroup>
-
-      {/* 비밀번호 일치 게이지 바 */}
-      <StrengthBarContainer>
-        <Gauge width={getGaugeStyle().width} color={getGaugeStyle().color} />
-      </StrengthBarContainer>
-      {pw && pwConfirm && (
-        <p
-          style={{
-            color: pw === pwConfirm ? '#2ecc71' : '#ff4d4f',
-            fontSize: '12px',
-            marginTop: '5px',
-          }}
-        >
-          {pw === pwConfirm ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
-        </p>
-      )}
+      {/* 비밀번호 안전도 게이지바 */}
+      <StrengthContainer>
+        <StrengthBar className="weak" $score={pwScore} />
+        <StrengthBar className="medium" $score={pwScore} />
+        <StrengthBar className="strong" $score={pwScore} />
+      </StrengthContainer>
       {/* 비밀번호 재입력란 */}
       <InputGroup>
         <InputLabel>CONFIRM PASSWORD</InputLabel>
@@ -166,44 +160,17 @@ export default function SignUpPasswordInput({
           type={showPwConfirm ? 'text' : 'password'}
           value={pwConfirm}
           placeholder="비밀번호 재입력"
+          $isMatcError={pw && pwConfirm && pw !== pwConfirm}
           onChange={(e) => setPwConfirm(e.target.value)}
         />
-        <ShowButton type="button" onClick={() => setShowPwConfirm(!showPwConfirm)}>
-          {showPwConfirm ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
-              <circle cx="12" cy="12" r="3" />
-            </svg>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="m15 18-.722-3.25" />
-              <path d="M2 8a10.645 10.645 0 0 0 20 0" />
-              <path d="m20 15-1.726-2.05" />
-              <path d="m4 15 1.726-2.05" />
-              <path d="m9 18 .722-3.25" />
-            </svg>
-          )}
-        </ShowButton>
+
+        {pw && pwConfirm && (
+          <MatchMessage $isMatcError={pw === pwConfirm}>
+            {pw !== pwConfirm && <CloseSvg />}
+            {pw === pwConfirm ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
+          </MatchMessage>
+        )}
+        <ShowBtn showPw={showPwConfirm} setShowPw={setShowPwConfirm} />
       </InputGroup>
     </>
   );
