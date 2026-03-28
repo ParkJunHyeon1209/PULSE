@@ -5,26 +5,47 @@ import BaseSection from '../../../components/common/BaseSection';
 import useThemeStore from '../../../store/useThemeStore';
 
 const SectionWrap = styled.section`
-  max-width: 1280px;
+  position: relative;
   width: 100%;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   padding: ${({ theme }) => `${theme.spacing[24]} 0`};
 
+  &:has(.img-text-wrap:hover) .banner-img {
+    transform: scale(1.06);
+  }
+
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    grid-template-columns: 1fr;
     padding-inline: ${({ theme }) => theme.grid.margin};
   }
 `;
 
 const ImgSide = styled.div`
-  position: relative;
-  min-height: 480px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 50%;
+  z-index: 0;
   overflow: hidden;
 
-  &:hover .banner-img {
-    transform: scale(1.06);
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    position: relative;
+    width: 100%;
+    min-height: 480px;
+  }
+`;
+
+const Inner = styled.div`
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 480px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+    min-height: unset;
   }
 `;
 
@@ -34,14 +55,14 @@ const Img = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: right center;
   transform: scale(1);
   transition: transform ${({ theme }) => theme.motion.slow};
 `;
 
+/* 데스크탑 전용 — Inner 왼쪽 컬럼 */
 const ImgTextWrap = styled.div`
-  position: absolute;
-  top: ${({ theme }) => theme.spacing[10]};
+  padding-top: ${({ theme }) => theme.spacing[10]};
   padding-inline: ${({ theme }) => theme.grid.margin};
   isolation: isolate;
 
@@ -56,8 +77,30 @@ const ImgTextWrap = styled.div`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    top: auto;
-    bottom: ${({ theme }) => theme.spacing[10]};
+    display: none;
+  }
+`;
+
+/* 태블릿 전용 — ImgSide 안에 absolute 오버레이 */
+const ImgTextWrapTablet = styled.div`
+  display: none;
+  position: absolute;
+  bottom: ${({ theme }) => theme.spacing[10]};
+  padding-inline: ${({ theme }) => theme.grid.margin};
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -${({ theme }) => theme.spacing[6]};
+    z-index: -1;
+    border-radius: ${({ theme }) => theme.radii.lg};
+    background: linear-gradient(to right, rgba(4, 2, 18, 0.68) 0%, transparent 100%);
+    pointer-events: none;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: block;
   }
 `;
 
@@ -73,13 +116,6 @@ const ListSide = styled.div`
   &::before {
     content: '';
     position: absolute;
-    /* top: -140px;
-    bottom: -140px;
-    left: 100px;
-    right: -360px;
-    z-index: 0;
-    background: radial-gradient(ellipse at center, rgba(57, 24, 215, 0.24) 0%, transparent 65%);
-    pointer-events: none; */
     top: -200px;
     bottom: -200px;
     left: -500px;
@@ -109,6 +145,7 @@ const ItemTitle = styled.h3`
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: ${({ $color }) => $color};
+
   @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
     font-size: ${({ theme }) => theme.fontSize.xs};
   }
@@ -126,6 +163,7 @@ const ItemTitle = styled.h3`
 const ItemDesc = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   line-height: 1.75;
+
   @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
     font-size: ${({ theme }) => theme.fontSize.xxxs};
   }
@@ -162,29 +200,34 @@ export default function BrandPromiseSec() {
   const isDarkMode = useThemeStore((s) => s.isDarkMode);
   const bannerImg = isDarkMode ? darkBannerImg : lightBannerImg;
 
+  const section = (
+    <BaseSection
+      label="Brand Promise"
+      title="WHY PULSE"
+      sub="PULSE가 만드는 게이밍 기어 경험의 4가지 약속"
+    />
+  );
+
   return (
     <SectionWrap>
       <ImgSide>
         <Img className="banner-img" src={bannerImg} alt="Why Pulse" />
-        <ImgTextWrap>
-          <BaseSection
-            label="Brand Promise"
-            title="WHY PULSE"
-            sub="PULSE가 만드는 게이밍 기어 경험의 4가지 약속"
-          />
-        </ImgTextWrap>
+        <ImgTextWrapTablet>{section}</ImgTextWrapTablet>
       </ImgSide>
 
-      <ListSide>
-        {items.map((item) => (
-          <Item key={item.title}>
-            <ItemTitle $color={item.color} $line={item.line}>
-              {item.title}
-            </ItemTitle>
-            <ItemDesc>{item.desc}</ItemDesc>
-          </Item>
-        ))}
-      </ListSide>
+      <Inner>
+        <ImgTextWrap className="img-text-wrap">{section}</ImgTextWrap>
+        <ListSide>
+          {items.map((item) => (
+            <Item key={item.title}>
+              <ItemTitle $color={item.color} $line={item.line}>
+                {item.title}
+              </ItemTitle>
+              <ItemDesc>{item.desc}</ItemDesc>
+            </Item>
+          ))}
+        </ListSide>
+      </Inner>
     </SectionWrap>
   );
 }
