@@ -155,7 +155,7 @@ export default function PulseLineSvg({ className, label = 'Live Signal' }) {
         />
 
         <PulseSvgTrail
-          points="-4,16 18,16 32,16 44,15.2 48,10 52,16 62,16 70,4 78,28 84,16 90,12.5 95,16 110,16 190,16"
+          points="-4,16 18,16 32,16 44,15.2 48,10 52,16 62,16 70,4 78,28 86,16 90,10 95,16 110,16 190,16"
           stroke="url(#hero-svg-trail-g)"
           strokeWidth="1.4"
           strokeLinecap="round"
@@ -164,7 +164,7 @@ export default function PulseLineSvg({ className, label = 'Live Signal' }) {
         />
 
         <PulseSvgLine
-          points="-4,16 18,16 32,16 44,15.2 48,10 52,16 62,16 70,4 78,28 84,16 90,12.5 95,16 110,16 190,16"
+          points="-4,16 18,16 32,16 44,15.2 48,10 52,16 62,16 70,4 78,28 86,16 90,10 95,16 110,16 190,16"
           stroke="url(#hero-svg-main-g)"
           strokeWidth="2.2"
           strokeLinecap="round"
