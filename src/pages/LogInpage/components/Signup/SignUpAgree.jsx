@@ -1,53 +1,83 @@
+import { useState } from 'react';
+import BaseModal from '../../../../components/common/BaseModal';
+import AgreementContent from './AgreementContent';
 import styled from '@emotion/styled';
-import React from 'react';
 
-// 동의란 임시로 작성, 수정 예정
-
-const AgreementLabel = styled.label`
+const AgreeInput = styled.div`
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[3]};
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
-  font-size: ${({ theme }) => theme.fontSize.xxs};
-  color: #777;
-  cursor: pointer;
+  gap: 8px;
+
+  span {
+    font-size: 14px;
+  }
+
+  input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #555;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:checked {
+      background-color: ${({ theme }) => theme.tones.blue.color};
+      border-color: ${({ theme }) => theme.tones.blue.color};
+    }
+
+    &:checked::after {
+      content: '✔';
+      font-size: 12px;
+    }
+  }
+`;
+const Blue = styled.span`
+  color: ${({ theme }) => theme.tones.blue.color};
 `;
 
-export default function SignUpAgree({ agreement, setAgreement, handleAllAgree }) {
+export default function SignUpAgree({ agreement, setAgreement }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const isAllRequiredChecked = agreement.agreeTerms && agreement.agreePrivacy;
+
+  const handleLabelClick = (e) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+  };
+
   return (
-    <div>
-      <AgreementLabel>
-        <input
-          type="checkbox"
-          onChange={handleAllAgree}
-          checked={agreement.agreeTerms && agreement.agreePrivacy && agreement.agreeMarketing}
+    <>
+      <AgreeInput onClick={handleLabelClick}>
+        <input type="checkbox" checked={isAllRequiredChecked} readOnly />
+        <span>
+          <Blue>이용약관</Blue> 및 <Blue>개인정보처리방침</Blue>에 동의합니다.
+        </span>
+      </AgreeInput>
+
+      <BaseModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        label={`PULSE PLATFORM`}
+        title={
+          <span style={{ lineHeight: '32px', fontSize: '24px' }}>
+            서비스 이용을 위해
+            <br />
+            약관에 동의해 주세요
+          </span>
+        }
+        closable={true}
+      >
+        <AgreementContent
+          agreement={agreement}
+          setAgreement={setAgreement}
+          onClose={() => setIsModalOpen(false)}
         />
-        전체 동의하기
-      </AgreementLabel>
-      <AgreementLabel>
-        <input
-          type="checkbox"
-          checked={agreement.agreeTerms}
-          onChange={(e) => setAgreement({ ...agreement, agreeTerms: e.target.checked })}
-        />
-        이용약관에 동의합니다. (필수)
-      </AgreementLabel>
-      <AgreementLabel>
-        <input
-          type="checkbox"
-          checked={agreement.agreePrivacy}
-          onChange={(e) => setAgreement({ ...agreement, agreePrivacy: e.target.checked })}
-        />
-        개인정보처리방침에 동의합니다. (필수)
-      </AgreementLabel>
-      <AgreementLabel>
-        <input
-          type="checkbox"
-          checked={agreement.agreeMarketing}
-          onChange={(e) => setAgreement({ ...agreement, agreeMarketing: e.target.checked })}
-        />
-        마케팅 정보 수신에 동의합니다. (선택)
-      </AgreementLabel>
-    </div>
+      </BaseModal>
+    </>
   );
 }

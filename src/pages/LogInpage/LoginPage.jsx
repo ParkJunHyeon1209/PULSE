@@ -5,14 +5,13 @@ import styled from '@emotion/styled';
 import LeftSignIn from './components/Signin/LeftSignIn';
 import LeftSignUp from './components/Signup/LeftSignUp';
 import TabNavigation from './components/common/TabNavigation';
-import AppLogo from '../../components/common/AppLogo';
 
 const LogInPageContainer = styled.div`
   display: flex;
   /* width: 100vw; */
   width: 1280px;
   max-width: 1280px;
-  margin-top: 100px;
+  margin-top: 42.5px;
   padding-bottom: 60px;
 `;
 
@@ -31,25 +30,6 @@ const LeftSection = styled.div`
     flex-direction: column;
     align-items: stretch;
   }
-`;
-
-const TopArea = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  padding-bottom: 20px;
-`;
-
-const CenterArea = styled.div`
-  flex: 1;
-`;
-
-const BottomArea = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
 `;
 
 // 오른쪽 섹션
@@ -78,15 +58,7 @@ export default function LoginPage() {
   return (
     <LogInPageContainer>
       {/* --- 왼쪽 영역 --- */}
-      <LeftSection>
-        <div className="left-content-wrapper">
-          <TopArea>
-            <AppLogo size="90px" />
-          </TopArea>
-          <CenterArea />
-          <BottomArea>{activeTab === 'signin' ? <LeftSignIn /> : <LeftSignUp />}</BottomArea>
-        </div>
-      </LeftSection>
+      <LeftSection>{activeTab === 'signin' ? <LeftSignIn /> : <LeftSignUp />}</LeftSection>
 
       {/* --- 오른쪽 영역 --- */}
       <RightSection>
