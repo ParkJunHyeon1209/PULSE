@@ -1,274 +1,193 @@
-import { keyframes } from '@emotion/react';
-import styled from '@emotion/styled';
-import BaseBtn from '../../../components/common/BaseBtn';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useSlider from '../../../hooks/useSlider';
 import { LavStarIcon } from '../../../assets/icons/BtnIcon';
+import SlotText from '../../../components/common/SlotText';
 import HeroBannerSlide from './HeroBannerSlide';
 import PulseLineSvg from './HeroPulseSvg';
+import * as S from './styles/MainHero';
+import useOverlayStore from '../../../store/useOverlayStore';
 
-const gradShift = keyframes`
-  0%, 100% { background-position: 0% 50%; }
-  50%       { background-position: 100% 50%; }
-`;
+// 슬라이드 콘텐츠 데이터
+const HERO_SLIDES = [
+  {
+    id: '1',
+    label: 'PULSE',
+    introLabel: 'Energy · Signal · Glow',
+    title: 'ENTER',
+    titleGrad: 'THE PULSE',
+    copy: '다크 네온 글라스 감성의 게이밍 기어 플랫폼.',
 
-const LavStarEnd = styled(LavStarIcon)`
-  margin-right: 0;
-  margin-left: ${({ theme }) => theme.spacing[2]};
-`;
+    stats: [
+      { value: '05g', label: '신호의 종류' },
+      { value: '1ms', label: '반응의 순간' },
+      { value: 'RGB', label: '빛의 언어' },
+    ],
+  },
+  {
+    id: '2',
+    label: 'DROPS',
+    introLabel: 'Exclusive · Limited · Now',
+    title: 'FEEL',
+    titleGrad: 'THE DROP',
+    copy: '한정 수량 드롭. 지금 바로 소장하세요.',
 
-const FullInner = styled.div`
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-  padding-inline: ${({ theme }) => theme.grid.margin};
-  display: flex;
-  justify-content: center;
-`;
+    stats: [
+      { value: '24H', label: '한정 판매' },
+      { value: '99+', label: '신규 아이템' },
+      { value: 'VIP', label: '우선 구매' },
+    ],
+  },
+  {
+    id: '3',
+    label: 'COLLAB',
+    introLabel: 'Collab · Special · Edition',
+    title: 'RIDE',
+    titleGrad: 'THE WAVE',
+    copy: '브랜드 협업 스페셜 에디션 컬렉션.',
 
-const HeroSection = styled.section`
-  position: relative;
-  z-index: 1;
-  pointer-events: none;
-
-  flex: 1;
-  max-width: 1280px;
-  width: 100%;
-`;
-const HeroWrap = styled.section`
-  pointer-events: auto;
-  padding-top: ${({ theme }) => theme.spacing[14]};
-  height: 90%;
-  width: fit-content;
-  display: flex;
-  flex-direction: column;
-
-  justify-content: center;
-`;
-
-const HeroIntroLabel = styled.span`
-  margin: ${({ theme }) => theme.spacing[6]} 0;
-  font-family: ${({ theme }) => theme.fontFamily.mono};
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: ${({ theme }) => (theme.mode === 'light' ? '#7c3aed' : 'rgba(167,139,250,.8)')};
-  &::before {
-    content: '';
-    transform: translateX(-8px);
-    width: 30px;
-    height: 1px;
-    background: linear-gradient(-90deg, #7c3aed, transparent);
-  }
-  &::after {
-    transform: translateX(8px);
-    content: '';
-    width: 30px;
-    height: 1px;
-    background: linear-gradient(90deg, #7c3aed, transparent);
-  }
-`;
-
-const HeroTitle = styled.h2`
-  max-width: 8.9ch;
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
-  font-size: ${({ theme }) => theme.fontSize.xxl};
-  line-height: 0.96;
-  letter-spacing: 0.04em;
-  color: white;
-`;
-
-const HeroTitleGrad = styled.span`
-  background: linear-gradient(135deg, #c4b5fd, #818cf8, #60a5fa, #c4b5fd);
-  background-size: 300%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: ${gradShift} 4s ease-in-out infinite;
-  font-family: ${({ theme }) => theme.fontFamily.hero};
-`;
-
-const HeroCopy = styled.p`
-  margin-bottom: ${({ theme }) => theme.spacing[14]};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: ${({ theme }) => theme.fontSize.s};
-  line-height: 1.8;
-`;
-
-const HeroActions = styled.div`
-  display: flex;
-  width: 100%;
-  flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing[4]};
-`;
-
-const HeroDec = styled(BaseBtn)`
-  font-weight: 600;
-  letter-spacing: 0.16em;
-`;
-
-const HeroButton = styled(BaseBtn)``;
-
-const HeroStats = styled.div`
-  display: flex;
-  gap: 0;
-  align-items: stretch;
-  margin-top: ${({ theme }) => theme.spacing[14]};
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: 100%;
-  }
-`;
-
-const HeroStat = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0 ${({ theme }) => theme.spacing[8]};
-  border-right: 1px solid ${({ theme }) => theme.colors.cardBorder || theme.colors.border};
-
-  &:first-of-type {
-    padding-left: 0;
-  }
-
-  &:last-of-type {
-    padding-right: 0;
-    border-right: none;
-  }
-`;
-
-const HeroStatValue = styled.div`
-  font-family: ${({ theme }) => theme.fontFamily.hero};
-  font-size: 36px;
-  line-height: 1;
-  background: linear-gradient(135deg, #c4b5fd, #818cf8, #60a5fa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: 0.04em;
-`;
-
-const HeroStatLabel = styled.div`
-  margin-top: ${({ theme }) => theme.spacing[2]};
-  font-size: ${({ theme }) => theme.fontSize.xxs};
-  color: ${({ theme }) => theme.colors.text};
-  opacity: 0.5;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-family: ${({ theme }) => theme.fontFamily.mono};
-  white-space: nowrap;
-  line-height: 1.5;
-
-  span {
-    display: block;
-  }
-`;
-
-// const ScrollHint = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   gap: ${({ theme }) => theme.spacing[3]};
-//   padding: ${({ theme }) => `${theme.spacing[5]} 0 14px`};
-//   font-family: ${({ theme }) => theme.fontFamily.mono};
-//   font-size: ${({ theme }) => theme.fontSize.xxxs};
-//   letter-spacing: 0.2em;
-//   color: ${({ theme }) =>
-//     theme.mode === 'light' ? 'rgba(18,16,58,.3)' : theme.colors.textSecondary};
-//   text-align: center;
-// `;
-
-// const ScrollIndicator = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   animation: scroll-drop 2s ease-in-out infinite;
-
-//   @keyframes scroll-drop {
-//     0%,
-//     100% {
-//       opacity: 0.35;
-//       transform: translateY(0);
-//     }
-//     50% {
-//       opacity: 1;
-//       transform: translateY(4px);
-//     }
-//   }
-// `;
-
-// const ScrollLine = styled.div`
-//   position: relative;
-//   width: 1.5px;
-//   height: 24px;
-//   background: linear-gradient(
-//     to bottom,
-//     transparent,
-//     ${({ theme }) => theme.tones.violet.subtleColor}
-//   );
-
-//   &::after {
-//     content: '';
-//     position: absolute;
-//     bottom: -2px;
-//     left: 50%;
-//     width: 8px;
-//     height: 8px;
-//     border-right: 1.8px solid ${({ theme }) => theme.tones.violet.subtleColor};
-//     border-bottom: 1.8px solid ${({ theme }) => theme.tones.violet.subtleColor};
-//     transform: translateX(-50%) rotate(45deg);
-//     border-top-right-radius: 2px;
-//     border-bottom-left-radius: 2px;
-//   }
-// `;
-
-const HERO_STATS = [
-  { value: '05g', label: '신호의 종류' },
-  { value: '1ms', label: '반응의 순간' },
-  { value: 'RGB', label: '밫의 언어' },
+    stats: [
+      { value: '3X', label: '협업 브랜드' },
+      { value: 'NEW', label: '익스클루시브' },
+      { value: 'S/S', label: '시즌 한정' },
+    ],
+  },
 ];
-export default function MainHero() {
+
+export default function MainHero({ interval = 4000 }) {
+  const openModal = useOverlayStore((state) => state.openModal);
+  const navigate = useNavigate();
+  const count = HERO_SLIDES.length;
+  const [slideIndex, setSlideIndex] = useState(1);
+  const [useMotion, setUseMotion] = useState(true);
+  const [textIndex, setTextIndex] = useState(0);
+  const [textVisible, setTextVisible] = useState(true);
+  const isMovingRef = useRef(false);
+  const timerRef = useRef(null);
+  const slideIndexRef = useRef(1);
+
+  const resetLoopSlide = useCallback((nextIndex) => {
+    clearTimeout(timerRef.current);
+    slideIndexRef.current = nextIndex;
+    setUseMotion(false);
+    setSlideIndex(nextIndex);
+    timerRef.current = setTimeout(() => {
+      setUseMotion(true);
+      isMovingRef.current = false;
+    }, 40);
+  }, []);
+
+  const moveTo = useCallback((nextIndex) => {
+    if (isMovingRef.current) return;
+    isMovingRef.current = true;
+    slideIndexRef.current = nextIndex;
+    setTextVisible(false);
+    setSlideIndex(nextIndex);
+  }, []);
+
+  const moveSlide = useCallback((direction) => moveTo(slideIndexRef.current + direction), [moveTo]);
+
+  const tickForward = useCallback(() => moveSlide(1), [moveSlide]);
+  const { activeIndex, setActiveIndex, setIsPaused } = useSlider(count, interval, tickForward);
+
+  const goToSlide = useCallback(
+    (index) => {
+      if (index !== (slideIndexRef.current - 1 + count) % count) {
+        setActiveIndex(index);
+        moveTo(index + 1);
+      }
+    },
+    [count, moveTo, setActiveIndex]
+  );
+
+  const handleTransitionEnd = useCallback(() => {
+    const idx = slideIndexRef.current;
+    if (idx === 0) resetLoopSlide(count);
+    else if (idx === count + 1) resetLoopSlide(1);
+    else isMovingRef.current = false;
+    const newIndex = (idx - 1 + count * 10) % count;
+    setTextIndex(newIndex);
+    setActiveIndex(newIndex);
+    setTextVisible(true);
+  }, [count, resetLoopSlide, setActiveIndex]);
+
+  useEffect(() => () => clearTimeout(timerRef.current), []);
+
+  const slide = HERO_SLIDES[textIndex];
+
   return (
-    <FullInner>
-      <HeroBannerSlide />
-      <HeroSection>
-        <HeroWrap>
-          <HeroDec variant="secondary" spark={true} flex="0" icon={false}>
+    <S.FullInner>
+      <HeroBannerSlide
+        slideIndex={slideIndex}
+        useMotion={useMotion}
+        onPrev={() => moveSlide(-1)}
+        onNext={() => moveSlide(1)}
+        onTransitionEnd={handleTransitionEnd}
+      />
+      <S.HeroSection>
+        <S.HeroWrap onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
+          {/* 고정 뱃지 */}
+          <S.HeroDec variant="secondary" spark={true} flex="0" icon={false}>
             <LavStarIcon $animate={true} className="btn-spark" aria-hidden="true">
               ✦
             </LavStarIcon>
             2026 S/S · GAMING GEAR PLATFORM
-            <LavStarEnd $animate={true} className="btn-spark" aria-hidden="true">
+            <S.LavStarEnd $animate={true} className="btn-spark" aria-hidden="true">
               ✦
-            </LavStarEnd>
-          </HeroDec>
-          <HeroIntroLabel>Energy · Signal · Glow</HeroIntroLabel>
-          <HeroTitle>
-            ENTER <HeroTitleGrad>THE PULSE</HeroTitleGrad>
-          </HeroTitle>
-          <HeroCopy>다크 네온 글라스 감성의 게이밍 기어 플랫폼.</HeroCopy>
-          <HeroActions>
-            <HeroButton>컬렉션 보기</HeroButton>
-            <HeroButton variant="secondary">드롭 알림 신청</HeroButton>
-          </HeroActions>
-          <HeroStats>
-            {HERO_STATS.map((stat) => (
-              <HeroStat key={stat.value}>
-                <HeroStatValue>{stat.value}</HeroStatValue>
-                <HeroStatLabel>
-                  <span>{stat.label}</span>
-                </HeroStatLabel>
-              </HeroStat>
-            ))}
-          </HeroStats>
+            </S.LavStarEnd>
+          </S.HeroDec>
+
+          {/* 슬라이드 변경 */}
+          <S.HeroTextGroup $visible={textVisible}>
+            <Fragment key={textIndex}>
+              <S.AnimIntroLabel $delay={0}>{slide.introLabel}</S.AnimIntroLabel>
+              <S.AnimHeroTitle $delay={60}>
+                {slide.title} <S.HeroTitleGrad>{slide.titleGrad}</S.HeroTitleGrad>
+              </S.AnimHeroTitle>
+              <S.AnimHeroCopy style={{ fontWeight: 'bold' }} $delay={120}>
+                {slide.copy}
+              </S.AnimHeroCopy>
+              <S.AnimHeroActions $delay={170}>
+                <S.HeroButton onClick={() => navigate('/categories/drops')}>
+                  컬렉션 보기
+                </S.HeroButton>
+                <S.HeroButton variant="secondary" onClick={() => openModal('dropAlert')}>
+                  드롭 알림 신청
+                </S.HeroButton>
+              </S.AnimHeroActions>
+              {/* 스타일: styles/MainHero.js 158번째 줄 / MainHero.jsx 159~170번째 줄 */}
+              <S.AnimHeroStats $delay={220}>
+                {slide.stats.map((stat) => (
+                  <S.HeroStat key={stat.value}>
+                    <S.HeroStatValue>
+                      <SlotText value={stat.value} />
+                    </S.HeroStatValue>
+                    <S.HeroStatLabel>
+                      <span>{stat.label}</span>
+                    </S.HeroStatLabel>
+                  </S.HeroStat>
+                ))}
+              </S.AnimHeroStats>
+            </Fragment>
+          </S.HeroTextGroup>
+
           <PulseLineSvg />
-        </HeroWrap>
-        {/* <ScrollHint>
-          <ScrollIndicator>
-            <ScrollLine />
-          </ScrollIndicator>
-          SCROLL
-        </ScrollHint> */}
-      </HeroSection>
-    </FullInner>
+        </S.HeroWrap>
+      </S.HeroSection>
+
+      {/* 텍스트 슬라이드 */}
+      <S.SlideNavRail>
+        {HERO_SLIDES.map((s, index) => (
+          <S.SlideNavItem
+            key={s.id}
+            type="button"
+            $active={index === activeIndex}
+            onClick={() => goToSlide(index)}
+          >
+            {s.label}
+          </S.SlideNavItem>
+        ))}
+      </S.SlideNavRail>
+    </S.FullInner>
   );
 }

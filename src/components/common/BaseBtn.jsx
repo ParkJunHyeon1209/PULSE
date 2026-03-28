@@ -86,7 +86,7 @@ const btnIconBase = ({ theme }) => `
 
 const BtnSpark = styled(StarIcon)`
   ${btnIconBase}
-  left: ${({ theme }) => `calc(${theme.spacing[3]} * -1)`};
+  left: ${({ theme }) => `calc(${theme.spacing[4]} * -1)`};
   box-shadow: ${({ theme }) => theme.effects.glowDropShadowPurple};
   transform: translate(-30px, -50%) scale(0.88) rotate(-360deg);
 `;
