@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from 'react';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 // import { categoryDetailApi } from '../../../../data/mockCategoryApi';
 import BundleCard from './BundleCard';
@@ -153,15 +153,19 @@ const BundleCardWrap = styled.div`
 `;
 
 export default function FeatureSection({
-  category,
+  currentType,
   teamProducts,
-  bundleCategory,
+
   product,
   categoryDetail,
 }) {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
-  if (!category) return <div>category 없음</div>;
+  useEffect(() => {
+    setIsDetailOpen(false);
+  }, [product?.id]);
+
+  if (!currentType) return <div>category 없음</div>;
   //  const featureData = categoryDetailApi[category];
   //  const specs = featureData?.specs ?? [];
   const specs = categoryDetail?.specs ?? [];
@@ -203,7 +207,7 @@ export default function FeatureSection({
         {isDetailOpen ? '상세정보 접기' : '상세정보 더보기'}
       </DetailToggleButton>
       <BundleCardWrap>
-        <BundleCard category={bundleCategory} teamProducts={teamProducts} />
+        <BundleCard currentType={currentType} teamProducts={teamProducts} />
       </BundleCardWrap>
     </FeatureLayout>
   );

@@ -59,13 +59,17 @@ export default function ProductGallery({
             {badgeLabel}
           </GalleryBadge>
         )}
-        <ArrowButton type="button" $left onClick={handlePrev} aria-label="이전 이미지">
-          ‹
-        </ArrowButton>
+        {(galleryImages?.length ?? 0) > 1 && (
+          <>
+            <ArrowButton type="button" $left onClick={handlePrev} aria-label="이전 이미지">
+              ‹
+            </ArrowButton>
 
-        <ArrowButton type="button" onClick={handleNext} aria-label="다음 이미지">
-          ›
-        </ArrowButton>
+            <ArrowButton type="button" onClick={handleNext} aria-label="다음 이미지">
+              ›
+            </ArrowButton>
+          </>
+        )}
       </MainImageWrapper>
 
       <ThumbnailList>
