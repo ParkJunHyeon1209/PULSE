@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import BaseBtn from '../../../../components/common/BaseBtn';
+import CloseSvg from '../common/CloseSvg';
 
 const InputGroup = styled.div`
   display: flex;
@@ -10,8 +10,7 @@ const InputGroup = styled.div`
 `;
 
 const InputLabel = styled.label`
-  color: #fff;
-  font-size: 12px;
+  font-size: ${({ theme }) => theme.fontSize.xxs};
   font-weight: bold;
   margin-bottom: ${({ theme }) => theme.spacing[1]};
   letter-spacing: 1px;
@@ -20,7 +19,7 @@ const InputLabel = styled.label`
 const Input = styled.input`
   background: transparent;
   border: none;
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid ${(props) => (props.$emailError ? props.theme.colors.error : '#333')};
   padding: ${({ theme }) => theme.spacing[3]} 0;
   outline: none;
   width: 100%;
@@ -29,11 +28,53 @@ const Input = styled.input`
     font-size: 14px;
   }
 `;
-
 const ErrorMessage = styled.p`
-  color: #ff4d4d;
+  color: ${({ theme }) => theme.colors.error};
   font-size: 12px;
   margin-top: ${({ theme }) => theme.spacing[1]};
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+`;
+const SuccessMessage = styled.p`
+  color: ${({ theme }) => theme.colors.success};
+  font-size: 12px;
+  margin-top: ${({ theme }) => theme.spacing[1]};
+`;
+
+const CheckBtn = styled.button`
+  width: 100px;
+  height: 45px;
+  padding: 8px 16px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 12px;
+  cursor: 'pointer';
+  transition: all 0.2s ease;
+
+  color: ${({ theme }) => theme.tones.blue.color};
+  background: ${({ theme }) => theme.tones.blue.containerBg};
+  border: 1px solid ${({ theme }) => theme.tones.blue.containerBorder};
+  box-shadow: ${({ theme }) => theme.tones.blue.containerShadow};
+
+  &:hover {
+    transform: translateY(-1px);
+    border-color: ${({ theme }) => theme.tones.blue.activeBorder};
+    box-shadow: ${({ theme }) => theme.tones.blue.hoverShadow};
+  }
+
+  &:active {
+    transform: translateY(-2px) scale(0.98);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    filter: grayscale(1);
+    box-shadow: none;
+    transform: none;
+  }
 `;
 
 export default function SignUpEamilInput({
@@ -54,35 +95,28 @@ export default function SignUpEamilInput({
             id="id"
             name="id"
             type="email"
-            placeholder="signal@pulse.kr"
             value={email}
+            placeholder="signal@pulse.kr"
+            $emailError={emailError}
             onChange={(e) => {
               checkEmail(e.target.value);
-              setIsUnique(null);
             }}
           />
-          <BaseBtn
-            className="check-btn"
-            variant="primary"
-            tone="blue"
-            padding="8px 16px"
-            type="button"
-            height="42px"
-            flex="none"
-            onClick={handleCheckId}
-            disabled={emailError || !email}
-            style={{ cursor: emailError || !email ? 'not-allowed' : 'pointer' }}
-          >
+          <CheckBtn type="button" disabled={emailError || !email} onClick={handleCheckId}>
             중복 확인
-          </BaseBtn>
+          </CheckBtn>
         </div>
-        {emailError && <ErrorMessage>사용이 불가능한 아이디입니다.</ErrorMessage>}
-
-        {isUnique && (
-          <span style={{ color: '#2ecc71', fontSize: '12px', marginTop: '5px' }}>
-            사용 가능한 아이디입니다.
-          </span>
-        )}
+        <div className="message-container">
+          {!emailError && isUnique === true && (
+            <SuccessMessage>사용 가능한 아이디입니다.</SuccessMessage>
+          )}
+          {emailError && (
+            <ErrorMessage>
+              <CloseSvg />
+              사용이 불가능한 아이디입니다.
+            </ErrorMessage>
+          )}
+        </div>
       </InputGroup>
     </>
   );
