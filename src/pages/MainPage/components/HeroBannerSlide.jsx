@@ -1,5 +1,4 @@
 import { useTheme } from '@emotion/react';
-import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import banner1D from '../../../assets/img/banners/1_dark.webp';
 import banner1L from '../../../assets/img/banners/1_light.webp';
@@ -50,37 +49,6 @@ const GlowLayer = styled.div`
     radial-gradient(circle at 82% 18%, rgba(${theme.colors.accentRgb}, 0.2), transparent 24%),
     radial-gradient(circle at 52% 76%, rgba(${theme.colors.primaryRgb}, 0.18), transparent 32%)
   `};
-`;
-
-const DotRail = styled.div`
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 78px;
-  display: flex;
-  gap: ${({ theme }) => theme.spacing[2]};
-  pointer-events: auto;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    bottom: 64px;
-  }
-`;
-
-const Dot = styled.span`
-  cursor: pointer;
-  width: ${({ $active }) => ($active ? '32px' : '10px')};
-  height: 4px;
-  padding: 2px 0;
-  border-radius: ${({ theme }) => theme.radii.pill};
-  background: ${({ $active, theme }) =>
-    $active
-      ? `color-mix(in srgb, ${theme.btn.secondaryHoverColor} 80%, transparent)`
-      : `color-mix(in srgb, ${theme.btn.secondaryHoverColor} 30%, transparent)`};
-  /*  theme.btn.secondaryHoverColor : theme.btn.secondaryHoverBg}; */
-  box-shadow: ${({ $active, theme }) => ($active ? theme.tones.blue.activeShadow : 'none')};
-  transition:
-    width 240ms ease,
-    background 240ms ease;
 `;
 
 const NavButton = styled('button', {
@@ -144,10 +112,8 @@ const NavArrow = styled(ArrowIconL, {
   transform: ${({ $side }) => ($side === 'left' ? 'rotate(180deg)' : 'none')};
 `;
 
-export default function HeroBannerSlide({ interval = 4000 }) {
+export default function HeroBannerSlide({ slideIndex, useMotion, onPrev, onNext, onTransitionEnd }) {
   const { mode } = useTheme();
-  const isMovingRef = useRef(false);
-  const resetTimerRef = useRef(null);
 
   const slides = BANNER_IMAGES.map(({ id, dark, light, opacity }) => ({
     id,
@@ -156,54 +122,9 @@ export default function HeroBannerSlide({ interval = 4000 }) {
   }));
   const loopSlides = [slides[slides.length - 1], ...slides, slides[0]];
 
-  const [slideIndex, setSlideIndex] = useState(1);
-  const [useMotion, setUseMotion] = useState(true);
-  const activeIndex = (slideIndex - 1 + slides.length) % slides.length;
-
-  const resetLoopSlide = (nextIndex) => {
-    if (resetTimerRef.current) window.clearTimeout(resetTimerRef.current);
-    setUseMotion(false);
-    setSlideIndex(nextIndex);
-    resetTimerRef.current = window.setTimeout(() => {
-      setUseMotion(true);
-      isMovingRef.current = false;
-    }, 40);
-  };
-
-  const moveSlide = (direction) => {
-    if (isMovingRef.current) return;
-    isMovingRef.current = true;
-    setUseMotion(true);
-    setSlideIndex((current) => current + direction);
-  };
-
-  const goToSlide = (index) => {
-    if (isMovingRef.current || index === activeIndex) return;
-    isMovingRef.current = true;
-    setUseMotion(true);
-    setSlideIndex(index + 1);
-  };
-
-  const handleTransitionEnd = () => {
-    if (slideIndex === 0) resetLoopSlide(slides.length);
-    else if (slideIndex === slides.length + 1) resetLoopSlide(1);
-    else isMovingRef.current = false;
-  };
-
-  useEffect(() => {
-    const timerId = window.setTimeout(() => moveSlide(1), interval);
-    return () => window.clearTimeout(timerId);
-  }, [interval, slideIndex]);
-
-  useEffect(() => {
-    return () => {
-      if (resetTimerRef.current) window.clearTimeout(resetTimerRef.current);
-    };
-  }, []);
-
   return (
     <BannerWrap aria-label="Hero banner slider">
-      <SlideRow $index={slideIndex} $animate={useMotion} onTransitionEnd={handleTransitionEnd}>
+      <SlideRow $index={slideIndex} $animate={useMotion} onTransitionEnd={onTransitionEnd}>
         {loopSlides.map((slide, index) => (
           <SlideLayer
             key={`${slide.id}-${index}`}
@@ -213,28 +134,12 @@ export default function HeroBannerSlide({ interval = 4000 }) {
         ))}
       </SlideRow>
       <GlowLayer />
-      <NavButton
-        type="button"
-        $side="left"
-        onClick={() => moveSlide(-1)}
-        aria-label="Previous slide"
-      >
+      <NavButton type="button" $side="left" onClick={onPrev} aria-label="Previous slide">
         <NavArrow $side="left" aria-hidden="true" />
       </NavButton>
-      <NavButton type="button" $side="right" onClick={() => moveSlide(1)} aria-label="Next slide">
+      <NavButton type="button" $side="right" onClick={onNext} aria-label="Next slide">
         <NavArrow $side="right" aria-hidden="true" />
       </NavButton>
-      <DotRail>
-        {slides.map((slide, index) => (
-          <Dot
-            key={slide.id}
-            $active={index === activeIndex}
-            onClick={() => goToSlide(index)}
-            role="button"
-            aria-label={`Slide ${index + 1}`}
-          />
-        ))}
-      </DotRail>
     </BannerWrap>
   );
 }

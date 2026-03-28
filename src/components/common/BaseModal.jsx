@@ -47,6 +47,7 @@ const Overlay = styled.div`
 const ModalWrap = styled.div`
   position: relative;
   z-index: 1;
+  width: 100%;
   max-width: ${({ $width }) => $width || '360px'};
   border-radius: ${({ theme }) => theme.radii.xxl};
   padding: ${({ theme }) => theme.spacing[8]};
