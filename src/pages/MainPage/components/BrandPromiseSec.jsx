@@ -6,11 +6,15 @@ import useThemeStore from '../../../store/useThemeStore';
 
 const SectionWrap = styled.section`
   position: relative;
-  width: 100%;
-  padding: ${({ theme }) => `${theme.spacing[24]} 0`};
+  margin: ${({ theme }) => `${theme.spacing[24]} 0`};
+  padding: ${({ theme }) => `${theme.spacing[14]} 0`};
 
-  &:has(.img-text-wrap:hover) .banner-img {
+  &:hover .banner-img {
     transform: scale(1.06);
+  }
+
+  &:has(.list-side:hover):not(:has(.img-text-wrap:hover)) .banner-img {
+    transform: scale(1);
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -55,52 +59,47 @@ const Img = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: right center;
+  object-position: 75% center;
+  filter: brightness(1.05);
   transform: scale(1);
   transition: transform ${({ theme }) => theme.motion.slow};
 `;
 
-/* 데스크탑 전용 — Inner 왼쪽 컬럼 */
 const ImgTextWrap = styled.div`
-  padding-top: ${({ theme }) => theme.spacing[10]};
-  padding-inline: ${({ theme }) => theme.grid.margin};
   isolation: isolate;
+  padding-inline: ${({ theme }) => theme.grid.margin};
+  text-shadow: 0 0 12px ${({ theme }) => theme.colors.background}50;
 
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -${({ theme }) => theme.spacing[6]};
-    z-index: -1;
-    border-radius: ${({ theme }) => theme.radii.lg};
-    background: linear-gradient(to right, rgba(4, 2, 18, 0.68) 0%, transparent 100%);
-    pointer-events: none;
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+  ${({ $tablet, theme }) =>
+    $tablet
+      ? `
     display: none;
-  }
-`;
-
-/* 태블릿 전용 — ImgSide 안에 absolute 오버레이 */
-const ImgTextWrapTablet = styled.div`
-  display: none;
-  position: absolute;
-  bottom: ${({ theme }) => theme.spacing[10]};
-  padding-inline: ${({ theme }) => theme.grid.margin};
-  isolation: isolate;
+    position: absolute;
+    bottom: ${theme.spacing[10]};
+    @media (max-width: ${theme.breakpoints.tablet}) { display: block; }
+  `
+      : `
+    position: relative;
+    align-self: start;
+    justify-self: start;
+    @media (max-width: ${theme.breakpoints.tablet}) { display: none; }
+  `}
 
   &::before {
     content: '';
     position: absolute;
     inset: -${({ theme }) => theme.spacing[6]};
+    right: calc(-${({ theme }) => theme.spacing[6]} - 40px);
     z-index: -1;
-    border-radius: ${({ theme }) => theme.radii.lg};
-    background: linear-gradient(to right, rgba(4, 2, 18, 0.68) 0%, transparent 100%);
+    background: linear-gradient(
+      to right,
+      ${({ theme }) => theme.colors.background}ad 0%,
+      transparent 100%
+    );
+    backdrop-filter: blur(12px);
+    -webkit-mask-image: linear-gradient(to right, black 50%, transparent 100%);
+    mask-image: linear-gradient(to right, black 50%, transparent 100%);
     pointer-events: none;
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    display: block;
   }
 `;
 
@@ -122,6 +121,7 @@ const ListSide = styled.div`
     right: 200px;
     z-index: -1;
     background: radial-gradient(ellipse at center, rgba(57, 24, 215, 0.24) 0%, transparent 65%);
+    pointer-events: none;
   }
 
   > * {
@@ -141,10 +141,15 @@ const Item = styled.div`
 const ItemTitle = styled.h3`
   margin: 0 0 ${({ theme }) => theme.spacing[5]};
   font-family: ${({ theme }) => theme.fontFamily.display};
-  font-size: ${({ theme }) => theme.fontSize.s};
+  font-size: ${({ theme }) => theme.fontSize.sm};
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: ${({ $color }) => $color};
+  transition: font-size ${({ theme }) => theme.motion.normal};
+
+  @media (max-width: 1100px) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
     font-size: ${({ theme }) => theme.fontSize.xs};
@@ -201,23 +206,19 @@ export default function BrandPromiseSec() {
   const bannerImg = isDarkMode ? darkBannerImg : lightBannerImg;
 
   const section = (
-    <BaseSection
-      label="Brand Promise"
-      title="WHY PULSE"
-      sub="PULSE가 만드는 게이밍 기어 경험의 4가지 약속"
-    />
+    <BaseSection label="Brand Promise" title="WHY PULSE" sub="당신의 셋업을 위한 4가지 약속" />
   );
 
   return (
     <SectionWrap>
       <ImgSide>
         <Img className="banner-img" src={bannerImg} alt="Why Pulse" />
-        <ImgTextWrapTablet>{section}</ImgTextWrapTablet>
+        <ImgTextWrap $tablet>{section}</ImgTextWrap>
       </ImgSide>
 
       <Inner>
         <ImgTextWrap className="img-text-wrap">{section}</ImgTextWrap>
-        <ListSide>
+        <ListSide className="list-side">
           {items.map((item) => (
             <Item key={item.title}>
               <ItemTitle $color={item.color} $line={item.line}>
