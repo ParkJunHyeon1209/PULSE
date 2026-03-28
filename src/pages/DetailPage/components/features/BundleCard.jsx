@@ -348,15 +348,23 @@ function BundleItemCard({ item }) {
 /* 메인 컴포넌트 */
 /* -------------------------------------------------------------------------- */
 
-export default function BundleCard({ category, teamProducts }) {
+export default function BundleCard({ currentType, teamProducts }) {
   /*
     현재 상세 카테고리와 다른 상품들만 추려서
     랜덤으로 3개 뽑음
   */
+  const normalizeValue = (value) =>
+    String(value || '')
+      .trim()
+      .toLowerCase();
+
   const randomProducts = useMemo(() => {
     if (!teamProducts || !teamProducts.length) return [];
 
-    const filteredProducts = teamProducts.filter((item) => item.type !== category);
+    const filteredProducts = teamProducts.filter(
+      (item) => normalizeValue(item.type) !== normalizeValue(currentType)
+    );
+
     const copiedProducts = [...filteredProducts];
     const pickedProducts = [];
 
@@ -367,9 +375,8 @@ export default function BundleCard({ category, teamProducts }) {
     }
 
     return pickedProducts;
-  }, [category, teamProducts]);
+  }, [currentType, teamProducts]);
 
-  /* 추천 상품이 없을 때 */
   if (!randomProducts.length) {
     return <div>추천 상품이 없습니다.</div>;
   }

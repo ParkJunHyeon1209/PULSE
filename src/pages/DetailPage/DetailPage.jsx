@@ -147,7 +147,7 @@ export default function DetailPage() {
       return total + extraPrice;
     }, 0);
   };
-
+  // 장바구니 로컬 초기화
   // localStorage.removeItem('shopping-cart');
   // 옵션, 서비스 체크 유무 가격 변경
   const handleAddToCart = () => {
@@ -191,8 +191,9 @@ export default function DetailPage() {
       options: selectedOptions,
       isCareChecked,
     };
-
+    console.log('optionSummary:', optionSummary);
     console.log('cartItem:', cartItem);
+    console.log('careservice', cartItem.careTitle);
 
     addToCart(cartItem, quantity);
 
@@ -235,7 +236,7 @@ export default function DetailPage() {
         />
       </ContentSection>
       <FeatureSection
-        category={product.type.toLocaleLowerCase()}
+        currentType={product.type.toLocaleLowerCase()}
         teamProducts={products}
         bundleCategory={product.category}
         product={product}
@@ -307,8 +308,8 @@ const EmptyMessage = styled.div`
 `;
 const ToastMessage = styled.div`
   position: fixed;
-  top: ${({ theme }) => theme.spacing[8]};
-  right: ${({ theme }) => theme.spacing[8]};
+  top: ${({ theme }) => theme.spacing[24]};
+  right: 240px;
   z-index: 9999;
 
   min-width: 320px;
@@ -339,7 +340,7 @@ const ToastMessage = styled.div`
   box-shadow: 0 12px 32px ${({ theme }) => theme.colors.shadow};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    top: ${({ theme }) => theme.spacing[6]};
+    top: ${({ theme }) => theme.spacing[24]};
     right: ${({ theme }) => theme.spacing[6]};
     left: ${({ theme }) => theme.spacing[6]};
     max-width: none;
@@ -350,7 +351,7 @@ const ToastMessage = styled.div`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    top: ${({ theme }) => theme.spacing[4]};
+    top: ${({ theme }) => theme.spacing[24]};
     right: ${({ theme }) => theme.spacing[4]};
     left: ${({ theme }) => theme.spacing[4]};
     text-align: center;
