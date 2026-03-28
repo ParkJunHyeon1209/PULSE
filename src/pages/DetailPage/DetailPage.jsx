@@ -26,6 +26,9 @@ export default function DetailPage() {
 
   const [toastMessage, setToastMessage] = useState('');
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [isNotFound, setIsNotFound] = useState(false);
+
   // 전체 상품 목록
   useEffect(() => {
     const fetchProducts = async () => {
@@ -57,31 +60,41 @@ export default function DetailPage() {
   // 현재 상세 상품
   useEffect(() => {
     const fetchProductDetail = async () => {
+      setIsLoading(true);
+      setIsNotFound(false);
+      setProduct(null);
+      setCategoryDetail(null);
+
       try {
         const detailData = await getProductDetailById(id);
-        console.log('detailData:', detailData);
-        console.log('detailData.type:', detailData?.type);
+
+        if (!detailData) {
+          setIsNotFound(true);
+          return;
+        }
+
         setProduct(detailData);
 
-        // 상품상세정보
         if (detailData?.type) {
           const categoryDetailType = mapCategoryDetailType(detailData.type);
-
           const categoryData = await getCategoryDetailByType(categoryDetailType);
 
           setCategoryDetail({
-            images: categoryData.images || categoryData.image || [],
-            specs: categoryData.specs || [],
+            images: categoryData?.images || categoryData?.image || [],
+            specs: categoryData?.specs || [],
           });
         }
       } catch (error) {
         console.error('상세 상품 불러오기 실패', error);
-        setProduct(null);
+        setIsNotFound(true);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchProductDetail();
   }, [id]);
+
   // 상품 바뀔때 초기 상태
   useEffect(() => {
     if (!product) return;
@@ -126,7 +139,17 @@ export default function DetailPage() {
     setQuantity((prev) => prev + 1);
   };
 
-  if (!product) {
+  if (isLoading) {
+    return (
+      <PageWrapper>
+        <ContentSection>
+          <EmptyMessage>상품 정보를 불러오고 있습니다.</EmptyMessage>
+        </ContentSection>
+      </PageWrapper>
+    );
+  }
+
+  if (isNotFound || !product) {
     return (
       <PageWrapper>
         <ContentSection>
@@ -135,7 +158,6 @@ export default function DetailPage() {
       </PageWrapper>
     );
   }
-
   // 추가금 옵션 계산함수
   const getOptionExtraPrice = (selectedOptions) => {
     return Object.values(selectedOptions).reduce((total, value) => {
@@ -219,7 +241,7 @@ export default function DetailPage() {
           selectedImage={selectedImage}
           onSelectImage={setSelectedImage}
           galleryImages={galleryImages}
-          teamProduct={products}
+          teamProducts={products}
           categoryDetail={categoryDetail}
         />
 

@@ -23,8 +23,8 @@ export default function ProductGallery({
   );
 
   const rawTag = matchedProduct?.tag ?? product?.tag ?? '';
-  const normalizedTag = String(rawTag).trim().toUpperCase();
-  const badgeTone = BADGE_TONE[normalizedTag];
+  const normalizedTag = String(rawTag).trim().toLowerCase();
+  const badgeTone = BADGE_TONE[normalizedTag] ?? normalizedTag;
   const badgeLabel = rawTag ? String(rawTag).toUpperCase() : '';
 
   const handlePrev = () => {
