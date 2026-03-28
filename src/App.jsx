@@ -10,6 +10,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import ShoppingCart from './pages/ShoppingCart/ShoppingCart';
 import CursorTrail from './components/common/CursorTrail';
 import ScrollToTop from './components/common/ScrollToTop';
+import MyPage from './pages/MyPage/MyPage';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/categories/:categoryName" element={<CategoriesPage />} />
           <Route path="/product/:id" element={<DetailPage />} />
           <Route path="/shoppingcart" element={<ShoppingCart />} />
+          <Route path="/mypage" element={<MyPage />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<NotFoundPage />} />
