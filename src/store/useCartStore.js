@@ -2,7 +2,8 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import useOverlayStore from './useOverlayStore';
 
-const getCartItemKey = (product) => `${product.id}-${JSON.stringify(product.options ?? [])}`;
+const getCartItemKey = (product) =>
+  `${product.id}-${JSON.stringify(product.optionSummary ?? [])}-${JSON.stringify(product.careTitle ?? 'none')}`;
 const useCartStore = create(
   persist(
     (set, get) => ({
