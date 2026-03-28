@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import React from 'react';
+import CloseSvg from '../common/CloseSvg';
 
 const InputNameGroup = styled.div`
   display: flex;
@@ -16,7 +17,7 @@ const InputGroup = styled.div`
 `;
 
 const InputLabel = styled.label`
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  font-size: ${({ theme }) => theme.fontSize.xxs};
   font-weight: bold;
   margin-bottom: ${({ theme }) => theme.spacing[1]};
   letter-spacing: 1px;
@@ -25,7 +26,9 @@ const InputLabel = styled.label`
 const Input = styled.input`
   background: transparent;
   border: none;
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid
+    ${(props) =>
+      props.$firstNameError || props.$lastNameError ? props.theme.colors.error : '#333'};
   padding: ${({ theme }) => theme.spacing[3]} 0;
   outline: none;
   width: 100%;
@@ -34,11 +37,24 @@ const Input = styled.input`
     font-size: 14px;
   }
 `;
+
+const ErrorMessage = styled.p`
+  color: ${({ theme }) => theme.colors.error};
+  font-size: 12px;
+  margin-top: ${({ theme }) => theme.spacing[1]};
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+`;
+
 export default function SignupNameInput({
   firstName,
   lastName,
   handleFirstNameChange,
   handleLastNameChange,
+  firstNameError,
+  lastNameError,
 }) {
   return (
     <>
@@ -50,10 +66,17 @@ export default function SignupNameInput({
             id="firstName"
             name="firstName"
             type="text"
-            placeholder="이름"
             value={firstName}
+            placeholder="이름"
+            $firstNameError={firstNameError}
             onChange={handleFirstNameChange}
           />
+          {firstNameError && (
+            <ErrorMessage>
+              <CloseSvg />
+              한글만 입력 가능합니다.
+            </ErrorMessage>
+          )}
         </InputGroup>
         <InputGroup>
           <InputLabel>LAST NAME</InputLabel>
@@ -61,10 +84,17 @@ export default function SignupNameInput({
             id="lastName"
             name="lastName"
             type="text"
-            placeholder="성"
             value={lastName}
+            placeholder="성"
+            $lastNameError={lastNameError}
             onChange={handleLastNameChange}
           />
+          {lastNameError && (
+            <ErrorMessage>
+              <CloseSvg />
+              한글만 입력 가능합니다.
+            </ErrorMessage>
+          )}
         </InputGroup>
       </InputNameGroup>
     </>
