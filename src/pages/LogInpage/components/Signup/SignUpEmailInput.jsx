@@ -76,15 +76,43 @@ const CheckBtn = styled.button`
     transform: none;
   }
 `;
-
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
 export default function SignUpEamilInput({
   email,
+  setEmail,
   emailError,
+  setEmailError,
   isUnique,
-  handleCheckId,
-  checkEmail,
   setIsUnique,
 }) {
+  // const checkEmail = (email) => {
+  //   setEmail(email);
+  //   setIsUnique(null);
+
+  //   const isValid = emailRegex.test(email);
+  //   setEmailError(!isValid && email.length > 0);
+  // };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+    setIsUnique(null);
+    if (emailError) setEmailError(false);
+  };
+
+  const handleBlur = () => {
+    const isValid = emailRegex.test(email);
+    setEmailError(!isValid && email.length > 0);
+  };
+
+  const handleCheckId = () => {
+    if (emailError || !emailRegex.test(email) || email.length === 0) {
+      return;
+    }
+
+    const result = email !== 'user@test.com';
+    setIsUnique(result);
+  };
   return (
     <>
       {/* 이메일 입력란 */}
@@ -98,9 +126,8 @@ export default function SignUpEamilInput({
             value={email}
             placeholder="signal@pulse.kr"
             $emailError={emailError}
-            onChange={(e) => {
-              checkEmail(e.target.value);
-            }}
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
           <CheckBtn type="button" disabled={emailError || !email} onClick={handleCheckId}>
             중복 확인
