@@ -18,10 +18,11 @@ const NavWrap = styled.nav`
   left: 0;
   right: 0;
   z-index: 100;
+  min-height: 100px;
   padding-top: ${({ theme }) => theme.spacing[4]};
   background: ${({ theme }) => theme.colors.navBg};
   backdrop-filter: ${({ theme }) => theme.effects.blurNav};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  /* border-bottom: 1px solid ${({ theme }) => theme.colors.border}; */
 `;
 
 const NavInner = styled.div`
@@ -124,7 +125,13 @@ export default function AppHeader() {
 
         <NavLinks>
           {navItems.map((item) => (
-            <NavItem key={item.to} to={item.to} end={item.end} $isDrops={item.isDrops} data-label={item.label}>
+            <NavItem
+              key={item.to}
+              to={item.to}
+              end={item.end}
+              $isDrops={item.isDrops}
+              data-label={item.label}
+            >
               {item.label}
             </NavItem>
           ))}

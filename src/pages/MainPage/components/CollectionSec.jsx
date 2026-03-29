@@ -12,28 +12,26 @@ const SectionWrap = styled.section`
 
 const Grid = styled.div`
   display: flex;
-  overflow-x: scroll;
-  gap: ${({ theme }) => theme.spacing[5]};
+  overflow-x: auto;
+  gap: clamp(8px, 1.5vw, ${({ theme }) => theme.spacing[5]});
+  scroll-snap-type: x mandatory;
+  padding-block: ${({ theme }) => theme.spacing[3]};
+  margin-block: -${({ theme }) => theme.spacing[3]};
 
   &::-webkit-scrollbar {
-    width: 0;
+    height: 0;
   }
+  scrollbar-width: none;
 
   > article {
     flex-shrink: 0;
-    flex-basis: 250px;
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    grid-template-columns: 1fr;
+    flex-basis: clamp(150px, 28%, 300px);
+    min-height: clamp(280px, 37vw, 400px);
+    scroll-snap-align: start;
   }
 `;
 
-export default function ProductsSec() {
+export default function CollectionSec() {
   const [productsList, setProductsList] = useState([]);
 
   useEffect(() => {

@@ -40,7 +40,7 @@ const Grid = styled.div`
 export default function CategorySec() {
   const [category, setCategory] = useState([]);
   const navigate = useNavigate();
-  console.log(category);
+  // console.log(category);
   useEffect(() => {
     const fetchCategory = async () => {
       try {

@@ -9,9 +9,12 @@ import BaseBtn from './BaseBtn';
 const categories = ['HEADSET', 'KEYBOARD', 'MOUSE', 'MIC', 'DROPS'];
 
 const links = [
-  { title: '신제품 보기', sub: '2026 S/S 컬렉션' },
-  { title: 'DROPS 한정 발매', sub: '이번 주 수량 12개' },
-  { title: '브랜드 스토리', sub: 'SIGNAL / GEAR / PLAY' },
+  { title: '신제품 보기', sub: '2026 S/S 컬렉션', to: '/categories/' },
+  { title: 'DROPS 한정 발매', sub: '이번 주 수량 12개', to: '/categories/drops' },
+  {
+    title: '브랜드 스토리',
+    sub: 'SIGNAL / GEAR / PLAY', // 모달 띄우기
+  },
 ];
 
 const dummySearch = [
@@ -40,6 +43,7 @@ const SearchPanel = styled.div`
   opacity: ${({ $open }) => ($open ? 1 : 0)};
   background: ${({ theme }) => theme.colors.navBg};
   backdrop-filter: ${({ theme }) => theme.effects.blurNav};
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   transition: opacity 0.24s ease;
 `;
@@ -142,6 +146,10 @@ const SearchDropdown = styled.div`
   transition:
     height 0.34s cubic-bezier(0.23, 1, 0.32, 1),
     opacity 0.24s ease;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    height: ${({ $open }) => ($open ? 'auto' : '0')};
+  }
 `;
 
 const SearchDropdownInner = styled.div`
@@ -273,6 +281,7 @@ const RecentHeader = styled.div`
 `;
 
 const RecentClear = styled.button`
+  margin-left: ${({ theme }) => theme.spacing[4]};
   color: ${({ theme }) => theme.colors.textSecondary};
   font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: ${({ theme }) => theme.fontSize.xxxs};

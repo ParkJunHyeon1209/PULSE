@@ -1,4 +1,4 @@
-import { keyframes } from '@emotion/react';
+import { keyframes, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import BaseSection from '../../../components/common/BaseSection';
 import BaseBtn from '../../../components/common/BaseBtn';
@@ -6,6 +6,8 @@ import { LavStarIcon } from '../../../assets/icons/BtnIcon';
 import lightBannerImg from '../../../assets/img/banners/L_main-DorpBanner.webp';
 import darkBannerImg from '../../../assets/img/banners/D_main-DorpBanner.webp';
 import useThemeStore from '../../../store/useThemeStore';
+import useOverlayStore from '../../../store/useOverlayStore';
+import { useResponsive } from '../../../hooks/useResponsive';
 
 const dotPulse = keyframes`
   0%, 100% { opacity: 1; transform: scale(0.7); }
@@ -29,6 +31,7 @@ const PromoCard = styled.div`
   min-height: 380px;
   display: flex;
   align-items: center;
+
   background: ${({ theme }) => (theme.mode === 'light' ? '#ece9ff' : theme.colors.surface)};
   border: 1px solid rgba(${({ theme }) => theme.colors.primaryRgb}, 0.15);
   cursor: pointer;
@@ -59,6 +62,10 @@ const PromoText = styled.div`
   padding: ${({ theme }) => theme.spacing[16]};
   flex: 1;
   max-width: 580px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[6]};
+  }
 `;
 
 const DropLabel = styled.div`
@@ -71,6 +78,10 @@ const DropLabel = styled.div`
   text-transform: uppercase;
   color: ${({ theme }) => theme.colors.primary};
   margin-bottom: ${({ theme }) => theme.spacing[6]};
+  transition: font-size ${({ theme }) => theme.motion.normal};
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: ${({ theme }) => theme.fontSize.xxxs};
+  }
 `;
 
 const LiveDot = styled.span`
@@ -84,7 +95,7 @@ const LiveDot = styled.span`
 
 const DropTitle = styled.h2`
   font-family: ${({ theme }) => theme.fontFamily.hero};
-  font-size: clamp(42px, 5vw, 63px);
+  font-size: clamp(32px, 7vw, 63px);
   letter-spacing: 0.04em;
   line-height: 0.9;
   margin-bottom: ${({ theme }) => theme.spacing[3]};
@@ -110,12 +121,24 @@ const DropDesc = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   text-align: center;
   line-height: 1.6;
+  font-weight: 600;
   margin-bottom: ${({ theme }) => theme.spacing[6]};
+  text-shadow: 0 0 20px ${({ theme }) => theme.colors.background}cc, 0 0 8px ${({ theme }) => theme.colors.background}cc;
+  transition: font-size ${({ theme }) => theme.motion.normal};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: ${({ theme }) => theme.fontSize.xxxs};
+  }
+
   > span {
     letter-spacing: 0.2em;
     line-height: 3;
     font-weight: 700;
     font-size: ${({ theme }) => theme.fontSize.xs};
+    transition: font-size ${({ theme }) => theme.motion.normal};
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+      font-size: ${({ theme }) => theme.fontSize.xxs};
+    }
   }
 `;
 
@@ -133,7 +156,7 @@ const DropStat = styled.div`
 
 const DropStatVal = styled.span`
   font-family: ${({ theme }) => theme.fontFamily.body};
-  font-size: 22px;
+  font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: 700;
   letter-spacing: 0.04em;
   line-height: 1;
@@ -141,6 +164,13 @@ const DropStatVal = styled.span`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  transition: font-size ${({ theme }) => theme.motion.normal};
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: ${({ theme }) => theme.fontSize.xs};
+  }
 `;
 
 const DropStatLabel = styled.span`
@@ -178,6 +208,19 @@ const TimerStar = styled(LavStarIcon)`
   margin-right: 0;
 `;
 
+const Overlay = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    ${({ theme }) => theme.colors.background}f0 0%,
+    ${({ theme }) => theme.colors.background}aa 50%,
+    transparent 100%
+  );
+`;
+
 const BannerImg = styled.img`
   position: absolute;
   inset: 0;
@@ -201,6 +244,13 @@ const stats = [
 export default function DropSec() {
   const isDarkMode = useThemeStore((s) => s.isDarkMode);
   const bannerImg = isDarkMode ? darkBannerImg : lightBannerImg;
+  const openModal = useOverlayStore((s) => s.openModal);
+  const theme = useTheme();
+  const { isMobile, isTablet } = useResponsive({
+    mobile: parseInt(theme.breakpoints.mobile),
+    tablet: parseInt(theme.breakpoints.tablet),
+    desktop: parseInt(theme.breakpoints.desktop),
+  });
 
   return (
     <SectionWrap>
@@ -236,7 +286,7 @@ export default function DropSec() {
             </DropMeta>
 
             <DropRow>
-              <BaseBtn variant="secondary">드롭 알림 신청</BaseBtn>
+              <BaseBtn variant="secondary" onClick={() => openModal('dropAlert')}>드롭 알림 신청</BaseBtn>
               <DropTimer>
                 <TimerStar $animate={true}>✦</TimerStar>
                 Apr 15 · 20:00 KST
@@ -246,6 +296,7 @@ export default function DropSec() {
         </PromoText>
 
         <BannerImg className="banner-img" src={bannerImg} alt="PULSE × VIBE" />
+        {(isMobile || isTablet) && <Overlay />}
       </PromoCard>
     </SectionWrap>
   );
