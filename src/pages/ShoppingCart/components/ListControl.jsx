@@ -1,7 +1,77 @@
 import React from 'react';
 import useCartStore from '../../../store/useCartStore';
 import styled from '@emotion/styled';
+import useOverlayStore from '../../../store/useOverlayStore';
+import BaseBtn from '../../../components/common/BaseBtn';
+import BaseModal from '../../../components/common/BaseModal';
 
+function ConfirmModal() {
+  const isOpen = useOverlayStore((state) => Boolean(state.modals.confirm));
+  const closeModal = useOverlayStore((state) => state.closeModal);
+  const resetCart = useCartStore((state) => state.resetCart);
+
+  return (
+    <BaseModal
+      isOpen={isOpen}
+      label="PULSE PLATFORM"
+      onClose={() => closeModal('confirm')}
+      title="정말 삭제하시겠습니까?"
+    >
+      <p>
+        정말 장바구니를 초기화 하시겠습니까? <br />
+        되돌릴 수 없습니다.
+      </p>
+
+      <div className="btn-wrap" style={{ display: 'flex', gap: `16px` }}>
+        <BaseBtn
+          padding="12px 32px"
+          style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
+          onClick={() => {
+            resetCart();
+            closeModal('confirm');
+          }}
+        >
+          확인
+        </BaseBtn>
+
+        <BaseBtn
+          padding="12px 32px"
+          style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
+          onClick={() => closeModal('confirm')}
+        >
+          취소
+        </BaseBtn>
+      </div>
+    </BaseModal>
+  );
+}
+
+export default function ListControl() {
+  const cart = useCartStore((state) => state.cart);
+  const removeSelected = useCartStore((state) => state.removeSelected);
+  const handleAllChange = useCartStore((state) => state.toggleAllChecked);
+  const isAllChecked = cart.every((item) => item.checked);
+  const openModal = useCartStore((state) => state.openResetModal);
+
+  return (
+    <ListControlWrap>
+      <div className="check-box">
+        <GradientCheckbox
+          id="select-all"
+          type="checkbox"
+          checked={isAllChecked}
+          onChange={handleAllChange}
+        />
+        <label htmlFor="select-all">전체 선택</label>
+      </div>
+      <div className="deletes">
+        <button onClick={removeSelected}>선택삭제</button>
+        <button onClick={openModal}>전체삭제</button>
+      </div>
+      <ConfirmModal />
+    </ListControlWrap>
+  );
+}
 const ListControlWrap = styled.div`
   padding: ${({ theme }) => theme.spacing[3]} ${({ theme }) => theme.spacing[6]};
   display: flex;
@@ -68,29 +138,3 @@ const GradientCheckbox = styled.input`
     color: white;
   }
 `;
-
-export default function ListControl() {
-  const cart = useCartStore((state) => state.cart);
-  const removeSelected = useCartStore((state) => state.removeSelected);
-  const handleAllChange = useCartStore((state) => state.toggleAllChecked);
-  const isAllChecked = cart.every((item) => item.checked);
-  const resetCart = useCartStore((state) => state.clearCart);
-
-  return (
-    <ListControlWrap>
-      <div className="check-box">
-        <GradientCheckbox
-          id="select-all"
-          type="checkbox"
-          checked={isAllChecked}
-          onChange={handleAllChange}
-        />
-        <label htmlFor="select-all">전체 선택</label>
-      </div>
-      <div className="deletes">
-        <button onClick={removeSelected}>선택삭제</button>
-        <button onClick={resetCart}>전체삭제</button>
-      </div>
-    </ListControlWrap>
-  );
-}

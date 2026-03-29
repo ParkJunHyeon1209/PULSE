@@ -112,7 +112,13 @@ const useCartStore = create(
         })),
 
       // 카트 전체 초기화
-      clearCart: () => set({ cart: [] }),
+      openResetModal: () => {
+        useOverlayStore.getState().openModal('confirm');
+        return;
+      },
+      resetCart: () => {
+        set(() => ({ cart: [] }));
+      },
     }),
     {
       name: 'shopping-cart',
