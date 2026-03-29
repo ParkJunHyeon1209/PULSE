@@ -1,14 +1,6 @@
 import styled from '@emotion/styled';
 import BaseSection from '../../../../components/common/BaseSection';
-import AppLogo from '../../../../components/common/AppLogo';
 import { keyframes } from '@emotion/react';
-
-const TopArea = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  padding-bottom: 20px;
-`;
 
 const CenterArea = styled.div`
   width: 480px;
@@ -30,7 +22,6 @@ const BottomContent = styled.div`
 const TextGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[5]};
 `;
 
 const MainHeading = styled.h2`
@@ -38,6 +29,7 @@ const MainHeading = styled.h2`
   font-weight: 700;
   line-height: 1.3;
   letter-spacing: 3px;
+  margin-top: 2px;
 
   span {
     color: ${({ theme }) => theme.colors.infoSoft};
@@ -50,6 +42,7 @@ const Description = styled.p`
   font-weight: 400;
   line-height: 1.6;
   white-space: pre-line;
+  margin-top: 11px;
 `;
 
 const DataWrapper = styled.div`
@@ -135,9 +128,6 @@ const WavePath = styled.svg`
 export default function LeftSignUp() {
   return (
     <div className="left-content-wrapper">
-      <TopArea>
-        <AppLogo size="120px" />
-      </TopArea>
       <CenterArea>
         <PulseWrapper>
           <Circle size={240} opacity={0.1} />
