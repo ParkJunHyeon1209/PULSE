@@ -1,14 +1,19 @@
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import BaseSection from '../../../components/common/BaseSection';
 import BaseToneCard from './common/BaseToneCard';
 import { getDropProducts } from '../../../data/mainApi';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import useSlider from '../../../hooks/useSlider';
+
+const CARD_WIDTH = 'clamp(260px, 28vw, 404px)';
+const CARD_OFFSET = 'clamp(208px, 28vw, 404px)';
 
 const SectionWrap = styled.section`
   display: grid;
   gap: ${({ theme }) => theme.spacing[18]};
   padding: ${({ theme }) => `${theme.spacing[24]} 0 ${theme.spacing[20]}`};
+  /* overflow: hidden; */
 `;
 
 const HeadWrap = styled.div`
@@ -16,65 +21,74 @@ const HeadWrap = styled.div`
   justify-content: center;
 `;
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1.15fr 1fr;
-  gap: ${({ theme }) => theme.spacing[10]};
-  align-items: center;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
-    grid-template-columns: 1fr;
-  }
+const Track = styled.div`
+  position: relative;
+  height: clamp(348px, 38vw, 510px);
 `;
 
-// const cards = [
-//   {
-//     id: 1,
-//     label: 'Headset',
-//     name: 'PULSE PRO H1',
-//     count: '몰입형 공간감과 저지연 무선 사운드',
-//     tone: 'violet',
-//     height: '430px',
-//   },
-//   {
-//     id: 2,
-//     label: 'PULSE × VIBE',
-//     name: 'SIGNAL EDITION',
-//     count: '한정 100개 드롭 스페셜 글로우',
-//     tone: 'indigo',
-//     height: '510px',
-//     badge: 'col',
-//     arrow: true,
-//   },
-//   {
-//     id: 3,
-//     label: 'Keyboard',
-//     name: 'KEY MATRIX',
-//     count: '75% 배열 커스텀 RGB 셋업',
-//     tone: 'blue',
-//     height: '430px',
-//   },
-// ];
+const getCardScale = (slot) => {
+  if (slot === 0) return 1;
+  if (slot === -1 || slot === 1) return 0.8;
+  return 0.7;
+};
+
+const getCardOffset = (slot) => {
+  if (slot === -1) return `calc(0px - ${CARD_OFFSET})`;
+  if (slot === 1) return CARD_OFFSET;
+  return '0px';
+};
+
+const getCardTransform = (slot) =>
+  `translate(-50%, -50%) translateX(${getCardOffset(slot)}) scale(${getCardScale(slot)})`;
+
+const CardWrap = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: ${CARD_WIDTH};
+  aspect-ratio: 3 / 4;
+  cursor: ${({ $slot }) => ($slot === -1 || $slot === 1 ? 'pointer' : 'default')};
+  transform: ${({ $slot }) => getCardTransform($slot)};
+  transform-origin: center center;
+  will-change: transform, opacity, filter;
+  opacity: ${({ $slot }) => ($slot === 0 ? 1 : $slot === null ? 0 : 0.65)};
+  filter: ${({ $slot }) => ($slot === 0 ? ' brightness(1.04) saturate(1.1)' : 'grayscale(70%)')};
+  z-index: ${({ $slot }) => ($slot === 0 ? 10 : $slot === null ? 0 : 5)};
+  pointer-events: ${({ $slot }) => ($slot === null ? 'none' : 'auto')};
+  transition:
+    transform 550ms cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 400ms ease,
+    filter 400ms ease;
+`;
 
 export default function ShowcaseSec() {
   const [dropProducts, setDropProducts] = useState([]);
   const navigate = useNavigate();
+  const count = dropProducts.length;
+  const { activeIndex, move, setIsPaused } = useSlider(count);
+  const touchX = useRef(null);
 
   useEffect(() => {
-    const fetchDropProducts = async () => {
-      const products = await getDropProducts();
-      setDropProducts(products);
-    };
-
-    fetchDropProducts();
+    getDropProducts().then(setDropProducts);
   }, []);
 
-  const handleClick = (index, id) => {
-    if (index === 0) setDropProducts((prev) => [prev[2], prev[0], prev[1]]);
-    if (index === 1) navigate(`product/${id}`);
-    if (index === 2) setDropProducts((prev) => [prev[1], prev[2], prev[0]]);
+  const getPos = (i) => {
+    const diff = (i - activeIndex + count) % count;
+    if (diff === 0) return 0;
+    if (diff === 1) return 1;
+    if (diff === count - 1) return -1;
+    return null;
   };
-  // console.log(dropProducts);
+
+  const onTouchStart = (e) => {
+    touchX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = (e) => {
+    if (touchX.current === null) return;
+    const delta = touchX.current - e.changedTouches[0].clientX;
+    if (Math.abs(delta) > 44) move(delta > 0 ? 1 : -1);
+    touchX.current = null;
+  };
 
   return (
     <SectionWrap>
@@ -90,24 +104,39 @@ export default function ShowcaseSec() {
         />
       </HeadWrap>
 
-      <Grid>
-        {dropProducts.map((card, i) => (
-          // console.log(card.tag),
-          <BaseToneCard
-            key={card.id}
-            img={card.image}
-            label={card.meta}
-            name={card.title}
-            count={card.desc}
-            tone={card.tone}
-            height={i === 1 ? '510px' : '430px'}
-            badge={card.tag}
-            beamOver
-            arrow={card.arrow}
-            onClick={() => handleClick(i, card.id)}
-          />
-        ))}
-      </Grid>
+      <Track
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      >
+        {dropProducts.map((card, i) => {
+          const slot = getPos(i);
+          return (
+            <CardWrap
+              key={card.id}
+              $slot={slot}
+              onClick={() => {
+                if (slot === -1) move(-1);
+                else if (slot === 1) move(1);
+                else navigate(`product/${card.id}`);
+              }}
+            >
+              <BaseToneCard
+                img={card.image}
+                label={card.meta}
+                name={card.title}
+                count={card.desc}
+                tone={card.tone}
+                height="100%"
+                badge={card.tag}
+                beamOver
+                arrow={card.arrow}
+              />
+            </CardWrap>
+          );
+        })}
+      </Track>
     </SectionWrap>
   );
 }

@@ -27,7 +27,7 @@ export default function useSlider(count, interval, onTick) {
   );
 
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || interval == null) return;
     const tick = onTick ?? (() => move(1));
     const id = setTimeout(tick, interval);
     return () => clearTimeout(id);
