@@ -5,6 +5,10 @@ import styled from '@emotion/styled';
 import LeftSignIn from './components/Signin/LeftSignIn';
 import LeftSignUp from './components/Signup/LeftSignUp';
 import TabNavigation from './components/common/TabNavigation';
+import AppLogo from '../../components/common/AppLogo';
+import logoDark from '../../assets/Logo-dark.svg';
+import logoLight from '../../assets/Logo-wite.svg';
+import { useTheme } from '@emotion/react';
 
 const LogInPageContainer = styled.div`
   display: flex;
@@ -13,6 +17,16 @@ const LogInPageContainer = styled.div`
   max-width: 1280px;
   margin-top: 42.5px;
   padding-bottom: 60px;
+`;
+
+const LogoWrap = styled.div`
+  position: absolute;
+  top: ${({ theme }) => theme.spacing[10]};
+  left: ${({ theme }) => theme.spacing[20]};
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
 `;
 
 // 왼쪽 섹션
@@ -54,9 +68,13 @@ const RightSection = styled.div`
 
 export default function LoginPage() {
   const [activeTab, setActiveTab] = useState('signin');
+  const theme = useTheme();
 
   return (
     <LogInPageContainer>
+      <LogoWrap>
+        <AppLogo size="120px" src={theme.mode === 'dark' ? logoDark : logoLight} alt="PULSE" />
+      </LogoWrap>
       {/* --- 왼쪽 영역 --- */}
       <LeftSection>{activeTab === 'signin' ? <LeftSignIn /> : <LeftSignUp />}</LeftSection>
 

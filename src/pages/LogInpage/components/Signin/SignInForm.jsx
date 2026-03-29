@@ -5,6 +5,8 @@ import BaseBtn from '../../../../components/common/BaseBtn';
 import SignInEmailInput from '../Signin/SignInEmailInput';
 import SignInPasswordInput from '../Signin/SignInPasswordInput';
 import SocialBtn from '../common/SocialBtn';
+import useAuthStore from '../../../../store/useAuthStore';
+import { loginApi } from '../../../../data/authApi';
 
 const SignInContainer = styled.div`
   width: 100%;
@@ -16,7 +18,7 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  gap: ${({ theme }) => theme.spacing[4]};
+  gap: ${({ theme }) => theme.spacing[2]};
   width: 100%;
 
   .signin-btn {
@@ -26,7 +28,6 @@ const StyledForm = styled.form`
 
 const Title = styled.h2`
   font-size: ${({ theme }) => theme.fontSize.sm};
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
 `;
 
 const SubText = styled.p`
@@ -90,16 +91,24 @@ export default function SignInForm({ onClick }) {
   const [pw, setPw] = useState('');
   const [showPw, setShowPw] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuthStore();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    // 임시 로그인 체크 로직
-    if (email && pw) {
-      alert('환영합니다!');
-      navigate('/');
-    } else {
-      alert('이메일과 비밀번호를 입력해주세요.');
+    try {
+      const res = await loginApi(email, pw);
+
+      if (res.success) {
+        localStorage.setItem('accessToken', res.token);
+
+        login();
+
+        alert('로그인 성공!');
+        navigate('/');
+      }
+    } catch (error) {
+      alert('이메일 또는 비밀번호가 잘못되었습니다.');
     }
   };
   return (

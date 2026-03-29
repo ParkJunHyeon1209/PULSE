@@ -47,15 +47,27 @@ const ErrorMessage = styled.p`
   align-items: center;
   gap: 2px;
 `;
+const nameRegex = /^[가-힣]+$/;
 
 export default function SignupNameInput({
   firstName,
   lastName,
-  handleFirstNameChange,
-  handleLastNameChange,
+  setFirstName,
+  setLastName,
   firstNameError,
   lastNameError,
+  setFirstNameError,
+  setLastNameError,
 }) {
+  const handleLastNameBlur = () => {
+    const isInvalid = lastName.length > 0 && !nameRegex.test(lastName);
+    setLastNameError(isInvalid);
+  };
+
+  const handleFirstNameBlur = () => {
+    const isInvalid = firstName.length > 0 && !nameRegex.test(firstName);
+    setFirstNameError(isInvalid);
+  };
   return (
     <>
       {/* 이름 입력란 */}
@@ -69,7 +81,11 @@ export default function SignupNameInput({
             value={firstName}
             placeholder="이름"
             $firstNameError={firstNameError}
-            onChange={handleFirstNameChange}
+            onChange={(e) => {
+              if (e.target.value.length <= 10) setFirstName(e.target.value);
+              if (firstNameError) setFirstNameError(false);
+            }}
+            onBlur={handleFirstNameBlur}
           />
           {firstNameError && (
             <ErrorMessage>
@@ -87,7 +103,11 @@ export default function SignupNameInput({
             value={lastName}
             placeholder="성"
             $lastNameError={lastNameError}
-            onChange={handleLastNameChange}
+            onChange={(e) => {
+              if (e.target.value.length <= 10) setLastName(e.target.value);
+              if (lastNameError) setLastNameError(false);
+            }}
+            onBlur={handleLastNameBlur}
           />
           {lastNameError && (
             <ErrorMessage>

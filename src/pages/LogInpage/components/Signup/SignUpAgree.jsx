@@ -63,6 +63,7 @@ export default function SignUpAgree({ agreement, setAgreement }) {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         label={`PULSE PLATFORM`}
+        width="480px"
         title={
           <span style={{ lineHeight: '32px', fontSize: '24px' }}>
             서비스 이용을 위해

@@ -2,6 +2,8 @@ import styled from '@emotion/styled';
 import React from 'react';
 import CloseSvg from '../common/CloseSvg';
 import ShowBtn from '../common/ShowBtn';
+import BaseTooltip from '../../../../components/common/BaseTooltip';
+import BaseBtn from '../../../../components/common/BaseBtn';
 
 const InputGroup = styled.div`
   display: flex;
@@ -13,8 +15,27 @@ const InputGroup = styled.div`
 const InputLabel = styled.label`
   font-size: ${({ theme }) => theme.fontSize.xxs};
   font-weight: bold;
-  margin-bottom: ${({ theme }) => theme.spacing[1]};
   letter-spacing: 1px;
+`;
+
+const Tooltip = styled.div`
+  position: relative;
+  display: inline-flex;
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  color: ${({ theme }) => theme.colors.textSecondary};
+
+  &:hover .pw-tooltip,
+  &:focus-within .pw-tooltip {
+    opacity: 1;
+    transform: translateX(calc(-50% + var(--tooltip-shift-x, 0px))) translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  &:hover .pw-tooltip > *,
+  &:focus-within .pw-tooltip > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
 `;
 
 const Input = styled.input`
@@ -108,21 +129,76 @@ const StrengthBar = styled.div`
 
 export default function SignUpPasswordInput({
   pw,
+  setPw,
   pwConfirm,
   setPwConfirm,
   pwError,
+  setPwError,
+  pwScore,
+  setPwScore,
   showPw,
   setShowPw,
   showPwConfirm,
   setShowPwConfirm,
-  pwScore,
-  isPwValid,
 }) {
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setPw(value);
+
+    const isLengthValid = value.length >= 8 && value.length <= 15;
+    const hasDigit = /\d/.test(value);
+    const hasUppercase = /[A-Z]/.test(value);
+    const hasSpecial = /[!@#$%^&*+=-]/.test(value);
+
+    let score = 0;
+    if (isLengthValid) {
+      if (hasDigit) score++;
+      if (hasUppercase) score++;
+      if (hasSpecial) score++;
+    }
+    setPwScore(score);
+
+    setPwError(null);
+  };
+
+  const handleBlur = () => {
+    if (pw.length === 0) {
+      setPwError(null);
+      return;
+    }
+
+    const isValid =
+      pw.length >= 8 &&
+      pw.length <= 15 &&
+      /\d/.test(pw) &&
+      /[A-Z]/.test(pw) &&
+      /[!@#$%^&*+=-]/.test(pw);
+
+    setPwError(!isValid);
+  };
+
+  const handleConfirmChange = (e) => {
+    setPwConfirm(e.target.value);
+  };
+
   return (
     <>
       {/* 비밀번호 입력란 */}
       <InputGroup>
-        <InputLabel>PASSWORD</InputLabel>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <InputLabel className="password-label">PASSWORD</InputLabel>
+
+          {/* 툴팁 트리거를 라벨 옆으로 분리 */}
+          <Tooltip className="pw-trigger">
+            <BaseBtn variant="ic-btn" size={'16px'} padding={'4px'} className="pw-info">
+              ?
+            </BaseBtn>
+            <BaseTooltip className="pw-tooltip" position="bottom" mobileShift="48px">
+              <span>• 8글자 이상 15글자 이하</span>
+              <span>• 영대문자, 숫자, 특수문자 포함</span>
+            </BaseTooltip>
+          </Tooltip>
+        </div>
 
         <Input
           id="password"
@@ -131,18 +207,17 @@ export default function SignUpPasswordInput({
           value={pw}
           placeholder="8자 이상"
           $pwError={pwError}
-          onChange={(e) => isPwValid(e.target.value)}
+          onChange={handleChange}
+          onBlur={handleBlur}
         />
+
         <div className="message-container">
-          {pwError && (
+          {pwError === true && (
             <ErrorMessage>
-              <CloseSvg />
-              8~15자의 영대문자, 숫자, 특수문자만을 포함하여 만드세요.
+              <CloseSvg /> 8~15자의 영대문자, 숫자, 특수문자만을 포함하여 만드세요.
             </ErrorMessage>
           )}
-          {!pwError && pw.length > 0 && (
-            <SuccessMessage>사용 가능한 비밀번호입니다.</SuccessMessage>
-          )}
+          {pwError === false && <SuccessMessage>사용 가능한 비밀번호입니다.</SuccessMessage>}
         </div>
         <ShowBtn showPw={showPw} setShowPw={setShowPw} />
       </InputGroup>
@@ -161,7 +236,7 @@ export default function SignUpPasswordInput({
           value={pwConfirm}
           placeholder="비밀번호 재입력"
           $isMatcError={pw && pwConfirm && pw !== pwConfirm}
-          onChange={(e) => setPwConfirm(e.target.value)}
+          onChange={handleConfirmChange}
         />
 
         {pw && pwConfirm && (
