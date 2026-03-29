@@ -7,6 +7,7 @@ import SignUpEamilInput from '../Signup/SignUpEmailInput';
 import SignUpPasswordInput from '../Signup/SignUpPasswordInput';
 import SignUpAgree from '../Signup/SignUpAgree';
 import SocialBtn from '../common/SocialBtn';
+import { signupApi } from '../../../../data/authApi';
 
 const SignUpContainer = styled.div`
   width: 100%;
@@ -17,7 +18,7 @@ const SignUpContainer = styled.div`
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[4]};
+  gap: ${({ theme }) => theme.spacing[2]};
   width: 100%;
 
   .signup-btn {
@@ -85,91 +86,21 @@ export default function SignUpForm({ onClick }) {
   const [emailError, setEmailError] = useState(false);
   const [pw, setPw] = useState('');
   const [pwConfirm, setPwConfirm] = useState('');
-  const [pwError, setPwError] = useState(false);
+  const [pwError, setPwError] = useState(null);
+  const [pwScore, setPwScore] = useState(0);
   const [showPw, setShowPw] = useState(false);
   const [showPwConfirm, setShowPwConfirm] = useState(false);
   const [firstName, setFirstName] = useState('');
+  const [firstNameError, setFirstNameError] = useState(false);
   const [lastName, setLastName] = useState('');
+  const [lastNameError, setLastNameError] = useState(false);
   const [agreement, setAgreement] = useState({
     agreeTerms: false,
     agreePrivacy: false,
     agreeMarketing: false,
   });
-  const [pwScore, setPwScore] = useState(0);
 
   const navigate = useNavigate();
-
-  // 이메일 유효성 검사
-  const checkEmail = (email) => {
-    setEmail(email);
-    setIsUnique(null);
-
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
-
-    const isEmailValid = emailRegex.test(email);
-    setEmailError(!isEmailValid && email.length > 0);
-  };
-
-  const handleCheckId = () => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
-    if (emailError || !emailRegex.test(email) || email.length === 0) {
-      return;
-    }
-
-    const result = email !== 'user@test.com';
-    setIsUnique(result);
-  };
-
-  // 비밀번호 유효성 검사
-  const isPwValid = (pw) => {
-    setPw(pw);
-
-    const hasDigit = /\d/.test(pw);
-    const hasUppercase = /[A-Z]/.test(pw);
-    const hasSpecial = /[!@#$%^&*+=-]/.test(pw);
-    const isLengthValid = pw.length >= 8 && pw.length <= 15;
-
-    let score = 0;
-    if (isLengthValid) {
-      if (hasDigit) score++;
-      if (hasUppercase) score++;
-      if (hasSpecial) score++;
-    }
-
-    setPwScore(score);
-
-    const isValid = isLengthValid && hasDigit && hasUppercase && hasSpecial;
-    setPwError(!isValid && pw.length > 0);
-  };
-  const isPwMatching = pw === pwConfirm && pw.length > 0;
-
-  // 성 + 이름 유효성 검사
-  const nameRegex = /^[가-힣]+$/;
-
-  const isNameValid = () => {
-    const fullName = lastName + firstName;
-
-    return (
-      lastName.length >= 1 &&
-      firstName.length >= 1 &&
-      fullName.length >= 2 &&
-      fullName.length <= 20 &&
-      nameRegex.test(fullName)
-    );
-  };
-
-  const firstNameError = firstName.length > 0 && !nameRegex.test(firstName);
-  const lastNameError = lastName.length > 0 && !nameRegex.test(lastName);
-
-  const handleLastNameChange = (e) => {
-    const value = e.target.value;
-    if (value.length <= 10) setLastName(value);
-  };
-
-  const handleFirstNameChange = (e) => {
-    const value = e.target.value;
-    if (value.length <= 19) setFirstName(value);
-  };
 
   const handleAllAgree = (e) => {
     const { checked } = e.target;
@@ -182,11 +113,34 @@ export default function SignUpForm({ onClick }) {
 
   const isRequiredAgreed = agreement.agreeTerms && agreement.agreePrivacy;
 
-  const handleJoin = (e) => {
+  const handleJoin = async (e) => {
     e.preventDefault();
-    if (email && pw && isNameValid() && agreement) {
-      alert('가입이 성공적으로 이루어졌습니다.');
-      navigate('/');
+
+    const isFilled = email && pw && firstName && lastName;
+    const isAgreed = agreement.agreeTerms && agreement.agreePrivacy;
+    const isNoError =
+      !emailError && !pwError && !firstNameError && !lastNameError && isUnique === true;
+
+    if (isFilled && isAgreed && isNoError) {
+      try {
+        const submitData = {
+          id: email,
+          password: pw,
+          name: `${lastName}${firstName}`,
+          agreeTerms: agreement.agreeTerms,
+          agreePrivacy: agreement.agreePrivacy,
+          agreeMarketing: agreement.agreeMarketing,
+        };
+
+        const res = await signupApi(submitData);
+
+        if (res.success) {
+          alert('가입이 성공적으로 이루어졌습니다.');
+          navigate('/');
+        }
+      } catch (error) {
+        alert(error.message || '회원가입 처리 중 오류가 발생했습니다.');
+      }
     }
   };
 
@@ -202,29 +156,30 @@ export default function SignUpForm({ onClick }) {
           setLastName={setLastName}
           firstNameError={firstNameError}
           lastNameError={lastNameError}
-          handleFirstNameChange={handleFirstNameChange}
-          handleLastNameChange={handleLastNameChange}
+          setFirstNameError={setFirstNameError}
+          setLastNameError={setLastNameError}
         />
         <SignUpEamilInput
           email={email}
+          setEmail={setEmail}
           emailError={emailError}
+          setEmailError={setEmailError}
           isUnique={isUnique}
-          checkEmail={checkEmail}
-          handleCheckId={handleCheckId}
           setIsUnique={setIsUnique}
         />
         <SignUpPasswordInput
           pw={pw}
+          setPw={setPw}
           pwConfirm={pwConfirm}
+          setPwConfirm={setPwConfirm}
           pwError={pwError}
+          setPwError={setPwError}
+          pwScore={pwScore}
+          setPwScore={setPwScore}
           showPw={showPw}
           setShowPw={setShowPw}
-          isPwValid={isPwValid}
-          setPwConfirm={setPwConfirm}
           showPwConfirm={showPwConfirm}
           setShowPwConfirm={setShowPwConfirm}
-          pwScore={pwScore}
-          isPwMatching={isPwMatching}
         />
         <SignUpAgree agreement={agreement} setAgreement={setAgreement} />
         <BaseBtn
@@ -237,13 +192,15 @@ export default function SignUpForm({ onClick }) {
           flex="none"
           icon={false}
           disabled={
-            emailError ||
             !email ||
-            !isUnique ||
-            !isNameValid() ||
+            !pw ||
+            emailError ||
             pwError ||
-            !isPwMatching ||
-            !isRequiredAgreed
+            firstNameError ||
+            lastNameError ||
+            isUnique !== true ||
+            !agreement.agreeTerms ||
+            !agreement.agreePrivacy
           }
         >
           CREATE ACCOUNT
