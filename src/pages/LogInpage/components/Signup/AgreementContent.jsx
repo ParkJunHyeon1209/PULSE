@@ -19,12 +19,16 @@ const AllAgreeBox = styled.div`
 
   .text-group {
     margin-left: 12px;
-    gap: 35px;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+
     .main-text {
       font-size: 13px;
       color: rgba(240, 238, 255, 1);
     }
+
     .sub-text {
       font-size: 11px;
       margin-top: 2px;
