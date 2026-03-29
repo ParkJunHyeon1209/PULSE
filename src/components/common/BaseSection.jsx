@@ -10,9 +10,13 @@ const SectionLabel = styled.div`
   font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   letter-spacing: 0.28em;
-  font-weight: 600;
+  font-weight: 700;
   color: ${({ theme }) => theme.colors.textSecondary};
   text-transform: uppercase;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    margin-bottom: 8px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -37,8 +41,14 @@ const SectionSub = styled.p`
   margin: 0;
   font-size: ${({ theme }) => theme.fontSize.xs};
   color: ${({ theme }) => theme.colors.textSecondary};
-  font-weight: 400;
+  font-weight: 600;
   padding-top: ${({ theme }) => theme.spacing[2]};
+  transition: font-size ${({ theme }) => theme.motion.normal};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding-top: 0;
+    font-size: 14px;
+  }
 `;
 
 /**

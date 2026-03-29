@@ -6,8 +6,8 @@ import BaseToneCard from './common/BaseToneCard';
 import { getDropProducts } from '../../../data/mainApi';
 import useSlider from '../../../hooks/useSlider';
 
-const CARD_WIDTH = 'clamp(260px, 28vw, 404px)';
-const CARD_OFFSET = 'clamp(208px, 28vw, 404px)';
+const CARD_WIDTH = 'clamp(260px, 30vw, 404px)';
+const CARD_OFFSET = 'clamp(208px, 29vw, 404px)';
 
 const SectionWrap = styled.section`
   display: grid;
@@ -24,6 +24,7 @@ const HeadWrap = styled.div`
 const Track = styled.div`
   position: relative;
   height: clamp(348px, 38vw, 510px);
+  perspective: 1200px;
 `;
 
 const getCardScale = (slot) => {
@@ -38,8 +39,17 @@ const getCardOffset = (slot) => {
   return '0px';
 };
 
+const getCardRotateY = (slot) => {
+  if (slot === 1) return 'rotateY(-30deg)';
+  if (slot === -1) return 'rotateY(30deg)';
+  return 'rotateY(0deg)';
+};
+
 const getCardTransform = (slot) =>
   `translate(-50%, -50%) translateX(${getCardOffset(slot)}) scale(${getCardScale(slot)})`;
+
+const getCardTransformMobile = (slot) =>
+  `translate(-50%, -50%) translateX(${getCardOffset(slot)}) ${getCardRotateY(slot)} scale(${getCardScale(slot)})`;
 
 const CardWrap = styled.div`
   position: absolute;
@@ -50,6 +60,10 @@ const CardWrap = styled.div`
   cursor: ${({ $slot }) => ($slot === -1 || $slot === 1 ? 'pointer' : 'default')};
   transform: ${({ $slot }) => getCardTransform($slot)};
   transform-origin: center center;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    transform: ${({ $slot }) => getCardTransformMobile($slot)};
+  }
   will-change: transform, opacity, filter;
   opacity: ${({ $slot }) => ($slot === 0 ? 1 : $slot === null ? 0 : 0.65)};
   filter: ${({ $slot }) => ($slot === 0 ? ' brightness(1.04) saturate(1.1)' : 'grayscale(70%)')};
@@ -67,6 +81,8 @@ export default function ShowcaseSec() {
   const count = dropProducts.length;
   const { activeIndex, move, setIsPaused } = useSlider(count);
   const touchX = useRef(null);
+
+  // console.log(dropProducts);
 
   useEffect(() => {
     getDropProducts().then(setDropProducts);
@@ -123,11 +139,12 @@ export default function ShowcaseSec() {
               }}
             >
               <BaseToneCard
+                imgOpacity={0.9}
                 img={card.image}
                 label={card.meta}
                 name={card.title}
                 count={card.desc}
-                tone={card.tone}
+                tone={card.tag}
                 height="100%"
                 badge={card.tag}
                 beamOver

@@ -3,7 +3,7 @@ import useOverlayStore from '../../store/useOverlayStore';
 import MainHero from './components/MainHero';
 import HeroBand from './components/HeroBand';
 import ShowcaseSec from './components/ShowcaseSec';
-import ProductsSec from './components/ProductsSec';
+import CollectionSec from './components/CollectionSec';
 import CategorySec from './components/CategorySec';
 import DropSec from './components/DropSec';
 import BrandPromiseSec from './components/BrandPromiseSec';
@@ -88,7 +88,7 @@ export default function MainPage() {
       </HeroWrap>
 
       <ShowcaseSec />
-      <ProductsSec />
+      <CollectionSec />
       <DropSec />
       <CategorySec />
       <Full>

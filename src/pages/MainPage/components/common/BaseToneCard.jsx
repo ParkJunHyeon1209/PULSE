@@ -145,7 +145,7 @@ const BrowseImg = styled.div`
   background-image: ${({ $img }) => ($img ? `url(${$img})` : 'none')};
   background-size: cover;
   background-position: center;
-  opacity: 0.6;
+  opacity: ${({ $imgOpacity }) => $imgOpacity ?? 0.6};
   transform: scale(1);
   transition:
     opacity ${({ theme }) => theme.motion.slow},
@@ -161,6 +161,7 @@ export default function BaseToneCard({
   badge,
   arrow,
   img,
+  imgOpacity,
   beamOver = false,
   ...props
 }) {
@@ -169,13 +170,13 @@ export default function BaseToneCard({
       <Inner $bg={TONE_BG[tone]} />
       {beamOver ? (
         <>
-          <BrowseImg className="card-img" $img={img} />
+          <BrowseImg className="card-img" $img={img} $imgOpacity={imgOpacity} />
           <Beam className="card-beam" $bg={TONE_BEAM[tone]} />
         </>
       ) : (
         <>
           <Beam className="card-beam" $bg={TONE_BEAM[tone]} />
-          <BrowseImg className="card-img" $img={img} />
+          <BrowseImg className="card-img" $img={img} $imgOpacity={imgOpacity} />
         </>
       )}
       <SparkContainer className="card-spark">

@@ -7,7 +7,7 @@ import useThemeStore from '../../../store/useThemeStore';
 const SectionWrap = styled.section`
   position: relative;
   margin: ${({ theme }) => `${theme.spacing[24]} 0`};
-  padding: ${({ theme }) => `${theme.spacing[14]} 0`};
+  /* padding: ${({ theme }) => `${theme.spacing[14]} 0`}; */
 
   &:hover .banner-img {
     transform: scale(1.06);
@@ -24,6 +24,7 @@ const SectionWrap = styled.section`
 
 const ImgSide = styled.div`
   position: absolute;
+
   top: 0;
   left: 0;
   bottom: 0;
@@ -41,14 +42,15 @@ const ImgSide = styled.div`
 const Inner = styled.div`
   position: relative;
   z-index: 1;
+  height: 800px;
   max-width: 1280px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 480px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
+    height: auto;
     min-height: unset;
   }
 `;
@@ -66,9 +68,15 @@ const Img = styled.img`
 `;
 
 const ImgTextWrap = styled.div`
+  left: 0;
+  width: 80%;
   isolation: isolate;
   padding-inline: ${({ theme }) => theme.grid.margin};
   text-shadow: 0 0 12px ${({ theme }) => theme.colors.background}50;
+  transform: translateY(44px);
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    transform: translateY(0);
+  }
 
   ${({ $tablet, theme }) =>
     $tablet
@@ -89,11 +97,11 @@ const ImgTextWrap = styled.div`
     content: '';
     position: absolute;
     inset: -${({ theme }) => theme.spacing[6]};
-    right: calc(-${({ theme }) => theme.spacing[6]} - 40px);
+    right: calc(-${({ theme }) => theme.spacing[6]} - 60px);
     z-index: -1;
     background: linear-gradient(
       to right,
-      ${({ theme }) => theme.colors.background}ad 0%,
+      ${({ theme }) => theme.colors.background}cc 0%,
       transparent 100%
     );
     backdrop-filter: blur(12px);
@@ -108,9 +116,8 @@ const ListSide = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[10]};
+  padding: ${({ theme }) => theme.spacing[24]} 0;
   padding-inline: ${({ theme }) => theme.grid.margin};
-  margin-top: ${({ theme }) => theme.spacing[20]};
-  margin-bottom: ${({ theme }) => theme.spacing[20]};
 
   &::before {
     content: '';
@@ -131,6 +138,7 @@ const ListSide = styled.div`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding-inline: ${({ theme }) => theme.spacing[3]};
+    /* margin-top: ${({ theme }) => theme.spacing[20]}; */
   }
 `;
 

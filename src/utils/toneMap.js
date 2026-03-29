@@ -29,6 +29,10 @@ export const TONE_BG = {
   GEAR: 'ci2',
   CONSOLE: 'ci3',
   DROPS: 'ci4',
+
+  // 3단 쇼케이스 맵핑
+  collab: 'ci1',
+  best: 'ci5',
 };
 
 // tone → theme.effects 빔 그라디언트 키 매핑
@@ -45,4 +49,8 @@ export const TONE_BEAM = {
   GEAR: 'cb2',
   CONSOLE: 'cb3',
   DROPS: 'cb4',
+
+  // 3단 쇼케이스 맵핑
+  collab: 'cb1',
+  best: 'cb5',
 };
