@@ -627,9 +627,12 @@ export const lightTheme = {
     Headline: 'linear-gradient(90deg, #7c3aed, #ec4899)',
     navActive: 'linear-gradient(90deg, #7c3aed, #6d28d9)',
     bgMesh: `
-      radial-gradient(ellipse 55% 45% at 18% 55%,rgba(100,40,220,0.06) 0%,transparent 62%),
+      radial-gradient(ellipse 55% 55% at 8% 44%,rgba(100,40,220,0.36) 0%,transparent 62%),
       /* previous adjusted value: radial-gradient(ellipse 55% 45% at 18% 55%,rgba(100,60,220,0.06) 0%,transparent 62%) */
-      radial-gradient(ellipse 45% 35% at 82% 28%,rgba(40,110,250,0.05) 0%,transparent 58%)
+      radial-gradient(ellipse 45% 35% at 92% 28%,rgba(40,110,250,0.30) 0%,transparent 58%),
+      // radial-gradient(ellipse 45% 35% at 82% 28%,rgba(218, 40, 250, 0.45) 0%,transparent 58%),
+      radial-gradient(ellipse 80% 40% at 50% 100%, rgba(124, 58, 237, 0.42) 0%, transparent 55%)
+
     `,
   },
   foot: {
