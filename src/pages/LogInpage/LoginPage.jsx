@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import SignInForm from './components/Signin/SignInForm';
 import SignUpForm from './components/Signup/SignUpForm';
 import styled from '@emotion/styled';
-import LeftSignIn from './components/Signin/LeftSignIn';
-import LeftSignUp from './components/Signup/LeftSignUp';
+import AuthLeftPanel from './components/common/AuthLeftPanel';
 import TabNavigation from './components/common/TabNavigation';
 import AppLogo from '../../components/common/AppLogo';
 import logoDark from '../../assets/Logo-dark.svg';
@@ -12,11 +11,8 @@ import { useTheme } from '@emotion/react';
 
 const LogInPageContainer = styled.div`
   display: flex;
-  /* width: 100vw; */
-  width: 1280px;
-  max-width: 1280px;
-  margin-top: 42.5px;
-  padding-bottom: 60px;
+  width: 100%;
+  min-height: 100vh;
 `;
 
 const LogoWrap = styled.div`
@@ -27,32 +23,48 @@ const LogoWrap = styled.div`
   display: inline-flex;
   align-items: center;
   text-decoration: none;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    left: ${({ theme }) => theme.grid.margin};
+  }
 `;
 
 // 왼쪽 섹션
 const LeftSection = styled.div`
-  flex: 1;
+  flex: 0 0 50%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
 
-  .left-content-wrapper {
-    width: 100%;
-    max-width: 480px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: none;
   }
 `;
 
 // 오른쪽 섹션
 const RightSection = styled.div`
-  flex: 1;
+  flex: 0 0 50%;
+  box-sizing: border-box;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-inline: ${({ theme }) => theme.grid.margin};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    flex: 1;
+    background: ${({ theme }) => theme.colors.background};
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: ${({ theme }) => theme.gradients.bgMesh};
+      opacity: ${({ theme }) => (theme.mode === 'dark' ? 0.6 : 0.4)};
+      mix-blend-mode: ${({ theme }) => (theme.mode === 'dark' ? 'screen' : 'multiply')};
+      pointer-events: none;
+    }
+  }
 
   .form-area {
     width: 100%;
@@ -76,7 +88,9 @@ export default function LoginPage() {
         <AppLogo size="120px" src={theme.mode === 'dark' ? logoDark : logoLight} alt="PULSE" />
       </LogoWrap>
       {/* --- 왼쪽 영역 --- */}
-      <LeftSection>{activeTab === 'signin' ? <LeftSignIn /> : <LeftSignUp />}</LeftSection>
+      <LeftSection>
+        <AuthLeftPanel mode={activeTab} />
+      </LeftSection>
 
       {/* --- 오른쪽 영역 --- */}
       <RightSection>

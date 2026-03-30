@@ -157,10 +157,10 @@ export default function MainHero({ interval = 4000 }) {
               </S.AnimHeroActions>
               {/* 스타일: styles/MainHero.js 158번째 줄 / MainHero.jsx 159~170번째 줄 */}
               <S.AnimHeroStats $delay={220}>
-                {slide.stats.map((stat) => (
+                {slide.stats.map((stat, i) => (
                   <S.HeroStat key={stat.value}>
                     <S.HeroStatValue>
-                      <SlotText value={stat.value} />
+                      <SlotText value={stat.value} delay={i * 200} />
                     </S.HeroStatValue>
                     <S.HeroStatLabel>
                       <span>{stat.label}</span>

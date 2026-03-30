@@ -74,12 +74,13 @@ export default function BaseSection({
   titleFont,
   titleSize,
   star = false,
+  className,
 }) {
   const isCenter = align === 'center';
   const hasSub = Boolean(sub);
 
   return (
-    <SectionHeadWrap $center={isCenter}>
+    <SectionHeadWrap className={className} $center={isCenter}>
       <SectionLabel $center={isCenter}>
         <LavStarIcon>✦</LavStarIcon>
         {label}
