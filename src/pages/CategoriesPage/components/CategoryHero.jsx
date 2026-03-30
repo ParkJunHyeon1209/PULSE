@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
 import BaseSection from '../../../components/common/BaseSection';
+import CategoryTabs from './CategoryTabs';
 
 const HeroSection = styled.section`
   width: 100vw;
-  min-height: 700px;
+  min-height: ${({ $hasTabs }) => ($hasTabs ? '700px' : '620px')};
   display: flex;
 
   margin-left: calc(50% - 50vw);
@@ -30,14 +31,20 @@ const HeroBackground = styled.div`
   background-repeat: no-repeat;
 `;
 
-const HeroOverlay = styled.div`
+const BottomFade = styled.div`
   position: absolute;
-  inset: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 180px;
+  z-index: 3;
+  pointer-events: none;
   background: linear-gradient(
     180deg,
-    rgba(9, 6, 19, 0.08) 0%,
-    rgba(9, 6, 19, 0) 42%,
-    rgba(9, 6, 19, 0.44) 100%
+    rgba(9, 6, 19, 0) 0%,
+    rgba(9, 6, 19, 0.16) 30%,
+    rgba(9, 6, 19, 0.52) 40%,
+    rgba(9, 6, 19, 0.82) 50%
   );
 `;
 
@@ -58,25 +65,35 @@ const SideFade = styled.div`
 
 const HeroCenterContent = styled.div`
   position: relative;
-  z-index: 1;
+  z-index: 3;
   width: 100%;
-  /* height: 420px; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: ${({ theme }) => theme.spacing[4]};
-  padding: ${({ theme }) => theme.spacing[10]} ${({ theme }) => theme.spacing[6]};
+  //padding: ${({ theme }) => theme.spacing[10]} ${({ theme }) => theme.spacing[6]};
+  //padding-bottom: 130px;
+
+  padding: ${({ theme, $hasTabs }) =>
+    $hasTabs
+      ? `${theme.spacing[10]} ${theme.spacing[6]} 130px`
+      : `${theme.spacing[10]} ${theme.spacing[6]} ${theme.spacing[10]}`};
   text-align: center;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     min-height: 360px;
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     min-height: 280px;
     gap: ${({ theme }) => theme.spacing[3]};
-    padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[4]};
+    //padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[4]};
+    //padding-bottom: 120px;
+    padding: ${({ theme, $hasTabs }) =>
+      $hasTabs
+        ? `${theme.spacing[8]} ${theme.spacing[4]} 120px`
+        : `${theme.spacing[8]} ${theme.spacing[4]} ${theme.spacing[8]}`};
   }
 `;
 
@@ -94,6 +111,26 @@ const HeroBlurBand = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     min-height: 48px;
     width: min(92%, 100%);
+  }
+`;
+
+const HeroTabsArea = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+  padding: 0 ${({ theme }) => theme.grid.margin};
+
+  background: linear-gradient(
+    180deg,
+    rgba(10, 7, 20, 0.25) 0%,
+    rgba(10, 7, 20, 0.5) 35%,
+    rgba(10, 7, 20, 1) 100%
+  );
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    padding: 0 ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[5]};
   }
 `;
 
@@ -142,7 +179,16 @@ const HeroSectionHead = styled.div`
   }
 `;
 
-export default function CategoryHero({ title, label, backgroundImage }) {
+export default function CategoryHero({
+  title,
+  label,
+  backgroundImage,
+  tabs,
+  activeTab,
+  onClickTab,
+}) {
+  const hasTabs = Array.isArray(tabs) && tabs.length > 0;
+
   return (
     <HeroSection>
       <HeroBackground
@@ -150,16 +196,23 @@ export default function CategoryHero({ title, label, backgroundImage }) {
           backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none',
         }}
       />
-      <HeroOverlay />
-      <SideFade />
 
-      <HeroCenterContent>
+      <SideFade />
+      {hasTabs && <BottomFade />}
+
+      <HeroCenterContent $hasTabs={hasTabs}>
         <HeroBlurBand>
           <HeroSectionHead>
             <BaseSection label={label} title={title} align="center" star titleFirst />
           </HeroSectionHead>
         </HeroBlurBand>
       </HeroCenterContent>
+
+      {hasTabs && (
+        <HeroTabsArea>
+          <CategoryTabs tabs={tabs} activeTab={activeTab} onClickTab={onClickTab} inHero />
+        </HeroTabsArea>
+      )}
     </HeroSection>
   );
 }

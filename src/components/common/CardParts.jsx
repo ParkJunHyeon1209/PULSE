@@ -75,6 +75,10 @@ export const CardAddBtn = styled(BaseBtn)`
   &:active:not(:disabled) {
     transform: scale(0.95) rotate(90deg);
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    transform: scale(0.8);
+  }
 `;
 
 /* 내부 하단 글로우 */

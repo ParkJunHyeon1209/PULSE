@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 
 const TabSection = styled.section`
-  margin-bottom: ${({ theme }) => theme.spacing[12]};
+  margin-bottom: ${({ theme, $inHero }) => ($inHero ? '0' : theme.spacing[12])};
 `;
 
 const SectionDivider = styled.div`
@@ -83,7 +83,7 @@ const CategoryTabButton = styled.button`
   }
 `;
 
-export default function CategoryTabs({ tabs, activeTab, onClickTab }) {
+export default function CategoryTabs({ tabs, activeTab, onClickTab, inHero = false }) {
   const listRef = useRef(null);
   const buttonRefs = useRef({});
   const [hoveredTab, setHoveredTab] = useState(null);
@@ -125,7 +125,7 @@ export default function CategoryTabs({ tabs, activeTab, onClickTab }) {
   }, [focusedTab]);
 
   return (
-    <TabSection>
+    <TabSection $inHero={inHero}>
       <SectionDivider />
 
       <CategoryTabList ref={listRef} onMouseLeave={() => setHoveredTab(null)}>

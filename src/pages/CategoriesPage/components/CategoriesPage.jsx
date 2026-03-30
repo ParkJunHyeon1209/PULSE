@@ -5,7 +5,6 @@ import { PageContainer, PageInner } from '../styles/CategoriesPageLayout';
 import { getProductsByCategory } from '../../../data/categoryProductsApi';
 import { LavStarIcon } from '../../../assets/icons/BtnIcon';
 import CategoryHero from './CategoryHero';
-import CategoryTabs from './CategoryTabs';
 import CategorySection from './CategorySection';
 import CategoryPromoBanner from './CategoryPromoBanner';
 import useThemeStore from '../../../store/useThemeStore';
@@ -629,9 +628,10 @@ export default function CategoriesPage() {
           title={currentCategory.title}
           label={currentCategory.label}
           backgroundImage={currentHeroBackground}
+          tabs={currentCategory.tabs}
+          activeTab={activeTab}
+          onClickTab={setActiveTab}
         />
-
-        <CategoryTabs tabs={currentCategory.tabs} activeTab={activeTab} onClickTab={setActiveTab} />
 
         {activeTab !== 'ALL' && (
           <FilterBar>

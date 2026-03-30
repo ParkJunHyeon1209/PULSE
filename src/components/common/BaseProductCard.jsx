@@ -73,6 +73,12 @@ const CardContainer = styled.article`
   &:hover .card-bg-img {
     transform: scale(1.08);
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    aspect-ratio: 3 / 4;
+    height: auto;
+    min-height: unset;
+  }
 `;
 
 const CardBackgroundImage = styled.img`
