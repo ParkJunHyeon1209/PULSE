@@ -11,12 +11,32 @@ import useThemeStore from '../../store/useThemeStore';
 import categoryBannerDark from '../../assets/img/banners/1_dark.webp';
 import categoryBannerLight from '../../assets/img/banners/1_light.webp';
 
+// 프로모션 배너 이미지 모음
+import gearBannerDark from '../../assets/img/banners/D_mouse&keySey.webp';
+import gearBannerLight from '../../assets/img/banners/L_mouse&keySey.webp';
+import headsetBannerDark from '../../assets/img/banners/D_Headset.webp';
+import headsetBannerLight from '../../assets/img/banners/L_Headset.webp';
+import consoleBannerDark from '../../assets/img/banners/D_ConsoleSet.webp';
+import consoleBannerLight from '../../assets/img/banners/L_ConsoleSet.webp';
+import etcBannerDark from '../../assets/img/banners/D_DropsExtras.webp';
+import etcBannerLight from '../../assets/img/banners/L_DropsExtras.webp';
+
 const categorySections = [
   { key: 'gear', title: 'GEAR' },
   { key: 'headset', title: 'HEADSET' },
   { key: 'console', title: 'CONSOLE' },
   { key: 'drops', title: 'DROPS' },
 ];
+
+const getRandomItem = (list = []) => {
+  if (!Array.isArray(list) || list.length === 0) return '';
+  return list[Math.floor(Math.random() * list.length)];
+};
+
+const promoBannerImages = {
+  dark: [gearBannerDark, headsetBannerDark, consoleBannerDark, etcBannerDark],
+  light: [gearBannerLight, headsetBannerLight, consoleBannerLight, etcBannerLight],
+};
 
 export default function CategoryPage() {
   const navigate = useNavigate();
@@ -41,6 +61,11 @@ export default function CategoryPage() {
         .slice(0, 4),
     }));
   }, [products]);
+
+  const currentPromoBackground = useMemo(() => {
+    const imageList = isDarkMode ? promoBannerImages.dark : promoBannerImages.light;
+    return getRandomItem(imageList);
+  }, [isDarkMode]);
 
   return (
     <PageContainer>
@@ -74,6 +99,7 @@ export default function CategoryPage() {
           subtitle="EXCLUSIVE DROP"
           description="Pro Gaming Console Controller"
           price={199000}
+          backgroundImage={currentPromoBackground}
         />
       </PageInner>
     </PageContainer>

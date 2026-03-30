@@ -7,10 +7,10 @@ const useAuthStore = create(
       user: null,
       isLogin: false,
 
-      login: () => {
+      login: (userData = null) => {
         set({
           isLogin: true,
-          user: null,
+          user: userData,
         });
       },
 

@@ -25,10 +25,12 @@ export async function getCategories() {
 export async function getAllProducts() {
   return request('/products');
 }
+
 // 상품 상세 조회
 export async function getProductDetailById(id) {
   return request(`/products/${id}`);
 }
+
 // 상품 상세 정보
 export async function getCategoryDetailByType(type) {
   return request(`/categoryDetail/${type}`);

@@ -60,6 +60,10 @@ const categoryConfig = {
         light: gearBannerLight,
       },
     },
+    promoImages: {
+      dark: [gearBannerDark, gearKeyboardBannerDark, gearMouseBannerDark],
+      light: [gearBannerLight, gearKeyboardBannerLight, gearMouseBannerLight],
+    },
     tabs: ['ALL', 'KEYBOARD', 'MOUSE', 'GEARSET'],
   },
   headset: {
@@ -87,6 +91,10 @@ const categoryConfig = {
         light: streamingBannerLight,
       },
     },
+    promoImages: {
+      dark: [headsetBannerDark, earphoneBannerDark, streamingBannerDark],
+      light: [headsetBannerLight, earphoneBannerLight, streamingBannerLight],
+    },
     tabs: ['ALL', 'HEADSET', 'EARPHONE', 'STREAMING'],
   },
   console: {
@@ -110,6 +118,10 @@ const categoryConfig = {
         light: consoleBannerLight,
       },
     },
+    promoImages: {
+      dark: [consoleBannerDark, controllerBannerDark],
+      light: [consoleBannerLight, controllerBannerLight],
+    },
     tabs: ['ALL', 'CONTROLLER', 'CONSOLESET'],
   },
   drops: {
@@ -132,6 +144,10 @@ const categoryConfig = {
         dark: etcBannerDark,
         light: etcBannerLight,
       },
+    },
+    promoImages: {
+      dark: [dropsBannerDark, dropsOnlyBannerDark, etcBannerDark],
+      light: [dropsBannerLight, dropsOnlyBannerLight, etcBannerLight],
     },
     tabs: ['ALL', 'DROPS', 'ETC'],
   },
@@ -158,6 +174,21 @@ export default function CategoriesPage() {
   const currentCategory = categoryConfig[categoryName] || categoryConfig.gear;
   const currentHeroImage = currentCategory.tabHeroImages?.[activeTab] || currentCategory.heroImage;
   const currentHeroBackground = isDarkMode ? currentHeroImage.dark : currentHeroImage.light;
+  const [promoBackground, setPromoBackground] = useState('');
+
+  // 프로모션 배너 이미지 출력
+  const getRandomItem = (list = []) => {
+    if (!Array.isArray(list) || list.length === 0) return '';
+    return list[Math.floor(Math.random() * list.length)];
+  };
+
+  useEffect(() => {
+    const imageList = isDarkMode
+      ? (currentCategory.promoImages?.dark ?? [])
+      : (currentCategory.promoImages?.light ?? []);
+
+    setPromoBackground(getRandomItem(imageList));
+  }, [categoryName, isDarkMode]);
 
   // 카테고리 API
   useEffect(() => {
@@ -669,6 +700,7 @@ export default function CategoriesPage() {
               subtitle="EXCLUSIVE DROP"
               description="Pro Gaming Console Controller"
               price={199000}
+              backgroundImage={promoBackground}
             />
           </>
         )}

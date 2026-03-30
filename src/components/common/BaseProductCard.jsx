@@ -1,11 +1,15 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useMemo, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { CardWish, CardBadge, CardAddBtn, CardGlow, CardShim } from './CardParts';
 import BaseSparkIcon from './BaseSparkIcon';
 import { HeartIcon, PluseIcon } from '../../assets/icons/BtnIcon';
 import { BADGE_TONE, TONE_BG } from '../../utils/toneMap';
 import useCartStore from '../../store/useCartStore';
+import useAuthStore from '../../store/useAuthStore';
+import useWishlistStore from '../../store/useWishlistStore';
+import BaseModal from './BaseModal';
+import BaseBtn from './BaseBtn';
 
 const CardContainer = styled.article`
   position: relative;
@@ -175,6 +179,12 @@ const CardPrice = styled.strong`
   font-weight: 800;
 `;
 
+const ModalButtonRow = styled.div`
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+`;
+
 const categoryToneMap = {
   gear: 'violet',
   headset: 'blue',
@@ -185,14 +195,44 @@ const categoryToneMap = {
 
 export default function BaseProductCard({ product, cardMinHeight }) {
   const navigate = useNavigate();
-  const sparkTone = categoryToneMap[product.category] || 'violet';
+  const location = useLocation();
+  const sparkTone = categoryToneMap[product.category?.toLowerCase()] || 'violet';
 
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLoginConfirmOpen, setIsLoginConfirmOpen] = useState(false);
+
+  const isLogin = useAuthStore((state) => state.isLogin);
   const handleAddToCart = useCartStore((state) => state.addToCart);
+
+  const wishlistIds = useWishlistStore((state) => state.wishlistIds);
+  const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
+
+  const isLiked = useMemo(() => {
+    return wishlistIds.includes(product.id);
+  }, [wishlistIds, product.id]);
 
   const handleClickWishlist = (e) => {
     e.stopPropagation();
-    setIsLiked((prev) => !prev);
+
+    if (!isLogin) {
+      setIsLoginConfirmOpen(true);
+      return;
+    }
+
+    toggleWishlist(product.id);
+  };
+
+  const handleCloseLoginConfirm = () => {
+    setIsLoginConfirmOpen(false);
+  };
+
+  const handleMoveLoginPage = () => {
+    setIsLoginConfirmOpen(false);
+
+    navigate('/login', {
+      state: {
+        redirectTo: location.pathname,
+      },
+    });
   };
 
   const handleClickAddCart = (e) => {
@@ -202,62 +242,83 @@ export default function BaseProductCard({ product, cardMinHeight }) {
 
   const handleMoveDetail = () => {
     navigate(`/product/${product.id}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <CardContainer $tone={sparkTone} $cardMinHeight={cardMinHeight} onClick={handleMoveDetail}>
-      <CardShim className="card-shim" aria-hidden="true" />
-      {product.image ? (
-        <CardBackgroundImage className="card-bg-img" src={product.image} alt={product.title} />
-      ) : (
-        <CardSparkPos>
-          <BaseSparkIcon tone={sparkTone} />
-        </CardSparkPos>
-      )}
+    <>
+      <CardContainer $tone={sparkTone} $cardMinHeight={cardMinHeight} onClick={handleMoveDetail}>
+        <CardShim className="card-shim" aria-hidden="true" />
 
-      <CardOverlay className="card-overlay" aria-hidden="true" />
-      <CardGlow className="card-glow" aria-hidden="true" $tone={sparkTone} />
-
-      <CardTop>
-        {product.tag ? (
-          <CardBadge variant="c-badge" tone={BADGE_TONE[product.tag]} icon={false} height="32px">
-            {product.tag}
-          </CardBadge>
+        {product.image ? (
+          <CardBackgroundImage className="card-bg-img" src={product.image} alt={product.title} />
         ) : (
-          <span />
+          <CardSparkPos>
+            <BaseSparkIcon tone={sparkTone} />
+          </CardSparkPos>
         )}
-        <CardWish
-          className="card-wish"
+
+        <CardOverlay className="card-overlay" aria-hidden="true" />
+        <CardGlow className="card-glow" aria-hidden="true" $tone={sparkTone} />
+
+        <CardTop>
+          {product.tag ? (
+            <CardBadge variant="c-badge" tone={BADGE_TONE[product.tag]} icon={false} height="32px">
+              {product.tag}
+            </CardBadge>
+          ) : (
+            <span />
+          )}
+
+          <CardWish
+            className="card-wish"
+            variant="ic-btn"
+            size="32px"
+            flex="0 0 auto"
+            aria-label="찜하기"
+            icon={false}
+            onClick={handleClickWishlist}
+            $isLiked={isLiked}
+          >
+            <HeartIcon />
+          </CardWish>
+        </CardTop>
+
+        <CardContent>
+          <CardTextGroup>
+            <CardTitle>{product.title}</CardTitle>
+            <CardMeta>{product.meta}</CardMeta>
+            <CardPrice>{product.price.toLocaleString()}원</CardPrice>
+          </CardTextGroup>
+        </CardContent>
+
+        <CardAddBtn
           variant="ic-btn"
-          size="32px"
+          size="36px"
           flex="0 0 auto"
-          aria-label="찜하기"
           icon={false}
-          onClick={handleClickWishlist}
-          $isLiked={isLiked}
+          type="button"
+          onClick={handleClickAddCart}
         >
-          <HeartIcon />
-        </CardWish>
-      </CardTop>
+          <PluseIcon />
+        </CardAddBtn>
+      </CardContainer>
 
-      <CardContent>
-        <CardTextGroup>
-          <CardTitle>{product.title}</CardTitle>
-          <CardMeta>{product.meta}</CardMeta>
-          <CardPrice>{product.price.toLocaleString()}원</CardPrice>
-        </CardTextGroup>
-      </CardContent>
-
-      <CardAddBtn
-        variant="ic-btn"
-        size="36px"
-        flex="0 0 auto"
-        icon={false}
-        type="button"
-        onClick={handleClickAddCart}
+      <BaseModal
+        isOpen={isLoginConfirmOpen}
+        label="PULSE PLATFORM"
+        onClose={handleCloseLoginConfirm}
+        title="로그인이 필요합니다"
       >
-        <PluseIcon />
-      </CardAddBtn>
-    </CardContainer>
+        <p>위시리스트에 상품을 담으려면 먼저 로그인해주세요.</p>
+
+        <ModalButtonRow>
+          <BaseBtn variant="secondary" onClick={handleCloseLoginConfirm}>
+            닫기
+          </BaseBtn>
+          <BaseBtn onClick={handleMoveLoginPage}>로그인 하러가기</BaseBtn>
+        </ModalButtonRow>
+      </BaseModal>
+    </>
   );
 }
