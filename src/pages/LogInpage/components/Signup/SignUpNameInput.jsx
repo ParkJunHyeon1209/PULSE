@@ -11,7 +11,7 @@ const InputNameGroup = styled.div`
 const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: ${({ theme }) => theme.spacing[5]};
+  margin-bottom: ${({ theme }) => theme.spacing[2]};
   width: 100%;
   position: relative;
 `;
@@ -21,6 +21,7 @@ const InputLabel = styled.label`
   font-weight: bold;
   margin-bottom: ${({ theme }) => theme.spacing[1]};
   letter-spacing: 1px;
+  line-height: 1;
 `;
 
 const Input = styled.input`
@@ -29,12 +30,12 @@ const Input = styled.input`
   border-bottom: 2px solid
     ${(props) =>
       props.$firstNameError || props.$lastNameError ? props.theme.colors.error : '#333'};
-  padding: ${({ theme }) => theme.spacing[3]} 0;
+  padding: ${({ theme }) => theme.spacing[2]} 0;
   outline: none;
   width: 100%;
 
   &::placeholder {
-    font-size: 14px;
+    font-size: ${({ theme }) => theme.fontSize.xxs};
   }
 `;
 
