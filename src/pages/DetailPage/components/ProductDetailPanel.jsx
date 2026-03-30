@@ -19,7 +19,6 @@ export default function ProductDetailPanel({
   onAddToCart,
 }) {
   const [isLiked, setIsLiked] = useState(false);
-
   const handleToggleLike = () => {
     setIsLiked((prev) => !prev);
   };

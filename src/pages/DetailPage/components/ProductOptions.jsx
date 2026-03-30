@@ -6,25 +6,29 @@ export default function ProductOptions({ options = [], selectedOptions = {}, onS
 
   const isColorOption = (label = '') => {
     const normalized = String(label).trim().toLowerCase();
-    return ['색상', '컬러', 'color'].includes(normalized);
+    return ['색상', '컬러', '케이블 컬러', '컬러테마', '에디션', '투명도', '마감'].includes(
+      normalized
+    );
   };
 
   const getColorValue = (item) => {
     const colorMap = {
-      블랙: '#000000',
-      화이트: '#ffffff',
-      레드: '#ef4444',
-      블루: '#3b82f6',
-      그린: '#22c55e',
+      블랙: '#111111',
+      화이트: '#f8fafc',
+      네온블루: '#3b82f6',
+      일렉트릭블루: '#2563eb',
+      네온옐로우: '#eab308',
       옐로우: '#eab308',
-      퍼플: '#8b5cf6',
-      핑크: '#ec4899',
-      실버: '#9ca3af',
-      그레이: '#6b7280',
-      네이비: '#1e3a8a',
+      '매트 옐로우': '#ca8a04',
+      차콜: '#374151',
+      '스모크 그레이': '#6b7280',
+      클리어: '#dbeafe',
+      네온: 'linear-gradient(135deg, #22d3ee 0%, #a855f7 50%, #ec4899 100%)',
+      파스텔: 'linear-gradient(135deg, #fbcfe8 0%, #bfdbfe 50%, #bbf7d0 100%)',
+      '올 화이트': '#ffffff',
     };
 
-    return colorMap[item] ?? '#ffffff';
+    return colorMap[item] ?? '#9ca3af';
   };
 
   return (

@@ -55,7 +55,7 @@ export default function ProductGallery({
         {selectedImage && <MainImage src={selectedImage} alt={product.title} />}
 
         {badgeTone && (
-          <GalleryBadge variant="tag" tone={badgeTone} icon={false} height="28px">
+          <GalleryBadge variant="c-badge" tone={badgeTone} icon={false} height="32px">
             {badgeLabel}
           </GalleryBadge>
         )}
@@ -124,14 +124,6 @@ const GalleryBadge = styled(CardBadge)`
   top: ${({ theme }) => theme.spacing[5]};
   left: ${({ theme }) => theme.spacing[5]};
   z-index: 4;
-  min-width: 50px;
-  justify-content: center;
-  padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[4]}`};
-  font-family: ${({ theme }) => theme.fontFamily.mono};
-  letter-spacing: 0.1em;
-  backdrop-filter: ${({ theme }) => theme.effects.blurSoft};
-  box-shadow: ${({ theme }) => theme.effects.hoverShadowCategoryBase};
-  flex: none;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     top: ${({ theme }) => theme.spacing[4]};
@@ -192,14 +184,19 @@ const ArrowButton = styled.button`
 `;
 
 const ThumbnailList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: ${({ theme }) => theme.spacing[3]};
+  width: 100%;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    gap: ${({ theme }) => theme.spacing[2]};
+  }
 `;
 
 const ThumbnailButton = styled.button`
-  width: 92px;
-  height: 92px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   padding: 0;
   cursor: pointer;
   overflow: hidden;
@@ -217,16 +214,8 @@ const ThumbnailButton = styled.button`
     transform: translateY(-2px);
     border-color: ${({ theme }) => theme.colors.primary};
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: 76px;
-    height: 76px;
-  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    width: calc((100% - ${({ theme }) => theme.spacing[2]} * 3) / 4);
-    height: auto;
-    aspect-ratio: 1 / 1;
-    min-width: 64px;
     border-radius: ${({ theme }) => theme.radii.md};
   }
 `;

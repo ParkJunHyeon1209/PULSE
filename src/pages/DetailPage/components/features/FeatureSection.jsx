@@ -51,6 +51,7 @@ const SpecTable = styled.div`
   border-radius: ${({ theme }) => theme.radii.xl};
   border: 1px solid ${({ theme }) => theme.Line};
 `;
+
 const SpecRow = styled.div`
   display: grid;
   grid-template-columns: 180px minmax(0, 1fr);
@@ -116,6 +117,13 @@ const SpecRow = styled.div`
     }
   }
 `;
+
+const DetailContentWrap = styled.div`
+  visibility: ${({ $visible }) => ($visible ? 'visible' : 'hidden')};
+  height: ${({ $visible }) => ($visible ? 'auto' : '0')};
+  overflow: hidden;
+`;
+
 const DetailToggleButton = styled.button`
   width: 100%;
   margin-top: ${({ theme }) => theme.spacing[10]};
@@ -146,31 +154,64 @@ const DetailFallback = styled.div`
   border-radius: ${({ theme }) => theme.radii.xl};
   color: ${({ theme }) => theme.colors.textSecondary};
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: ${({ theme }) => theme.spacing[3]};
+`;
+
+const LoadingSpinner = styled.div`
+  width: 32px;
+  height: 32px;
+  border-radius: ${({ theme }) => theme.radii.full};
+  border: 3px solid rgba(${({ theme }) => theme.colors.primaryRgb}, 0.18);
+  border-top-color: ${({ theme }) => theme.colors.primary};
+  animation: spin 0.8s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+const LoadingText = styled.p`
+  font-size: ${({ theme }) => theme.fontSize.xxs};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  background: ${({ theme }) => theme.gradients.violetBlue};
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `;
 
 const BundleCardWrap = styled.div`
-  margin-top: ${({ theme }) => theme.spacing[40]};
+  margin-top: ${({ theme }) => theme.spacing[24]};
 `;
 
-export default function FeatureSection({
-  currentType,
-  teamProducts,
-
-  product,
-  categoryDetail,
-}) {
+export default function FeatureSection({ currentType, teamProducts, product, categoryDetail }) {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [isContentLoading, setIsContentLoading] = useState(false);
 
   useEffect(() => {
     setIsDetailOpen(false);
+    setIsContentLoading(false);
   }, [product?.id]);
 
   if (!currentType) return <div>category 없음</div>;
-  //  const featureData = categoryDetailApi[category];
-  //  const specs = featureData?.specs ?? [];
-  const specs = categoryDetail?.specs ?? [];
 
+  const specs = categoryDetail?.specs ?? [];
   const visibleSpecs = [...specs.slice(0, 3), ...specs.slice(-3)];
+
+  const handleToggleDetail = () => {
+    if (isDetailOpen) {
+      setIsDetailOpen(false);
+      setIsContentLoading(false);
+      return;
+    }
+
+    setIsDetailOpen(true);
+    setIsContentLoading(true);
+  };
 
   return (
     <FeatureLayout>
@@ -195,17 +236,31 @@ export default function FeatureSection({
       </SpecTable>
 
       {isDetailOpen && (
-        <Suspense fallback={<DetailFallback>상세 정보를 불러오는 중...</DetailFallback>}>
-          <FeatureDetailContent
-            visibleSpecs={visibleSpecs}
-            product={product}
-            categoryDetail={categoryDetail}
-          />
-        </Suspense>
+        <>
+          {isContentLoading && (
+            <DetailFallback>
+              <LoadingSpinner />
+              <LoadingText>상세정보를 불러오는 중...</LoadingText>
+            </DetailFallback>
+          )}
+
+          <Suspense fallback={null}>
+            <DetailContentWrap $visible={!isContentLoading}>
+              <FeatureDetailContent
+                visibleSpecs={visibleSpecs}
+                product={product}
+                categoryDetail={categoryDetail}
+                onReady={() => setIsContentLoading(false)}
+              />
+            </DetailContentWrap>
+          </Suspense>
+        </>
       )}
-      <DetailToggleButton type="button" onClick={() => setIsDetailOpen((prev) => !prev)}>
+
+      <DetailToggleButton type="button" onClick={handleToggleDetail}>
         {isDetailOpen ? '상세정보 접기' : '상세정보 더보기'}
       </DetailToggleButton>
+
       <BundleCardWrap>
         <BundleCard currentType={currentType} teamProducts={teamProducts} />
       </BundleCardWrap>

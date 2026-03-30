@@ -1,4 +1,5 @@
-import React from 'react';
+FeatureDetailContent.jsx;
+import React, { useLayoutEffect } from 'react';
 import styled from '@emotion/styled';
 
 const DetailContent = styled.div`
@@ -21,78 +22,9 @@ const FeatureImage = styled.img`
   }
 `;
 
-const SectionHeader = styled.div`
-  margin-top: ${({ theme }) => theme.spacing[14]};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing[2]};
-`;
-const SectionLabel = styled.p`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing[2]};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: ${({ theme }) => theme.fontSize.sm};
-
-  span {
-    font-size: ${({ theme }) => theme.fontSize.xxxs};
-    color: ${({ theme }) => theme.colors.primary};
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    font-size: ${({ theme }) => theme.fontSize.xs};
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    font-size: ${({ theme }) => theme.fontSize.xxs};
-
-    span {
-      font-size: ${({ theme }) => theme.fontSize.xxxs};
-    }
-  }
-`;
-const SectionTextGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing[5]};
-
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.primary};
-  p:first-of-type {
-    font-size: ${({ theme }) => theme.fontSize.xl};
-    font-weight: 700;
-    background: ${({ theme }) => theme.gradients.lavBlue};
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    gap: ${({ theme }) => theme.spacing[4]};
-    font-size: ${({ theme }) => theme.fontSize.xs};
-
-    p:first-of-type {
-      font-size: ${({ theme }) => theme.fontSize.md};
-    }
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    gap: ${({ theme }) => theme.spacing[3]};
-    font-size: ${({ theme }) => theme.fontSize.xxs};
-
-    p:first-of-type {
-      font-size: ${({ theme }) => theme.fontSize.sm};
-    }
-  }
-`;
-
 const SpecList = styled.div`
   width: 100%;
-  margin-top: ${({ theme }) => theme.spacing[20]};
+  margin-top: ${({ theme }) => theme.spacing[16]};
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: ${({ theme }) => theme.spacing[14]};
@@ -101,11 +33,11 @@ const SpecList = styled.div`
     grid-template-columns: 1fr;
   }
 `;
+
 const SpecPreview = styled.div`
   width: 100%;
   height: 420px;
   border-radius: ${({ theme }) => theme.radii.xl};
-  background: ${({ theme }) => theme.checkbox.bg};
   overflow: hidden;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -138,6 +70,7 @@ const SpecItem = styled.div`
     padding: ${({ theme }) => theme.spacing[6]} 0;
   }
 `;
+
 const SpecLine = styled.p`
   display: grid;
   grid-template-columns: 14ch minmax(0, 1fr);
@@ -202,26 +135,36 @@ const SpecLine = styled.p`
     }
   }
 `;
-export default function FeatureDetailContent({ visibleSpecs = [], product, categoryDetail }) {
+
+export default function FeatureDetailContent({
+  visibleSpecs = [],
+  product,
+  categoryDetail,
+  onReady,
+}) {
   const images = categoryDetail?.images ?? [];
+
+  useLayoutEffect(() => {
+    const raf1 = requestAnimationFrame(() => {
+      const raf2 = requestAnimationFrame(() => {
+        onReady?.();
+      });
+
+      return () => cancelAnimationFrame(raf2);
+    });
+
+    return () => cancelAnimationFrame(raf1);
+  }, [onReady, product?.id]);
+
   return (
     <DetailContent>
       <FeatureImage src={images[0]} alt={product.title} />
-      {/*
-      <SectionHeader>
-        <SectionLabel>
-          <span>✦</span> PLAYED BY REAL PLAYERS <span>✦</span>
-        </SectionLabel>
-        <SectionTextGroup>
-          <p>초광 게이머가 선택한 장비</p>
-          <p>프로게이머가 검증한 성능</p>
-        </SectionTextGroup>
-      </SectionHeader>
-       */}
+
       <SpecList>
         <SpecPreview>
           <SpecPreviewImage src={images[1]} alt={product.title} />
         </SpecPreview>
+
         <SpecItem>
           {visibleSpecs.map((item, index) => (
             <SpecLine key={`${item.label}-${index}`}>
