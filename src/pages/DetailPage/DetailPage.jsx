@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import useCartStore from '../../store/useCartStore';
 
 import ProductGallery from './components/ProductGallery';
@@ -143,20 +143,17 @@ export default function DetailPage() {
     return (
       <PageWrapper>
         <ContentSection>
-          <EmptyMessage>상품 정보를 불러오고 있습니다.</EmptyMessage>
+          <LoadingWrap>
+            <LoadingSpinner />
+            <EmptyMessage>상품 정보를 불러오고 있습니다.</EmptyMessage>
+          </LoadingWrap>
         </ContentSection>
       </PageWrapper>
     );
   }
 
   if (isNotFound || !product) {
-    return (
-      <PageWrapper>
-        <ContentSection>
-          <EmptyMessage>상품을 찾을 수 없습니다.</EmptyMessage>
-        </ContentSection>
-      </PageWrapper>
-    );
+    return <Navigate to="/product-not-found" replace />;
   }
   // 추가금 옵션 계산함수
   const getOptionExtraPrice = (selectedOptions) => {
@@ -169,10 +166,32 @@ export default function DetailPage() {
       return total + extraPrice;
     }, 0);
   };
+
   // 장바구니 로컬 초기화
   // localStorage.removeItem('shopping-cart');
   // 옵션, 서비스 체크 유무 가격 변경
   const handleAddToCart = () => {
+    /*
+    로그인 기능 연동 후 비회원은 장바구니 담기 제한
+    처리 흐름
+    1) 로그인 여부 확인
+    2) 비로그인 상태면 로그인 페이지로 이동
+    3) 현재 상세페이지 주소를 state.from으로 전달
+    4) 로그인 성공 후 현재 상세페이지로 복귀
+    5) 로그인 상태일 때만 addToCart(cartItem, quantity) 실행
+    
+    if (!isLogin) {
+      navigate('/login', {
+        state: { from: location.pathname + location.search },
+      });
+      return;
+    }
+
+    로그인 페이지에서도 
+    const from = location.state?.from || '/';
+    navigate(from, { replace: true });
+    헤야 돌아옴
+  */
     if (!product) return;
 
     const careService = product.additionalServices?.[0] ?? null;
@@ -219,11 +238,6 @@ export default function DetailPage() {
 
     addToCart(cartItem, quantity);
 
-    /*alert(
-      `${product.title} 상품이 ${quantity}개 담겼습니다.${
-        optionExtraPrice > 0 ? ` (옵션 추가금 ${optionExtraPrice.toLocaleString()}원 포함)` : ''
-      }${isCareChecked && careService ? ` (+ ${careService.title})` : ''}`
-    );*/
     setToastMessage(
       `${product.title} 상품이 ${quantity}개 담겼습니다.${
         optionExtraPrice > 0 ? ` (옵션 추가금 ${optionExtraPrice.toLocaleString()}원 포함)` : ''
@@ -378,5 +392,32 @@ const ToastMessage = styled.div`
     left: ${({ theme }) => theme.spacing[4]};
     text-align: center;
     justify-content: center;
+  }
+`;
+const LoadingWrap = styled.div`
+  width: 100%;
+  padding: ${({ theme }) => theme.spacing[20]} 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: ${({ theme }) => theme.spacing[4]};
+  background: ${({ theme }) => theme.gradients.violetBlue};
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+`;
+
+const LoadingSpinner = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: ${({ theme }) => theme.radii.full};
+  border: 3px solid rgba(${({ theme }) => theme.colors.primaryRgb}, 0.18);
+  border-top-color: ${({ theme }) => theme.colors.primary};
+  animation: spin 0.8s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 `;

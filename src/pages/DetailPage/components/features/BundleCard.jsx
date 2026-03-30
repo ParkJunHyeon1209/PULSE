@@ -11,6 +11,7 @@ import BaseSparkIcon from '../../../../components/common/BaseSparkIcon';
 import { HeartIcon, PluseIcon } from '../../../../assets/icons/BtnIcon';
 import useCartStore from '../../../../store/useCartStore';
 import { useNavigate } from 'react-router-dom';
+import { BADGE_TONE } from '../../../../utils/toneMap';
 
 /* 번들 전체 섹션 감싸는 영역 */
 const BundleCardLayout = styled.section`
@@ -267,10 +268,9 @@ function BundleItemCard({ item }) {
   /* 현재는 전부 블루 계열 무드로 맞춤 */
   const tone = getToneByCategory(item);
   const badgeText = item.tag || item.badge || 'new';
+  const badgeTone = BADGE_TONE[String(badgeText).trim().toLowerCase()] ?? 'col';
 
   const handleMoveDetail = () => {
-    console.log('bundle item:', item);
-    console.log('move id:', item.id);
     navigate(`/product/${item.id}`);
   };
 
@@ -297,7 +297,7 @@ function BundleItemCard({ item }) {
 
       {/* 카드 상단: 배지 / 하트 */}
       <CardTop>
-        <CardBadge variant="tag" tone={badgeText} icon={false} height="28px">
+        <CardBadge variant="c-badge" tone={badgeTone} icon={false} height="32px">
           {badgeText}
         </CardBadge>
 
