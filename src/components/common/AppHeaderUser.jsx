@@ -6,6 +6,7 @@ import usePanel from '../../hooks/usePanel';
 import useCartStore from '../../store/useCartStore';
 import useOverlayStore from '../../store/useOverlayStore';
 import useThemeStore from '../../store/useThemeStore';
+import useAuthStore from '../../store/useAuthStore';
 
 const AvatarButton = styled(BaseBtn)`
   overflow: visible;
@@ -234,6 +235,12 @@ export default function AppHeaderUser() {
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
   const onThemeToggle = useThemeStore((state) => state.toggleTheme);
   const wrapRef = usePanel({ open, onClose: closeLogin });
+  const { isLogin, logout } = useAuthStore();
+  const handleLogout = () => {
+    logout();
+    closeLogin();
+    navigate('/');
+  };
   const navigate = useNavigate();
 
   return (
@@ -246,10 +253,23 @@ export default function AppHeaderUser() {
 
         <Drop $open={open}>
           <DropLabel>PULSE ACCOUNT</DropLabel>
-          <DropItem type="button" onClick={() => { closeLogin(); navigate('/login'); }}>
-            <LoginIcon />
-            로그인 / 회원가입
-          </DropItem>
+          {isLogin ? (
+            <DropItem type="button" onClick={handleLogout}>
+              <LoginIcon />
+              로그아웃
+            </DropItem>
+          ) : (
+            <DropItem
+              type="button"
+              onClick={() => {
+                closeLogin();
+                navigate('/login');
+              }}
+            >
+              <LoginIcon />
+              로그인 / 회원가입
+            </DropItem>
+          )}
           <ThemeRow type="button" onClick={onThemeToggle}>
             <ThemeText>{isDarkMode ? 'DARK' : 'LIGHT'}</ThemeText>
             <ToggleButton $on={!isDarkMode} aria-hidden="true">

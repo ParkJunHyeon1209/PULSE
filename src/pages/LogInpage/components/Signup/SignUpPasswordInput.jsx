@@ -15,7 +15,9 @@ const InputGroup = styled.div`
 const InputLabel = styled.label`
   font-size: ${({ theme }) => theme.fontSize.xxs};
   font-weight: bold;
+  margin-bottom: ${({ theme }) => theme.spacing[1]};
   letter-spacing: 1px;
+  line-height: 1;
 `;
 
 const Tooltip = styled.div`
@@ -43,7 +45,7 @@ const Input = styled.input`
   border: none;
   border-bottom: 2px solid
     ${(props) => (props.$pwError || props.$isMatcError ? props.theme.colors.error : '#333')};
-  padding: ${({ theme }) => theme.spacing[3]} 0;
+  padding: ${({ theme }) => theme.spacing[2]} 0;
   outline: none;
   width: 100%;
 

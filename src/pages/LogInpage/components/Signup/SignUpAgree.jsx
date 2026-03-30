@@ -10,7 +10,7 @@ const AgreeInput = styled.div`
   gap: 8px;
 
   span {
-    font-size: 14px;
+    font-size: 12px;
   }
 
   input {
