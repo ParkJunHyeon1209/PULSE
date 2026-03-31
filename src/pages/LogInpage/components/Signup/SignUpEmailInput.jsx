@@ -99,13 +99,16 @@ export default function SignUpEamilInput({
     const isValid = emailRegex.test(email);
     setEmailError(!isValid && email.length > 0);
   };
+
   const handleCheckId = async () => {
     if (emailError || !emailRegex.test(email) || email.length === 0) {
       return;
     }
 
     try {
+      console.log('API 요청 시작:', email);
       const res = await checkIdApi(email);
+      console.log('API 응답 결과:', res);
 
       if (res.success) {
         setIsUnique(true);
@@ -113,8 +116,10 @@ export default function SignUpEamilInput({
         setIsUnique(false);
       }
     } catch (error) {
-      console.error('중복 체크 에러:', error);
-      setIsUnique(false);
+      if (error.message.includes('409')) {
+        console.log('중복 확인 결과: 사용 불가');
+        setIsUnique(false);
+      }
     }
   };
   return (
