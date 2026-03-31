@@ -9,7 +9,7 @@ const Container = styled.div`
 `;
 
 const AllAgreeBox = styled.div`
-  background: ${({ theme }) => theme.tabs.itemHoverBg};
+  background: ${({ theme }) => theme.tones.violet.containerBg};
   box-shadow: ${({ theme }) => theme.tones.violet.activeShadow};
   border: 1px solid ${({ theme }) => theme.tones.violet.activeBorder};
   padding: 16px;
@@ -41,10 +41,9 @@ const AllAgreeBox = styled.div`
 const CustomCheckbox = styled.div`
   width: 18px;
   height: 18px;
-  border: 1px solid
-    ${(props) =>
-      props.checked ? props.theme.tones.violet.subtleColor : props.theme.tones.violet.subtleColor};
-  background: ${(props) => (props.checked ? props.theme.colors.modalShadow : 'transparent')};
+  border: 1px solid ${({ theme }) => theme.checkbox.border};
+  background: ${(props) => (props.checked ? props.theme.tones.violet.tabActiveBg : 'transparent')};
+  box-shadow: ${({ theme }) => theme.checkbox.shadow};
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -55,17 +54,14 @@ const CustomCheckbox = styled.div`
     justify-content: space-between;
   }
   span {
-    font-size: 10px;
+    font-size: 11px;
+    color: ${({ theme }) => theme.colors.text};
   }
 `;
 const AllAgreeCheckbox = styled(CustomCheckbox)`
-  background: ${(props) => (props.checked ? props.theme.tones.violet.subtleColor : 'transparent')};
-  /* ${(props) =>
-    props.checked &&
-    `
-    background: ${({ theme }) => theme.tones.violet.subtleColor};
-    border: #a855f7;
-  `} */
+  background: ${(props) => (props.checked ? props.theme.checkbox.bg : 'transparent')};
+  border: 1px solid ${({ theme }) => theme.checkbox.border};
+  box-shadow: ${({ theme }) => theme.checkbox.shadow};
 `;
 
 const Divider = styled.div`
@@ -105,11 +101,10 @@ const Badge = styled.span`
 `;
 
 const LabelText = styled.span`
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ $checked, theme }) => ($checked ? theme.colors.text : theme.tabs.itemHoverColor)};
+  font-weight: ${({ $checked }) => ($checked ? 600 : 400)};
+  transition: all 0.2s ease;
   font-size: 16px;
-`;
-const MarketingLabel = styled(LabelText)`
-  color: ${({ theme }) => theme.tabs.itemHoverColor};
 `;
 
 const ViewBtn = styled.span`
@@ -126,14 +121,22 @@ const ButtonGroup = styled.div`
 `;
 
 const CloseBtn = styled.button`
-  /* flex: 1; */
   width: 79px;
-  background: ${({ theme }) => theme.Line};
+  background: ${({ theme }) => theme.tabs.itemHoverBg};
   border: 1px solid ${({ theme }) => theme.Line};
   color: ${({ theme }) => theme.tabs.itemColor};
   padding: 14px;
   border-radius: 30px;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 `;
 
 export default function AgreementContent({ agreement, setAgreement, onClose }) {
@@ -172,10 +175,10 @@ export default function AgreementContent({ agreement, setAgreement, onClose }) {
         <ItemWrapper>
           <CheckSection onClick={() => handleCheck('agreeTerms')}>
             <CustomCheckbox checked={agreement.agreeTerms}>
-              {agreement.agreeTerms && <span style={{ color: 'white' }}>✔</span>}
+              {agreement.agreeTerms && <span>✔</span>}
             </CustomCheckbox>
             <Badge isRequired>필수</Badge>
-            <LabelText>서비스 이용약관</LabelText>
+            <LabelText $checked={agreement.agreeTerms}>서비스 이용약관</LabelText>
           </CheckSection>
           <ViewBtn>보기 &gt;</ViewBtn>
         </ItemWrapper>
@@ -188,7 +191,7 @@ export default function AgreementContent({ agreement, setAgreement, onClose }) {
               {agreement.agreePrivacy && <span>✔</span>}
             </CustomCheckbox>
             <Badge isRequired>필수</Badge>
-            <LabelText>개인정보처리방침</LabelText>
+            <LabelText $checked={agreement.agreePrivacy}>개인정보처리방침</LabelText>
           </CheckSection>
           <ViewBtn>보기 &gt;</ViewBtn>
         </ItemWrapper>
@@ -201,7 +204,7 @@ export default function AgreementContent({ agreement, setAgreement, onClose }) {
               {agreement.agreeMarketing && <span>✔</span>}
             </CustomCheckbox>
             <Badge>선택</Badge>
-            <MarketingLabel>마케팅 정보 수신 동의</MarketingLabel>
+            <LabelText $checked={agreement.agreeMarketing}>마케팅 정보 수신 동의</LabelText>
           </CheckSection>
           <ViewBtn>보기 &gt;</ViewBtn>
         </ItemWrapper>
@@ -210,16 +213,7 @@ export default function AgreementContent({ agreement, setAgreement, onClose }) {
       <Divider />
 
       <ButtonGroup>
-        <CloseBtn
-          variant="ic-btn"
-          size="28px"
-          icon={false}
-          flex="0"
-          onClick={onClose}
-          aria-label="닫기"
-        >
-          닫기
-        </CloseBtn>
+        <CloseBtn onClick={onClose}>닫기</CloseBtn>
         <BaseBtn height="49px" flex="4" disabled={!canSubmit} onClick={onClose}>
           동의하고 시작하기
         </BaseBtn>

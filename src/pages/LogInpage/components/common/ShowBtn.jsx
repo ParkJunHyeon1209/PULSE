@@ -16,7 +16,8 @@ const ShowButton = styled.button`
   svg {
     width: 18px;
     height: 18px;
-    margin-bottom: ${({ theme }) => theme.spacing[8]};
+    margin-bottom: ${({ theme }) => theme.spacing[3]};
+    opacity: 0.4;
   }
 `;
 
