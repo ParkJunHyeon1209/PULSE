@@ -6,7 +6,7 @@ import ProductCareOption from './ProductCareOption';
 import QuantitySelector from './QuantitySelector';
 import PurchaseActions from './PurchaseActions';
 import { CardWish } from '../../../components/common/CardParts';
-import { useNavigate, useLocation } from 'react-router-dom';
+import useWishlistStore from '../../../store/useWishlistStore';
 import useAuthStore from '../../../store/useAuthStore';
 
 export default function ProductDetailPanel({
@@ -21,16 +21,19 @@ export default function ProductDetailPanel({
   onAddToCart,
   onRequireLogin,
 }) {
-  const [isLiked, setIsLiked] = useState(false);
   const isLogin = useAuthStore((state) => state.isLogin);
 
+  const wishlistIds = useWishlistStore((state) => state.wishlistIds);
+  const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
+
+  const isLiked = wishlistIds.includes(product.id);
   const handleToggleLike = () => {
     if (!isLogin) {
       onRequireLogin?.();
       return;
     }
 
-    setIsLiked((prev) => !prev);
+    toggleWishlist(product.id);
   };
   // id 311부터는 빠진 정보가 많음
   const logisticsInfo = product.logisticsInfo ?? {};
@@ -128,6 +131,16 @@ const LikeButton = styled(CardWish)`
   right: auto;
   opacity: 1;
   transform: translateY(0);
+  flex-shrink: 0;
+  z-index: auto;
+
+  &:hover:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.88);
+  }
 `;
 
 const HeaderRow = styled.div`

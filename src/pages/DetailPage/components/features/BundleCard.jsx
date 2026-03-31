@@ -12,6 +12,7 @@ import { HeartIcon, PluseIcon } from '../../../../assets/icons/BtnIcon';
 import useCartStore from '../../../../store/useCartStore';
 import { useNavigate } from 'react-router-dom';
 import { BADGE_TONE } from '../../../../utils/toneMap';
+import useWishlistStore from '../../../../store/useWishlistStore';
 
 import useAuthStore from '../../../../store/useAuthStore';
 
@@ -277,8 +278,12 @@ function BundleItemCard({ item, onRequireLogin }) {
   const navigate = useNavigate();
 
   const isLogin = useAuthStore((state) => state.isLogin);
-  const [liked, setLiked] = useState(false);
   const addToCart = useCartStore((state) => state.addToCart);
+
+  const wishlistIds = useWishlistStore((state) => state.wishlistIds);
+  const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
+
+  const liked = wishlistIds.includes(item?.id);
 
   /* 현재는 전부 블루 계열 무드로 맞춤 */
   const tone = getToneByCategory(item);
@@ -302,7 +307,9 @@ function BundleItemCard({ item, onRequireLogin }) {
       return;
     }
 
-    setLiked((prev) => !prev);
+    if (!item?.id) return;
+
+    toggleWishlist(item.id);
   };
   const handleMoveDetail = () => {
     navigate(`/product/${item.id}`);
