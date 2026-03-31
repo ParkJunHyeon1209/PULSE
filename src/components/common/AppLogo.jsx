@@ -16,14 +16,15 @@ const LogoImg = styled.img`
 `;
 
 export default function AppLogo({ size, ...props }) {
+  const { linked = true, ...restProps } = props;
   const theme = useTheme();
-  return (
-    <LogoLink to="/" {...props}>
-      <LogoImg
-        $size={size}
-        src={theme.mode === 'dark' ? logoDark : logoLight}
-        alt="PULSE"
-      />
-    </LogoLink>
+  const logo = (
+    <LogoImg
+      $size={size}
+      src={theme.mode === 'dark' ? logoDark : logoLight}
+      alt="PULSE"
+    />
   );
+
+  return linked ? <LogoLink to="/" {...restProps}>{logo}</LogoLink> : logo;
 }
