@@ -13,6 +13,8 @@ import useCartStore from '../../../../store/useCartStore';
 import { useNavigate } from 'react-router-dom';
 import { BADGE_TONE } from '../../../../utils/toneMap';
 
+import useAuthStore from '../../../../store/useAuthStore';
+
 /* 번들 전체 섹션 감싸는 영역 */
 const BundleCardLayout = styled.section`
   width: 100%;
@@ -138,6 +140,8 @@ const Card = styled.article`
   /* 모바일: 1개씩 */
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     flex: 1 1 100%;
+    min-height: 228px;
+    border-radius: ${({ theme }) => theme.radii.xl};
   }
 `;
 
@@ -193,6 +197,10 @@ const CardTop = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   padding: ${({ theme }) => theme.spacing[5]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: ${({ theme }) => theme.spacing[3]};
+  }
 `;
 
 /* 카드 하단 영역: 텍스트 + 플러스 버튼 */
@@ -204,6 +212,11 @@ const CardBottom = styled.div`
   align-items: flex-end;
   gap: ${({ theme }) => theme.spacing[4]};
   padding: ${({ theme }) => theme.spacing[6]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    gap: ${({ theme }) => theme.spacing[2]};
+    padding: ${({ theme }) => theme.spacing[3]};
+  }
 `;
 
 /* 상품 텍스트 묶음 */
@@ -260,8 +273,10 @@ const getToneByCategory = (item) => {
 /* 번들 카드 한 장 */
 /* -------------------------------------------------------------------------- */
 
-function BundleItemCard({ item }) {
+function BundleItemCard({ item, onRequireLogin }) {
   const navigate = useNavigate();
+
+  const isLogin = useAuthStore((state) => state.isLogin);
   const [liked, setLiked] = useState(false);
   const addToCart = useCartStore((state) => state.addToCart);
 
@@ -269,7 +284,26 @@ function BundleItemCard({ item }) {
   const tone = getToneByCategory(item);
   const badgeText = item.tag || item.badge || 'new';
   const badgeTone = BADGE_TONE[String(badgeText).trim().toLowerCase()] ?? 'col';
+  const handleClickAddCart = (e) => {
+    e.stopPropagation();
 
+    if (!isLogin) {
+      onRequireLogin?.();
+      return;
+    }
+
+    addToCart(item);
+  };
+  const handleClickWishlist = (e) => {
+    e.stopPropagation();
+
+    if (!isLogin) {
+      onRequireLogin?.();
+      return;
+    }
+
+    setLiked((prev) => !prev);
+  };
   const handleMoveDetail = () => {
     navigate(`/product/${item.id}`);
   };
@@ -308,10 +342,7 @@ function BundleItemCard({ item }) {
           flex="0 0 auto"
           icon={false}
           aria-label="찜하기"
-          onClick={(e) => {
-            e.stopPropagation();
-            setLiked((prev) => !prev);
-          }}
+          onClick={handleClickWishlist}
           $isLiked={liked}
         >
           <HeartIcon />
@@ -332,10 +363,7 @@ function BundleItemCard({ item }) {
           flex="0 0 auto"
           icon={false}
           aria-label="장바구니 담기"
-          onClick={(e) => {
-            e.stopPropagation();
-            addToCart(item);
-          }}
+          onClick={handleClickAddCart}
         >
           <PluseIcon />
         </CardAddBtn>
@@ -348,7 +376,7 @@ function BundleItemCard({ item }) {
 /* 메인 컴포넌트 */
 /* -------------------------------------------------------------------------- */
 
-export default function BundleCard({ currentType, teamProducts }) {
+export default function BundleCard({ currentType, teamProducts, onRequireLogin }) {
   /*
     현재 상세 카테고리와 다른 상품들만 추려서
     랜덤으로 3개 뽑음
@@ -393,7 +421,7 @@ export default function BundleCard({ currentType, teamProducts }) {
 
       <CardList>
         {randomProducts.map((item) => (
-          <BundleItemCard key={item.id} item={item} />
+          <BundleItemCard key={item.id} item={item} onRequireLogin={onRequireLogin} />
         ))}
       </CardList>
     </BundleCardLayout>

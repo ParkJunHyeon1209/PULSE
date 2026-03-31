@@ -177,18 +177,24 @@ const LoadingSpinner = styled.div`
 `;
 
 const LoadingText = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.xxs};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  background: ${({ theme }) => theme.gradients.violetBlue};
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 const BundleCardWrap = styled.div`
   margin-top: ${({ theme }) => theme.spacing[24]};
 `;
 
-export default function FeatureSection({ currentType, teamProducts, product, categoryDetail }) {
+export default function FeatureSection({
+  currentType,
+  teamProducts,
+  product,
+  categoryDetail,
+  onRequireLogin,
+}) {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isContentLoading, setIsContentLoading] = useState(false);
 
@@ -262,7 +268,11 @@ export default function FeatureSection({ currentType, teamProducts, product, cat
       </DetailToggleButton>
 
       <BundleCardWrap>
-        <BundleCard currentType={currentType} teamProducts={teamProducts} />
+        <BundleCard
+          currentType={currentType}
+          teamProducts={teamProducts}
+          onRequireLogin={onRequireLogin}
+        />
       </BundleCardWrap>
     </FeatureLayout>
   );

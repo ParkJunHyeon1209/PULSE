@@ -1,7 +1,19 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import useAuthStore from '../../../store/useAuthStore';
 
-export default function PurchaseActions({ onAddToCart }) {
+export default function PurchaseActions({ onAddToCart, onRequireLogin }) {
+  const isLogin = useAuthStore((state) => state.isLogin);
+
+  const handleBuyNow = () => {
+    if (!isLogin) {
+      onRequireLogin?.();
+      return;
+    }
+
+    // 로그인 상태일 때 나중에 바로 구매 로직 추가
+  };
+
   return (
     <ButtonGroup>
       <CartButton type="button" onClick={onAddToCart}>
@@ -21,7 +33,9 @@ export default function PurchaseActions({ onAddToCart }) {
         장바구니 담기
       </CartButton>
 
-      <BuyButton type="button">바로 구매</BuyButton>
+      <BuyButton type="button" onClick={handleBuyNow}>
+        바로 구매
+      </BuyButton>
     </ButtonGroup>
   );
 }
@@ -54,6 +68,7 @@ const BaseButton = styled.button`
   &:hover {
     transform: translateY(-2px);
   }
+
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     padding: ${({ theme }) => `${theme.spacing[2]}`} 0;
     height: auto;
