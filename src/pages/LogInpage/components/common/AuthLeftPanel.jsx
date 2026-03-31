@@ -12,8 +12,13 @@ const PanelShell = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: ${({ theme }) => theme.spacing[20]} 0;
-  padding-inline: ${({ theme }) => theme.grid.margin};
+  padding-top: ${({ theme }) => theme.spacing[20]};
+  padding-bottom: ${({ theme }) => theme.spacing[20]};
+  padding-left: max(
+    ${({ theme }) => theme.grid.margin},
+    calc((100vw - ${({ theme }) => theme.grid.max}) / 2 + ${({ theme }) => theme.grid.margin})
+  );
+  padding-right: ${({ theme }) => theme.grid.margin};
 
   &::before {
     content: '';

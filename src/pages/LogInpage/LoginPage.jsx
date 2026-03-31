@@ -17,16 +17,15 @@ const LogInPageContainer = styled.div`
 
 const LogoWrap = styled.div`
   position: absolute;
-  top: ${({ theme }) => theme.spacing[10]};
-  left: ${({ theme }) => theme.spacing[20]};
+  top: calc(${({ theme }) => theme.spacing[4]} + ${({ theme }) => theme.spacing[5]});
+  left: max(
+    ${({ theme }) => theme.grid.margin},
+    calc((100vw - ${({ theme }) => theme.grid.max}) / 2 + ${({ theme }) => theme.grid.margin})
+  );
   z-index: 3;
   display: inline-flex;
   align-items: center;
   text-decoration: none;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    left: ${({ theme }) => theme.grid.margin};
-  }
 `;
 
 // 왼쪽 섹션
@@ -49,7 +48,11 @@ const RightSection = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-inline: ${({ theme }) => theme.grid.margin};
+  padding-left: ${({ theme }) => theme.grid.margin};
+  padding-right: max(
+    ${({ theme }) => theme.grid.margin},
+    calc((100vw - ${({ theme }) => theme.grid.max}) / 2 + ${({ theme }) => theme.grid.margin})
+  );
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     flex: 1;
@@ -83,7 +86,7 @@ export default function LoginPage() {
   const theme = useTheme();
 
   return (
-    <LogInPageContainer>
+    <LogInPageContainer >
       <LogoWrap>
         <AppLogo size="120px" src={theme.mode === 'dark' ? logoDark : logoLight} alt="PULSE" />
       </LogoWrap>

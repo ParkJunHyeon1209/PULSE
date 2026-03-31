@@ -6,7 +6,7 @@ import CategoryPage from './pages/CategoriesPage/CategoryPage';
 import CategoriesPage from './pages/CategoriesPage/components/CategoriesPage';
 import DetailPage from './pages/DetailPage/DetailPage';
 import LoginPage from './pages/LogInpage/LoginPage';
-import NotFoundPage from './pages/NotFoundPage';
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import ShoppingCart from './pages/ShoppingCart/ShoppingCart';
 import CursorTrail from './components/common/CursorTrail';
 import ScrollToTop from './components/common/ScrollToTop';
