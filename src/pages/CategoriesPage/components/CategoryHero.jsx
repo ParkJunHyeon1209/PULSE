@@ -39,13 +39,25 @@ const BottomFade = styled.div`
   height: 180px;
   z-index: 3;
   pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgba(9, 6, 19, 0) 0%,
-    rgba(9, 6, 19, 0.16) 30%,
-    rgba(9, 6, 19, 0.52) 40%,
-    rgba(9, 6, 19, 0.82) 50%
-  );
+  background: ${({ theme }) =>
+    theme.mode === 'dark'
+      ? `linear-gradient(
+          180deg,
+          rgba(9, 6, 19, 0) 0%,
+          rgba(9, 6, 19, 0.16) 30%,
+          rgba(9, 6, 19, 0.52) 40%,
+          rgba(9, 6, 19, 0.82) 50%,
+          rgba(9, 6, 19, 0.96) 72%,
+          ${theme.colors.background} 100%
+        )`
+      : `linear-gradient(
+          180deg,
+          rgba(236, 233, 255, 0) 0%,
+          rgba(236, 233, 255, 0.22) 30%,
+          rgba(228, 224, 255, 0.58) 46%,
+          rgba(216, 206, 255, 0.82) 68%,
+          ${theme.colors.background} 100%
+        )`};
 `;
 
 const SideFade = styled.div`
@@ -122,12 +134,21 @@ const HeroTabsArea = styled.div`
   z-index: 4;
   padding: 0 ${({ theme }) => theme.grid.margin};
 
-  background: linear-gradient(
-    180deg,
-    rgba(10, 7, 20, 0.25) 0%,
-    rgba(10, 7, 20, 0.5) 35%,
-    rgba(10, 7, 20, 1) 100%
-  );
+  background: ${({ theme }) =>
+    theme.mode === 'dark'
+      ? `linear-gradient(
+          180deg,
+          rgba(10, 7, 20, 0.25) 0%,
+          rgba(10, 7, 20, 0.5) 35%,
+          rgba(10, 7, 20, 1) 100%
+        )`
+      : `linear-gradient(
+          180deg,
+          rgba(236, 233, 255, 0) 0%,
+          rgba(236, 233, 255, 0.38) 18%,
+          rgba(232, 227, 255, 0.82) 52%,
+          rgba(236, 233, 255, 0.96) 100%
+        )`};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding: 0 ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[5]};
