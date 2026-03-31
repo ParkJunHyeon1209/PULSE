@@ -1,12 +1,20 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import BaseBtn from './BaseBtn';
-import { UserIcon, CartIcon, LoginIcon, SunIcon, MoonIcon } from '../../assets/icons/BtnIcon';
-import usePanel from '../../hooks/usePanel';
-import useCartStore from '../../store/useCartStore';
-import useOverlayStore from '../../store/useOverlayStore';
-import useThemeStore from '../../store/useThemeStore';
-import useAuthStore from '../../store/useAuthStore';
+import BaseBtn from '../BaseBtn';
+import {
+  UserIcon,
+  CartIcon,
+  LoginIcon,
+  LogoutIcon,
+  SunIcon,
+  MoonIcon,
+  HeartIcon,
+} from '../../../assets/icons/BtnIcon';
+import usePanel from '../../../hooks/usePanel';
+import useCartStore from '../../../store/useCartStore';
+import useOverlayStore from '../../../store/useOverlayStore';
+import useThemeStore from '../../../store/useThemeStore';
+import useAuthStore from '../../../store/useAuthStore';
 
 const AvatarButton = styled(BaseBtn)`
   overflow: visible;
@@ -84,6 +92,8 @@ const DropItem = styled.button`
 
   svg {
     flex-shrink: 0;
+    width: 16px;
+    height: 16px;
     color: ${({ $danger, theme }) => ($danger ? theme.colors.error : theme.colors.primary)};
   }
 
@@ -122,10 +132,10 @@ const CartButton = styled(BaseBtn)`
   &::after {
     content: attr(data-count);
     position: absolute;
-    top: -4px;
-    right: -4px;
-    min-width: 18px;
-    height: 18px;
+    top: -6px;
+    right: -6px;
+    min-width: 22px;
+    height: 22px;
     padding: 0 ${({ theme }) => theme.spacing[1]};
     border-radius: ${({ theme }) => theme.radii.pill};
     border: 2px solid ${({ theme }) => theme.colors.background};
@@ -135,18 +145,78 @@ const CartButton = styled(BaseBtn)`
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: ${({ theme }) => theme.fontFamily.mono};
+    /* font-family: ${({ theme }) => theme.fontFamily.mono}; */
     font-size: ${({ theme }) => theme.fontSize.xxxs};
-    font-weight: 700;
+    font-weight: 600;
     box-sizing: border-box;
   }
 `;
 
-const Divider = styled.span`
-  width: 1px;
-  height: 22px;
-  margin: 0 2px;
+const DropDivider = styled.div`
+  height: 1px;
+  margin: ${({ theme }) => theme.spacing[1]} 0;
   background: ${({ theme }) => theme.colors.border};
+`;
+
+const DropProfile = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[3]};
+  padding: ${({ theme }) => `${theme.spacing[3]} 13px 10px`};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  margin-bottom: ${({ theme }) => theme.spacing[1]};
+`;
+
+const DropProfileAvatar = styled.div`
+  width: 32px;
+  height: 32px;
+  border-radius: ${({ theme }) => theme.radii.full};
+  background: ${({ theme }) => theme.gradients.navActive};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: ${({ theme }) => theme.fontFamily.display};
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+`;
+
+const DropProfileInfo = styled.div`
+  min-width: 0;
+`;
+
+const DropProfileName = styled.div`
+  font-size: ${({ theme }) => theme.fontSize.xxs};
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+const DropProfileEmail = styled.div`
+  margin-top: 2px;
+  font-family: ${({ theme }) => theme.fontFamily.mono};
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  letter-spacing: 0.04em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
+const AvatarCircle = styled(BaseBtn)`
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: ${({ theme }) => theme.fontFamily.display};
+  font-size: ${({ theme }) => theme.fontSize.s};
+  font-weight: 700;
+  color: #fff;
+
+  &:hover {
+    box-shadow: 0 0 0 4px ${({ theme }) => `rgba(${theme.colors.primaryRgb},.12)`};
+  }
 `;
 
 const ToggleDeco = styled.span`
@@ -235,50 +305,117 @@ export default function AppHeaderUser() {
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
   const onThemeToggle = useThemeStore((state) => state.toggleTheme);
   const wrapRef = usePanel({ open, onClose: closeLogin });
-  const { isLogin, logout } = useAuthStore();
+  const { isLogin, user, logout } = useAuthStore();
+  const navigate = useNavigate();
+  const initial = user?.name?.[0]?.toUpperCase() ?? 'P';
   const handleLogout = () => {
     logout();
     closeLogin();
     navigate('/');
   };
-  const navigate = useNavigate();
 
   return (
     <>
       <DropWrap ref={wrapRef}>
-        <AvatarButton height={'42px'} variant="ic-btn" aria-label="User menu" onClick={onOpen}>
-          <UserIcon />
-          <AvatarStatus />
-        </AvatarButton>
+        {isLogin ? (
+          <AvatarCircle aria-label="User menu" onClick={onOpen}>
+            {initial}
+          </AvatarCircle>
+        ) : (
+          <AvatarButton height={'42px'} variant="ic-btn" aria-label="User menu" onClick={onOpen}>
+            <UserIcon />
+            <AvatarStatus />
+          </AvatarButton>
+        )}
 
         <Drop $open={open}>
-          <DropLabel>PULSE ACCOUNT</DropLabel>
           {isLogin ? (
-            <DropItem type="button" onClick={handleLogout}>
-              <LoginIcon />
-              로그아웃
-            </DropItem>
+            <>
+              <DropProfile>
+                <DropProfileAvatar>{initial}</DropProfileAvatar>
+                <DropProfileInfo>
+                  <DropProfileName>{user?.name ?? 'PULSE USER'}</DropProfileName>
+                  <DropProfileEmail>{user?.email ?? ''}</DropProfileEmail>
+                </DropProfileInfo>
+              </DropProfile>
+              <DropItem
+                type="button"
+                onClick={() => {
+                  closeLogin();
+                  navigate('/mypage');
+                }}
+              >
+                <UserIcon />
+                마이페이지
+              </DropItem>
+              <DropItem
+                type="button"
+                onClick={() => {
+                  closeLogin();
+                  navigate('/orders');
+                }}
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                주문 내역
+              </DropItem>
+              <DropItem
+                type="button"
+                onClick={() => {
+                  closeLogin();
+                  navigate('/wishlist');
+                }}
+              >
+                <HeartIcon strokeWidth="1.8" />
+                찜목록
+              </DropItem>
+              <ThemeRow type="button" onClick={onThemeToggle}>
+                <ThemeText>THEME</ThemeText>
+                <ToggleButton $on={!isDarkMode} aria-hidden="true">
+                  <ToggleIcon $on={!isDarkMode}>
+                    {isDarkMode ? <MoonIcon strokeWidth="2" /> : <SunIcon strokeWidth="2" />}
+                  </ToggleIcon>
+                  <ToggleDeco $on={!isDarkMode}>···</ToggleDeco>
+                </ToggleButton>
+              </ThemeRow>
+              <DropDivider />
+              <DropItem type="button" $danger onClick={handleLogout}>
+                <LogoutIcon />
+                로그아웃
+              </DropItem>
+            </>
           ) : (
-            <DropItem
-              type="button"
-              onClick={() => {
-                closeLogin();
-                navigate('/login');
-              }}
-            >
-              <LoginIcon />
-              로그인 / 회원가입
-            </DropItem>
+            <>
+              <DropLabel>PULSE ACCOUNT</DropLabel>
+              <DropItem
+                type="button"
+                onClick={() => {
+                  closeLogin();
+                  navigate('/login');
+                }}
+              >
+                <LoginIcon />
+                로그인 / 회원가입
+              </DropItem>
+              <ThemeRow type="button" onClick={onThemeToggle}>
+                <ThemeText>THEME</ThemeText>
+                <ToggleButton $on={!isDarkMode} aria-hidden="true">
+                  <ToggleIcon $on={!isDarkMode}>
+                    {isDarkMode ? <MoonIcon strokeWidth="2" /> : <SunIcon strokeWidth="2" />}
+                  </ToggleIcon>
+                  <ToggleDeco $on={!isDarkMode}>···</ToggleDeco>
+                </ToggleButton>
+              </ThemeRow>
+            </>
           )}
-          <ThemeRow type="button" onClick={onThemeToggle}>
-            <ThemeText>{isDarkMode ? 'DARK' : 'LIGHT'}</ThemeText>
-            <ToggleButton $on={!isDarkMode} aria-hidden="true">
-              <ToggleIcon $on={!isDarkMode}>
-                {isDarkMode ? <MoonIcon strokeWidth="2" /> : <SunIcon strokeWidth="2" />}
-              </ToggleIcon>
-              <ToggleDeco $on={!isDarkMode}>···</ToggleDeco>
-            </ToggleButton>
-          </ThemeRow>
         </Drop>
       </DropWrap>
 
@@ -289,7 +426,7 @@ export default function AppHeaderUser() {
         data-count={`${cart.length}`}
         onClick={() => navigate('/shoppingcart')}
       >
-        <CartIcon strokeWidth="1.25" />
+        <CartIcon strokeWidth="1" />
       </CartButton>
     </>
   );

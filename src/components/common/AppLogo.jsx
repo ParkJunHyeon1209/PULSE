@@ -7,6 +7,7 @@ import logoLight from '../../assets/Logo-wite.svg';
 const LogoLink = styled(Link)`
   display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
 `;
 
 const LogoImg = styled.img`
