@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MyInfo from './components/MyInfo';
 import Statistics from './components/Statistics';
 import MainMyPage from './components/MainMyPage';
@@ -43,20 +43,24 @@ function LoginModal() {
 
 export default function MyPage() {
   const [category, setCategory] = useState('');
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const logout = useAuthStore((state) => state.logout);
+  const isLoggedIn = useAuthStore((state) => state.isLogin);
   const openModal = useOverlayStore((state) => state.openModal);
+  const closeModal = useOverlayStore((state) => state.closeModal);
 
-  // if (!isLoggedIn) {
-  //   openModal('login');
-  // }
+  useEffect(() => {
+    if (!isLoggedIn) {
+      openModal('login');
+    } else {
+      closeModal('login');
+    }
+  }, [isLoggedIn, openModal, closeModal]);
 
   return (
     <MyPageWrap>
-      <MyInfo setCategory={setCategory} logout={logout} />
+      <MyInfo setCategory={setCategory} />
       <Statistics />
       <MainMyPage>
-        <MyPageCategory category={category} setCategory={setCategory} logout={logout} />
+        <MyPageCategory category={category} setCategory={setCategory} />
         <CategoryRender category={category} />
       </MainMyPage>
       <LoginModal />

@@ -1,9 +1,11 @@
 import React from 'react';
 import useAuthStore from '../../../store/useAuthStore';
 import styled from '@emotion/styled';
+import useWishlistStore from '../../../store/useWishlistStore';
 
 export default function Statistics() {
   const user = useAuthStore((state) => state.user);
+  const wishlistCount = useWishlistStore((state) => state.wishlistIds).length;
 
   return (
     <StatisticsWrap>
@@ -13,7 +15,7 @@ export default function Statistics() {
           <StatisticsLabel>주문내역</StatisticsLabel>
         </li>
         <li>
-          <StatisticsCount>{user?.wishlistCount || 0}</StatisticsCount>
+          <StatisticsCount>{wishlistCount || 0}</StatisticsCount>
           <StatisticsLabel>위시리스트</StatisticsLabel>
         </li>
         <li>
@@ -43,13 +45,13 @@ const StatisticsWrap = styled.div`
 const StatisticsList = styled.ul`
   max-width: 1200px;
   width: 100%;
-  padding: 0 ${({ theme }) => theme.spacing[5]};
+  padding: 0 ${({ theme }) => theme.spacing[10]};
   display: flex;
   justify-content: space-between;
   gap: ${({ theme }) => theme.spacing[20]};
   > li {
     flex: 1;
-    padding: ${({ theme }) => theme.spacing[5]};
+    padding: ${({ theme }) => theme.spacing[5]} 0;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -73,6 +75,6 @@ const StatisticsCount = styled.p`
 `;
 
 const StatisticsLabel = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
   color: ${({ theme }) => theme.colors.textSecondary};
 `;

@@ -307,7 +307,7 @@ export default function AppHeaderUser() {
   const wrapRef = usePanel({ open, onClose: closeLogin });
   const { isLogin, user, logout } = useAuthStore();
   const navigate = useNavigate();
-  const initial = user?.name?.[0]?.toUpperCase() ?? 'P';
+  const initial = user?.nickname?.[0]?.toUpperCase() ?? user?.name?.[0]?.toUpperCase() ?? 'P';
   const handleLogout = () => {
     logout();
     closeLogin();

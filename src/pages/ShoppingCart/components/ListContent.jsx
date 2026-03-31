@@ -38,7 +38,7 @@ export default function ListContent() {
     <List isDarkMode={isDarkMode}>
       {cart.map((item) => (
         <ListItem
-          key={`${item.id}${item.optionSummary ? `-${item?.optionSummary}` : null}`}
+          key={`${item.id}${item.optionSummary ? `-${item.optionSummary}` : ''}${item.isCareChecked ? '-care' : ''}`}
           $isSelected={item.checked}
         >
           <div className="content-info">
@@ -80,7 +80,7 @@ export default function ListContent() {
                 {item.optionSummary ? (
                   <p>
                     {item.optionSummary}
-                    {item.isCareChecked ? ` / ${item.careTitle}` : null}
+                    {item.isCareChecked ? ` / +${item.careTitle}` : null}
                   </p>
                 ) : (
                   <p>{item.meta}</p>

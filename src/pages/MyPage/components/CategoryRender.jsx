@@ -4,13 +4,14 @@ import WishList from './WishList';
 import Review from './Review';
 import Coupon from './Coupon';
 import Profile from './Profile';
-import Adress from './Adress';
+import Adress from './Address';
 import styled from '@emotion/styled';
+import CurrentCategory from './CurrentCategory';
 
 export default function CategoryRender({ category }) {
   return (
     <CategoryWrap>
-      {category ? null : <h2>카테고리를 선택해주세요.</h2>}
+      <CurrentCategory category={category} />
       {category === 'order' && <OrderList />}
       {category === 'wish' && <WishList />}
       {category === 'review' && <Review />}

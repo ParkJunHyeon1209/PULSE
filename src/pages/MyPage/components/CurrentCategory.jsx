@@ -11,7 +11,6 @@ const categoryTitleMap = {
 };
 
 export default function CurrentCategory({ category }) {
-  console.log(category);
   return (
     <CurrentRoute>
       <h2>MY ACCOUNT</h2>

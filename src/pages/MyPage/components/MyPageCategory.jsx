@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import BaseModal from '../../../components/common/BaseModal';
 import BaseBtn from '../../../components/common/BaseBtn';
 import useAuthStore from '../../../store/useAuthStore';
+import useWishlistStore from '../../../store/useWishlistStore';
 
 function LogoutModal() {
   const isOpen = useOverlayStore((state) => Boolean(state.modals.logout));
@@ -48,25 +49,44 @@ function LogoutModal() {
   );
 }
 
-export default function MyPageCategory({ setCategory }) {
+export default function MyPageCategory({ category, setCategory }) {
   const openModal = useOverlayStore((state) => state.openModal);
+  const isActive = (itemCategory) => category === itemCategory;
+  const user = useAuthStore((state) => state.user);
+  const wishlistCount = useWishlistStore((state) => state.wishlistIds).length;
 
   return (
     <CategoryList>
       <li>
         <h4>내 계정</h4>
         <ul>
-          <li onClick={() => setCategory('order')}>주문내역</li>
-          <li onClick={() => setCategory('wish')}>위시리스트</li>
-          <li onClick={() => setCategory('review')}>작성 리뷰</li>
-          <li onClick={() => setCategory('coupon')}>혜택 • 쿠폰</li>
+          <CategoryType $isActive={isActive('order')} onClick={() => setCategory('order')}>
+            주문내역
+            <span>{user?.orderedList?.length || 0}</span>
+          </CategoryType>
+          <CategoryType $isActive={isActive('wish')} onClick={() => setCategory('wish')}>
+            위시리스트
+            <span>{wishlistCount || 0}</span>
+          </CategoryType>
+          <CategoryType $isActive={isActive('review')} onClick={() => setCategory('review')}>
+            작성 리뷰
+            <span>{user?.reviewList?.length || 0}</span>
+          </CategoryType>
+          <CategoryType $isActive={isActive('coupon')} onClick={() => setCategory('coupon')}>
+            혜택 • 쿠폰
+            <span>{user?.couponList?.length || 0}</span>
+          </CategoryType>
         </ul>
       </li>
       <li>
         <h4>설정</h4>
         <ul>
-          <li onClick={() => setCategory('profile')}>프로필 편집</li>
-          <li onClick={() => setCategory('address')}>배송지 관리</li>
+          <CategoryType $isActive={isActive('profile')} onClick={() => setCategory('profile')}>
+            프로필 편집
+          </CategoryType>
+          <CategoryType $isActive={isActive('address')} onClick={() => setCategory('address')}>
+            배송지 관리
+          </CategoryType>
         </ul>
       </li>
       <li>
@@ -84,24 +104,20 @@ const CategoryList = styled.ul`
   padding-left: ${({ theme }) => theme.spacing[20]};
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[10]};
+  gap: ${({ theme }) => theme.spacing[3]};
+
   > li {
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.spacing[4]};
     h4 {
-      font-size: 18px;
-      font-weight: 600;
+      font-size: ${({ theme }) => theme.fontSize.xxxs};
+      color: ${({ theme }) => theme.colors.textSecondary};
     }
     > ul {
       display: flex;
       flex-direction: column;
       gap: ${({ theme }) => theme.spacing[2]};
-      li {
-        cursor: pointer;
-        font-size: ${({ theme }) => theme.fontSize.s};
-        color: ${({ theme }) => theme.colors.textSecondary};
-      }
     }
   }
   > li:not(:last-child) {
@@ -110,9 +126,42 @@ const CategoryList = styled.ul`
   }
   > li:last-child {
     button {
-      padding: 0;
+      text-align: left;
       font-size: ${({ theme }) => theme.fontSize.s};
       color: ${({ theme }) => theme.colors.error};
     }
+  }
+`;
+
+const CategoryType = styled.li`
+  cursor: pointer;
+  padding: ${({ theme }) => theme.spacing[2]};
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  color: ${({ theme, $isActive }) =>
+    $isActive ? theme.colors.primary : theme.colors.textSecondary};
+  background-color: ${({ theme, $isActive }) =>
+    $isActive ? theme.colors.primary + '15' : 'transparent'};
+  border-top-right-radius: ${({ theme }) => theme.radii.sm};
+  border-bottom-right-radius: ${({ theme }) => theme.radii.sm};
+  overflow: hidden;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }) => theme.colors.primary + '15'};
+  }
+
+  &::before {
+    content: '';
+    opacity: ${({ $isActive }) => ($isActive ? 1 : 0)};
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background-color: ${({ theme }) => theme.colors.primary};
+    border-radius: ${({ theme }) => theme.radii.sm} 0 0 ${({ theme }) => theme.radii.sm};
   }
 `;
