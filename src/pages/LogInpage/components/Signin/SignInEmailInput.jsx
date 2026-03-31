@@ -31,7 +31,7 @@ export default function SignInEmailInput({ email, setEmail }) {
       <Input
         id="id"
         name="id"
-        type="email"
+        type="text"
         placeholder="signal@pulse.kr"
         value={email}
         onChange={(e) => setEmail(e.target.value)}

@@ -120,10 +120,6 @@ export default function SignInForm({ onClick }) {
       alert('아이디 또는 비밀번호를 확인해주세요.');
     }
   };
-  const handleFillAdmin = () => {
-    setEmail('myadmin1@pulse.com');
-    setPw('password123!');
-  };
   return (
     <SignInContainer>
       <StyledForm onSubmit={handleLogin}>
@@ -135,10 +131,6 @@ export default function SignInForm({ onClick }) {
         <SignInPasswordInput pw={pw} setPw={setPw} showPw={showPw} setShowPw={setShowPw} />
         {/* 비밀번호 찾기 일단 클릭만 되게끔 */}
         <FindLink href="#">비밀번호 찾기</FindLink>
-        <BaseBtn type="button" onClick={handleFillAdmin}>
-          테스트 계정으로 채우기 (Admin)
-        </BaseBtn>
-
         <BaseBtn
           className="signin-btn"
           variant="primary"
