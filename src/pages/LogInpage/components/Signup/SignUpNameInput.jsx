@@ -29,7 +29,9 @@ const Input = styled.input`
   border: none;
   border-bottom: 2px solid
     ${(props) =>
-      props.$firstNameError || props.$lastNameError ? props.theme.colors.error : '#333'};
+      props.$firstNameError || props.$lastNameError
+        ? props.theme.colors.error
+        : props.theme.input.lineBorder};
   padding: ${({ theme }) => theme.spacing[2]} 0;
   outline: none;
   width: 100%;

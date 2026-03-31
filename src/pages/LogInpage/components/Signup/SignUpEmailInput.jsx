@@ -21,7 +21,8 @@ const InputLabel = styled.label`
 const Input = styled.input`
   background: transparent;
   border: none;
-  border-bottom: 2px solid ${(props) => (props.$emailError ? props.theme.colors.error : '#333')};
+  border-bottom: 2px solid
+    ${(props) => (props.$emailError ? props.theme.colors.error : props.theme.input.lineBorder)};
   padding: ${({ theme }) => theme.spacing[2]} 0;
   outline: none;
   width: 100%;
