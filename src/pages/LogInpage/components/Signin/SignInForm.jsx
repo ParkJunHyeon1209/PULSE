@@ -28,6 +28,7 @@ const StyledForm = styled.form`
 
 const Title = styled.h2`
   font-size: ${({ theme }) => theme.fontSize.sm};
+  font-weight: 700;
 `;
 
 const SubText = styled.p`
@@ -52,15 +53,15 @@ const DividerWrapper = styled.div`
   gap: ${({ theme }) => theme.spacing[4]};
 `;
 
-const Line = styled.div`
+const Divider = styled.div`
   flex: 1;
   height: 1px;
-  background: rgba(255, 255, 255, 0.07);
+  background: ${({ theme }) => theme.Line};
 `;
 
 const DividerText = styled.span`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
-  color: rgba(200, 205, 255, 0.3);
+  color: ${({ theme }) => theme.input.placeholder};
   white-space: nowrap;
 `;
 
@@ -91,10 +92,11 @@ export default function SignInForm({ onClick }) {
   const [pw, setPw] = useState('');
   const [showPw, setShowPw] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuthStore();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    const { login: storeLogin } = useAuthStore.getState();
 
     try {
       const res = await loginApi(email, pw);
@@ -102,14 +104,25 @@ export default function SignInForm({ onClick }) {
       if (res.success) {
         localStorage.setItem('accessToken', res.token);
 
-        login();
+        const userData = {
+          id: email,
+          password: pw,
+          name: res.userInfo.name,
+        };
 
-        alert('로그인 성공!');
+        storeLogin(userData);
+
+        alert(`${userData.name}님, 환영합니다!`);
         navigate('/');
       }
     } catch (error) {
-      alert('이메일 또는 비밀번호가 잘못되었습니다.');
+      console.error('로그인 에러:', error.message);
+      alert('아이디 또는 비밀번호를 확인해주세요.');
     }
+  };
+  const handleFillAdmin = () => {
+    setEmail('myadmin1@pulse.com');
+    setPw('password123!');
   };
   return (
     <SignInContainer>
@@ -122,6 +135,10 @@ export default function SignInForm({ onClick }) {
         <SignInPasswordInput pw={pw} setPw={setPw} showPw={showPw} setShowPw={setShowPw} />
         {/* 비밀번호 찾기 일단 클릭만 되게끔 */}
         <FindLink href="#">비밀번호 찾기</FindLink>
+        <BaseBtn type="button" onClick={handleFillAdmin}>
+          테스트 계정으로 채우기 (Admin)
+        </BaseBtn>
+
         <BaseBtn
           className="signin-btn"
           variant="primary"
@@ -135,9 +152,9 @@ export default function SignInForm({ onClick }) {
           SIGN IN
         </BaseBtn>
         <DividerWrapper>
-          <Line />
+          <Divider />
           <DividerText>or continue with</DividerText>
-          <Line />
+          <Divider />
         </DividerWrapper>
       </StyledForm>
       <SocialBtn />
