@@ -62,7 +62,9 @@ export default function MyInfo({ setCategory }) {
     <MyInfoWrap>
       <Profile>
         <InitialName>
-          <span>{user.nickname.charAt(0).toUpperCase() || 'P'}</span>
+          <span>
+            {user?.nickname?.charAt(0).toUpperCase() ?? user?.name?.charAt(0).toUpperCase() ?? 'P'}
+          </span>
         </InitialName>
         <UserInfo>
           <BaseSection
