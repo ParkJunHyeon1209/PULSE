@@ -339,7 +339,10 @@ const ContentSection = styled.section`
 
 const ToastMessage = styled.div`
   position: fixed;
-  top: ${({ theme, $type }) => ($type === 'login' ? theme.spacing[24] : theme.spacing[28])};
+  top: ${({ theme, $type }) =>
+    $type === 'login'
+      ? `calc(${theme.spacing[24]} + ${theme.spacing[3]})`
+      : `calc(${theme.spacing[24]} + ${theme.spacing[3]})`};
   left: ${({ $type }) => ($type === 'login' ? '50%' : 'auto')};
   right: ${({ $type }) => ($type === 'login' ? 'auto' : '240px')};
   transform: ${({ $type }) => ($type === 'login' ? 'translateX(-50%)' : 'none')};
@@ -358,7 +361,7 @@ const ToastMessage = styled.div`
   );
   color: ${({ theme }) => theme.colors.text};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  backdrop-filter: ${({ theme }) => theme.effects.blurMd};
+  backdrop-filter: ${({ theme }) => theme.effects.blurPromo};
 
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: 600;
