@@ -7,6 +7,8 @@ import SignInPasswordInput from '../Signin/SignInPasswordInput';
 import SocialBtn from '../common/SocialBtn';
 import useAuthStore from '../../../../store/useAuthStore';
 import { loginApi } from '../../../../data/authApi';
+import FindPw from './FindPw';
+import SignModal from '../common/SignModal';
 
 const SignInContainer = styled.div`
   width: 100%;
@@ -43,6 +45,11 @@ const FindLink = styled.a`
   align-self: flex-end;
   margin-bottom: ${({ theme }) => theme.spacing[5]};
   color: ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const DividerWrapper = styled.div`
@@ -91,6 +98,10 @@ export default function SignInForm({ onClick }) {
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const [showPw, setShowPw] = useState(false);
+  const [findEmail, setFindEmail] = useState('');
+  const [isFindPwOpen, setIsFindPwOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -112,14 +123,16 @@ export default function SignInForm({ onClick }) {
 
         storeLogin(userData);
 
-        alert(`${userData.name}님, 환영합니다!`);
-        navigate('/');
+        setModalMessage(`${userData.name}님, 환영합니다!`);
+        setIsModalOpen(true);
       }
     } catch (error) {
       console.error('로그인 에러:', error.message);
-      alert('아이디 또는 비밀번호를 확인해주세요.');
+      setModalMessage('아이디 또는 비밀번호를 확인해주세요.');
+      setIsModalOpen(true);
     }
   };
+
   return (
     <SignInContainer>
       <StyledForm onSubmit={handleLogin}>
@@ -129,8 +142,13 @@ export default function SignInForm({ onClick }) {
         <SignInEmailInput email={email} setEmail={setEmail} />
         {/* 비밀번호 입력창 */}
         <SignInPasswordInput pw={pw} setPw={setPw} showPw={showPw} setShowPw={setShowPw} />
-        {/* 비밀번호 찾기 일단 클릭만 되게끔 */}
-        <FindLink href="#">비밀번호 찾기</FindLink>
+        <FindPw
+          findEmail={findEmail}
+          setFindEmail={setFindEmail}
+          isFindPwOpen={isFindPwOpen}
+          setIsFindPwOpen={setIsFindPwOpen}
+        />
+
         <BaseBtn
           className="signin-btn"
           variant="primary"
@@ -153,6 +171,16 @@ export default function SignInForm({ onClick }) {
       <Switch>
         계정이 없으신가요? <SwitchButton onClick={onClick}>지금 가입하기</SwitchButton>
       </Switch>
+      <SignModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          if (modalMessage.includes('환영합니다')) {
+            navigate('/');
+          }
+        }}
+        message={modalMessage}
+      />
     </SignInContainer>
   );
 }
