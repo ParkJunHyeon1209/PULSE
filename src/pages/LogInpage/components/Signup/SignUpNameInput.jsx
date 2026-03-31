@@ -36,6 +36,7 @@ const Input = styled.input`
 
   &::placeholder {
     font-size: ${({ theme }) => theme.fontSize.xxs};
+    color: ${({ theme }) => theme.input.placeholder};
   }
 `;
 
