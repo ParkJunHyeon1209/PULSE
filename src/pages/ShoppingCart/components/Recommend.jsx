@@ -16,6 +16,38 @@ const RecommendWrap = styled.div`
     > li > article {
       min-height: 280px;
     }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+      > li {
+        flex: 1 1 100%;
+        min-width: 0;
+      }
+
+      /* 카드 루트 */
+      > li > article {
+        min-height: 228px;
+        height: 228px;
+        aspect-ratio: unset;
+        border-radius: ${({ theme }) => theme.radii.xl};
+      }
+
+      /* 카드 상단 영역 */
+      > li > article > div:nth-of-type(1) {
+        padding: ${({ theme }) => theme.spacing[3]};
+      }
+
+      /* 카드 하단 텍스트 영역 */
+      > li > article > div:nth-of-type(3) {
+        gap: ${({ theme }) => theme.spacing[2]};
+        padding: ${({ theme }) => theme.spacing[3]};
+      }
+
+      /* 하단 플러스 버튼 위치가 너무 뜨면 같이 보정 */
+      > li > article > button {
+        bottom: ${({ theme }) => theme.spacing[3]};
+        right: ${({ theme }) => theme.spacing[3]};
+      }
+    }
   }
 `;
 
