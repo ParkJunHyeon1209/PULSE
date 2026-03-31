@@ -1,16 +1,13 @@
 import styled from '@emotion/styled';
 import { NavLink } from 'react-router-dom';
-import AppLogo from './AppLogo';
+import { createPortal } from 'react-dom';
+import AppLogo from '../AppLogo';
 import AppHeaderSearch from './AppHeaderSearch';
 import AppHeaderUser from './AppHeaderUser';
-
-const navItems = [
-  { label: 'Lineup', to: '/categories/', end: true },
-  { label: 'Headset', to: '/categories/headset' },
-  { label: 'Gear', to: '/categories/gear' },
-  { label: 'Console', to: '/categories/console' },
-  { label: 'DROPS', to: '/categories/drops', isDrops: true },
-];
+import AppHeaderMobileMenu from './AppHeaderMobileMenu';
+import useOverlayStore from '../../../store/useOverlayStore';
+import { navItems } from './navConstants';
+import { HamburgerIcon } from '../../../assets/icons/BtnIcon';
 
 const NavWrap = styled.nav`
   position: fixed;
@@ -20,9 +17,16 @@ const NavWrap = styled.nav`
   z-index: 100;
   min-height: 100px;
   padding-top: ${({ theme }) => theme.spacing[4]};
-  background: ${({ theme }) => theme.colors.navBg};
-  backdrop-filter: ${({ theme }) => theme.effects.blurNav};
   /* border-bottom: 1px solid ${({ theme }) => theme.colors.border}; */
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: ${({ theme }) => theme.colors.navBg};
+    backdrop-filter: ${({ theme }) => theme.effects.blurNav};
+  }
 `;
 
 const NavInner = styled.div`
@@ -48,12 +52,12 @@ const NavInner = styled.div`
 const NavLinks = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing[8]};
-
+  transition: gap ${({ theme }) => theme.motion.normal};
+  @media (max-width: 900px) {
+    gap: ${({ theme }) => theme.spacing[4]};
+  }
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    order: 3;
-    justify-content: center;
-    width: 100%;
-    padding-top: ${({ theme }) => theme.spacing[2]};
+    display: none;
   }
 `;
 
@@ -117,31 +121,76 @@ const NavRight = styled.div`
   gap: ${({ theme }) => theme.spacing[4]};
 `;
 
+const DesktopOnly = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[4]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: none;
+  }
+`;
+
+const HamburgerBtn = styled.button`
+  display: none;
+  width: 42px;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${({ theme }) => theme.radii.pill};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  transition:
+    background ${({ theme }) => theme.motion.fast},
+    color ${({ theme }) => theme.motion.fast};
+
+  &:hover {
+    background: ${({ theme }) => `rgba(${theme.colors.primaryRgb},.08)`};
+    color: ${({ theme }) => theme.colors.text};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: flex;
+  }
+`;
+
 export default function AppHeader() {
-  return (
-    <NavWrap>
-      <NavInner>
-        <AppLogo />
+  const closeSearch = useOverlayStore((state) => state.closeSearch);
+  const openMobileMenu = useOverlayStore((state) => state.openMobileMenu);
 
-        <NavLinks>
-          {navItems.map((item) => (
-            <NavItem
-              key={item.to}
-              to={item.to}
-              end={item.end}
-              $isDrops={item.isDrops}
-              data-label={item.label}
-            >
-              {item.label}
-            </NavItem>
-          ))}
-        </NavLinks>
+  return createPortal(
+    <>
+      <NavWrap>
+        <NavInner>
+          <AppLogo />
 
-        <NavRight>
-          <AppHeaderSearch />
-          <AppHeaderUser />
-        </NavRight>
-      </NavInner>
-    </NavWrap>
+          <NavLinks>
+            {navItems.map((item) => (
+              <NavItem
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                $isDrops={item.isDrops}
+                data-label={item.label}
+                onClick={closeSearch}
+              >
+                {item.label}
+              </NavItem>
+            ))}
+          </NavLinks>
+
+          <NavRight>
+            <AppHeaderSearch />
+            <DesktopOnly>
+              <AppHeaderUser />
+            </DesktopOnly>
+            <HamburgerBtn aria-label="menu-open" onClick={openMobileMenu}>
+              <HamburgerIcon />
+            </HamburgerBtn>
+          </NavRight>
+        </NavInner>
+      </NavWrap>
+      <AppHeaderMobileMenu />
+    </>,
+    document.getElementById('nav-root')
   );
 }

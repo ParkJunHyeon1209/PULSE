@@ -2,8 +2,9 @@ import styled from '@emotion/styled';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-import AppHeader from '../common/AppHeader';
+import AppHeader from '../common/AppHeader/index';
 import AppFooter from '../common/AppFooter';
+import BaseWipModal from '../common/modals/BaseWipModal';
 
 const LayoutContainer = styled.div`
   display: flex;
@@ -32,6 +33,7 @@ export default function MainLayout() {
         <Outlet />
       </MainContent>
       <AppFooter />
+      <BaseWipModal id="brandStory" label="PULSE BRAND" title="브랜드 스토리" />
     </LayoutContainer>
   );
 }
