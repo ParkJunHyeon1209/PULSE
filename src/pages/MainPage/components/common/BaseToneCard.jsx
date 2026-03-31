@@ -109,6 +109,7 @@ const ArrowWrap = styled.div`
 const Info = styled.div`
   position: absolute;
   left: ${({ theme }) => theme.spacing[6]};
+  right: ${({ theme }) => theme.spacing[6]};
   bottom: ${({ theme }) => theme.spacing[5]};
   z-index: 2;
 `;
@@ -120,14 +121,15 @@ const Label = styled.div`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: ${({ $white, theme }) =>
+    $white ? theme.colors.wColor + 'b3' : theme.colors.textSecondary};
 `;
 
 const Name = styled.div`
   font-family: ${({ theme }) => theme.fontFamily.hero};
   font-size: ${({ theme }) => theme.fontSize.m};
   letter-spacing: 0.08em;
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ $white, theme }) => ($white ? theme.colors.wColor : theme.colors.text)};
   text-shadow: ${({ theme }) =>
     theme.mode === 'light' ? `0 0px 8px rgba(200, 174, 255, 0.4)` : 'none'};
 `;
@@ -136,7 +138,12 @@ const Count = styled.div`
   margin-top: ${({ theme }) => theme.spacing[1]};
   font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: ${({ $white, theme }) =>
+    $white ? theme.colors.wColor + 'b3' : theme.colors.textSecondary};
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const BrowseImg = styled.div`
@@ -163,6 +170,7 @@ export default function BaseToneCard({
   img,
   imgOpacity,
   beamOver = false,
+  white = false,
   ...props
 }) {
   return (
@@ -207,9 +215,9 @@ export default function BaseToneCard({
       )}
 
       <Info>
-        <Label>{label}</Label>
-        <Name>{name}</Name>
-        <Count>{count}</Count>
+        <Label $white={white}>{label}</Label>
+        <Name $white={white}>{name}</Name>
+        <Count $white={white}>{count}</Count>
       </Info>
     </Card>
   );

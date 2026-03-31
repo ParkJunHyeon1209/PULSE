@@ -36,7 +36,8 @@ const BottomFade = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  height: 180px;
+  opacity: 0.4;
+  height: 100px;
   z-index: 3;
   pointer-events: none;
   background: ${({ theme }) =>
@@ -115,6 +116,20 @@ const HeroBlurBand = styled.div`
   padding: 30px 0;
   backdrop-filter: ${({ theme }) => theme.effects.blurMd};
   -webkit-backdrop-filter: ${({ theme }) => theme.effects.blurMd};
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 1) 55%,
+    rgba(0, 0, 0, 1) 55%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 1) 55%,
+    rgba(0, 0, 0, 1) 55%,
+    transparent 100%
+  );
 
   display: flex;
   align-items: center;
@@ -133,25 +148,12 @@ const HeroTabsArea = styled.div`
   bottom: 0;
   z-index: 4;
   padding: 0 ${({ theme }) => theme.grid.margin};
-
   background: ${({ theme }) =>
-    theme.mode === 'dark'
-      ? `linear-gradient(
-          180deg,
-          rgba(10, 7, 20, 0.25) 0%,
-          rgba(10, 7, 20, 0.5) 35%,
-          rgba(10, 7, 20, 1) 100%
-        )`
-      : `linear-gradient(
-          180deg,
-          rgba(236, 233, 255, 0) 0%,
-          rgba(236, 233, 255, 0.38) 18%,
-          rgba(232, 227, 255, 0.82) 52%,
-          rgba(236, 233, 255, 0.96) 100%
-        )`};
+    theme.mode === 'dark' ? 'rgba(18, 10, 37, 0.8)' : 'rgba(234, 222, 255, 0.6)'};
+  backdrop-filter: ${({ theme }) => theme.effects.blurPromo};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding: 0 ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[5]};
+    padding: 0 ${({ theme }) => theme.spacing[4]};
   }
 `;
 

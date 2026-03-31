@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import BaseDropModal from '../../components/common/modals/BaseDropModal';
 import MainHero from './components/MainHero';
 import HeroBand from './components/HeroBand';
 import ShowcaseSec from './components/ShowcaseSec';
@@ -43,8 +42,6 @@ export default function MainPage() {
       <Full>
         <BrandPromiseSec />
       </Full>
-
-      <BaseDropModal />
     </PageWrap>
   );
 }

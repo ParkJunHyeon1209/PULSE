@@ -139,6 +139,7 @@ export default function ShowcaseSec() {
               }}
             >
               <BaseToneCard
+                white={true}
                 imgOpacity={0.9}
                 img={card.image}
                 label={card.meta}

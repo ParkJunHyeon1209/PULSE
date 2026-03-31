@@ -41,9 +41,7 @@ const EdgeFade = styled.div`
   pointer-events: none;
   z-index: 2;
   opacity: ${({ $visible }) => ($visible ? 1 : 0)};
-  transition:
-    opacity ${({ theme }) => theme.motion.normal},
-    background ${({ theme }) => theme.motion.normal};
+  transition: opacity ${({ theme }) => theme.motion.normal};
 
   ${({ $direction, theme }) =>
     $direction === 'left'
@@ -71,6 +69,7 @@ const EdgeFade = styled.div`
 
 const CarouselWrap = styled.div`
   position: relative;
+  overflow: hidden;
 `;
 
 const ArrowHitButton = styled.button`
@@ -108,33 +107,13 @@ const ArrowIconWrap = styled.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  background: ${({ theme }) =>
-    theme.mode === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.18)'};
-
   backdrop-filter: ${({ theme }) => theme.effects.blurSoft};
-  -webkit-backdrop-filter: ${({ theme }) => theme.effects.blurSoft};
-
   color: ${({ theme }) => theme.colors.primary};
   opacity: ${({ $active }) => ($active ? 1 : 0.78)};
   transform: ${({ $direction, $active }) =>
     $direction === 'left'
       ? `translateX(${$active ? '-6px' : '-2px'})`
       : `translateX(${$active ? '6px' : '2px'})`};
-
-  box-shadow: ${({ theme, $active }) =>
-    $active
-      ? theme.mode === 'dark'
-        ? '0 0 18px rgba(124,58,237,0.18)'
-        : '0 0 18px rgba(124,58,237,0.12)'
-      : 'none'};
-
-  transition:
-    transform ${({ theme }) => theme.motion.fast},
-    opacity ${({ theme }) => theme.motion.fast},
-    background ${({ theme }) => theme.motion.fast},
-    box-shadow ${({ theme }) => theme.motion.fast};
-
   background: ${({ theme, $active }) =>
     $active
       ? theme.mode === 'dark'
@@ -143,6 +122,17 @@ const ArrowIconWrap = styled.span`
       : theme.mode === 'dark'
         ? 'rgba(255,255,255,0.02)'
         : 'rgba(255,255,255,0.18)'};
+  box-shadow: ${({ theme, $active }) =>
+    $active
+      ? theme.mode === 'dark'
+        ? '0 0 18px rgba(124,58,237,0.18)'
+        : '0 0 18px rgba(124,58,237,0.12)'
+      : 'none'};
+  transition:
+    transform ${({ theme }) => theme.motion.fast},
+    opacity ${({ theme }) => theme.motion.fast},
+    background ${({ theme }) => theme.motion.fast},
+    box-shadow ${({ theme }) => theme.motion.fast};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     width: 36px;
@@ -186,6 +176,14 @@ export default function CollectionSec() {
   const [canScrollRight, setCanScrollRight] = useState(false);
   const [isLeftHover, setIsLeftHover] = useState(false);
   const [isRightHover, setIsRightHover] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 730);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -286,7 +284,7 @@ export default function CollectionSec() {
 
         <Grid ref={gridRef}>
           {recommendedProducts.map((item) => (
-            <BaseProductCard key={item.id} product={item} />
+            <BaseProductCard key={item.id} product={item} hideAddBtn={isMobile} compactPadding />
           ))}
         </Grid>
       </CarouselWrap>

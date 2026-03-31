@@ -3,10 +3,11 @@ import styled from '@emotion/styled';
 import BaseProductCard from '../../../components/common/BaseProductCard';
 
 const SectionBlock = styled.section`
-  margin-bottom: ${({ theme }) => theme.spacing[18]};
+  margin-bottom: ${({ theme }) => theme.spacing[24]};
+  margin-top: ${({ $first, theme }) => ($first ? theme.spacing[24] : 0)};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    margin-bottom: ${({ theme }) => theme.spacing[14]};
+    margin-bottom: ${({ theme }) => theme.spacing[20]};
   }
 `;
 
@@ -15,15 +16,21 @@ const SectionHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme }) => theme.spacing[4]};
+  /* margin-top: ${({ theme }) => theme.spacing[24]}; */
   margin-bottom: ${({ theme }) => theme.spacing[6]};
 `;
 
 const SectionTitle = styled.h2`
   margin: 0;
-  font-family: ${({ theme }) => theme.fontFamily.display};
-  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-size: ${({ theme }) => theme.fontSize.m};
   color: ${({ theme }) => theme.colors.text};
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
+  transition: font-size ${({ theme }) => theme.motion.normal};
+  /* font-weight: 600; */
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    gap: 18px;
+    font-size: ${({ theme }) => theme.fontSize.sm};
+  }
 `;
 
 const SectionLinkButton = styled.button`
@@ -75,7 +82,7 @@ const ProductGrid = styled.div`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
+    gap: 12px;
   }
 `;
 
@@ -226,6 +233,7 @@ export default function CategorySection({
   itemsPerPage = 6,
   resetKey,
   cardMinHeight,
+  first = false,
 }) {
   const [page, setPage] = useState(1);
 
@@ -265,7 +273,7 @@ export default function CategorySection({
   };
 
   return (
-    <SectionBlock ref={sectionRef}>
+    <SectionBlock ref={sectionRef} $first={first}>
       {(title || viewLabel) && (
         <SectionHeader>
           {title ? <SectionTitle>{title}</SectionTitle> : <div />}
@@ -286,6 +294,7 @@ export default function CategorySection({
             product={product}
             variantIndex={index}
             cardMinHeight={cardMinHeight}
+            compactPadding
           />
         ))}
       </ProductGrid>

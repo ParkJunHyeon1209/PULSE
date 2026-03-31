@@ -109,8 +109,8 @@ const StyledBtn = styled.button`
   /* gap: ${({ theme }) => theme.spacing[2]}; */
   flex: ${({ $flex = '1' }) => $flex};
 
-  width: ${({ $size }) => $size || 'auto'};
-  min-width: ${({ $size }) => $size || 'auto'};
+  width: ${({ $size, $width }) => $width || $size || 'auto'};
+  min-width: ${({ $size, $width }) => $width || $size || 'auto'};
   height: ${({ $size, $height }) => $size || $height};
   padding: ${({ theme, $padding }) => $padding || `${theme.spacing[3]} ${theme.spacing[3]}`};
   font-size: ${({ $variant, theme }) =>

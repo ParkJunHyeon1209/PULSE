@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 
 const TabSection = styled.section`
@@ -8,7 +8,7 @@ const TabSection = styled.section`
 const SectionDivider = styled.div`
   width: 100%;
   height: 1px;
-  margin: ${({ theme }) => theme.spacing[3]} 0;
+  /* margin: ${({ theme }) => theme.spacing[3]} 0; */
   border-radius: ${({ theme }) => theme.radii.pill};
   background: ${({ theme }) => theme.gradients.violetBlue};
   mask-image: linear-gradient(
@@ -34,6 +34,7 @@ const CategoryTabList = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  padding: ${({ theme }) => theme.spacing[3]} 0;
   gap: ${({ theme }) => theme.tabs.gap};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -43,10 +44,11 @@ const CategoryTabList = styled.div`
 `;
 
 const SlidingIndicator = styled.div`
+  margin-top: ${({ theme }) => theme.spacing[3]};
   position: absolute;
   top: 0;
   left: 0;
-  height: 42px;
+  height: 36px;
   border: 1px solid ${({ theme }) => theme.tones.violet.activeBorder};
   border-radius: ${({ theme }) => theme.radii.pill};
   background: ${({ theme }) => theme.tones.violet.tabActiveBg};
@@ -64,7 +66,7 @@ const CategoryTabButton = styled.button`
   position: relative;
   z-index: 1;
   min-width: 96px;
-  height: 42px;
+  height: 36px;
   padding: 0 ${({ theme }) => theme.spacing[5]};
   border: 1px solid transparent;
   border-radius: ${({ theme }) => theme.radii.pill};
@@ -96,25 +98,28 @@ export default function CategoryTabs({ tabs, activeTab, onClickTab, inHero = fal
   const focusedTab = hoveredTab || activeTab;
 
   const updateIndicator = (tab) => {
-    const listEl = listRef.current;
-    const buttonEl = buttonRefs.current[tab];
+    requestAnimationFrame(() => {
+      // → JS 실행 중 레이아웃 강제 재계산(forced reflow) 방지
+      const listEl = listRef.current;
+      const buttonEl = buttonRefs.current[tab];
 
-    if (!listEl || !buttonEl) {
-      setIndicatorStyle((prev) => ({ ...prev, visible: false }));
-      return;
-    }
+      if (!listEl || !buttonEl) {
+        setIndicatorStyle((prev) => ({ ...prev, visible: false }));
+        return;
+      }
 
-    const listRect = listEl.getBoundingClientRect();
-    const buttonRect = buttonEl.getBoundingClientRect();
+      const listRect = listEl.getBoundingClientRect();
+      const buttonRect = buttonEl.getBoundingClientRect();
 
-    setIndicatorStyle({
-      x: buttonRect.left - listRect.left,
-      width: buttonRect.width,
-      visible: true,
+      setIndicatorStyle({
+        x: buttonRect.left - listRect.left,
+        width: buttonRect.width,
+        visible: true,
+      });
     });
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     updateIndicator(focusedTab);
   }, [focusedTab, tabs]);
 

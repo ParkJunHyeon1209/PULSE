@@ -19,13 +19,17 @@ const CardContainer = styled.article`
   background: ${({ $tone, theme }) => theme.card[TONE_BG[$tone]]};
   box-shadow: ${({ theme }) => theme.effects.hoverShadowCategoryBase};
   overflow: hidden;
-  transition:
-    transform ${({ theme }) => theme.motion.normal},
-    box-shadow ${({ theme }) => theme.motion.normal};
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
+  transition:
+    transform ${({ theme }) => theme.motion.normal},
+    box-shadow ${({ theme }) => theme.motion.normal},
+    border-radius ${({ theme }) => theme.motion.normal};
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    border-radius: ${({ theme }) => theme.radii.xl};
+  }
 
   &::after {
     content: '';
@@ -76,6 +80,7 @@ const CardContainer = styled.article`
 
   &:hover .card-bg-img {
     transform: scale(1.08);
+    filter: saturate(1.25);
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
@@ -94,7 +99,10 @@ const CardBackgroundImage = styled.img`
   object-fit: cover;
   z-index: 0;
   transform: scale(1);
-  transition: transform ${({ theme }) => theme.motion.slow};
+  filter: saturate(1);
+  transition:
+    transform ${({ theme }) => theme.motion.slow},
+    filter ${({ theme }) => theme.motion.slow};
 `;
 
 const CardSparkPos = styled.div`
@@ -139,6 +147,13 @@ const CardContent = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   gap: ${({ theme }) => theme.spacing[4]};
+  transition: padding ${({ theme }) => theme.motion.normal};
+
+  ${({ $compactPadding, theme }) =>
+    $compactPadding &&
+    `@media (max-width: 541px) {
+      padding: ${theme.spacing[4]};
+    }`}
 `;
 
 const CardTextGroup = styled.div`
@@ -165,6 +180,9 @@ const CardMeta = styled.p`
   margin: 6px 0 0;
   color: ${({ theme }) => theme.colors.secondary + 'cc'};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 const CardPrice = styled.strong`
@@ -193,7 +211,7 @@ const categoryToneMap = {
   drops: 'indigo',
 };
 
-export default function BaseProductCard({ product, cardMinHeight }) {
+export default function BaseProductCard({ product, cardMinHeight, hideAddBtn, compactPadding }) {
   const navigate = useNavigate();
   const location = useLocation();
   const sparkTone = categoryToneMap[product.category?.toLowerCase()] || 'violet';
@@ -284,7 +302,7 @@ export default function BaseProductCard({ product, cardMinHeight }) {
           </CardWish>
         </CardTop>
 
-        <CardContent>
+        <CardContent $compactPadding={compactPadding}>
           <CardTextGroup>
             <CardTitle>{product.title}</CardTitle>
             <CardMeta>{product.meta}</CardMeta>
@@ -299,6 +317,7 @@ export default function BaseProductCard({ product, cardMinHeight }) {
           icon={false}
           type="button"
           onClick={handleClickAddCart}
+          $hidden={hideAddBtn}
         >
           <PluseIcon />
         </CardAddBtn>
