@@ -2,7 +2,8 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import useOverlayStore from './useOverlayStore';
 
-const getCartItemKey = (product) => `${product.id}-${JSON.stringify(product.options ?? [])}`;
+const getCartItemKey = (product) =>
+  `${product.id}-${JSON.stringify(product.optionSummary ?? [])}-${JSON.stringify(product.careTitle ?? 'none')}`;
 const useCartStore = create(
   persist(
     (set, get) => ({
@@ -111,7 +112,13 @@ const useCartStore = create(
         })),
 
       // 카트 전체 초기화
-      clearCart: () => set({ cart: [] }),
+      openResetModal: () => {
+        useOverlayStore.getState().openModal('confirm');
+        return;
+      },
+      resetCart: () => {
+        set(() => ({ cart: [] }));
+      },
     }),
     {
       name: 'shopping-cart',
