@@ -89,7 +89,7 @@ const DataWrapper = styled.div`
   gap: ${({ theme }) => theme.spacing[14]};
   width: 100%;
   padding-top: ${({ theme }) => theme.spacing[10]};
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid ${({ theme }) => theme.Line};
 `;
 
 const DataBox = styled.div`
@@ -106,6 +106,7 @@ const DataStat = styled.span`
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  font-family: ${({ theme }) => theme.fontFamily.hero};
 `;
 
 const DataLabel = styled.span`
@@ -113,6 +114,7 @@ const DataLabel = styled.span`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   font-weight: 700;
   letter-spacing: 1px;
+  font-family: ${({ theme }) => theme.fontFamily.mono};
 `;
 
 const PANEL_CONFIG = {
@@ -130,7 +132,7 @@ const PANEL_CONFIG = {
     stats: [
       { stat: '5EAR', label: '신호의 종류' },
       { stat: '1MS', label: '반응의 순간' },
-      { stat: '100', label: '완전 드롭' },
+      { stat: '100', label: '한정 드롭' },
     ],
   },
   signup: {

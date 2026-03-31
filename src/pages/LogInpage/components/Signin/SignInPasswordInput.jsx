@@ -26,6 +26,7 @@ const Input = styled.input`
 
   &::placeholder {
     font-size: ${({ theme }) => theme.fontSize.xxs};
+    color: ${({ theme }) => theme.input.placeholder};
   }
 `;
 
@@ -33,17 +34,19 @@ export default function SignInPasswordInput({ pw, setPw, showPw, setShowPw }) {
   return (
     <>
       {/* 비밀번호 입력창 */}
-      <InputLabel>PASSWORD</InputLabel>
       <InputGroup>
-        <Input
-          id="password"
-          name="password"
-          type={showPw ? 'text' : 'password'}
-          placeholder="••••••••"
-          value={pw}
-          onChange={(e) => setPw(e.target.value)}
-        />
-        <ShowBtn showPw={showPw} setShowPw={setShowPw} />
+        <InputLabel>PASSWORD</InputLabel>
+        <div style={{ position: 'relative' }}>
+          <Input
+            id="password"
+            name="password"
+            type={showPw ? 'text' : 'password'}
+            placeholder="••••••••"
+            value={pw}
+            onChange={(e) => setPw(e.target.value)}
+          />
+          <ShowBtn showPw={showPw} setShowPw={setShowPw} />
+        </div>
       </InputGroup>
     </>
   );

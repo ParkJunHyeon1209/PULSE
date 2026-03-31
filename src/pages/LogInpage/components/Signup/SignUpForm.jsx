@@ -27,13 +27,13 @@ const StyledForm = styled.form`
 `;
 
 const Title = styled.h2`
-  font-size: 24px;
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-weight: 700;
 `;
 
 const SubText = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: 14px;
+  font-size: ${({ theme }) => theme.fontSize.xxs};
   margin-bottom: ${({ theme }) => theme.spacing[8]};
 `;
 
@@ -45,15 +45,15 @@ const DividerWrapper = styled.div`
   gap: ${({ theme }) => theme.spacing[4]};
 `;
 
-const Line = styled.div`
+const Divider = styled.div`
   flex: 1;
   height: 1px;
-  background: rgba(255, 255, 255, 0.07);
+  background: ${({ theme }) => theme.Line};
 `;
 
 const DividerText = styled.span`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
-  color: rgba(200, 205, 255, 0.3);
+  color: ${({ theme }) => theme.input.placeholder};
   white-space: nowrap;
 `;
 
@@ -101,17 +101,6 @@ export default function SignUpForm({ onClick }) {
   });
 
   const navigate = useNavigate();
-
-  const handleAllAgree = (e) => {
-    const { checked } = e.target;
-    setAgreement({
-      agreeTerms: checked,
-      agreePrivacy: checked,
-      agreeMarketing: checked,
-    });
-  };
-
-  const isRequiredAgreed = agreement.agreeTerms && agreement.agreePrivacy;
 
   const handleJoin = async (e) => {
     e.preventDefault();
@@ -206,9 +195,9 @@ export default function SignUpForm({ onClick }) {
           CREATE ACCOUNT
         </BaseBtn>
         <DividerWrapper>
-          <Line />
+          <Divider />
           <DividerText>or sign up with</DividerText>
-          <Line />
+          <Divider />
         </DividerWrapper>
       </StyledForm>
       <SocialBtn />

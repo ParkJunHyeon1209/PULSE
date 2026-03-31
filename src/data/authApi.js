@@ -22,23 +22,43 @@ async function request(path, options = {}) {
   return json;
 }
 
-export async function loginApi(id, password) {
-  return request('/auth/login', {
+export async function loginApi(email, password) {
+  // 테스트용
+  if (email === 'myadmin1@pulse.com' && password === 'password123!') {
+    return {
+      success: true,
+      message: '테스트 계정 로그인 성공',
+      token: 'test-admin-token-pulse-platform',
+      userInfo: {
+        loginId: 'myadmin1@pulse.com',
+        name: '테스트',
+      },
+    };
+  }
+
+  return await request('/auth/login', {
     method: 'POST',
-    body: JSON.stringify({ id, password }),
+    body: JSON.stringify({ id: email, password }),
   });
 }
 
 export async function signupApi(userData) {
-  return request('/auth/signup', {
+  return await request('/auth/signup', {
     method: 'POST',
     body: JSON.stringify(userData),
   });
 }
 
-export async function checkIdApi(id) {
-  return request('/auth/check-id', {
+export async function checkIdApi(email) {
+  // 테스트용
+  const testIds = ['myadmin1@pulse.com', 'user@test.com', 'admin@pulse.com'];
+
+  if (testIds.includes(email)) {
+    return { success: false };
+  }
+
+  return await request('/auth/check-id', {
     method: 'POST',
-    body: JSON.stringify({ id }),
+    body: JSON.stringify({ id: email }),
   });
 }

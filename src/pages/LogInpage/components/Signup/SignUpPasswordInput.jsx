@@ -50,14 +50,14 @@ const Input = styled.input`
   width: 100%;
 
   &::placeholder {
-    font-size: 14px;
+    font-size: ${({ theme }) => theme.fontSize.xxs};
+    color: ${({ theme }) => theme.input.placeholder};
   }
 `;
 
 const ErrorMessage = styled.p`
   color: ${({ theme }) => theme.colors.error};
   font-size: 12px;
-  margin-top: ${({ theme }) => theme.spacing[1]};
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -86,7 +86,6 @@ const StrengthContainer = styled.div`
   gap: ${({ theme }) => theme.spacing[1]};
   width: 100%;
   height: 4px;
-  margin-bottom: ${({ theme }) => theme.spacing[3]};
 `;
 
 const getActiveColor = (props) => {
@@ -201,27 +200,19 @@ export default function SignUpPasswordInput({
             </BaseTooltip>
           </Tooltip>
         </div>
-
-        <Input
-          id="password"
-          name="password"
-          type={showPw ? 'text' : 'password'}
-          value={pw}
-          placeholder="8자 이상"
-          $pwError={pwError}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-
-        <div className="message-container">
-          {pwError === true && (
-            <ErrorMessage>
-              <CloseSvg /> 8~15자의 영대문자, 숫자, 특수문자만을 포함하여 만드세요.
-            </ErrorMessage>
-          )}
-          {pwError === false && <SuccessMessage>사용 가능한 비밀번호입니다.</SuccessMessage>}
+        <div style={{ position: 'relative' }}>
+          <Input
+            id="password"
+            name="password"
+            type={showPw ? 'text' : 'password'}
+            value={pw}
+            placeholder="8자 이상"
+            $pwError={pwError}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <ShowBtn showPw={showPw} setShowPw={setShowPw} />
         </div>
-        <ShowBtn showPw={showPw} setShowPw={setShowPw} />
       </InputGroup>
       {/* 비밀번호 안전도 게이지바 */}
       <StrengthContainer>
@@ -229,25 +220,33 @@ export default function SignUpPasswordInput({
         <StrengthBar className="medium" $score={pwScore} />
         <StrengthBar className="strong" $score={pwScore} />
       </StrengthContainer>
+      <div className="message-container">
+        {pwError === true && (
+          <ErrorMessage>
+            <CloseSvg /> 8~15자의 영대문자, 숫자, 특수문자만을 포함하여 만드세요.
+          </ErrorMessage>
+        )}
+        {pwError === false && <SuccessMessage>사용 가능한 비밀번호입니다.</SuccessMessage>}
+      </div>
       {/* 비밀번호 재입력란 */}
       <InputGroup>
         <InputLabel>CONFIRM PASSWORD</InputLabel>
-
-        <Input
-          type={showPwConfirm ? 'text' : 'password'}
-          value={pwConfirm}
-          placeholder="비밀번호 재입력"
-          $isMatcError={pw && pwConfirm && pw !== pwConfirm}
-          onChange={handleConfirmChange}
-        />
-
+        <div style={{ position: 'relative' }}>
+          <Input
+            type={showPwConfirm ? 'text' : 'password'}
+            value={pwConfirm}
+            placeholder="비밀번호 재입력"
+            $isMatcError={pw && pwConfirm && pw !== pwConfirm}
+            onChange={handleConfirmChange}
+          />
+          <ShowBtn showPw={showPwConfirm} setShowPw={setShowPwConfirm} />
+        </div>
         {pw && pwConfirm && (
           <MatchMessage $isMatcError={pw === pwConfirm}>
             {pw !== pwConfirm && <CloseSvg />}
             {pw === pwConfirm ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
           </MatchMessage>
         )}
-        <ShowBtn showPw={showPwConfirm} setShowPw={setShowPwConfirm} />
       </InputGroup>
     </>
   );

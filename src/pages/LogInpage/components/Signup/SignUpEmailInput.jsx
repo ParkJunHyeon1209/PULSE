@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import CloseSvg from '../common/CloseSvg';
+import { checkIdApi } from '../../../../data/authApi';
 
 const InputGroup = styled.div`
   display: flex;
@@ -27,6 +28,7 @@ const Input = styled.input`
 
   &::placeholder {
     font-size: ${({ theme }) => theme.fontSize.xxs};
+    color: ${({ theme }) => theme.input.placeholder};
   }
 `;
 const ErrorMessage = styled.p`
@@ -86,14 +88,6 @@ export default function SignUpEamilInput({
   isUnique,
   setIsUnique,
 }) {
-  // const checkEmail = (email) => {
-  //   setEmail(email);
-  //   setIsUnique(null);
-
-  //   const isValid = emailRegex.test(email);
-  //   setEmailError(!isValid && email.length > 0);
-  // };
-
   const handleChange = (e) => {
     const value = e.target.value;
     setEmail(value);
@@ -105,14 +99,23 @@ export default function SignUpEamilInput({
     const isValid = emailRegex.test(email);
     setEmailError(!isValid && email.length > 0);
   };
-
-  const handleCheckId = () => {
+  const handleCheckId = async () => {
     if (emailError || !emailRegex.test(email) || email.length === 0) {
       return;
     }
 
-    const result = email !== 'user@test.com';
-    setIsUnique(result);
+    try {
+      const res = await checkIdApi(email);
+
+      if (res.success) {
+        setIsUnique(true);
+      } else {
+        setIsUnique(false);
+      }
+    } catch (error) {
+      console.error('중복 체크 에러:', error);
+      setIsUnique(false);
+    }
   };
   return (
     <>
@@ -138,10 +141,10 @@ export default function SignUpEamilInput({
           {!emailError && isUnique === true && (
             <SuccessMessage>사용 가능한 아이디입니다.</SuccessMessage>
           )}
-          {emailError && (
+          {(emailError || isUnique === false) && (
             <ErrorMessage>
               <CloseSvg />
-              사용이 불가능한 아이디입니다.
+              {emailError ? '이메일 형식이 올바르지 않습니다.' : '이미 사용중인 아이디입니다.'}
             </ErrorMessage>
           )}
         </div>

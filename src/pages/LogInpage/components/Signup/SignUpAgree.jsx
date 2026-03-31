@@ -8,6 +8,7 @@ const AgreeInput = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 4px 0;
 
   span {
     font-size: 12px;
@@ -64,6 +65,7 @@ export default function SignUpAgree({ agreement, setAgreement }) {
         onClose={() => setIsModalOpen(false)}
         label={`PULSE PLATFORM`}
         width="480px"
+        closable={false}
         title={
           <span style={{ lineHeight: '32px', fontSize: '24px' }}>
             서비스 이용을 위해
@@ -71,7 +73,6 @@ export default function SignUpAgree({ agreement, setAgreement }) {
             약관에 동의해 주세요
           </span>
         }
-        closable={true}
       >
         <AgreementContent
           agreement={agreement}
