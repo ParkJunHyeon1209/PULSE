@@ -38,10 +38,10 @@ export default function Profile() {
   const openModal = useOverlayStore((state) => state.openModal);
 
   const [formData, setFormData] = useState({
-    name: user.name,
-    nickname: user.nickname ?? user.name,
-    email: user.id,
-    tel: user.tel,
+    name: user?.name || '',
+    nickname: user.nickname ?? user?.name ?? '',
+    email: user?.id || '',
+    tel: user?.tel || '',
     currentPassword: '',
     newPassword: '',
     newPasswordCheck: '',
