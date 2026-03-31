@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import useCartStore from '../../store/useCartStore';
-
+import useAuthStore from '../../store/useAuthStore';
 import ProductGallery from './components/ProductGallery';
 import ProductDetailPanel from './components/ProductDetailPanel';
 import FeatureSection from './components/features/FeatureSection';
@@ -14,6 +14,9 @@ import {
 
 export default function DetailPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isLogin = useAuthStore((state) => state.isLogin);
 
   const [products, setProducts] = useState([]);
   const [product, setProduct] = useState(null);
@@ -24,7 +27,7 @@ export default function DetailPage() {
   const [categoryDetail, setCategoryDetail] = useState(null);
   const addToCart = useCartStore((state) => state.addToCart);
 
-  const [toastMessage, setToastMessage] = useState('');
+  const [toast, setToast] = useState(null);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isNotFound, setIsNotFound] = useState(false);
@@ -111,17 +114,19 @@ export default function DetailPage() {
     });
     setSelectedOptions(initialOption);
   }, [product]);
+
   // 토스트 메세지
   useEffect(() => {
-    if (!toastMessage) return;
+    if (!toast) return;
 
     const timer = setTimeout(() => {
-      setToastMessage('');
+      setToast(null);
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, [toastMessage]);
+  }, [toast]);
   // 옵션 클릭 핸들러 추가
+
   const handleSelectOption = (label, item) => {
     setSelectedOptions((prev) => ({
       ...prev,
@@ -139,13 +144,27 @@ export default function DetailPage() {
     setQuantity((prev) => prev + 1);
   };
 
+  // 로그인 필요 함수
+  const handleRequireLogin = () => {
+    setToast({
+      message: '로그인 후 이용 가능합니다.',
+      type: 'login',
+    });
+
+    setTimeout(() => {
+      navigate('/login', {
+        state: { from: location.pathname + location.search },
+      });
+    }, 1500);
+  };
+
   if (isLoading) {
     return (
       <PageWrapper>
         <ContentSection>
           <LoadingWrap>
             <LoadingSpinner />
-            <EmptyMessage>상품 정보를 불러오고 있습니다.</EmptyMessage>
+            <LoadingText>상품 정보를 불러오고 있습니다.</LoadingText>
           </LoadingWrap>
         </ContentSection>
       </PageWrapper>
@@ -167,33 +186,13 @@ export default function DetailPage() {
     }, 0);
   };
 
-  // 장바구니 로컬 초기화
-  // localStorage.removeItem('shopping-cart');
-  // 옵션, 서비스 체크 유무 가격 변경
   const handleAddToCart = () => {
-    /*
-    로그인 기능 연동 후 비회원은 장바구니 담기 제한
-    처리 흐름
-    1) 로그인 여부 확인
-    2) 비로그인 상태면 로그인 페이지로 이동
-    3) 현재 상세페이지 주소를 state.from으로 전달
-    4) 로그인 성공 후 현재 상세페이지로 복귀
-    5) 로그인 상태일 때만 addToCart(cartItem, quantity) 실행
-    
-    if (!isLogin) {
-      navigate('/login', {
-        state: { from: location.pathname + location.search },
-      });
-      return;
-    }
-
-    로그인 페이지에서도 
-    const from = location.state?.from || '/';
-    navigate(from, { replace: true });
-    헤야 돌아옴
-  */
     if (!product) return;
 
+    if (!isLogin) {
+      handleRequireLogin();
+      return;
+    }
     const careService = product.additionalServices?.[0] ?? null;
     const carePrice = isCareChecked ? (careService?.price ?? 0) : 0;
     const optionExtraPrice = getOptionExtraPrice(selectedOptions);
@@ -238,11 +237,12 @@ export default function DetailPage() {
 
     addToCart(cartItem, quantity);
 
-    setToastMessage(
-      `${product.title} 상품이 ${quantity}개 담겼습니다.${
+    setToast({
+      message: `${product.title} 상품이 ${quantity}개 담겼습니다.${
         optionExtraPrice > 0 ? ` (옵션 추가금 ${optionExtraPrice.toLocaleString()}원 포함)` : ''
-      }${isCareChecked && careService ? ` (+ ${careService.title})` : ''}`
-    );
+      }${isCareChecked && careService ? ` (+ ${careService.title})` : ''}`,
+      type: 'cart',
+    });
   };
 
   const galleryImages = (product.src ?? []).filter(Boolean);
@@ -269,6 +269,7 @@ export default function DetailPage() {
           onDecrease={handleDecrease}
           onIncrease={handleIncrease}
           onAddToCart={handleAddToCart}
+          onRequireLogin={handleRequireLogin}
         />
       </ContentSection>
       <FeatureSection
@@ -277,8 +278,9 @@ export default function DetailPage() {
         bundleCategory={product.category}
         product={product}
         categoryDetail={categoryDetail}
+        onRequireLogin={handleRequireLogin}
       />
-      {toastMessage && <ToastMessage>{toastMessage}</ToastMessage>}
+      {toast && <ToastMessage $type={toast.type}>{toast.message}</ToastMessage>}
     </PageWrapper>
   );
 }
@@ -335,21 +337,16 @@ const ContentSection = styled.section`
   }
 `;
 
-const EmptyMessage = styled.div`
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing[20]} 0;
-  text-align: center;
-  font-size: ${({ theme }) => theme.fontSize.s};
-  color: ${({ theme }) => theme.colors.textSecondary};
-`;
 const ToastMessage = styled.div`
   position: fixed;
-  top: ${({ theme }) => theme.spacing[24]};
-  right: 240px;
+  top: ${({ theme, $type }) => ($type === 'login' ? theme.spacing[24] : theme.spacing[28])};
+  left: ${({ $type }) => ($type === 'login' ? '50%' : 'auto')};
+  right: ${({ $type }) => ($type === 'login' ? 'auto' : '240px')};
+  transform: ${({ $type }) => ($type === 'login' ? 'translateX(-50%)' : 'none')};
   z-index: 9999;
 
-  min-width: 320px;
-  max-width: 420px;
+  min-width: ${({ $type }) => ($type === 'login' ? '280px' : '320px')};
+  max-width: ${({ $type }) => ($type === 'login' ? '360px' : '420px')};
 
   padding: ${({ theme }) => `${theme.spacing[5]} ${theme.spacing[6]}`};
   border-radius: ${({ theme }) => theme.radii.xl};
@@ -376,35 +373,30 @@ const ToastMessage = styled.div`
   box-shadow: 0 12px 32px ${({ theme }) => theme.colors.shadow};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    top: ${({ theme }) => theme.spacing[24]};
-    right: ${({ theme }) => theme.spacing[6]};
-    left: ${({ theme }) => theme.spacing[6]};
-    max-width: none;
+    top: ${({ theme }) => theme.spacing[20]};
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: calc(100% - ${({ theme }) => theme.spacing[12]});
     min-width: auto;
-    width: auto;
-    text-align: center;
-    justify-content: center;
+    max-width: 420px;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    top: ${({ theme }) => theme.spacing[24]};
-    right: ${({ theme }) => theme.spacing[4]};
-    left: ${({ theme }) => theme.spacing[4]};
-    text-align: center;
-    justify-content: center;
+    width: calc(100% - ${({ theme }) => theme.spacing[8]});
   }
 `;
 const LoadingWrap = styled.div`
   width: 100%;
+  grid-column: 1 / -1;
   padding: ${({ theme }) => theme.spacing[20]} 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: ${({ theme }) => theme.spacing[4]};
-  background: ${({ theme }) => theme.gradients.violetBlue};
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 const LoadingSpinner = styled.div`
@@ -420,4 +412,12 @@ const LoadingSpinner = styled.div`
       transform: rotate(360deg);
     }
   }
+`;
+const LoadingText = styled.div`
+  margin: 0;
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.primary};
 `;

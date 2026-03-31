@@ -6,6 +6,8 @@ import ProductCareOption from './ProductCareOption';
 import QuantitySelector from './QuantitySelector';
 import PurchaseActions from './PurchaseActions';
 import { CardWish } from '../../../components/common/CardParts';
+import { useNavigate, useLocation } from 'react-router-dom';
+import useAuthStore from '../../../store/useAuthStore';
 
 export default function ProductDetailPanel({
   product,
@@ -17,9 +19,17 @@ export default function ProductDetailPanel({
   onDecrease,
   onIncrease,
   onAddToCart,
+  onRequireLogin,
 }) {
   const [isLiked, setIsLiked] = useState(false);
+  const isLogin = useAuthStore((state) => state.isLogin);
+
   const handleToggleLike = () => {
+    if (!isLogin) {
+      onRequireLogin?.();
+      return;
+    }
+
     setIsLiked((prev) => !prev);
   };
   // id 311부터는 빠진 정보가 많음
@@ -101,7 +111,7 @@ export default function ProductDetailPanel({
 
       <QuantitySelector quantity={quantity} onDecrease={onDecrease} onIncrease={onIncrease} />
 
-      <PurchaseActions onAddToCart={onAddToCart} />
+      <PurchaseActions onAddToCart={onAddToCart} onRequireLogin={onRequireLogin} />
     </InfoSection>
   );
 }
