@@ -60,6 +60,24 @@ export const CardAddBtn = styled(BaseBtn)`
   bottom: ${({ theme }) => theme.spacing[6]};
   right: ${({ theme }) => theme.spacing[6]};
   z-index: 3;
+  opacity: ${({ $hidden }) => ($hidden ? 0 : undefined)};
+  pointer-events: ${({ $hidden }) => ($hidden ? 'none' : undefined)};
+  transition:
+    transform ${({ theme }) => theme.motion.normal},
+    background ${({ theme }) => theme.motion.normal},
+    color ${({ theme }) => theme.motion.normal},
+    border-color ${({ theme }) => theme.motion.normal},
+    box-shadow ${({ theme }) => theme.motion.normal},
+    opacity ${({ theme }) => theme.motion.normal},
+    bottom ${({ theme }) => theme.motion.normal},
+    right ${({ theme }) => theme.motion.normal},
+    width ${({ theme }) => theme.motion.normal},
+    height ${({ theme }) => theme.motion.normal};
+
+  @media (max-width: 541px) {
+    bottom: ${({ theme }) => theme.spacing[4]};
+    right: ${({ theme }) => theme.spacing[4]};
+  }
   color: ${({ theme }) => theme.btn.cardAdd.color};
   background: ${({ theme }) => theme.btn.cardAdd.bg};
   border-color: ${({ theme }) => theme.btn.cardAdd.border};
@@ -76,8 +94,10 @@ export const CardAddBtn = styled(BaseBtn)`
     transform: scale(0.95) rotate(90deg);
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    transform: scale(0.8);
+  @media (max-width: 844px) {
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
   }
 `;
 

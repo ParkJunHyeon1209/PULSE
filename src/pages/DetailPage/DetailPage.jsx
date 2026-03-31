@@ -76,7 +76,13 @@ export default function DetailPage() {
           return;
         }
 
-        setProduct(detailData);
+        if (Number(id) === 103 && detailData?.src?.length >= 2) {
+          const src = [...detailData.src];
+          [src[0], src[1]] = [src[1], src[0]];
+          setProduct({ ...detailData, src, image: src[0] });
+        } else {
+          setProduct(detailData);
+        }
 
         if (detailData?.type) {
           const categoryDetailType = mapCategoryDetailType(detailData.type);

@@ -301,8 +301,8 @@ export const darkTheme = {
 
     // 반투명 카드 배경/테두리 색상
     cardBg: 'rgba(255,255,255,0.04)',
-    cardBgGrad: 'linear-gradient(180deg, transparent 0%, rgba(12,8,32,3) 100%)',
-    cardBgGradH: 'linear-gradient(180deg, transparent 0%, rgba(9, 6, 19, 1) 100%)',
+    cardBgGrad: 'linear-gradient(180deg, transparent 30%, rgba(12,8,32,3) 100%)',
+    cardBgGradH: 'linear-gradient(180deg, transparent 20%, rgba(9, 6, 19, 1) 100%)',
     cardBorder: 'rgba(255,255,255,0.08)',
     modalBorder: 'rgba(167,139,250,.16)',
     modalBg: 'rgba(12,8,32,.97)',
@@ -590,8 +590,8 @@ export const lightTheme = {
     promoBg: 'rgba(228,224,255,1)',
     surface: 'rgba(124,58,237,0.08)',
     cardBg: 'rgba(255,255,255,0.7)',
-    cardBgGrad: 'linear-gradient(180deg, transparent 20%, rgba(49, 49, 49, 0.7) 90%)',
-    cardBgGradH: 'linear-gradient(180deg, transparent 10%, rgba(49, 49, 49, 0.9) 100%)',
+    cardBgGrad: 'linear-gradient(180deg, transparent 30%, rgba(49, 49, 49, 0.7) 90%)',
+    cardBgGradH: 'linear-gradient(180deg, transparent 20%, rgba(10, 4, 22, 0.8) 100%)',
     cardBorder: 'rgba(124,58,237,0.18)',
     modalBorder: 'rgba(124,58,237,.18)',
     modalBg: 'rgba(252,250,255,.97)',
@@ -838,6 +838,13 @@ export const lightTheme = {
     ...baseTokens.cart,
     topBorder: 'rgba(124,58,237,.35)',
     shadow: '0 0 0 1px rgba(124,58,237,.1), 0 8px 32px rgba(100,40,220,.08)',
+  },
+  cardGlow: {
+    violet: 'radial-gradient(ellipse at 50% 100%, rgba(76, 0, 255, 0.3) 0%,transparent 60%)',
+    mint: 'radial-gradient(ellipse at 50% 100%, rgba(0, 255, 170, 0.3) 0%,transparent 60%)',
+    pink: 'radial-gradient(ellipse at 50% 100%, rgba(219,39,119,.3) 0%,transparent 60%)',
+    blue: 'radial-gradient(ellipse at 50% 100%, rgba(99,102,241,.3) 0%,transparent 60%)',
+    indigo: 'radial-gradient(ellipse at 50% 100%, rgba(41, 32, 209, 0.3) 0%,transparent 60%)',
   },
 };
 

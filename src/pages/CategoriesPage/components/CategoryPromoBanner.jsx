@@ -1,5 +1,8 @@
 import styled from '@emotion/styled';
 import { LavStarIcon } from '../../../assets/icons/BtnIcon';
+import BaseBtn from '../../../components/common/BaseBtn';
+import { useNavigate } from 'react-router-dom';
+import useOverlayStore from '../../../store/useOverlayStore';
 
 export default function CategoryPromoBanner({
   sectionTitle = 'PROMOTION',
@@ -9,6 +12,9 @@ export default function CategoryPromoBanner({
   price,
   backgroundImage = 'https://i.ibb.co/b5c2fS1B/6893d733d0a2f60f.webp',
 }) {
+  const navigate = useNavigate();
+  const openModal = useOverlayStore((s) => s.openModal);
+
   return (
     <SectionBlock>
       <SectionHeader>
@@ -31,8 +37,8 @@ export default function CategoryPromoBanner({
           <PromoPrice>{price.toLocaleString()}원</PromoPrice>
 
           <PromoButtonRow>
-            <PrimaryButton type="button">장바구니 담기</PrimaryButton>
-            <SecondaryButton type="button">바로 구매</SecondaryButton>
+            <BaseBtn type="button" icon={false} onClick={() => navigate('/categories/')}>컬렉션 보기</BaseBtn>
+            <BaseBtn variant="secondary" type="button" onClick={() => openModal('dropAlert')}>드롭 알림 신청</BaseBtn>
           </PromoButtonRow>
         </PromoTextArea>
       </PromoBanner>
@@ -41,8 +47,8 @@ export default function CategoryPromoBanner({
 }
 
 const SectionBlock = styled.section`
-  margin-top: ${({ theme }) => theme.spacing[20]};
-  margin-bottom: ${({ theme }) => theme.spacing[18]};
+  margin-top: ${({ theme }) => theme.spacing[24]};
+  margin-bottom: ${({ theme }) => theme.spacing[20]};
 `;
 
 const SectionHeader = styled.div`
@@ -53,10 +59,14 @@ const SectionHeader = styled.div`
 
 const SectionTitle = styled.h2`
   margin: 0;
-  font-family: ${({ theme }) => theme.fontFamily.display};
-  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-size: ${({ theme }) => theme.fontSize.m};
+  /* font-weight: 600; */
   color: ${({ theme }) => theme.colors.text};
-  letter-spacing: 0.08em;
+  transition: font-size ${({ theme }) => theme.motion.normal};
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    gap: 18px;
+    font-size: ${({ theme }) => theme.fontSize.sm};
+  }
 `;
 
 const PromoBanner = styled.article`
@@ -76,18 +86,38 @@ const PromoBanner = styled.article`
   @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
     padding: ${({ theme }) => theme.spacing[8]};
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    min-height: 280px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    min-height: 240px;
+    justify-content: center;
+  }
 `;
 
 const PromoOverlay = styled.div`
   position: absolute;
   inset: 0;
+  pointer-events: none;
   background: linear-gradient(
     90deg,
-    rgba(7, 10, 26, 0.88) 0%,
-    rgba(7, 10, 26, 0.72) 35%,
-    rgba(7, 10, 26, 0.46) 62%,
-    rgba(7, 10, 26, 0.18) 100%
+    ${({ theme }) => theme.colors.background}ee 10%,
+    ${({ theme }) => theme.colors.background}bb 30%,
+    ${({ theme }) => theme.colors.background}55 40%,
+    transparent 100%
   );
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    background: linear-gradient(
+      90deg,
+      ${({ theme }) => theme.colors.background}ee 0%,
+      ${({ theme }) => theme.colors.background}bb 40%,
+      ${({ theme }) => theme.colors.background}55 100%,
+      transparent 100%
+    );
+  }
 `;
 
 const PromoTextArea = styled.div`
@@ -97,6 +127,12 @@ const PromoTextArea = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[3]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    align-items: center;
+    text-align: center;
+    max-width: 100%;
+  }
 `;
 
 const PromoLabel = styled.span`
@@ -115,12 +151,22 @@ const PromoTitle = styled.h3`
   -webkit-background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
+  transition: font-size ${({ theme }) => theme.motion.normal};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+  }
 `;
 
 const PromoDescription = styled.p`
   margin: 0;
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: ${({ theme }) => theme.fontSize.xs};
+  transition: font-size ${({ theme }) => theme.motion.normal};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: ${({ theme }) => theme.fontSize.xxs};
+  }
 `;
 
 const PromoPrice = styled.strong`
@@ -129,6 +175,11 @@ const PromoPrice = styled.strong`
   color: ${({ theme }) => theme.colors.text};
   font-size: ${({ theme }) => theme.fontSize.md};
   font-weight: 800;
+  transition: font-size ${({ theme }) => theme.motion.normal};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: ${({ theme }) => theme.fontSize.s};
+  }
 `;
 
 const PromoButtonRow = styled.div`
@@ -138,28 +189,6 @@ const PromoButtonRow = styled.div`
   margin-top: ${({ theme }) => theme.spacing[3]};
 `;
 
-const PrimaryButton = styled.button`
-  min-width: 136px;
-  height: 44px;
-  padding: 0 ${({ theme }) => theme.spacing[5]};
-  border: none;
-  border-radius: ${({ theme }) => theme.radii.pill};
-  background: ${({ theme }) => theme.tones.violet.bg};
-  color: ${({ theme }) => theme.colors.text};
-  box-shadow: ${({ theme }) => theme.tones.violet.shadow};
-  cursor: pointer;
-`;
-
-const SecondaryButton = styled.button`
-  min-width: 136px;
-  height: 44px;
-  padding: 0 ${({ theme }) => theme.spacing[5]};
-  border-radius: ${({ theme }) => theme.radii.pill};
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background: ${({ theme }) => theme.colors.btn2Bg};
-  color: ${({ theme }) => theme.colors.text};
-  cursor: pointer;
-`;
 
 const SectionTitleWithStar = styled.span`
   display: inline-flex;

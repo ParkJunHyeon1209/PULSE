@@ -107,6 +107,11 @@ const styles = (theme) => css`
     padding: 0;
     border: 0;
     font-size: 100%;
+    font-family: inherit;
+  }
+
+  html,
+  body {
     font-family: ${theme.fontFamily.body};
   }
 
@@ -162,10 +167,10 @@ const styles = (theme) => css`
     /* 자간/ligature 같은 텍스트 렌더링 품질을 우선하는 옵션 */
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
+    font-family: ${theme.fontFamily.body};
     transition:
       background ${theme.motion.normal},
       color ${theme.motion.normal};
-    font-family: ${theme.fontFamily.body};
   }
 
   body::before {

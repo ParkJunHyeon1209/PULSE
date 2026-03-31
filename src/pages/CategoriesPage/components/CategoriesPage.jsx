@@ -194,7 +194,12 @@ export default function CategoriesPage() {
   useEffect(() => {
     async function loadProducts() {
       const data = await getProductsByCategory(categoryName);
-      setProducts(data);
+      setProducts(
+        data.map((p) => {
+          if (Number(p.id) !== 103) return p;
+          return { ...p, image: 'https://i.ibb.co/G4ShCwVK/e3.webp' };
+        })
+      );
     }
 
     loadProducts();
@@ -290,6 +295,7 @@ export default function CategoriesPage() {
             products={mouseProducts.slice(0, 4)}
             columns={4}
             onClickViewAll={() => handleClickViewAll('MOUSE')}
+            first
           />
           <SectionDivider />
           <CategorySection
@@ -336,6 +342,7 @@ export default function CategoriesPage() {
           itemsPerPage={6}
           resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
+          first
         />
       );
     }
@@ -352,6 +359,7 @@ export default function CategoriesPage() {
           itemsPerPage={6}
           resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
+          first
         />
       );
     }
@@ -368,6 +376,7 @@ export default function CategoriesPage() {
           itemsPerPage={6}
           resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
+          first
         />
       );
     }
@@ -391,6 +400,7 @@ export default function CategoriesPage() {
             products={headsetProducts.slice(0, 4)}
             columns={4}
             onClickViewAll={() => handleClickViewAll('HEADSET')}
+            first
           />
           <SectionDivider />
           <CategorySection
@@ -437,6 +447,7 @@ export default function CategoriesPage() {
           itemsPerPage={6}
           resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
+          first
         />
       );
     }
@@ -453,6 +464,7 @@ export default function CategoriesPage() {
           itemsPerPage={6}
           resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
+          first
         />
       );
     }
@@ -469,6 +481,7 @@ export default function CategoriesPage() {
           itemsPerPage={6}
           resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
+          first
         />
       );
     }
@@ -492,6 +505,7 @@ export default function CategoriesPage() {
             products={controllerProducts.slice(0, 4)}
             columns={4}
             onClickViewAll={() => handleClickViewAll('CONTROLLER')}
+            first
           />
           <SectionDivider />
           <CategorySection
@@ -524,6 +538,7 @@ export default function CategoriesPage() {
           itemsPerPage={6}
           resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
+          first
         />
       );
     }
@@ -540,6 +555,7 @@ export default function CategoriesPage() {
           itemsPerPage={6}
           resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
+          first
         />
       );
     }
@@ -563,6 +579,7 @@ export default function CategoriesPage() {
             products={dropsProducts.slice(0, 4)}
             columns={4}
             onClickViewAll={() => handleClickViewAll('DROPS')}
+            first
           />
           <SectionDivider />
           <CategorySection
@@ -595,6 +612,7 @@ export default function CategoriesPage() {
           itemsPerPage={6}
           resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
+          first
         />
       );
     }
@@ -611,6 +629,7 @@ export default function CategoriesPage() {
           itemsPerPage={6}
           resetKey={`${activeTab}-${activeFilter}`}
           cardMinHeight="469px"
+          first
         />
       );
     }
@@ -747,7 +766,9 @@ const FilterBar = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 0 0 ${({ theme }) => theme.spacing[8]};
+  transform: translate(18px, 66px);
+
+  /* margin: 0 0 ${({ theme }) => theme.spacing[8]}; */
 `;
 
 const FilterBadge = styled.button`

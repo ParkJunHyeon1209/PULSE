@@ -5,6 +5,7 @@ import { Outlet } from 'react-router-dom';
 import AppHeader from '../common/AppHeader/index';
 import AppFooter from '../common/AppFooter';
 import BaseWipModal from '../common/modals/BaseWipModal';
+import BaseDropModal from '../common/modals/BaseDropModal';
 
 const LayoutContainer = styled.div`
   display: flex;
@@ -34,6 +35,7 @@ export default function MainLayout() {
       </MainContent>
       <AppFooter />
       <BaseWipModal id="brandStory" label="PULSE BRAND" title="브랜드 스토리" />
+      <BaseDropModal />
     </LayoutContainer>
   );
 }

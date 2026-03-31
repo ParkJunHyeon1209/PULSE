@@ -2,15 +2,19 @@ import useOverlayStore from '../../../store/useOverlayStore';
 import BaseModal from '../BaseModal';
 import BaseBtn from '../BaseBtn';
 
-export default function BaseDropModal() {
-  const isOpen = useOverlayStore((state) => Boolean(state.modals.dropAlert));
+export default function BaseDropModal({
+  id = 'dropAlert',
+  label = 'PULSE DROP',
+  title = '드롭 알림 받기',
+}) {
+  const isOpen = useOverlayStore((state) => Boolean(state.modals[id]));
   const closeModal = useOverlayStore((state) => state.closeModal);
   return (
     <BaseModal
       isOpen={isOpen}
-      label="PULSE DROP"
+      label={label}
       width="360px"
-      title="드롭 알림 받기"
+      title={title}
       closable={false}
     >
       <p>
@@ -20,7 +24,7 @@ export default function BaseDropModal() {
       <BaseBtn
         padding="12px 32px"
         style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
-        onClick={() => closeModal('dropAlert')}
+        onClick={() => closeModal(id)}
       >
         알림 신청하기
       </BaseBtn>
