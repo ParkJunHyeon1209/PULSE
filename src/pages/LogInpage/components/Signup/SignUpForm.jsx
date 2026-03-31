@@ -8,6 +8,7 @@ import SignUpPasswordInput from '../Signup/SignUpPasswordInput';
 import SignUpAgree from '../Signup/SignUpAgree';
 import SocialBtn from '../common/SocialBtn';
 import { signupApi } from '../../../../data/authApi';
+import SignModal from '../common/SignModal';
 
 const SignUpContainer = styled.div`
   width: 100%;
@@ -99,6 +100,8 @@ export default function SignUpForm({ onClick }) {
     agreePrivacy: false,
     agreeMarketing: false,
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const navigate = useNavigate();
 
@@ -124,12 +127,21 @@ export default function SignUpForm({ onClick }) {
         const res = await signupApi(submitData);
 
         if (res.success) {
-          alert('가입이 성공적으로 이루어졌습니다.');
-          navigate('/');
+          setModalMessage('가입이 성공적으로 이루어졌습니다.');
+          setIsModalOpen(true);
         }
       } catch (error) {
-        alert(error.message || '회원가입 처리 중 오류가 발생했습니다.');
+        setModalMessage(error.message || '회원가입 처리 중 오류가 발생했습니다.');
+        setIsModalOpen(true);
       }
+    }
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+
+    if (modalMessage.includes('성공')) {
+      navigate('/');
     }
   };
 
@@ -207,6 +219,7 @@ export default function SignUpForm({ onClick }) {
           로그인
         </SwitchButton>
       </Switch>
+      <SignModal isOpen={isModalOpen} onClose={handleModalClose} message={modalMessage} />
     </SignUpContainer>
   );
 }

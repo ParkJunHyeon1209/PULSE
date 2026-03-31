@@ -44,7 +44,10 @@ const Input = styled.input`
   background: transparent;
   border: none;
   border-bottom: 2px solid
-    ${(props) => (props.$pwError || props.$isMatcError ? props.theme.colors.error : '#333')};
+    ${(props) =>
+      props.$pwError || props.$isMatcError
+        ? props.theme.colors.error
+        : props.theme.input.lineBorder};
   padding: ${({ theme }) => theme.spacing[2]} 0;
   outline: none;
   width: 100%;
