@@ -9,6 +9,9 @@ import useAuthStore from '../../../../store/useAuthStore';
 import { loginApi } from '../../../../data/authApi';
 import FindPw from './FindPw';
 import SignModal from '../common/SignModal';
+import useWishlistStore from '../../../../store/useWishlistStore';
+import useOrderStore from '../../../../store/useOrderStore';
+import { getGradeByTotalOrderPrice } from '../../../../utils/myPageMap';
 
 const SignInContainer = styled.div`
   width: 100%;
@@ -103,6 +106,8 @@ export default function SignInForm({ onClick }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const navigate = useNavigate();
+  const wishIdList = useWishlistStore((state) => state.wishlistIds);
+  const orders = useOrderStore((state) => state.orders);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -114,11 +119,24 @@ export default function SignInForm({ onClick }) {
 
       if (res.success) {
         localStorage.setItem('accessToken', res.token);
+        const totalOrderPrice = orders.reduce(
+          (acc, order) => acc + (Number(order.totalPrice) || 0),
+          0
+        );
 
         const userData = {
           id: email,
           password: pw,
           name: res.userInfo.name,
+          nickname: res.userInfo.name,
+          orders: orders,
+          isHaveOrdered: orders.length > 0,
+          totalOrderPrice,
+          wishIdList: wishIdList,
+          point: 0,
+          reviews: [],
+          grade: getGradeByTotalOrderPrice(totalOrderPrice),
+          coupons: [],
         };
 
         storeLogin(userData);

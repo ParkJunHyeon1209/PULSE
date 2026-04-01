@@ -35,15 +35,7 @@ export default function WishList() {
       {isLikedList.length > 0 && !isLoading ? (
         isLikedList.map((product) => (
           <li key={product.id}>
-            <BaseProductCard
-              product={{
-                ...product,
-                image: product.image,
-                title: product.title,
-                price: product.price,
-                meta: product.meta,
-              }}
-            />
+            <BaseProductCard product={product} />
           </li>
         ))
       ) : (

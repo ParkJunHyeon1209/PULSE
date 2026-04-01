@@ -243,7 +243,7 @@ export default function Profile() {
       </UserPw>
 
       <BtnWrap>
-        <CancelBtn type="button" onClick={handleCancel}>
+        <CancelBtn type="button" onClick={handleCancel} variant="secondary">
           취소
         </CancelBtn>
         <SubmitBtn type="submit">저장하기</SubmitBtn>
@@ -364,7 +364,6 @@ const BtnWrap = styled.div`
 
 const CancelBtn = styled(BaseBtn)`
   width: 60px;
-  background-color: ${({ theme }) => theme.colors.textSecondary};
   color: ${({ theme }) => theme.colors.textSecondary};
   border: none;
 `;

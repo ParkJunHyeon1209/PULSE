@@ -64,6 +64,14 @@ export default function MyPage() {
   const isLoggedIn = useAuthStore((state) => state.isLogin);
   const openModal = useOverlayStore((state) => state.openModal);
   const closeModal = useOverlayStore((state) => state.closeModal);
+  const user = useAuthStore((state) => state.user);
+  const login = useAuthStore((state) => state.login);
+
+  const getExpireDate = (issuedAt) => {
+    const baseDate = new Date(issuedAt);
+    baseDate.setFullYear(baseDate.getFullYear() + 2);
+    return baseDate.toISOString();
+  };
 
   const tabFromUrl = searchParams.get('tab');
 
@@ -96,6 +104,32 @@ export default function MyPage() {
 
     setSearchParams({ tab: nextCategory }, { replace: true });
   };
+  useEffect(() => {
+    if (!user) return;
+
+    if (user.isHaveOrdered) return;
+
+    const hasFirstOrderCoupon = user.coupons?.some((coupon) => coupon.type === 'FIRST_ORDER');
+
+    if (hasFirstOrderCoupon) return;
+
+    const issuedAt = new Date().toISOString();
+
+    login({
+      ...user,
+      coupons: [
+        ...(user.coupons || []),
+        {
+          label: '첫 주문 특별 할인 쿠폰',
+          value: 0.3,
+          type: 'FIRST_ORDER',
+          issuedAt,
+          couponCode: `FIRST30`,
+          upToDate: getExpireDate(issuedAt),
+        },
+      ],
+    });
+  }, [user, login]);
 
   return (
     <MyPageWrap>
@@ -114,4 +148,5 @@ const MyPageWrap = styled.div`
   margin-top: 100px;
   display: flex;
   flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[8]};
 `;
