@@ -114,7 +114,12 @@ export default function ProductDetailPanel({
 
       <QuantitySelector quantity={quantity} onDecrease={onDecrease} onIncrease={onIncrease} />
 
-      <PurchaseActions onAddToCart={onAddToCart} onRequireLogin={onRequireLogin} />
+      <PurchaseActions
+        product={product}
+        quantity={quantity}
+        onAddToCart={onAddToCart}
+        onRequireLogin={onRequireLogin}
+      />
     </InfoSection>
   );
 }

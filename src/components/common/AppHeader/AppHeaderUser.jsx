@@ -352,7 +352,7 @@ export default function AppHeaderUser() {
                 type="button"
                 onClick={() => {
                   closeLogin();
-                  navigate('/orders');
+                  navigate('/mypage?tab=order');
                 }}
               >
                 <svg
@@ -371,7 +371,7 @@ export default function AppHeaderUser() {
                 type="button"
                 onClick={() => {
                   closeLogin();
-                  navigate('/wishlist');
+                  navigate('/mypage?tab=wish');
                 }}
               >
                 <HeartIcon strokeWidth="1.8" />

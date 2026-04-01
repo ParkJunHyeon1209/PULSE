@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import MyInfo from './components/MyInfo';
 import Statistics from './components/Statistics';
 import MainMyPage from './components/MainMyPage';
 import MyPageCategory from './components/MyPageCategory';
 import CategoryRender from './components/CategoryRender';
 import useAuthStore from '../../store/useAuthStore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import useOverlayStore from '../../store/useOverlayStore';
 import BaseModal from '../../components/common/BaseModal';
 import BaseBtn from '../../components/common/BaseBtn';
@@ -22,7 +22,10 @@ function LoginModal() {
       label="PULSE PLATFORM"
       onClose={() => {
         closeModal('login');
-        navigate('/login', { replace: true });
+        navigate('/login', {
+          replace: true,
+          state: { redirectTo: '/mypage' },
+        });
       }}
       title="로그인 후 이용해주세요."
     >
@@ -32,7 +35,10 @@ function LoginModal() {
         style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
         onClick={() => {
           closeModal('login');
-          navigate('/login', { replace: true });
+          navigate('/login', {
+            replace: true,
+            state: { redirectTo: '/mypage' },
+          });
         }}
       >
         확인
@@ -41,11 +47,36 @@ function LoginModal() {
   );
 }
 
+const TAB_MAP = {
+  main: 'main',
+  wishlist: 'wish',
+  order: 'order',
+  review: 'review',
+  coupon: 'coupon',
+  profile: 'profile',
+  address: 'address',
+};
+
+const DEFAULT_TAB = TAB_MAP.main;
+
 export default function MyPage() {
-  const [category, setCategory] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
   const isLoggedIn = useAuthStore((state) => state.isLogin);
   const openModal = useOverlayStore((state) => state.openModal);
   const closeModal = useOverlayStore((state) => state.closeModal);
+
+  const tabFromUrl = searchParams.get('tab');
+
+  const initialCategory = useMemo(() => {
+    return Object.values(TAB_MAP).includes(tabFromUrl) ? tabFromUrl : DEFAULT_TAB;
+  }, [tabFromUrl]);
+
+  const [category, setCategory] = useState(initialCategory);
+
+  useEffect(() => {
+    const nextCategory = Object.values(TAB_MAP).includes(tabFromUrl) ? tabFromUrl : DEFAULT_TAB;
+    setCategory(nextCategory);
+  }, [tabFromUrl]);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -55,12 +86,23 @@ export default function MyPage() {
     }
   }, [isLoggedIn, openModal, closeModal]);
 
+  const handleSetCategory = (nextCategory) => {
+    setCategory(nextCategory);
+
+    if (!nextCategory || nextCategory === DEFAULT_TAB) {
+      setSearchParams({}, { replace: true });
+      return;
+    }
+
+    setSearchParams({ tab: nextCategory }, { replace: true });
+  };
+
   return (
     <MyPageWrap>
-      <MyInfo setCategory={setCategory} />
+      <MyInfo setCategory={handleSetCategory} />
       <Statistics />
       <MainMyPage>
-        <MyPageCategory category={category} setCategory={setCategory} />
+        <MyPageCategory category={category} setCategory={handleSetCategory} />
         <CategoryRender category={category} />
       </MainMyPage>
       <LoginModal />
