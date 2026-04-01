@@ -9,9 +9,12 @@ const MessageContainer = styled.div`
 `;
 
 const Message = styled.p`
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  margin-bottom: ${({ theme }) => theme.spacing[3]};
   color: ${({ theme }) => theme.colors.textSecondary};
   font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSize.s};
+  white-space: pre-wrap;
+  text-align: center;
 `;
 
 export default function SignModal({ isOpen, onClose, message }) {
@@ -20,14 +23,11 @@ export default function SignModal({ isOpen, onClose, message }) {
       isOpen={isOpen}
       onClose={onClose}
       label="PULSE PLATFORM"
-      closable={false}
-      width="350px"
+      closable={true}
+      width="400px"
     >
       <MessageContainer>
         <Message>{message}</Message>
-        <BaseBtn onClick={onClose} style={{ width: '100%', height: '45px' }}>
-          확인
-        </BaseBtn>
       </MessageContainer>
     </BaseModal>
   );
