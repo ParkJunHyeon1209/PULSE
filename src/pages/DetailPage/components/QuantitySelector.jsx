@@ -1,69 +1,63 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { MinusIcon, QtyPlusIcon } from '../../../assets/icons/BtnIcon';
 
 export default function QuantitySelector({ quantity, onDecrease, onIncrease }) {
   return (
     <OptionBox>
       <QuantityButton type="button" onClick={onDecrease}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          className="bi bi-dash"
-          viewBox="0 0 16 16"
-        >
-          <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
-        </svg>
+        <MinusIcon size={16} />
       </QuantityButton>
 
       <QuantityValue>{quantity}</QuantityValue>
 
       <QuantityButton type="button" onClick={onIncrease}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          className="bi bi-plus"
-          viewBox="0 0 16 16"
-        >
-          <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-        </svg>
+        <QtyPlusIcon size={16} />
       </QuantityButton>
     </OptionBox>
   );
 }
 
 const OptionBox = styled.div`
-  margin-top: ${({ theme }) => theme.spacing[5]};
+  margin-top: ${({ theme }) => theme.spacing[8]};
   width: 100%;
-  height: 38px;
+  height: 46px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[4]}`};
   border-radius: 100px;
   background: ${({ theme }) => theme.colors.cardBg};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   backdrop-filter: ${({ theme }) => theme.effects.blurSoft};
+  overflow: hidden;
 `;
 
 const QuantityButton = styled.button`
-  width: 30px;
-  height: 30px;
-  color: ${({ theme }) => theme.colors.text};
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  font-weight: 400;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.colors.primary};
   transition:
     background-color ${({ theme }) => theme.motion.fast},
-    transform ${({ theme }) => theme.motion.fast},
     box-shadow ${({ theme }) => theme.motion.fast};
 
+  > svg {
+    transition: transform ${({ theme }) => theme.motion.fast};
+  }
+
   &:hover {
-    background: ${({ theme }) => theme.btn.secondaryHoverBg};
-    box-shadow: ${({ theme }) => theme.btn.secondaryHoverShadow};
-    transform: translateY(-1px);
+    background: ${({ theme }) => theme.colors.primary + '18'};
+  }
+
+  &:active {
+    background: ${({ theme }) => theme.colors.primary + '22'};
+    box-shadow: none;
+
+    > svg {
+      transform: scale(0.84);
+    }
   }
 `;
 

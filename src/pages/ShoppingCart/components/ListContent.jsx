@@ -264,13 +264,16 @@ const ListItem = styled.li`
           }
         }
         > button:hover {
-          background: ${({ theme }) => theme.colors.primary + '15'};
+          background: ${({ theme }) => theme.colors.primary + '18'};
           > svg {
             color: ${({ theme }) => theme.colors.primary};
           }
         }
-        > button:active > svg {
-          transform: scale(0.88);
+        > button:active {
+          background: ${({ theme }) => theme.colors.primary + '22'};
+          > svg {
+            transform: scale(0.84);
+          }
         }
         > span {
           min-width: 18px;
@@ -325,6 +328,7 @@ const GradientCheckbox = styled.input`
   border: 1px solid ${({ theme }) => theme.checkbox.border};
   border-radius: 4px;
   cursor: pointer;
+  background: ${({ theme }) => theme.colors.primary}18;
 
   &:checked {
     background: ${({ theme }) => theme.gradients.navActive};

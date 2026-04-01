@@ -118,6 +118,7 @@ const GradientCheckbox = styled.input`
   border: 1px solid ${({ theme }) => theme.checkbox.border};
   border-radius: 4px;
   cursor: pointer;
+  background: ${({ theme }) => theme.colors.primary}18;
 
   &:checked {
     background: ${({ theme }) => theme.gradients.navActive};

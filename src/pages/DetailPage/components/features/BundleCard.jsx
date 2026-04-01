@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import styled from '@emotion/styled';
 import {
   CardWish,
@@ -15,6 +15,7 @@ import { BADGE_TONE } from '../../../../utils/toneMap';
 import useWishlistStore from '../../../../store/useWishlistStore';
 
 import useAuthStore from '../../../../store/useAuthStore';
+import BaseSection from '../../../../components/common/BaseSection';
 
 /* 번들 전체 섹션 감싸는 영역 */
 const BundleCardLayout = styled.section`
@@ -23,37 +24,6 @@ const BundleCardLayout = styled.section`
   flex-direction: column;
 `;
 
-/* 상단 제목 영역 */
-const CardHeader = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[1]};
-`;
-
-/* PULSE BUNDLE 제목 */
-const Title = styled.p`
-  margin: 0;
-  font-size: ${({ theme }) => theme.fontSize.lg};
-  font-weight: 700;
-  line-height: 1;
-
-  > span:first-of-type {
-    color: ${({ theme }) => theme.colors.text};
-    padding-right: ${({ theme }) => theme.spacing[3]};
-  }
-
-  > span:last-of-type {
-    color: ${({ theme }) => theme.colors.primary};
-  }
-`;
-
-/* Recommendation 설명 문구 */
-const SubText = styled.p`
-  margin: 0;
-  font-size: ${({ theme }) => theme.fontSize.xxs};
-  font-weight: 500;
-  color: ${({ theme }) => theme.colors.textSecondary};
-`;
 
 /* 카드 3개 배치 영역 */
 const CardList = styled.div`
@@ -418,13 +388,14 @@ export default function BundleCard({ currentType, teamProducts, onRequireLogin }
 
   return (
     <BundleCardLayout>
-      <CardHeader>
-        <Title>
-          <span>PULSE</span>
-          <span>BUNDLE</span>
-        </Title>
-        <SubText>Recommendation · 함께 쓰면 완성되는 셋업</SubText>
-      </CardHeader>
+      <BaseSection
+        title="PULSE"
+        colorTitle="BUNDLE"
+        sub="함께 쓰면 완성되는 셋업"
+        titleSize="xl"
+        inline
+        solidColor
+      />
 
       <CardList>
         {randomProducts.map((item) => (
