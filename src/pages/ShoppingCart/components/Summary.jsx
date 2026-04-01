@@ -1,9 +1,12 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import useCartStore from '../../../store/useCartStore';
+import useOrderStore from '../../../store/useOrderStore';
+import useOverlayStore from '../../../store/useOverlayStore';
 import BaseBtn from '../../../components/common/BaseBtn';
 import BaseSection from '../../../components/common/BaseSection';
 import BaseTooltip from '../../../components/common/BaseTooltip';
+import OrderConfirmModal from '../../../components/common/modals/OrderConfirmModal';
 import {
   VisaIcon,
   MasterCardIcon,
@@ -165,77 +168,126 @@ const SummaryWrap = styled.div`
     }
   }
 `;
+
+const ORDER_CONFIRM_MODAL_ID = 'cart-order-confirm';
+
 export default function Summary() {
   const totalPrice = useCartStore((state) => state.getTotalPrice);
   const SHIPPING_FEE = 5000;
 
+  // 결제
+  const getCheckedItems = useCartStore((state) => state.getCheckedItems);
+  const clearCheckedItems = useCartStore((state) => state.clearCheckedItems);
+  const addOrder = useOrderStore((state) => state.addOrder);
+  const openModal = useOverlayStore((state) => state.openModal);
+  const checkedItems = getCheckedItems();
+  const hasCheckedItems = checkedItems.length > 0;
+
+  const handleOpenOrderModal = () => {
+    if (!hasCheckedItems) {
+      return;
+    }
+
+    openModal(ORDER_CONFIRM_MODAL_ID);
+  };
+
+  const handleConfirmOrder = () => {
+    const items = getCheckedItems();
+
+    if (!items.length) {
+      return;
+    }
+
+    const createdOrder = addOrder({
+      items,
+      status: '결제완료',
+    });
+
+    if (!createdOrder) {
+      return;
+    }
+
+    clearCheckedItems();
+  };
+
   return (
-    <SummaryWrap>
-      <div className="price">
-        <h3>ORDER SUMMARY</h3>
-        <p>
-          상품 합계{' '}
-          <span className="miniPrice">{totalPrice() ? totalPrice().toLocaleString() : 0}원</span>
-        </p>
-        <p>
-          <span className="shipping">
-            배송비{' '}
-            <span className="shipping-trigger">
-              <BaseBtn variant="ic-btn" size={'16px'} padding={'4px'} className="shipping-info">
-                ?
-              </BaseBtn>
-              <BaseTooltip className="shipping-tooltip" position="bottom" mobileShift="48px">
-                <span>배송비 정보:</span>
-                <span> 5만원 이상 결제 시 배송비 무료</span>
-                <span>5만원 미만 5,000원</span>
-              </BaseTooltip>
+    <>
+      <SummaryWrap>
+        <div className="price">
+          <h3>ORDER SUMMARY</h3>
+          <p>
+            상품 합계{' '}
+            <span className="miniPrice">{totalPrice() ? totalPrice().toLocaleString() : 0}원</span>
+          </p>
+          <p>
+            <span className="shipping">
+              배송비{' '}
+              <span className="shipping-trigger">
+                <BaseBtn variant="ic-btn" size={'16px'} padding={'4px'} className="shipping-info">
+                  ?
+                </BaseBtn>
+                <BaseTooltip className="shipping-tooltip" position="bottom" mobileShift="48px">
+                  <span>배송비 정보:</span>
+                  <span> 5만원 이상 결제 시 배송비 무료</span>
+                  <span>5만원 미만 5,000원</span>
+                </BaseTooltip>
+              </span>
             </span>
-          </span>
-          <span className="free">
-            {totalPrice() && totalPrice() < 50000 ? `${SHIPPING_FEE.toLocaleString()}원` : 'Free'}
-          </span>
-        </p>
-        <p>
-          할인 <span className="discount">-0원</span>
-        </p>
-        <p>
-          TOTAL{' '}
-          <span>
-            {totalPrice() && totalPrice() < 50000
-              ? (totalPrice() + SHIPPING_FEE).toLocaleString()
-              : totalPrice()?.toLocaleString() || 0}
-            원
-          </span>
-        </p>
-      </div>
+            <span className="free">
+              {totalPrice() && totalPrice() < 50000 ? `${SHIPPING_FEE.toLocaleString()}원` : 'Free'}
+            </span>
+          </p>
+          <p>
+            할인 <span className="discount">-0원</span>
+          </p>
+          <p>
+            TOTAL{' '}
+            <span>
+              {totalPrice() && totalPrice() < 50000
+                ? (totalPrice() + SHIPPING_FEE).toLocaleString()
+                : totalPrice()?.toLocaleString() || 0}
+              원
+            </span>
+          </p>
+        </div>
 
-      <div className="coupon">
-        <input type="text" placeholder="코드를 입력하세요" />
+        <div className="coupon">
+          <input type="text" placeholder="코드를 입력하세요" />
 
-        <BaseBtn className="coupon-btn" variant="secondary" tone="violet" padding="8px 16px">
-          apply
+          <BaseBtn className="coupon-btn" variant="secondary" tone="violet" padding="8px 16px">
+            apply
+          </BaseBtn>
+        </div>
+        <BaseBtn
+          className="order-btn"
+          variant="primary"
+          tone="violet"
+          padding="8px 16px"
+          onClick={handleOpenOrderModal}
+          disabled={!hasCheckedItems}
+        >
+          주문하기
         </BaseBtn>
-      </div>
-      <BaseBtn className="order-btn" variant="primary" tone="violet" padding="8px 16px">
-        주문하기
-      </BaseBtn>
-      <div className="center-content">
-        <BaseSection label={'TRUSTED • SECURE'} />
-        <ul className="payment-method">
-          <li>
-            <VisaIcon />
-          </li>
-          <li>
-            <MasterCardIcon />
-          </li>
-          <li>
-            <KakaoPayIcon />
-          </li>
-          <li>
-            <NaverPayIcon />
-          </li>
-        </ul>
-      </div>
-    </SummaryWrap>
+        <div className="center-content">
+          <BaseSection label={'TRUSTED • SECURE'} />
+          <ul className="payment-method">
+            <li>
+              <VisaIcon />
+            </li>
+            <li>
+              <MasterCardIcon />
+            </li>
+            <li>
+              <KakaoPayIcon />
+            </li>
+            <li>
+              <NaverPayIcon />
+            </li>
+          </ul>
+        </div>
+      </SummaryWrap>
+
+      <OrderConfirmModal id={ORDER_CONFIRM_MODAL_ID} onConfirm={handleConfirmOrder} />
+    </>
   );
 }

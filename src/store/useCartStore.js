@@ -16,6 +16,11 @@ const useCartStore = create(
           .reduce((acc, item) => acc + item.price * item.quantity, 0);
       },
 
+      // 체크된 상품 가져오기 (주문 내역)
+      getCheckedItems: () => {
+        return get().cart.filter((item) => item.checked);
+      },
+
       // 개별 상품 체크 토글
       toggleItemChecked: (product) =>
         set((state) => {
@@ -107,6 +112,12 @@ const useCartStore = create(
 
       // 선택삭제
       removeSelected: () =>
+        set((state) => ({
+          cart: state.cart.filter((item) => !item.checked),
+        })),
+
+      // 체크된 상품 카트에서 빼기 (주문 내역)
+      clearCheckedItems: () =>
         set((state) => ({
           cart: state.cart.filter((item) => !item.checked),
         })),

@@ -6,6 +6,7 @@ import BaseModal from '../../../components/common/BaseModal';
 import BaseBtn from '../../../components/common/BaseBtn';
 import useAuthStore from '../../../store/useAuthStore';
 import useWishlistStore from '../../../store/useWishlistStore';
+import useOrderStore from '../../../store/useOrderStore';
 
 function LogoutModal() {
   const isOpen = useOverlayStore((state) => Boolean(state.modals.logout));
@@ -54,6 +55,7 @@ export default function MyPageCategory({ category, setCategory }) {
   const isActive = (itemCategory) => category === itemCategory;
   const user = useAuthStore((state) => state.user);
   const wishlistCount = useWishlistStore((state) => state.wishlistIds).length;
+  const orderCount = useOrderStore((state) => state.orders.length);
 
   return (
     <CategoryList>
@@ -62,7 +64,7 @@ export default function MyPageCategory({ category, setCategory }) {
         <ul>
           <CategoryType $isActive={isActive('order')} onClick={() => setCategory('order')}>
             주문내역
-            <span>{user?.orderedList?.length || 0}</span>
+            <span>{orderCount || 0}</span>
           </CategoryType>
           <CategoryType $isActive={isActive('wish')} onClick={() => setCategory('wish')}>
             위시리스트

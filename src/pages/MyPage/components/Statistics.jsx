@@ -2,16 +2,18 @@ import React from 'react';
 import useAuthStore from '../../../store/useAuthStore';
 import styled from '@emotion/styled';
 import useWishlistStore from '../../../store/useWishlistStore';
+import useOrderStore from '../../../store/useOrderStore';
 
 export default function Statistics() {
   const user = useAuthStore((state) => state.user);
   const wishlistCount = useWishlistStore((state) => state.wishlistIds).length;
+  const orderCount = useOrderStore((state) => state.orders.length);
 
   return (
     <StatisticsWrap>
       <StatisticsList>
         <li>
-          <StatisticsCount>{user?.orderCount || 0}</StatisticsCount>
+          <StatisticsCount>{orderCount || 0}</StatisticsCount>
           <StatisticsLabel>주문내역</StatisticsLabel>
         </li>
         <li>
