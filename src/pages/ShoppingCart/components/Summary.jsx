@@ -49,6 +49,7 @@ const SummaryWrap = styled.div`
     }
     > p {
       display: flex;
+      align-items: center;
       justify-content: space-between;
       margin-top: ${({ theme }) => theme.spacing[3]};
       font-size: ${({ theme }) => theme.fontSize.xxxs};
@@ -126,6 +127,12 @@ const SummaryWrap = styled.div`
       background-color: ${({ theme }) => theme.colors.cardBg};
       font-size: ${({ theme }) => theme.fontSize.xxs};
       transition: font-size 0.3s ease;
+      box-shadow: 0 0 2px ${({ theme }) => theme.colors.shadow};
+      transition: box-shadow 0.3s ease, font-size 0.3s ease;
+
+      &:focus {
+        box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary + '20'};
+      }
 
       &::placeholder {
         font-size: ${({ theme }) => theme.fontSize.xxs};

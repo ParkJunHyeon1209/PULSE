@@ -83,14 +83,14 @@ const ListControlWrap = styled.div`
   > .check-box {
     display: flex;
     align-items: center;
-    gap: ${({ theme }) => theme.spacing[2]};
+    gap: ${({ theme }) => theme.spacing[4]};
   }
   > .deletes {
     display: flex;
     gap: ${({ theme }) => theme.spacing[6]};
     > button:first-of-type {
       position: relative;
-      color: ${({ theme }) => theme.colors.accent + '35'};
+      color: ${({ theme }) => theme.colors.accent + '96'};
       transition: color ${({ theme }) => theme.motion.fast} ease;
     }
     > button:first-of-type:hover {
@@ -125,6 +125,10 @@ const GradientCheckbox = styled.input`
       0 0 0 1px #7c3aed,
       0 0 0 4px #7c3aed30;
     border: none;
+  }
+  + label {
+    font-weight: 700;
+    font-size: ${({ theme }) => theme.fontSize.xs};
   }
 
   &:checked::after {

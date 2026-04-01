@@ -319,6 +319,7 @@ export const darkTheme = {
 
     // 텍스트 색상
     text: '#eeeeff',
+    noneText: '#eeeeff',
     textSecondary: 'rgba(200,205,255,0.42)',
     border: 'rgba(255,255,255,0.07)',
     // primary = pulse 메인 라벤더 보라
@@ -602,6 +603,7 @@ export const lightTheme = {
     btn2Bg: 'rgba(124,58,237,0.10)',
     dimBg: 'rgba(0,0,0,.08)',
     text: '#2d1b69',
+    noneText: '#1c133a',
     textSecondary: 'rgba(45,27,105,0.52)',
     border: 'rgba(100,80,200,0.18)',
     primary: '#7c3aed',

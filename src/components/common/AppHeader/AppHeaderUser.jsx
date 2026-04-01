@@ -318,7 +318,7 @@ export default function AppHeaderUser() {
     <>
       <DropWrap ref={wrapRef}>
         {isLogin ? (
-          <AvatarCircle aria-label="User menu" onClick={onOpen}>
+          <AvatarCircle aria-label="User menu" onClick={onOpen} icon={false}>
             {initial}
           </AvatarCircle>
         ) : (

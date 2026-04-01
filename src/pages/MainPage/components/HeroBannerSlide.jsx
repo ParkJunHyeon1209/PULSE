@@ -6,12 +6,26 @@ import banner2D from '../../../assets/img/banners/2_dark.webp';
 import banner2L from '../../../assets/img/banners/2_light.webp';
 import banner3D from '../../../assets/img/banners/3_dark.webp';
 import banner3L from '../../../assets/img/banners/3_light.webp';
+import mBanner1D from '../../../assets/img/banners/m-1_dark.webp';
+import mBanner1L from '../../../assets/img/banners/m-1_light.webp';
+import mBanner2D from '../../../assets/img/banners/m-2_dark.webp';
+import mBanner2L from '../../../assets/img/banners/m-2_light.webp';
+import mBanner3D from '../../../assets/img/banners/m-3_dark.webp';
+import mBanner3L from '../../../assets/img/banners/m-3_light.webp';
 import { ArrowIconL } from '../../../assets/icons/BtnIcon';
 
 const BANNER_IMAGES = [
-  { id: '1', dark: banner1D, light: banner1L, opacity: 0.6 },
-  { id: '2', dark: banner2D, light: banner2L },
-  { id: '3', dark: banner3D, light: banner3L },
+  {
+    id: '1',
+    dark: banner1D,
+    light: banner1L,
+    mDark: mBanner1D,
+    mLight: mBanner1L,
+    opacity: 0.6,
+    mOpacity: 0.45,
+  },
+  { id: '2', dark: banner2D, light: banner2L, mDark: mBanner2D, mLight: mBanner2L },
+  { id: '3', dark: banner3D, light: banner3L, mDark: mBanner3D, mLight: mBanner3L },
 ];
 
 const BannerWrap = styled.div`
@@ -38,6 +52,12 @@ const SlideLayer = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    background-image: url(${({ $mImage }) => $mImage});
+    background-position: center;
+    opacity: ${({ $mOpacity }) => $mOpacity ?? 'unset'} !important;
+  }
 `;
 
 const GlowLayer = styled.div`
@@ -49,6 +69,35 @@ const GlowLayer = styled.div`
     radial-gradient(circle at 82% 18%, rgba(${theme.colors.accentRgb}, 0.2), transparent 24%),
     radial-gradient(circle at 52% 76%, rgba(${theme.colors.primaryRgb}, 0.18), transparent 32%)
   `};
+`;
+
+const MobileDim = styled.div`
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 52px;
+  pointer-events: none;
+  z-index: 1;
+  background: ${({ theme }) =>
+    theme.mode === 'dark'
+      ? `linear-gradient(
+          to top,
+          rgba(6, 4, 20, 0.72) 0%,
+          rgba(6, 4, 20, 0.4) 40%,
+          transparent 70%
+        )`
+      : `linear-gradient(
+          to top,
+          rgba(236, 233, 255, 0.8) 0%,
+          rgba(236, 233, 255, 0.2) 40%,
+          transparent 70%
+        )`};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    display: block;
+  }
 `;
 
 const NavButton = styled('button', {
@@ -102,6 +151,10 @@ const NavButton = styled('button', {
     ${({ $side, theme }) =>
       $side === 'left' ? `left: ${theme.spacing[4]};` : `right: ${theme.spacing[4]};`}
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    opacity: 0;
+  }
 `;
 
 const NavArrow = styled(ArrowIconL, {
@@ -112,13 +165,21 @@ const NavArrow = styled(ArrowIconL, {
   transform: ${({ $side }) => ($side === 'left' ? 'rotate(180deg)' : 'none')};
 `;
 
-export default function HeroBannerSlide({ slideIndex, useMotion, onPrev, onNext, onTransitionEnd }) {
+export default function HeroBannerSlide({
+  slideIndex,
+  useMotion,
+  onPrev,
+  onNext,
+  onTransitionEnd,
+}) {
   const { mode } = useTheme();
 
-  const slides = BANNER_IMAGES.map(({ id, dark, light, opacity }) => ({
+  const slides = BANNER_IMAGES.map(({ id, dark, light, mDark, mLight, opacity, mOpacity }) => ({
     id,
     image: mode === 'dark' ? dark : light,
+    mImage: mode === 'dark' ? mDark : mLight,
     opacity,
+    mOpacity,
   }));
   const loopSlides = [slides[slides.length - 1], ...slides, slides[0]];
 
@@ -129,11 +190,14 @@ export default function HeroBannerSlide({ slideIndex, useMotion, onPrev, onNext,
           <SlideLayer
             key={`${slide.id}-${index}`}
             $image={slide.image}
+            $mImage={slide.mImage}
+            $mOpacity={slide.mOpacity}
             style={{ opacity: slide.opacity ?? 1 }}
           />
         ))}
       </SlideRow>
       <GlowLayer />
+      <MobileDim />
       <NavButton type="button" $side="left" onClick={onPrev} aria-label="Previous slide">
         <NavArrow $side="left" aria-hidden="true" />
       </NavButton>
