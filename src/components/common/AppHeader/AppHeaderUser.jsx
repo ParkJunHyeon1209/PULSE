@@ -311,7 +311,6 @@ export default function AppHeaderUser() {
   const handleLogout = () => {
     logout();
     closeLogin();
-    navigate('/');
   };
 
   return (
