@@ -72,7 +72,7 @@ export default function MyInfo({ setCategory }) {
             colorTitle={user?.name || 'PULSE USER'}
             sub={`${user?.id || 'pulse@pulse.kr'}`}
           />
-          <GradeBadge>{user?.grade || 'SILVER'}</GradeBadge>
+          <GradeBadge>{user?.grade || 'MEMBER'}</GradeBadge>
         </UserInfo>
       </Profile>
       <Settings>

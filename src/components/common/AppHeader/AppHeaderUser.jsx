@@ -374,8 +374,7 @@ export default function AppHeaderUser() {
                   navigate('/mypage?tab=wish');
                 }}
               >
-                <HeartIcon strokeWidth="1.8" />
-                찜목록
+                <HeartIcon strokeWidth="1.8" />찜 목록
               </DropItem>
               <ThemeRow type="button" onClick={onThemeToggle}>
                 <ThemeText>THEME</ThemeText>

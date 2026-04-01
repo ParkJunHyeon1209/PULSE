@@ -25,7 +25,7 @@ export default function Statistics() {
           <StatisticsLabel>작성 리뷰</StatisticsLabel>
         </li>
         <li>
-          <StatisticsCount>{user?.couponCount || 0}</StatisticsCount>
+          <StatisticsCount>{user?.coupons.length || 0}</StatisticsCount>
           <StatisticsLabel>보유 쿠폰</StatisticsLabel>
         </li>
       </StatisticsList>

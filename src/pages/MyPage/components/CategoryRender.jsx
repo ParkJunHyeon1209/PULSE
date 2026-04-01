@@ -23,5 +23,5 @@ export default function CategoryRender({ category }) {
 }
 
 const CategoryWrap = styled.div`
-  flex: 7;
+  flex: 4;
 `;

@@ -80,8 +80,7 @@ export default function MyPageCategory({ category, setCategory }) {
           </CategoryType>
           <CategoryType $isActive={isActive('wish')} onClick={() => setCategory('wish')}>
             <div className="icontext">
-              <HeartIcon width={16} height={16} />
-              위시리스트
+              <HeartIcon width={16} height={16} />찜 목록
             </div>
             <span>{wishlistCount || 0}</span>
           </CategoryType>
@@ -97,7 +96,7 @@ export default function MyPageCategory({ category, setCategory }) {
               <CouponIcon />
               혜택 • 쿠폰
             </div>
-            <span>{user?.couponList?.length || 0}</span>
+            <span>{user?.coupons?.length || 0}</span>
           </CategoryType>
         </ul>
       </li>
@@ -119,12 +118,12 @@ export default function MyPageCategory({ category, setCategory }) {
         </ul>
       </li>
       <li>
-        <button onClick={() => openModal('logout')}>
-          <div className="icontext">
+        <div className="icontext">
+          <button onClick={() => openModal('logout')}>
             <LogoutIcon />
             로그아웃
-          </div>
-        </button>
+          </button>
+        </div>
       </li>
       <LogoutModal />
     </CategoryList>
@@ -144,6 +143,11 @@ const CategoryList = styled.ul`
     display: flex;
     align-items: center;
     gap: ${({ theme }) => theme.spacing[2]};
+    > button {
+      display: flex;
+      gap: ${({ theme }) => theme.spacing[2]};
+      align-items: center;
+    }
   }
 
   > li {
@@ -152,6 +156,7 @@ const CategoryList = styled.ul`
     gap: ${({ theme }) => theme.spacing[2]};
     margin-bottom: ${({ theme }) => theme.spacing[2]};
     h4 {
+      padding-top: ${({ theme }) => theme.spacing[2]};
       font-size: ${({ theme }) => theme.fontSize.xxxs};
       color: ${({ theme }) => theme.colors.textSecondary};
     }
@@ -168,6 +173,9 @@ const CategoryList = styled.ul`
   > li:last-child {
     padding-left: ${({ theme }) => theme.spacing[2]};
     border-left: 1px solid transparent;
+    > div {
+      padding-top: ${({ theme }) => theme.spacing[2]};
+    }
     button {
       text-align: left;
       font-size: ${({ theme }) => theme.fontSize.xs};

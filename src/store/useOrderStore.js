@@ -38,13 +38,17 @@ const useOrderStore = create(
     (set, get) => ({
       orders: [],
 
-      addOrder: ({ items = [], status = '결제완료' }) => {
+      addOrder: ({ items = [], status = '결제완료', totalPrice: finalTotalPrice }) => {
         if (!Array.isArray(items) || items.length === 0) {
           return null;
         }
 
         const normalizedItems = items.map(normalizeOrderItem);
-        const totalPrice = calcOrderTotalPrice(normalizedItems);
+        const fallbackTotalPrice = calcOrderTotalPrice(normalizedItems);
+        const totalPrice =
+          typeof finalTotalPrice === 'number' && Number.isFinite(finalTotalPrice)
+            ? Math.max(finalTotalPrice, 0)
+            : fallbackTotalPrice;
 
         const newOrder = {
           id: crypto.randomUUID(),
