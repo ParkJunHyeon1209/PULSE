@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import CloseSvg from '../common/CloseSvg';
+import { Close } from '../common/CommonSvg';
 
 const InputNameGroup = styled.div`
   display: flex;
@@ -93,7 +93,7 @@ export default function SignupNameInput({
           />
           {firstNameError && (
             <ErrorMessage>
-              <CloseSvg />
+              <Close />
               한글만 입력 가능합니다.
             </ErrorMessage>
           )}
@@ -115,7 +115,7 @@ export default function SignupNameInput({
           />
           {lastNameError && (
             <ErrorMessage>
-              <CloseSvg />
+              <Close />
               한글만 입력 가능합니다.
             </ErrorMessage>
           )}

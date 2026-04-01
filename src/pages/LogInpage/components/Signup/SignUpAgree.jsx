@@ -34,6 +34,7 @@ const AgreeInput = styled.div`
     &:checked::after {
       content: '✔';
       font-size: 12px;
+      color: ${({ theme }) => theme.colors.wColor};
     }
   }
 `;

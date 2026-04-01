@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import CloseSvg from '../common/CloseSvg';
 import ShowBtn from '../common/ShowBtn';
 import BaseTooltip from '../../../../components/common/BaseTooltip';
 import BaseBtn from '../../../../components/common/BaseBtn';
+import { Close } from '../common/CommonSvg';
 
 const InputGroup = styled.div`
   display: flex;
@@ -226,7 +226,7 @@ export default function SignUpPasswordInput({
       <div className="message-container">
         {pwError === true && (
           <ErrorMessage>
-            <CloseSvg /> 8~15자의 영대문자, 숫자, 특수문자만을 포함하여 만드세요.
+            <Close /> 8~15자의 영대문자, 숫자, 특수문자만을 포함하여 만드세요.
           </ErrorMessage>
         )}
         {pwError === false && <SuccessMessage>사용 가능한 비밀번호입니다.</SuccessMessage>}
@@ -246,7 +246,7 @@ export default function SignUpPasswordInput({
         </div>
         {pw && pwConfirm && (
           <MatchMessage $isMatcError={pw === pwConfirm}>
-            {pw !== pwConfirm && <CloseSvg />}
+            {pw !== pwConfirm && <Close />}
             {pw === pwConfirm ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
           </MatchMessage>
         )}

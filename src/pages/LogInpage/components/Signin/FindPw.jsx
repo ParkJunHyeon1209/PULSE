@@ -32,24 +32,6 @@ const ButtonGroup = styled.div`
   gap: ${({ theme }) => theme.spacing[3]};
 `;
 
-const CloseBtn = styled.button`
-  width: 79px;
-  background: ${({ theme }) => theme.tabs.itemHoverBg};
-  border: 1px solid ${({ theme }) => theme.Line};
-  color: ${({ theme }) => theme.tabs.itemColor};
-  border-radius: 30px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-`;
-
 export default function FindPw({ findEmail, setFindEmail, isFindPwOpen, setIsFindPwOpen }) {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
@@ -68,7 +50,7 @@ export default function FindPw({ findEmail, setFindEmail, isFindPwOpen, setIsFin
   };
 
   const handleSendTempPw = () => {
-    setSuccessMsg(`${findEmail}로 임시 비밀번호를 발송했습니다.`);
+    setSuccessMsg(`${findEmail}로 \n 임시 비밀번호를 발송했습니다.`);
     setIsSuccessModalOpen(true);
 
     setIsFindPwOpen(false);
@@ -100,8 +82,10 @@ export default function FindPw({ findEmail, setFindEmail, isFindPwOpen, setIsFin
           <SignInEmailInput email={findEmail} setEmail={setFindEmail} />
         </div>
         <ButtonGroup>
-          <CloseBtn onClick={handleCloseFindPw}>닫기</CloseBtn>
-          <BaseBtn type="button" disabled={!isEmailValid} onClick={handleSendTempPw}>
+          <BaseBtn variant="secondary" icon={false} onClick={handleCloseFindPw} flex="1">
+            닫기
+          </BaseBtn>
+          <BaseBtn type="button" disabled={!isEmailValid} onClick={handleSendTempPw} flex="3">
             임시 비밀번호 발송
           </BaseBtn>
         </ButtonGroup>
