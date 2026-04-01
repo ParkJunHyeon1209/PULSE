@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import BaseBtn from '../../../components/common/BaseBtn';
 import ProductOptions from './ProductOptions';
@@ -8,6 +7,7 @@ import PurchaseActions from './PurchaseActions';
 import { CardWish } from '../../../components/common/CardParts';
 import useWishlistStore from '../../../store/useWishlistStore';
 import useAuthStore from '../../../store/useAuthStore';
+import { HeartIcon } from '../../../assets/icons/BtnIcon';
 
 export default function ProductDetailPanel({
   product,
@@ -52,24 +52,15 @@ export default function ProductDetailPanel({
           onClick={handleToggleLike}
           aria-label="찜하기"
         >
-          <svg
-            width="15"
-            height="13"
-            viewBox="0 0 15 13"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12.6196 1.56989C12.3003 1.25052 11.9213 0.99717 11.5042 0.824318C11.087 0.651467 10.6399 0.5625 10.1883 0.5625C9.73675 0.5625 9.28962 0.651467 8.87246 0.824318C8.4553 0.99717 8.07628 1.25052 7.75706 1.56989L7.09456 2.23239L6.43206 1.56989C5.78725 0.925083 4.9127 0.562834 4.00081 0.562834C3.08891 0.562834 2.21436 0.925083 1.56956 1.56989C0.924749 2.2147 0.5625 3.08925 0.5625 4.00114C0.5625 4.91304 0.924749 5.78758 1.56956 6.43239L2.23206 7.09489L7.09456 11.9574L11.9571 7.09489L12.6196 6.43239C12.9389 6.11317 13.1923 5.73415 13.3651 5.31699C13.538 4.89983 13.6269 4.4527 13.6269 4.00114C13.6269 3.54959 13.538 3.10246 13.3651 2.68529C13.1923 2.26813 12.9389 1.88911 12.6196 1.56989Z"
-              stroke="currentColor"
-              strokeWidth="1.125"
-            />
-          </svg>
+          <HeartIcon />
         </LikeButton>
       </HeaderRow>
 
       <Title>{product.title}</Title>
-      <Price>₩{product.price.toLocaleString()}</Price>
+      <Price>
+        {product.price.toLocaleString()}
+        <span> 원</span>
+      </Price>
 
       <DescWrap>
         <ProductMeta>
@@ -93,7 +84,7 @@ export default function ProductDetailPanel({
           onSelectOption={onSelectOption}
         />
       </ProductOptionsWrap>
-      <ProductCareOption product={product} isCareChecked={isCareChecked} onToggle={onToggleCare} />
+      <ProductCareOption product={product} isChecked={isCareChecked} onToggle={onToggleCare} />
 
       <MetaInfo>
         <p>
@@ -127,20 +118,22 @@ export default function ProductDetailPanel({
 const InfoSection = styled.aside`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[2]};
+  /* gap: ${({ theme }) => theme.spacing[2]}; */
   color: ${({ theme }) => theme.colors.text};
 `;
 const LikeButton = styled(CardWish)`
-  position: static;
-  top: auto;
+  position: relative;
+  
+  top: 8px;
   right: auto;
   opacity: 1;
   transform: translateY(0);
   flex-shrink: 0;
+  background-color: ${({ theme }) => theme.btn.secondaryBg};
   z-index: auto;
 
   &:hover:not(:disabled) {
-    transform: translateY(0);
+    color:${({ theme }) => theme.iconBtn.wish.activeColor};
   }
 
   &:active:not(:disabled) {
@@ -157,29 +150,43 @@ const HeaderRow = styled.div`
 const CategoryBadge = styled.span`
   width: fit-content;
   color: ${({ theme }) => theme.colors.primary};
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
-  font-weight: 400;
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: 600;
 `;
 
-const Title = styled.h1`
-  font-size: ${({ theme }) => theme.fontSize.s};
+const Title = styled.h2`
+  font-family: ${({ theme }) => theme.fontFamily.display};
+  letter-spacing: -0.04em;
+  font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: 700;
   color: ${({ theme }) => theme.colors.text};
 `;
 
 const Price = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.lg};
-  font-weight: 400;
+  padding: ${({ theme }) => theme.spacing[3]} 0 ${({ theme }) => theme.spacing[1]};
+  font-size: ${({ theme }) => theme.fontSize.xl};
+  font-weight: 700;
   line-height: 1;
-  letter-spacing: 0;
+  letter-spacing: 0.05em;
   color: ${({ theme }) => theme.colors.success};
+  font-family: ${({ theme }) => theme.fontFamily.hero};
+  line-height: 1.2;
+  > span {
+    display: inline-block;
+    font-weight: 700;
+    font-size: ${({ theme }) => theme.fontSize.m};
+    transform: translate(2px, -2px);
+  }
 `;
 
 const DescWrap = styled.div`
   margin-top: ${({ theme }) => theme.spacing[1]};
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[5]};
+  font-weight: 600;
+  gap: ${({ theme }) => theme.spacing[4]};
+  opacity: 0.8;
+  transform: translateX(2px);
 `;
 const ProductMeta = styled.p`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
@@ -205,16 +212,17 @@ const ProductMeta = styled.p`
 `;
 const Description = styled.p`
   margin: 0;
+  font-weight: 700;
   font-size: ${({ theme }) => theme.fontSize.xxs};
   color: ${({ theme }) => theme.colors.textSecondary};
 `;
 
 const FeatureTagList = styled.div`
-  margin-top: ${({ theme }) => theme.spacing[3]};
+  margin-top: ${({ theme }) => theme.spacing[4]};
   font-weight: 400;
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   display: flex;
-  gap: 12px;
+  gap: ${({ theme }) => theme.spacing[2]};
   flex-wrap: wrap;
 `;
 const ProductOptionsWrap = styled.div`
@@ -246,14 +254,16 @@ const TagButton = styled.button`
 `;
 
 const MetaInfo = styled.div`
-  margin-top: ${({ theme }) => theme.spacing[3]};
+  margin-top: ${({ theme }) => theme.spacing[5]};
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: ${({ theme }) => theme.spacing[2]};
+  font-weight: 600;
 
   p {
     display: flex;
     gap: 16px;
+    align-items: center;
     font-size: ${({ theme }) => theme.fontSize.xxxs};
     line-height: 1.5;
     margin: 0;
@@ -263,6 +273,9 @@ const MetaInfo = styled.div`
     flex-shrink: 0;
     min-width: 50px;
     color: ${({ theme }) => theme.colors.textSecondary};
+    + span {
+      font-size: ${({ theme }) => theme.fontSize.xxs};
+    }
   }
 `;
 

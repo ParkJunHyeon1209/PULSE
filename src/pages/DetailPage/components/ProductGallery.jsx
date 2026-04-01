@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import styled from '@emotion/styled';
 import { CardBadge } from '../../../components/common/CardParts';
 import { BADGE_TONE } from '../../../utils/toneMap';
+import { ArrowIconL } from '../../../assets/icons/BtnIcon';
 
 export default function ProductGallery({
   product,
@@ -41,8 +42,7 @@ export default function ProductGallery({
     onSelectImage(galleryImages[nextIndex]);
   };
   const featureItems = useMemo(() => {
-    const shuffledSpecs = [...(categoryDetail?.specs ?? [])].sort(() => Math.random() - 0.5);
-
+    const shuffledSpecs = [...(categoryDetail?.specs ?? [])];
     return shuffledSpecs
       .map((spec) => spec.value)
       .filter(Boolean)
@@ -62,11 +62,11 @@ export default function ProductGallery({
         {(galleryImages?.length ?? 0) > 1 && (
           <>
             <ArrowButton type="button" $left onClick={handlePrev} aria-label="이전 이미지">
-              ‹
+              <ArrowIconL  width="24" height="24" style={{ transform: 'rotate(180deg) translateX(1px)' }} />
             </ArrowButton>
 
             <ArrowButton type="button" onClick={handleNext} aria-label="다음 이미지">
-              ›
+              <ArrowIconL width="24" height="24" style={{ transform: 'translateX(1px)' }} />
             </ArrowButton>
           </>
         )}
@@ -89,7 +89,7 @@ export default function ProductGallery({
         <Features>
           {featureItems.map((item, index) => (
             <p key={`${item}-${index}`}>
-              ✔<span>{item}</span>
+              ✓<span>{item}</span>
             </p>
           ))}
         </Features>
@@ -101,14 +101,8 @@ export default function ProductGallery({
 const ImageSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[5]};
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    gap: ${({ theme }) => theme.spacing[4]};
-  }
+  gap: ${({ theme }) => theme.spacing[3]};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    gap: ${({ theme }) => theme.spacing[3]};
-  }
 `;
 
 const MainImageWrapper = styled.div`
@@ -146,15 +140,16 @@ const MainImage = styled.img`
 
 const ArrowButton = styled.button`
   position: absolute;
+  display: flex;
   top: 50%;
-  ${({ $left }) => ($left ? 'left: 16px;' : 'right: 16px;')}
+  ${({ $left }) => ($left ? 'left: 8px;' : 'right: 8px;')}
   transform: translateY(-50%);
   width: 40px;
   height: 40px;
   border-radius: 50%;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background: rgba(0, 0, 0, 0.45);
-  color: ${({ theme }) => theme.colors.secondary};
+  background: ${({ theme }) => theme.iconBtn.wish.bg};
+  color: ${({ theme }) => theme.colors.secondary}99;
   font-size: 20px;
   font-weight: 700;
   display: flex;
@@ -164,34 +159,36 @@ const ArrowButton = styled.button`
   transition:
     background-color ${({ theme }) => theme.motion.fast},
     transform ${({ theme }) => theme.motion.fast},
-    border-color ${({ theme }) => theme.motion.fast};
+    box-shadow ${({ theme }) => theme.motion.fast},
+    color ${({ theme }) => theme.motion.fast};
 
   &:hover {
-    background: rgba(0, 0, 0, 0.7);
-    border-color: ${({ theme }) => theme.colors.primary};
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    ${({ $left }) => ($left ? 'left: 12px;' : 'right: 12px;')}
-    width: 38px;
-    height: 38px;
+    background: color-mix(in srgb, ${({ theme }) => theme.colors.modalBg} 18%, transparent);
+    /* border-color: ${({ theme }) => theme.colors.secondary}; */
+    color: ${({ theme }) => theme.colors.secondary};
+    box-shadow: 0 0 6px ${({ theme }) => theme.colors.primary}; 
   }
 
+  &:active {
+    transform: translateY(-50%) scale(0.88);
+    background: color-mix(in srgb, ${({ theme }) => theme.colors.modalBg} 10%, transparent);
+
+    box-shadow: 0 0 4px ${({ theme }) => theme.colors.primary};  }
+
+
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    ${({ $left }) => ($left ? 'left: 10px;' : 'right: 10px;')}
-    width: 32px;
-    height: 32px;
+    ${({ $left }) => ($left ? 'left: 4px;' : 'right: 4px;')}
+    width: 36px;
+    height: 36px;
   }
 `;
 
 const ThumbnailList = styled.div`
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: ${({ theme }) => theme.spacing[3]};
+  gap: ${({ theme }) => theme.spacing[2]};
   width: 100%;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    gap: ${({ theme }) => theme.spacing[2]};
-  }
 `;
 
 const ThumbnailButton = styled.button`
@@ -200,7 +197,7 @@ const ThumbnailButton = styled.button`
   padding: 0;
   cursor: pointer;
   overflow: hidden;
-  border-radius: ${({ theme }) => theme.radii.lg};
+  border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.cardBg};
   border: 2px solid
     ${({ theme, $isActive }) => ($isActive ? theme.colors.primary : theme.colors.cardBorder)};
@@ -228,8 +225,11 @@ const ThumbnailImage = styled.img`
 `;
 
 const Features = styled.div`
+  margin-top: ${({ theme }) => theme.spacing[3]};;
   display: flex;
   flex-direction: column;
+  font-weight: 700;
+  /* line-height: 1.2; */
   gap: ${({ theme }) => theme.spacing[2]};
   width: 100%;
 

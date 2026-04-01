@@ -10,23 +10,22 @@ export default function ProductCareOption({ product, isChecked, onToggle }) {
   // 케어서비스 옵션
   const careService = product.additionalServices?.[0];
   if (!careService) return null;
+  const originalPrice = Math.round(careService.price / (1 - CARE_DISCOUNT_RATE / 100));
   return (
     <Wrapper>
-      <CareCard $checked={isChecked}>
-        <CheckboxRow>
-          <Checkbox
-            type="checkbox"
-            checked={isChecked}
-            onChange={(e) => onToggle(e.target.checked)}
-          />
-        </CheckboxRow>
-
+      <CareCard $checked={isChecked} onClick={() => onToggle(!isChecked)}>
         <CareContent>
-          <CareTitle>{careService.title}</CareTitle>
+          <CareTitleRow>
+            <Checkbox type="checkbox" checked={isChecked} onChange={() => {}} />
+            <CareTitle>{careService.title}</CareTitle>
+          </CareTitleRow>
           <CareDesc>{careService.desc}</CareDesc>
 
           <CarePriceRow>
-            <Priced>+ {careService.price.toLocaleString()}원</Priced>
+            <Priced>
+              <OriginalPrice>{originalPrice.toLocaleString()}원</OriginalPrice>
+              <span>20%↓</span> + {careService.price.toLocaleString()}원
+            </Priced>
           </CarePriceRow>
         </CareContent>
       </CareCard>
@@ -52,18 +51,36 @@ const Wrapper = styled.div`
 
 const CareCard = styled.div`
   display: flex;
-  align-items: flex-start;
   gap: ${({ theme }) => theme.spacing[4]};
   width: 100%;
+  margin-top: ${({ theme }) => theme.spacing[1]};
   padding: 18px 20px;
   border-radius: 20px;
+  cursor: pointer;
   border: 1px solid
     ${({ $checked, theme }) => ($checked ? theme.btn.secondaryBorder : theme.input.lineBorder)};
   background: ${({ theme }) => theme.btn.secondaryBg};
-  box-shadow: ${({ $checked, theme }) => ($checked ? theme.btn.secondaryShadow : 'none')};
+  box-shadow: ${({ $checked, theme }) =>
+    $checked
+      ? `
+        0 0 0 1.5px ${theme.colors.textSecondary},
+        0 0 0 4px ${theme.colors.electricViolet ?? theme.colors.primary}33,
+        inset 0 1px 3px rgba(255,255,255,0.08)
+      `
+      : 'none'};
+  transition:
+    border-color ${({ theme }) => theme.motion.fast},
+    box-shadow ${({ theme }) => theme.motion.fast},
+    transform ${({ theme }) => theme.motion.fast};
+
+  &:active {
+    transform: scale(0.985);
+  }
 `;
 
 const CheckboxRow = styled.div`
+  display: flex;
+  justify-content: center;
   flex-shrink: 0;
   padding-top: 2px;
 `;
@@ -81,13 +98,17 @@ const Checkbox = styled.input`
   flex-shrink: 0;
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.input.lineBorder};
-  background: transparent;
+  background: ${({ theme }) => theme.colors.primary}18;
+  transition:
+    background ${({ theme }) => theme.motion.fast},
+    box-shadow ${({ theme }) => theme.motion.fast},
+    border-color ${({ theme }) => theme.motion.fast};
 
   &:checked {
     background: ${({ theme }) => theme.gradients.navActive};
     box-shadow:
-      0 0 0 1px #7c3aed,
-      0 0 0 4px #7c3aed30;
+      0 0 0 1px ${({ theme }) => theme.colors.textSecondary},
+      0 0 0 3px ${({ theme }) => theme.colors.electricViolet ?? theme.colors.primary}33;
     border: none;
   }
   &:checked::after {
@@ -102,21 +123,28 @@ const Checkbox = styled.input`
   }
 `;
 
+const CareTitleRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[3]};
+`;
+
 const CareContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
 `;
 
 const CareTitle = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSize.s};
+  font-weight: 700;
   color: ${({ theme }) => theme.colors.text};
 `;
 
 const CareDesc = styled.p`
   margin: 0;
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  padding-left: calc(18px + ${({ theme }) => theme.spacing[3]});
+  font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSize.xxs};
   color: ${({ theme }) => theme.colors.textSecondary};
 `;
 
@@ -124,6 +152,7 @@ const CarePriceRow = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
+  padding-left: calc(18px + ${({ theme }) => theme.spacing[3]});
   margin-top: 8px;
 `;
 
@@ -132,8 +161,23 @@ const Discount = styled.span`
   color: ${({ theme }) => theme.colors.accent};
 `;
 
-const Priced = styled.span`
+const OriginalPrice = styled.span`
+  text-decoration: line-through;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  opacity: 0.6;
   font-size: ${({ theme }) => theme.fontSize.xxs};
-  font-weight: 600;
+  margin-right: 4px;
+`;
+
+const Priced = styled.span`
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: 700;
   color: ${({ theme }) => theme.colors.primary};
+  > span:nth-of-type(2) {
+    font-size: ${({ theme }) => theme.fontSize.xxs};
+    color: ${({ theme }) => theme.colors.accent};
+    margin-right: 4px;
+    font-weight: 700;
+    font-family: ${({ theme }) => theme.fontFamily.mono};
+  }
 `;

@@ -31,10 +31,21 @@ const SectionTitle = styled.h2`
 
 const SectionColorTitle = styled(SectionTitle)`
   margin-bottom: ${({ theme, $hasSub }) => ($hasSub ? theme.spacing[2] : theme.spacing[4])};
-  background: ${({ theme }) => theme.gradients.Headline};
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  background: ${({ $solid, theme }) => ($solid ? 'none' : theme.gradients.Headline)};
+  -webkit-background-clip: ${({ $solid }) => ($solid ? 'unset' : 'text')};
+  background-clip: ${({ $solid }) => ($solid ? 'unset' : 'text')};
+  color: ${({ $solid, theme }) => ($solid ? theme.colors.primary : 'transparent')};
+`;
+
+const TitleRow = styled.div`
+  display: flex;
+  align-items: baseline;
+  gap: ${({ theme }) => theme.spacing[3]};
+  flex-wrap: wrap;
+
+  > h2 {
+    margin-bottom: 0;
+  }
 `;
 
 const SectionSub = styled.p`
@@ -74,6 +85,8 @@ export default function BaseSection({
   titleFont,
   titleSize,
   star = false,
+  inline = false,
+  solidColor = false,
   className,
 }) {
   const isCenter = align === 'center';
@@ -81,20 +94,35 @@ export default function BaseSection({
 
   return (
     <SectionHeadWrap className={className} $center={isCenter}>
-      <SectionLabel $center={isCenter}>
-        <LavStarIcon>✦</LavStarIcon>
-        {label}
-        {star && <LavStarIcon>✦</LavStarIcon>}
-      </SectionLabel>
-      {title && (
-        <SectionTitle $hasSub={Boolean(colorTitle || sub)} $font={titleFont} $size={titleSize}>
-          {title}
-        </SectionTitle>
+      {(label || star) && (
+        <SectionLabel $center={isCenter}>
+          <LavStarIcon>✦</LavStarIcon>
+          {label}
+          {star && <LavStarIcon>✦</LavStarIcon>}
+        </SectionLabel>
       )}
-      {colorTitle && (
-        <SectionColorTitle $hasSub={hasSub} $font={titleFont} $size={titleSize}>
-          {colorTitle}
-        </SectionColorTitle>
+      {inline && title && colorTitle ? (
+        <TitleRow>
+          <SectionTitle $hasSub={Boolean(sub)} $font={titleFont} $size={titleSize}>
+            {title}
+          </SectionTitle>
+          <SectionColorTitle $hasSub={hasSub} $font={titleFont} $size={titleSize} $solid={solidColor}>
+            {colorTitle}
+          </SectionColorTitle>
+        </TitleRow>
+      ) : (
+        <>
+          {title && (
+            <SectionTitle $hasSub={Boolean(colorTitle || sub)} $font={titleFont} $size={titleSize}>
+              {title}
+            </SectionTitle>
+          )}
+          {colorTitle && (
+            <SectionColorTitle $hasSub={hasSub} $font={titleFont} $size={titleSize} $solid={solidColor}>
+              {colorTitle}
+            </SectionColorTitle>
+          )}
+        </>
       )}
       {sub ? <SectionSub>{sub}</SectionSub> : null}
     </SectionHeadWrap>

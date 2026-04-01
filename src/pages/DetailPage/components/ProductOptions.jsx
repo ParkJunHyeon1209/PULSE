@@ -86,13 +86,12 @@ export default function ProductOptions({ options = [], selectedOptions = {}, onS
 }
 
 const Section = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
+  margin-bottom: ${({ theme }) => theme.spacing[5]};
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px; 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     margin-bottom: ${({ theme }) => theme.spacing[5]};
-    gap: 10px;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
@@ -104,7 +103,7 @@ const Section = styled.div`
 const Label = styled.p`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   color: ${({ theme }) => theme.colors.textSecondary};
-  font-weight: 400;
+  font-weight: 600;
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     line-height: 1.4;
   }
@@ -113,6 +112,7 @@ const Label = styled.p`
 const LabelValue = styled.span`
   color: ${({ theme }) => theme.colors.text};
   padding-left: ${({ theme }) => theme.spacing[2]};
+  font-weight: 700;
 `;
 
 const ColorList = styled.div`
@@ -130,11 +130,8 @@ const ColorList = styled.div`
 
 const ButtonList = styled.div`
   display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     gap: 10px;
-  }
+  flex-wrap: wrap;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     gap: 8px;
@@ -184,7 +181,7 @@ const ColorButton = styled.button`
 
 const OptionButton = styled.button`
   padding: 8px 16px;
-  border-radius: 12px;
+  border-radius: 10px;
   border: ${({ $active, theme }) =>
     $active
       ? `1px solid ${theme.colors.electricViolet ?? theme.colors.primary}`
@@ -192,10 +189,19 @@ const OptionButton = styled.button`
   background: ${({ $active, theme }) => ($active ? `${theme.colors.primary}1F` : 'transparent')};
   color: ${({ $active, theme }) => ($active ? theme.colors.text : theme.colors.textSecondary)};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
+  box-shadow: ${({ $active, theme }) =>
+    $active
+      ? `
+        0 0 0 1px ${theme.colors.textSecondary},
+        0 0 0 3px ${(theme.colors.electricViolet ?? theme.colors.primary)}33,
+        inset 0 1px 3px rgba(255,255,255,0.08)
+      `
+      : `none`};
   transition:
     border-color ${({ theme }) => theme.motion.fast},
     background-color ${({ theme }) => theme.motion.fast},
-    color ${({ theme }) => theme.motion.fast};
+    color ${({ theme }) => theme.motion.fast},
+    box-shadow ${({ theme }) => theme.motion.fast};
 
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary};

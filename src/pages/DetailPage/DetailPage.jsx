@@ -166,14 +166,12 @@ export default function DetailPage() {
 
   if (isLoading) {
     return (
-      <PageWrapper>
-        <ContentSection>
-          <LoadingWrap>
-            <LoadingSpinner />
-            <LoadingText>상품 정보를 불러오고 있습니다.</LoadingText>
-          </LoadingWrap>
-        </ContentSection>
-      </PageWrapper>
+      <LoadingScreen>
+        <LoadingWrap>
+          <LoadingSpinner />
+          <LoadingText>상품 정보를 불러오고 있습니다.</LoadingText>
+        </LoadingWrap>
+      </LoadingScreen>
     );
   }
 
@@ -360,14 +358,9 @@ const ToastMessage = styled.div`
   padding: ${({ theme }) => `${theme.spacing[5]} ${theme.spacing[6]}`};
   border-radius: ${({ theme }) => theme.radii.xl};
 
-  background: linear-gradient(
-    135deg,
-    ${({ theme }) => theme.colors.cardBg} 0%,
-    ${({ theme }) => theme.colors.surface} 100%
-  );
+  background: ${({ theme }) => theme.colors.modalBg};
   color: ${({ theme }) => theme.colors.text};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  backdrop-filter: ${({ theme }) => theme.effects.blurPromo};
 
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: 600;
@@ -395,6 +388,14 @@ const ToastMessage = styled.div`
     width: calc(100% - ${({ theme }) => theme.spacing[8]});
   }
 `;
+const LoadingScreen = styled.div`
+  width: 100%;
+  min-height: calc(100vh - 160px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const LoadingWrap = styled.div`
   width: 100%;
   grid-column: 1 / -1;
@@ -409,8 +410,8 @@ const LoadingWrap = styled.div`
 `;
 
 const LoadingSpinner = styled.div`
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   border-radius: ${({ theme }) => theme.radii.full};
   border: 3px solid rgba(${({ theme }) => theme.colors.primaryRgb}, 0.18);
   border-top-color: ${({ theme }) => theme.colors.primary};
@@ -426,7 +427,8 @@ const LoadingText = styled.div`
   margin: 0;
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: 600;
-  line-height: 1.5;
+  line-height: 3;
   text-align: center;
+  font-weight: 600;
   color: ${({ theme }) => theme.colors.primary};
 `;

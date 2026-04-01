@@ -24,8 +24,9 @@ const FeatureImage = styled.img`
 
 const SpecList = styled.div`
   width: 100%;
-  margin-top: ${({ theme }) => theme.spacing[16]};
+  margin: ${({ theme }) => theme.spacing[8]} 0;
   display: grid;
+  align-items: center;
   grid-template-columns: 1fr 1fr;
   gap: ${({ theme }) => theme.spacing[14]};
 
@@ -59,22 +60,13 @@ const SpecPreviewImage = styled.img`
 `;
 
 const SpecItem = styled.div`
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing[12]} 0;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding: ${({ theme }) => theme.spacing[8]} 0;
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    padding: ${({ theme }) => theme.spacing[6]} 0;
-  }
+  /* width: 100%; */
 `;
 
 const SpecLine = styled.p`
   display: grid;
   grid-template-columns: 14ch minmax(0, 1fr);
-  align-items: start;
+  align-items: center;
   column-gap: ${({ theme }) => theme.spacing[8]};
   padding: ${({ theme }) => theme.spacing[4]} 0;
   border-bottom: 1px solid ${({ theme }) => theme.Line};

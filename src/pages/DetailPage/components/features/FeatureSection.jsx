@@ -1,65 +1,40 @@
-import React, { Suspense, lazy, useState, useEffect } from 'react';
+import React, { Suspense, lazy, useState, useRef } from 'react';
 import styled from '@emotion/styled';
 // import { categoryDetailApi } from '../../../../data/mockCategoryApi';
 import BundleCard from './BundleCard';
+import BaseSection from '../../../../components/common/BaseSection';
 
 const FeatureDetailContent = lazy(() => import('./FeatureDetailContent'));
 
 const FeatureLayout = styled.div`
   display: flex;
   flex-direction: column;
+  font-weight: 700;
   padding-top: ${({ theme }) => theme.spacing[20]};
+  margin-top: ${({ theme }) => theme.spacing[10]};
 `;
 
-const FeatureTop = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: ${({ theme }) => theme.spacing[2]};
-  color: ${({ theme }) => theme.colors.textSecondary};
-
-  > p:nth-of-type(1) {
-    font-size: ${({ theme }) => theme.fontSize.xxxs};
-
-    > span {
-      color: ${({ theme }) => theme.colors.primary};
-    }
-  }
-  > p:nth-of-type(2) {
-    font-size: ${({ theme }) => theme.fontSize.md};
-    color: ${({ theme }) => theme.colors.text};
-    line-height: 1.15;
-    word-break: keep-all;
-
-    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-      font-size: ${({ theme }) => theme.fontSize.md};
-    }
-
-    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-      font-size: ${({ theme }) => theme.fontSize.sm};
-      line-height: 1.2;
-    }
-  }
-  > p:nth-of-type(3) {
-    font-size: ${({ theme }) => theme.fontSize.xxs};
-  }
-`;
 
 const SpecTable = styled.div`
+  background: color-mix(in srgb, ${({ theme }) => theme.colors.cardBg} 40%, transparent);
   width: 100%;
   margin-top: ${({ theme }) => theme.spacing[8]};
   border-radius: ${({ theme }) => theme.radii.xl};
   border: 1px solid ${({ theme }) => theme.Line};
+  box-shadow:
+    0 4px 32px ${({ theme }) => theme.colors.primary}22,
+    0 1px 0 rgba(255, 255, 255, 0.04) inset;
 `;
 
 const SpecRow = styled.div`
   display: grid;
   grid-template-columns: 180px minmax(0, 1fr);
-  align-items: start;
+  align-items: center;
   column-gap: ${({ theme }) => theme.spacing[6]};
   padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[5]};
   border-bottom: 1px solid ${({ theme }) => theme.Line};
   font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: 700;
 
   &:last-of-type {
     border-bottom: none;
@@ -118,31 +93,53 @@ const SpecRow = styled.div`
   }
 `;
 
+const AnimatedWrap = styled.div`
+  max-height: ${({ $open }) => ($open ? '4000px' : '0')};
+  opacity: ${({ $open }) => ($open ? '1' : '0')};
+  overflow: hidden;
+  transition:
+    max-height ${({ $open }) => ($open ? '0.6s ease' : '0.35s ease')},
+    opacity ${({ $open }) => ($open ? '0.4s ease 0.1s' : '0.2s ease')};
+`;
+
 const DetailContentWrap = styled.div`
   visibility: ${({ $visible }) => ($visible ? 'visible' : 'hidden')};
   height: ${({ $visible }) => ($visible ? 'auto' : '0')};
   overflow: hidden;
 `;
 
+const ButtonLabel = styled.span`
+  display: inline-block;
+  animation: fadeInUp 0.22s ease;
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`;
+
 const DetailToggleButton = styled.button`
   width: 100%;
+  height: 52px;
   margin-top: ${({ theme }) => theme.spacing[10]};
-  padding: ${({ theme }) => `${theme.spacing[4]} ${theme.spacing[6]}`};
-  border-top: 1px solid ${({ theme }) => theme.Line};
-  border-bottom: 1px solid ${({ theme }) => theme.Line};
+  border-top: 2px solid ${({ theme }) => theme.Line};
+  border-bottom: 2px solid ${({ theme }) => theme.Line};
 
   color: ${({ theme }) => theme.colors.primary};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
-  font-weight: 400;
+  font-weight: 700;
   transition:
-    transform ${({ theme }) => theme.motion.normal},
     border-color ${({ theme }) => theme.motion.normal},
     font-size ${({ theme }) => theme.motion.normal};
 
   &:hover {
-    transform: translateY(-2px);
-    border-color: ${({ theme }) => theme.colors.primary};
-    font-size: ${({ theme }) => theme.fontSize.xs};
+    border-color: ${({ theme }) => theme.colors.primary}40;
+    font-size: ${({ theme }) => theme.fontSize.xxs};
   }
 `;
 
@@ -185,7 +182,7 @@ const LoadingText = styled.p`
 `;
 
 const BundleCardWrap = styled.div`
-  margin-top: ${({ theme }) => theme.spacing[24]};
+  margin: ${({ theme }) => theme.spacing[40]} 0 ${({ theme }) => theme.spacing[16]}  ;
 `;
 
 export default function FeatureSection({
@@ -197,11 +194,14 @@ export default function FeatureSection({
 }) {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isContentLoading, setIsContentLoading] = useState(false);
+  const toggleBtnRef = useRef(null);
+  const prevProductIdRef = useRef(product?.id);
 
-  useEffect(() => {
+  if (prevProductIdRef.current !== product?.id) {
+    prevProductIdRef.current = product?.id;
     setIsDetailOpen(false);
     setIsContentLoading(false);
-  }, [product?.id]);
+  }
 
   if (!currentType) return <div>category 없음</div>;
 
@@ -212,6 +212,9 @@ export default function FeatureSection({
     if (isDetailOpen) {
       setIsDetailOpen(false);
       setIsContentLoading(false);
+      setTimeout(() => {
+        toggleBtnRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
       return;
     }
 
@@ -221,16 +224,15 @@ export default function FeatureSection({
 
   return (
     <FeatureLayout>
-      <FeatureTop>
-        <p>
-          <span>✦</span> TECH SPECS
-        </p>
-        <p>GLASSMORPHISM TABLE</p>
-        <p>
-          <span>정밀 스펙</span>
-          <span>성능 데이터</span>
-        </p>
-      </FeatureTop>
+      <BaseSection
+        label="TECH SPECS"
+        title="PRODUCT"
+        colorTitle="SPECS"
+        sub="정밀 스펙 · 성능 데이터"
+        titleSize="xl"
+        inline
+        solidColor
+      />
 
       <SpecTable>
         {specs.map((item, index) => (
@@ -241,30 +243,33 @@ export default function FeatureSection({
         ))}
       </SpecTable>
 
-      {isDetailOpen && (
-        <>
-          {isContentLoading && (
-            <DetailFallback>
-              <LoadingSpinner />
-              <LoadingText>상세정보를 불러오는 중...</LoadingText>
-            </DetailFallback>
-          )}
+      <AnimatedWrap $open={isDetailOpen}>
+        {isDetailOpen && (
+          <>
+            {isContentLoading && (
+              <DetailFallback>
+                <LoadingSpinner />
+                <LoadingText>상세정보를 불러오는 중...</LoadingText>
+              </DetailFallback>
+            )}
+            <Suspense fallback={null}>
+              <DetailContentWrap $visible={!isContentLoading}>
+                <FeatureDetailContent
+                  visibleSpecs={visibleSpecs}
+                  product={product}
+                  categoryDetail={categoryDetail}
+                  onReady={() => setIsContentLoading(false)}
+                />
+              </DetailContentWrap>
+            </Suspense>
+          </>
+        )}
+      </AnimatedWrap>
 
-          <Suspense fallback={null}>
-            <DetailContentWrap $visible={!isContentLoading}>
-              <FeatureDetailContent
-                visibleSpecs={visibleSpecs}
-                product={product}
-                categoryDetail={categoryDetail}
-                onReady={() => setIsContentLoading(false)}
-              />
-            </DetailContentWrap>
-          </Suspense>
-        </>
-      )}
-
-      <DetailToggleButton type="button" onClick={handleToggleDetail}>
-        {isDetailOpen ? '상세정보 접기' : '상세정보 더보기'}
+      <DetailToggleButton ref={toggleBtnRef} type="button" onClick={handleToggleDetail}>
+        <ButtonLabel key={String(isDetailOpen)}>
+          {isDetailOpen ? '상세정보 접기' : '상세정보 더보기'}
+        </ButtonLabel>
       </DetailToggleButton>
 
       <BundleCardWrap>
