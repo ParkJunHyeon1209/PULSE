@@ -25,6 +25,11 @@ const HeroWrap = styled(Full)`
   display: flex;
   flex-direction: column;
   aspect-ratio: 16 / 9;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    aspect-ratio: unset;
+    height: 100svh;
+  }
 `;
 
 export default function MainPage() {

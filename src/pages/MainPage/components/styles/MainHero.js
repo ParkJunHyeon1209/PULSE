@@ -48,6 +48,13 @@ export const HeroWrap = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    padding-top: ${({ theme }) => theme.spacing[18]};
+  }
 `;
 
 // 히어로 텍스트 스타일
@@ -82,9 +89,25 @@ const HeroTitle = styled.h2`
   line-height: 0.96;
   letter-spacing: 0.04em;
   color: white;
+  text-shadow: ${({ theme }) =>
+    theme.mode === 'dark'
+      ? '0 2px 24px rgba(6,4,20,0.5), 0 0 48px rgba(6,4,20,0.3)'
+      : '0 0 4px rgba(118, 63, 255, 0.08), 0 0 18px rgba(114, 58, 255, 0.05)'};
+  transition: font-size ${({ theme }) => theme.motion.normal};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    max-width: 100%;
+    width: 100%;
+    text-align: center;
+    text-shadow: ${({ theme }) =>
+      theme.mode === 'dark'
+        ? '0 2px 20px rgba(6,4,20,0.1), 0 0 60px rgba(6,4,20,0.1)'
+        : '0 2px 16px rgba(93, 28, 255, 0.35), 0 0 40px rgba(86, 20, 255, 0.2)'};
+  }
 `;
 
 export const HeroTitleGrad = styled.span`
+  display: block;
   background: linear-gradient(135deg, #c4b5fd, #818cf8, #60a5fa, #c4b5fd);
   background-size: 300%;
   -webkit-background-clip: text;
@@ -99,6 +122,16 @@ const HeroCopy = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: ${({ theme }) => theme.fontSize.s};
   line-height: 1.8;
+  /* text-shadow:
+    0 0 8px ${({ theme }) => theme.colors.background},
+    0 0 20px ${({ theme }) => theme.colors.background + 'ee'},
+    0 0 40px ${({ theme }) => theme.colors.background + 'aa'}; */
+  transition: font-size ${({ theme }) => theme.motion.normal};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: ${({ theme }) => theme.fontSize.xxs};
+    margin-bottom: ${({ theme }) => theme.spacing[10]};
+  }
 `;
 
 const HeroActions = styled.div`
@@ -106,11 +139,24 @@ const HeroActions = styled.div`
   width: 100%;
   flex-wrap: wrap;
   gap: ${({ theme }) => theme.spacing[4]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    justify-content: center;
+  }
 `;
 
 export const HeroDec = styled(BaseBtn)`
   font-weight: 600;
   letter-spacing: 0.16em;
+  transition:
+    font-size ${({ theme }) => theme.motion.normal},
+    padding ${({ theme }) => theme.motion.normal};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    align-self: center;
+  }
 `;
 
 export const LavStarEnd = styled(LavStarIcon)`
@@ -150,6 +196,11 @@ const HeroStats = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     width: 100%;
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    margin-top: ${({ theme }) => theme.spacing[8]};
+    justify-content: center;
+  }
 `;
 // ─── 재사용 가능 stat 블록 시작 ───
 // HeroStatValue font-size: md → sm 으로 변경해서 사용
@@ -170,6 +221,11 @@ export const HeroStat = styled.div`
     padding-right: 0;
     border-right: none;
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    align-items: center;
+    padding: 0 ${({ theme }) => theme.spacing[4]};
+  }
 `;
 
 export const HeroStatValue = styled.div`
@@ -181,6 +237,14 @@ export const HeroStatValue = styled.div`
   -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: 0.04em;
+  transition: font-size ${({ theme }) => theme.motion.normal};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: ${({ theme }) => theme.fontSize.m};
+    ${({ theme }) =>
+      theme.mode === 'light' &&
+      `filter: drop-shadow(0 0 8px ${theme.colors.background}) drop-shadow(0 0 6px ${theme.colors.background});`}
+  }
 
   span {
     font-family: inherit;
@@ -190,7 +254,7 @@ export const HeroStatValue = styled.div`
 export const HeroStatLabel = styled.div`
   margin-top: ${({ theme }) => theme.spacing[2]};
   font-size: ${({ theme }) => theme.fontSize.xxs};
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ theme }) => theme.colors.noneText};
   font-weight: bold;
   opacity: 0.5;
   letter-spacing: 0.14em;
@@ -198,9 +262,21 @@ export const HeroStatLabel = styled.div`
   font-family: ${({ theme }) => theme.fontFamily.mono};
   white-space: nowrap;
   line-height: 1.5;
+  ${({ theme }) =>
+    theme.mode === 'light' &&
+    `text-shadow:
+        0 0 2px ${theme.colors.background},
+        0 0 4px ${theme.colors.background + 'ee'},
+        0 0 8px ${theme.colors.background + 'aa'};`}
+  transition: font-size ${({ theme }) => theme.motion.normal} letter-spacing
+    ${({ theme }) => theme.motion.normal};
 
   span {
     display: block;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: ${({ theme }) => theme.fontSize.xxxs};
+    letter-spacing: 0.01em;
   }
 `;
 

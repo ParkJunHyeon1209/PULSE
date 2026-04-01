@@ -5,10 +5,22 @@ const PulseSvgWrap = styled.div`
   align-items: center;
   gap: ${({ theme }) => theme.spacing[4]};
   margin-top: ${({ theme }) => theme.spacing[10]};
+  transition: justify-content ${({ theme }) => theme.motion.normal};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    justify-content: center;
+    margin-top: ${({ theme }) => theme.spacing[6]};
+  }
 `;
 
 const PulseLineSvgWrap = styled.svg`
   overflow: visible;
+  transition: width ${({ theme }) => theme.motion.normal};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    width: 140px;
+    height: 24px;
+  }
 `;
 
 const PulseSvgLine = styled.polyline`
@@ -134,11 +146,16 @@ export default function PulseLineSvg({ className, label = 'Live Signal' }) {
             </feMerge>
           </filter>
           <filter id="hero-svg-spark" x="-120%" y="-120%" width="340%" height="340%">
-            <feGaussianBlur stdDeviation="3" result="b1" />
-            <feGaussianBlur stdDeviation="1.2" result="b2" in="SourceGraphic" />
-            <feMerge>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b1" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="1.2" result="b2" />
+
+            <feFlood floodColor="#c084fc" floodOpacity="0.28" result="overlay" />
+            <feComposite in="overlay" in2="SourceGraphic" operator="in" result="overlayMasked" />
+
+            <feMerge result="glow">
               <feMergeNode in="b1" />
               <feMergeNode in="b2" />
+              <feMergeNode in="overlayMasked" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
@@ -179,8 +196,8 @@ export default function PulseLineSvg({ className, label = 'Live Signal' }) {
             y1="8"
             x2="167"
             y2="24"
-            stroke="#8d50ff"
-            strokeWidth="1.4"
+            stroke="rgba(191, 38, 211, 0.4)"
+            strokeWidth="1.2"
             strokeLinecap="round"
           />
           <line
@@ -188,8 +205,8 @@ export default function PulseLineSvg({ className, label = 'Live Signal' }) {
             y1="16"
             x2="174"
             y2="16"
-            stroke="#8d50ff"
-            strokeWidth="1.4"
+            stroke="rgba(191, 38, 211, 0.4)"
+            strokeWidth="1.2"
             strokeLinecap="round"
           />
           <line
@@ -197,7 +214,7 @@ export default function PulseLineSvg({ className, label = 'Live Signal' }) {
             y1="10.5"
             x2="171.5"
             y2="21.5"
-            stroke="#7c3aed"
+            stroke="rgba(191, 38, 211, 0.3)"
             strokeWidth=".8"
             strokeLinecap="round"
             opacity=".7"
@@ -207,12 +224,12 @@ export default function PulseLineSvg({ className, label = 'Live Signal' }) {
             y1="10.5"
             x2="162.5"
             y2="21.5"
-            stroke="#7c3aed"
+            stroke="rgba(191, 38, 211, 0.3)"
             strokeWidth=".8"
             strokeLinecap="round"
             opacity=".7"
           />
-          <circle cx="167" cy="16" r="2" fill="#b990ff" />
+          <circle cx="167" cy="16" r="2" fill="#e9a2ff" />
         </PulseSvgCross>
       </PulseLineSvgWrap>
       <PulseSvgLabel>{label}</PulseSvgLabel>
