@@ -41,7 +41,6 @@ const RecommendWrap = styled.div`
         gap: ${({ theme }) => theme.spacing[2]};
         padding: ${({ theme }) => theme.spacing[3]};
       }
-
       /* 하단 플러스 버튼 위치가 너무 뜨면 같이 보정 */
       > li > article > button {
         bottom: ${({ theme }) => theme.spacing[3]};
