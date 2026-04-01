@@ -4,11 +4,14 @@ import useAuthStore from '../../../store/useAuthStore';
 import useOrderStore from '../../../store/useOrderStore';
 import useOverlayStore from '../../../store/useOverlayStore';
 import OrderConfirmModal from '../../../components/common/modals/OrderConfirmModal';
+import { getGradeByTotalOrderPrice, rewardsRate } from '../../../utils/myPageMap';
 
 const BUY_NOW_MODAL_ID = 'detail-buy-now-confirm';
 
 export default function PurchaseActions({ product, quantity = 1, onAddToCart, onRequireLogin }) {
   const isLogin = useAuthStore((state) => state.isLogin);
+  const user = useAuthStore((state) => state.user);
+  const setUser = useAuthStore((state) => state.login);
   const addOrder = useOrderStore((state) => state.addOrder);
   const openModal = useOverlayStore((state) => state.openModal);
 
@@ -27,7 +30,7 @@ export default function PurchaseActions({ product, quantity = 1, onAddToCart, on
       return;
     }
 
-    addOrder({
+    const createdOrder = addOrder({
       items: [
         {
           ...product,
@@ -36,6 +39,22 @@ export default function PurchaseActions({ product, quantity = 1, onAddToCart, on
         },
       ],
       status: '결제완료',
+    });
+
+    if (!createdOrder || !user) return;
+
+    const rewardRate = rewardsRate[user.grade || 'MEMBER'] || 0;
+    const rewardPoint = Math.floor(createdOrder.totalPrice * rewardRate);
+    const nextTotalOrderPrice = (user.totalOrderPrice || 0) + createdOrder.totalPrice;
+    const nextGrade = getGradeByTotalOrderPrice(nextTotalOrderPrice);
+
+    setUser({
+      ...user,
+      orders: [createdOrder, ...(user.orders || [])],
+      isHaveOrdered: true,
+      totalOrderPrice: nextTotalOrderPrice,
+      grade: nextGrade,
+      point: (user.point || 0) + rewardPoint,
     });
   };
 

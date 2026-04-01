@@ -1,12 +1,14 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useState } from 'react';
 import useCartStore from '../../../store/useCartStore';
 import useOrderStore from '../../../store/useOrderStore';
 import useOverlayStore from '../../../store/useOverlayStore';
+import useAuthStore from '../../../store/useAuthStore';
 import BaseBtn from '../../../components/common/BaseBtn';
 import BaseSection from '../../../components/common/BaseSection';
 import BaseTooltip from '../../../components/common/BaseTooltip';
 import OrderConfirmModal from '../../../components/common/modals/OrderConfirmModal';
+import { getGradeByTotalOrderPrice, rewardsRate } from '../../../utils/myPageMap';
 import {
   VisaIcon,
   MasterCardIcon,
@@ -174,6 +176,11 @@ const ORDER_CONFIRM_MODAL_ID = 'cart-order-confirm';
 export default function Summary() {
   const totalPrice = useCartStore((state) => state.getTotalPrice);
   const SHIPPING_FEE = 5000;
+  const [couponCode, setCouponCode] = useState('');
+  const [appliedDiscountRate, setAppliedDiscountRate] = useState(0);
+  const [appliedCouponCode, setAppliedCouponCode] = useState('');
+  const user = useAuthStore((state) => state.user);
+  const setUser = useAuthStore((state) => state.login);
 
   // 결제
   const getCheckedItems = useCartStore((state) => state.getCheckedItems);
@@ -182,6 +189,12 @@ export default function Summary() {
   const openModal = useOverlayStore((state) => state.openModal);
   const checkedItems = getCheckedItems();
   const hasCheckedItems = checkedItems.length > 0;
+  const subtotal = totalPrice();
+  const discountAmount = Math.floor(subtotal * appliedDiscountRate);
+  const shippingFee = subtotal > 0 && subtotal < 50000 ? SHIPPING_FEE : 0;
+  const finalTotal = Math.max(subtotal - discountAmount + shippingFee, 0);
+  const rewardRate = rewardsRate[user?.grade || 'MEMBER'] || 0;
+  const rewardPoint = Math.floor(finalTotal * rewardRate);
 
   const handleOpenOrderModal = () => {
     if (!hasCheckedItems) {
@@ -201,12 +214,37 @@ export default function Summary() {
     const createdOrder = addOrder({
       items,
       status: '결제완료',
+      totalPrice: finalTotal,
     });
 
     if (!createdOrder) {
       return;
     }
 
+    if (user) {
+      const nextCoupons = (user.coupons || []).filter((coupon) => {
+        if (!appliedCouponCode) return true;
+        const storedCode = (coupon.couponCode || coupon.code || '').trim().toUpperCase();
+        return storedCode !== appliedCouponCode;
+      });
+      const nextOrders = [createdOrder, ...(user.orders || [])];
+      const nextTotalOrderPrice = (user.totalOrderPrice || 0) + finalTotal;
+      const nextGrade = getGradeByTotalOrderPrice(nextTotalOrderPrice);
+
+      setUser({
+        ...user,
+        orders: nextOrders,
+        isHaveOrdered: true,
+        totalOrderPrice: nextTotalOrderPrice,
+        grade: nextGrade,
+        point: (user.point || 0) + rewardPoint,
+        coupons: nextCoupons,
+      });
+    }
+
+    setAppliedDiscountRate(0);
+    setAppliedCouponCode('');
+    setCouponCode('');
     clearCheckedItems();
   };
 
@@ -216,8 +254,7 @@ export default function Summary() {
         <div className="price">
           <h3>ORDER SUMMARY</h3>
           <p>
-            상품 합계{' '}
-            <span className="miniPrice">{totalPrice() ? totalPrice().toLocaleString() : 0}원</span>
+            상품 합계 <span className="miniPrice">{subtotal.toLocaleString()}원</span>
           </p>
           <p>
             <span className="shipping">
@@ -234,27 +271,43 @@ export default function Summary() {
               </span>
             </span>
             <span className="free">
-              {totalPrice() && totalPrice() < 50000 ? `${SHIPPING_FEE.toLocaleString()}원` : 'Free'}
+              {shippingFee > 0 ? `${shippingFee.toLocaleString()}원` : 'Free'}
             </span>
           </p>
           <p>
-            할인 <span className="discount">-0원</span>
+            할인 <span className="discount">-{discountAmount.toLocaleString()}원</span>
           </p>
           <p>
-            TOTAL{' '}
-            <span>
-              {totalPrice() && totalPrice() < 50000
-                ? (totalPrice() + SHIPPING_FEE).toLocaleString()
-                : totalPrice()?.toLocaleString() || 0}
-              원
-            </span>
+            TOTAL <span>{finalTotal.toLocaleString()}원</span>
           </p>
         </div>
 
         <div className="coupon">
-          <input type="text" placeholder="코드를 입력하세요" />
+          <input
+            type="text"
+            value={couponCode}
+            placeholder="코드를 입력하세요"
+            onChange={(e) => setCouponCode(e.target.value)}
+          />
 
-          <BaseBtn className="coupon-btn" variant="secondary" tone="violet" padding="8px 16px">
+          <BaseBtn
+            className="coupon-btn"
+            variant="secondary"
+            tone="violet"
+            padding="8px 16px"
+            onClick={() => {
+              const normalizedCode = couponCode.trim().toUpperCase();
+              if (!normalizedCode) return;
+
+              const matchedCoupon = user?.coupons?.find((coupon) => {
+                const storedCode = (coupon.couponCode || coupon.code || '').trim().toUpperCase();
+                return storedCode === normalizedCode;
+              });
+
+              setAppliedDiscountRate(matchedCoupon?.value || 0);
+              setAppliedCouponCode(matchedCoupon ? normalizedCode : '');
+            }}
+          >
             apply
           </BaseBtn>
         </div>

@@ -72,7 +72,7 @@ export default function MyInfo({ setCategory }) {
             colorTitle={user?.name || 'PULSE USER'}
             sub={`${user?.id || 'pulse@pulse.kr'}`}
           />
-          <GradeBadge>{user?.grade || 'SILVER'}</GradeBadge>
+          <GradeBadge>{user?.grade || 'MEMBER'}</GradeBadge>
         </UserInfo>
       </Profile>
       <Settings>
@@ -111,6 +111,7 @@ const InitialName = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    color: white;
     font-size: ${({ theme }) => theme.fontSize.lg};
   }
 `;

@@ -7,6 +7,15 @@ import BaseBtn from '../../../components/common/BaseBtn';
 import useAuthStore from '../../../store/useAuthStore';
 import useWishlistStore from '../../../store/useWishlistStore';
 import useOrderStore from '../../../store/useOrderStore';
+import {
+  AddressIcon,
+  CouponIcon,
+  HeartIcon,
+  LogoutIcon,
+  OrderIcon,
+  ReviewIcon,
+  UserIcon,
+} from '../../../assets/icons/BtnIcon';
 
 function LogoutModal() {
   const isOpen = useOverlayStore((state) => Boolean(state.modals.logout));
@@ -63,20 +72,31 @@ export default function MyPageCategory({ category, setCategory }) {
         <h4>내 계정</h4>
         <ul>
           <CategoryType $isActive={isActive('order')} onClick={() => setCategory('order')}>
-            주문내역
+            <div className="icontext">
+              <OrderIcon width={16} height={16} />
+              주문내역
+            </div>
             <span>{orderCount || 0}</span>
           </CategoryType>
           <CategoryType $isActive={isActive('wish')} onClick={() => setCategory('wish')}>
-            위시리스트
+            <div className="icontext">
+              <HeartIcon width={16} height={16} />찜 목록
+            </div>
             <span>{wishlistCount || 0}</span>
           </CategoryType>
           <CategoryType $isActive={isActive('review')} onClick={() => setCategory('review')}>
-            작성 리뷰
+            <div className="icontext">
+              <ReviewIcon />
+              작성 리뷰
+            </div>
             <span>{user?.reviewList?.length || 0}</span>
           </CategoryType>
           <CategoryType $isActive={isActive('coupon')} onClick={() => setCategory('coupon')}>
-            혜택 • 쿠폰
-            <span>{user?.couponList?.length || 0}</span>
+            <div className="icontext">
+              <CouponIcon />
+              혜택 • 쿠폰
+            </div>
+            <span>{user?.coupons?.length || 0}</span>
           </CategoryType>
         </ul>
       </li>
@@ -84,15 +104,26 @@ export default function MyPageCategory({ category, setCategory }) {
         <h4>설정</h4>
         <ul>
           <CategoryType $isActive={isActive('profile')} onClick={() => setCategory('profile')}>
-            프로필 편집
+            <div className="icontext">
+              <UserIcon />
+              프로필 편집
+            </div>
           </CategoryType>
           <CategoryType $isActive={isActive('address')} onClick={() => setCategory('address')}>
-            배송지 관리
+            <div className="icontext">
+              <AddressIcon />
+              배송지 관리
+            </div>
           </CategoryType>
         </ul>
       </li>
       <li>
-        <button onClick={() => openModal('logout')}>로그아웃</button>
+        <div className="icontext">
+          <button onClick={() => openModal('logout')}>
+            <LogoutIcon />
+            로그아웃
+          </button>
+        </div>
       </li>
       <LogoutModal />
     </CategoryList>
@@ -108,11 +139,24 @@ const CategoryList = styled.ul`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[3]};
 
+  .icontext {
+    display: flex;
+    align-items: center;
+    gap: ${({ theme }) => theme.spacing[2]};
+    > button {
+      display: flex;
+      gap: ${({ theme }) => theme.spacing[2]};
+      align-items: center;
+    }
+  }
+
   > li {
     display: flex;
     flex-direction: column;
-    gap: ${({ theme }) => theme.spacing[4]};
+    gap: ${({ theme }) => theme.spacing[2]};
+    margin-bottom: ${({ theme }) => theme.spacing[2]};
     h4 {
+      padding-top: ${({ theme }) => theme.spacing[2]};
       font-size: ${({ theme }) => theme.fontSize.xxxs};
       color: ${({ theme }) => theme.colors.textSecondary};
     }
@@ -127,9 +171,14 @@ const CategoryList = styled.ul`
     border-bottom: 1px solid ${({ theme }) => theme.colors.textSecondary};
   }
   > li:last-child {
+    padding-left: ${({ theme }) => theme.spacing[2]};
+    border-left: 1px solid transparent;
+    > div {
+      padding-top: ${({ theme }) => theme.spacing[2]};
+    }
     button {
       text-align: left;
-      font-size: ${({ theme }) => theme.fontSize.s};
+      font-size: ${({ theme }) => theme.fontSize.xs};
       color: ${({ theme }) => theme.colors.error};
     }
   }
@@ -140,30 +189,27 @@ const CategoryType = styled.li`
   padding: ${({ theme }) => theme.spacing[2]};
   display: flex;
   justify-content: space-between;
+  align-items: center;
   position: relative;
   font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: ${({ $isActive }) => ($isActive ? 'bold' : 'inherit')};
   color: ${({ theme, $isActive }) =>
     $isActive ? theme.colors.primary : theme.colors.textSecondary};
   background-color: ${({ theme, $isActive }) =>
     $isActive ? theme.colors.primary + '15' : 'transparent'};
-  border-top-right-radius: ${({ theme }) => theme.radii.sm};
-  border-bottom-right-radius: ${({ theme }) => theme.radii.sm};
+  border-radius: ${({ theme }) => theme.radii.sm};
   overflow: hidden;
+  border-left: 1px solid
+    ${({ theme, $isActive }) => ($isActive ? theme.colors.primary : 'transparent')};
+
+  /* .icontext {
+    display: flex;
+    align-items: center;
+    gap: ${({ theme }) => theme.spacing[2]};
+  } */
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
     background-color: ${({ theme }) => theme.colors.primary + '15'};
-  }
-
-  &::before {
-    content: '';
-    opacity: ${({ $isActive }) => ($isActive ? 1 : 0)};
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 2px;
-    height: 100%;
-    background-color: ${({ theme }) => theme.colors.primary};
-    border-radius: ${({ theme }) => theme.radii.sm} 0 0 ${({ theme }) => theme.radii.sm};
   }
 `;

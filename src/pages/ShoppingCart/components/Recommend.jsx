@@ -82,15 +82,7 @@ export default function Recommend() {
       <ul>
         {recommendedProducts.map((product) => (
           <li key={product.id}>
-            <BaseProductCard
-              product={{
-                ...product,
-                image: product.image,
-                title: product.title,
-                price: product.price,
-                meta: product.meta,
-              }}
-            />
+            <BaseProductCard product={product} />
           </li>
         ))}
       </ul>

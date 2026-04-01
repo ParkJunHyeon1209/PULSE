@@ -105,45 +105,49 @@ export default function OrderList() {
   return (
     <CategoryWrap>
       <OrderedList>
-        {orders.map((order) => (
-          <li key={order.id}>
-            <ItemInfo>
-              <p>{order.orderNumber}</p>
+        {orders.length > 0 ? (
+          orders.map((order) => (
+            <li key={order.id}>
+              <ItemInfo>
+                <p>{order.orderNumber}</p>
 
-              <ImgWrap>
-                {order.items.slice(0, 2).map((item, index) => (
-                  <img
-                    key={`${order.id}-${item.id}-${index}`}
-                    src={item.image}
-                    alt={item.title || '주문 상품 이미지'}
-                  />
-                ))}
+                <ImgWrap>
+                  {order.items.slice(0, 2).map((item, index) => (
+                    <img
+                      key={`${order.id}-${item.id}-${index}`}
+                      src={item.image}
+                      alt={item.title || '주문 상품 이미지'}
+                    />
+                  ))}
 
-                {order.items.length - 2 > 0 ? <p>+{order.items.length - 2}</p> : null}
-              </ImgWrap>
+                  {order.items.length - 2 > 0 ? <p>+{order.items.length - 2}</p> : null}
+                </ImgWrap>
 
-              <PriceSection>
-                합계 <span>{order.totalPrice.toLocaleString()}원</span>
-              </PriceSection>
-            </ItemInfo>
+                <PriceSection>
+                  합계 <span>{order.totalPrice.toLocaleString()}원</span>
+                </PriceSection>
+              </ItemInfo>
 
-            <ShippingInfo>
-              <p>{order.status}</p>
+              <ShippingInfo>
+                <p>{order.status}</p>
 
-              <ShippingBtns>
-                {order.status === '결제완료' && (
-                  <button onClick={() => handleCancelOrder(order.id)}>주문 취소</button>
-                )}
+                <ShippingBtns>
+                  {order.status === '결제완료' && (
+                    <button onClick={() => handleCancelOrder(order.id)}>주문 취소</button>
+                  )}
 
-                {(order.status === '배송중' || order.status === '배송완료') && (
-                  <button type="button">배송 조회</button>
-                )}
+                  {(order.status === '배송중' || order.status === '배송완료') && (
+                    <button type="button">배송 조회</button>
+                  )}
 
-                {order.status === '배송완료' && <button type="button">교환,반품</button>}
-              </ShippingBtns>
-            </ShippingInfo>
-          </li>
-        ))}
+                  {order.status === '배송완료' && <button type="button">교환,반품</button>}
+                </ShippingBtns>
+              </ShippingInfo>
+            </li>
+          ))
+        ) : (
+          <h2>주문 내역이 없습니다.</h2>
+        )}
       </OrderedList>
     </CategoryWrap>
   );
