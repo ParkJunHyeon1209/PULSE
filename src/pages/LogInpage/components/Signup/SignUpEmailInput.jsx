@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import CloseSvg from '../common/CloseSvg';
 import { checkIdApi } from '../../../../data/authApi';
+import { Close } from '../common/CommonSvg';
 
 const InputGroup = styled.div`
   display: flex;
@@ -149,7 +149,7 @@ export default function SignUpEamilInput({
           )}
           {(emailError || isUnique === false) && (
             <ErrorMessage>
-              <CloseSvg />
+              <Close />
               {emailError ? '이메일 형식이 올바르지 않습니다.' : '이미 사용중인 아이디입니다.'}
             </ErrorMessage>
           )}
