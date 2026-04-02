@@ -75,18 +75,86 @@ const CardWrap = styled.div`
     filter 400ms ease;
 `;
 
+const SkeletonToneCard = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: ${({ theme }) => theme.radii.xxl};
+  overflow: hidden;
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  background: ${({ theme }) => theme.card?.ci1 || theme.colors.cardBg};
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, ${({ theme }) => (theme.mode === 'dark' ? 0.08 : 0.22)}),
+      transparent
+    );
+    animation: showcaseSkeletonShimmer 1.6s infinite;
+  }
+
+  @keyframes showcaseSkeletonShimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+`;
+
+const SkeletonToneImage = styled.div`
+  width: 100%;
+  height: 68%;
+  background: ${({ theme }) =>
+    theme.mode === 'dark'
+      ? 'linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))'
+      : 'linear-gradient(180deg, rgba(124,58,237,0.10), rgba(124,58,237,0.05))'};
+`;
+
+const SkeletonToneBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[3]};
+  padding: ${({ theme }) => theme.spacing[5]};
+`;
+
+const SkeletonToneLine = styled.div`
+  width: ${({ $w }) => $w || '100%'};
+  height: ${({ $h }) => $h || '16px'};
+  border-radius: ${({ theme }) => theme.radii.sm};
+  background: ${({ theme }) =>
+    theme.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(124,58,237,0.1)'};
+`;
+
 export default function ShowcaseSec() {
   const [dropProducts, setDropProducts] = useState([]);
   const navigate = useNavigate();
   const count = dropProducts.length;
   const { activeIndex, move, setIsPaused } = useSlider(count);
   const touchX = useRef(null);
-
-  // console.log(dropProducts);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getDropProducts().then(setDropProducts);
+    const fetchDropProducts = async () => {
+      try {
+        setLoading(true);
+        const data = await getDropProducts();
+        setDropProducts(data);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDropProducts();
   }, []);
+
+  // console.log(dropProducts);
+  // useEffect(() => {
+  //   getDropProducts().then(setDropProducts);
+  // }, []);
 
   const getPos = (i) => {
     const diff = (i - activeIndex + count) % count;
@@ -126,31 +194,44 @@ export default function ShowcaseSec() {
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
-        {dropProducts.map((card, i) => {
-          const slot = getPos(i);
+        {(loading ? [0, 1, 2] : dropProducts).map((card, i) => {
+          const slot = loading ? (i === 0 ? -1 : i === 1 ? 0 : 1) : getPos(i);
+
           return (
             <CardWrap
-              key={card.id}
+              key={loading ? `skeleton-${i}` : card.id}
               $slot={slot}
               onClick={() => {
+                if (loading) return;
                 if (slot === -1) move(-1);
                 else if (slot === 1) move(1);
                 else navigate(`product/${card.id}`);
               }}
             >
-              <BaseToneCard
-                white={true}
-                imgOpacity={0.9}
-                img={card.image}
-                label={card.meta}
-                name={card.title}
-                count={card.desc}
-                tone={card.tag}
-                height="100%"
-                badge={card.tag}
-                beamOver
-                arrow={card.arrow}
-              />
+              {loading ? (
+                <SkeletonToneCard>
+                  <SkeletonToneImage />
+                  <SkeletonToneBody>
+                    <SkeletonToneLine $w="90px" $h="16px" />
+                    <SkeletonToneLine $w="68%" $h="24px" />
+                    <SkeletonToneLine $w="44%" $h="18px" />
+                  </SkeletonToneBody>
+                </SkeletonToneCard>
+              ) : (
+                <BaseToneCard
+                  white={true}
+                  imgOpacity={0.9}
+                  img={card.image}
+                  label={card.meta}
+                  name={card.title}
+                  count={card.desc}
+                  tone={card.tag}
+                  height="100%"
+                  badge={card.tag}
+                  beamOver
+                  arrow={card.arrow}
+                />
+              )}
             </CardWrap>
           );
         })}

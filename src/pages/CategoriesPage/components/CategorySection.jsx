@@ -16,7 +16,6 @@ const SectionHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme }) => theme.spacing[4]};
-  /* margin-top: ${({ theme }) => theme.spacing[24]}; */
   margin-bottom: ${({ theme }) => theme.spacing[6]};
 `;
 
@@ -26,7 +25,7 @@ const SectionTitle = styled.h2`
   color: ${({ theme }) => theme.colors.text};
   letter-spacing: 0.04em;
   transition: font-size ${({ theme }) => theme.motion.normal};
-  /* font-weight: 600; */
+
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     gap: 18px;
     font-size: ${({ theme }) => theme.fontSize.sm};
@@ -167,6 +166,57 @@ const PagerButton = styled.button`
   }
 `;
 
+const SkeletonCard = styled.div`
+  position: relative;
+  overflow: hidden;
+  min-height: ${({ $cardMinHeight }) => $cardMinHeight || '469px'};
+  border-radius: ${({ theme }) => theme.radii.xl};
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  background: ${({ theme }) => theme.colors.cardBg};
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, ${({ theme }) => (theme.mode === 'dark' ? 0.08 : 0.24)}),
+      transparent
+    );
+    animation: skeletonShimmer 1.5s infinite;
+  }
+
+  @keyframes skeletonShimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+`;
+
+const SkeletonImage = styled.div`
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  background: ${({ theme }) =>
+    theme.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(124,58,237,0.08)'};
+`;
+
+const SkeletonBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[3]};
+  padding: ${({ theme }) => theme.spacing[4]};
+`;
+
+const SkeletonLine = styled.div`
+  height: ${({ $h }) => $h || '14px'};
+  width: ${({ $w }) => $w || '100%'};
+  border-radius: ${({ theme }) => theme.radii.sm};
+  background: ${({ theme }) =>
+    theme.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(124,58,237,0.1)'};
+`;
+
 function PagerChevronIcon({ direction = 'right' }) {
   return (
     <svg
@@ -223,10 +273,28 @@ function SectionArrowIcon() {
   );
 }
 
+function SkeletonGrid({ count, columns, cardMinHeight }) {
+  return (
+    <ProductGrid columns={columns}>
+      {Array.from({ length: count }).map((_, index) => (
+        <SkeletonCard key={index} $cardMinHeight={cardMinHeight}>
+          <SkeletonImage />
+          <SkeletonBody>
+            <SkeletonLine $w="68px" $h="22px" />
+            <SkeletonLine $w="78%" $h="18px" />
+            <SkeletonLine $w="52%" />
+            <SkeletonLine $w="36%" $h="20px" />
+          </SkeletonBody>
+        </SkeletonCard>
+      ))}
+    </ProductGrid>
+  );
+}
+
 export default function CategorySection({
   title,
   viewLabel,
-  products,
+  products = [],
   columns = 4,
   onClickViewAll,
   enablePagination = false,
@@ -234,6 +302,8 @@ export default function CategorySection({
   resetKey,
   cardMinHeight,
   first = false,
+  loading = false,
+  skeletonCount,
 }) {
   const [page, setPage] = useState(1);
 
@@ -272,12 +342,14 @@ export default function CategorySection({
     });
   };
 
+  const resolvedSkeletonCount = skeletonCount ?? (enablePagination ? itemsPerPage : columns);
+
   return (
     <SectionBlock ref={sectionRef} $first={first}>
       {(title || viewLabel) && (
         <SectionHeader>
           {title ? <SectionTitle>{title}</SectionTitle> : <div />}
-          {viewLabel && (
+          {viewLabel && !loading && (
             <SectionLinkButton type="button" onClick={onClickViewAll}>
               {viewLabel}
               <ArrowIconWrap className="section-arrow-icon">
@@ -287,19 +359,28 @@ export default function CategorySection({
           )}
         </SectionHeader>
       )}
-      <ProductGrid columns={columns}>
-        {visibleProducts.map((product, index) => (
-          <BaseProductCard
-            key={product.id}
-            product={product}
-            variantIndex={index}
-            cardMinHeight={cardMinHeight}
-            compactPadding
-          />
-        ))}
-      </ProductGrid>
 
-      {enablePagination && (
+      {loading ? (
+        <SkeletonGrid
+          count={resolvedSkeletonCount}
+          columns={columns}
+          cardMinHeight={cardMinHeight}
+        />
+      ) : (
+        <ProductGrid columns={columns}>
+          {visibleProducts.map((product, index) => (
+            <BaseProductCard
+              key={product.id}
+              product={product}
+              variantIndex={index}
+              cardMinHeight={cardMinHeight}
+              compactPadding
+            />
+          ))}
+        </ProductGrid>
+      )}
+
+      {enablePagination && !loading && (
         <PaginationBar>
           <PagerButton
             type="button"
@@ -320,6 +401,7 @@ export default function CategorySection({
           <ProgressTrack>
             <ProgressFill percent={progressPercent} />
           </ProgressTrack>
+
           <PagerCount>
             <CurrentPage>{String(page).padStart(2, '0')}</CurrentPage>
             <TotalPage>/ {String(totalPages).padStart(2, '0')}</TotalPage>

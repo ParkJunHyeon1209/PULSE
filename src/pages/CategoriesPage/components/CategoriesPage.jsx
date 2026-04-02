@@ -165,6 +165,7 @@ export default function CategoriesPage() {
   const { categoryName = 'gear' } = useParams();
   const [activeTab, setActiveTab] = useState('ALL');
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [activeFilter, setActiveFilter] = useState('ALL');
   const [priceOrder, setPriceOrder] = useState('');
@@ -193,15 +194,19 @@ export default function CategoriesPage() {
   // 카테고리 API
   useEffect(() => {
     async function loadProducts() {
-      const data = await getProductsByCategory(categoryName);
-      setProducts(
-        data.map((p) => {
-          if (Number(p.id) !== 103) return p;
-          return { ...p, image: 'https://i.ibb.co/G4ShCwVK/e3.webp' };
-        })
-      );
+      try {
+        setLoading(true);
+        const data = await getProductsByCategory(categoryName);
+        setProducts(
+          data.map((p) => {
+            if (Number(p.id) !== 103) return p;
+            return { ...p, image: 'https://i.ibb.co/G4ShCwVK/e3.webp' };
+          })
+        );
+      } finally {
+        setLoading(false);
+      }
     }
-
     loadProducts();
   }, [categoryName]);
 
@@ -294,6 +299,8 @@ export default function CategoriesPage() {
             viewLabel="VIEW"
             products={mouseProducts.slice(0, 4)}
             columns={4}
+            loading={loading}
+            skeletonCount={4}
             onClickViewAll={() => handleClickViewAll('MOUSE')}
             first
           />
@@ -309,6 +316,8 @@ export default function CategoriesPage() {
             viewLabel="VIEW"
             products={keyboardProducts.slice(0, 4)}
             columns={4}
+            loading={loading}
+            skeletonCount={4}
             onClickViewAll={() => handleClickViewAll('KEYBOARD')}
           />
           <SectionDivider />
@@ -323,6 +332,8 @@ export default function CategoriesPage() {
             viewLabel="VIEW"
             products={gearsetProducts.slice(0, 4)}
             columns={4}
+            loading={loading}
+            skeletonCount={4}
             onClickViewAll={() => handleClickViewAll('GEARSET')}
           />
           <SectionDivider />
@@ -337,6 +348,8 @@ export default function CategoriesPage() {
           viewLabel={null}
           products={getFilteredProducts(mouseProducts)}
           columns={3}
+          loading={loading}
+          skeletonCount={6}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
@@ -354,6 +367,8 @@ export default function CategoriesPage() {
           viewLabel={null}
           products={getFilteredProducts(keyboardProducts)}
           columns={3}
+          loading={loading}
+          skeletonCount={6}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
@@ -371,6 +386,8 @@ export default function CategoriesPage() {
           viewLabel={null}
           products={getFilteredProducts(gearsetProducts)}
           columns={3}
+          loading={loading}
+          skeletonCount={6}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
@@ -399,6 +416,8 @@ export default function CategoriesPage() {
             viewLabel="VIEW"
             products={headsetProducts.slice(0, 4)}
             columns={4}
+            loading={loading}
+            skeletonCount={4}
             onClickViewAll={() => handleClickViewAll('HEADSET')}
             first
           />
@@ -414,6 +433,8 @@ export default function CategoriesPage() {
             viewLabel="VIEW"
             products={earphoneProducts.slice(0, 4)}
             columns={4}
+            loading={loading}
+            skeletonCount={4}
             onClickViewAll={() => handleClickViewAll('EARPHONE')}
           />
           <SectionDivider />
@@ -428,6 +449,8 @@ export default function CategoriesPage() {
             viewLabel="VIEW"
             products={streamingProducts.slice(0, 4)}
             columns={4}
+            loading={loading}
+            skeletonCount={4}
             onClickViewAll={() => handleClickViewAll('STREAMING')}
           />
           <SectionDivider />
@@ -442,6 +465,8 @@ export default function CategoriesPage() {
           viewLabel={null}
           products={getFilteredProducts(headsetProducts)}
           columns={3}
+          loading={loading}
+          skeletonCount={6}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
@@ -459,6 +484,8 @@ export default function CategoriesPage() {
           viewLabel={null}
           products={getFilteredProducts(earphoneProducts)}
           columns={3}
+          loading={loading}
+          skeletonCount={6}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
@@ -476,6 +503,8 @@ export default function CategoriesPage() {
           viewLabel={null}
           products={getFilteredProducts(streamingProducts)}
           columns={3}
+          loading={loading}
+          skeletonCount={6}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
@@ -504,6 +533,8 @@ export default function CategoriesPage() {
             viewLabel="VIEW"
             products={controllerProducts.slice(0, 4)}
             columns={4}
+            loading={loading}
+            skeletonCount={4}
             onClickViewAll={() => handleClickViewAll('CONTROLLER')}
             first
           />
@@ -519,6 +550,8 @@ export default function CategoriesPage() {
             viewLabel="VIEW"
             products={consolesetProducts.slice(0, 4)}
             columns={4}
+            loading={loading}
+            skeletonCount={4}
             onClickViewAll={() => handleClickViewAll('CONSOLESET')}
           />
           <SectionDivider />
@@ -533,6 +566,8 @@ export default function CategoriesPage() {
           viewLabel={null}
           products={getFilteredProducts(controllerProducts)}
           columns={3}
+          loading={loading}
+          skeletonCount={6}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
@@ -550,6 +585,8 @@ export default function CategoriesPage() {
           viewLabel={null}
           products={getFilteredProducts(consolesetProducts)}
           columns={3}
+          loading={loading}
+          skeletonCount={6}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
@@ -578,6 +615,8 @@ export default function CategoriesPage() {
             viewLabel="VIEW"
             products={dropsProducts.slice(0, 4)}
             columns={4}
+            loading={loading}
+            skeletonCount={4}
             onClickViewAll={() => handleClickViewAll('DROPS')}
             first
           />
@@ -593,6 +632,8 @@ export default function CategoriesPage() {
             viewLabel="VIEW"
             products={etcProducts.slice(0, 4)}
             columns={4}
+            loading={loading}
+            skeletonCount={4}
             onClickViewAll={() => handleClickViewAll('ETC')}
           />
           <SectionDivider />
@@ -607,6 +648,8 @@ export default function CategoriesPage() {
           viewLabel={null}
           products={getFilteredProducts(dropsProducts)}
           columns={3}
+          loading={loading}
+          skeletonCount={6}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}
@@ -624,6 +667,8 @@ export default function CategoriesPage() {
           viewLabel={null}
           products={getFilteredProducts(etcProducts)}
           columns={3}
+          loading={loading}
+          skeletonCount={6}
           onClickViewAll={() => setActiveTab('ALL')}
           enablePagination
           itemsPerPage={6}

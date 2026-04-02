@@ -29,6 +29,59 @@ const Grid = styled.div`
   }
 `;
 
+const SkeletonCategoryCard = styled.div`
+  position: relative;
+  min-height: 240px;
+  border-radius: ${({ theme }) => theme.radii.xxl};
+  overflow: hidden;
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  background: ${({ theme }) => theme.colors.cardBg};
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, ${({ theme }) => (theme.mode === 'dark' ? 0.08 : 0.22)}),
+      transparent
+    );
+    animation: categorySkeletonShimmer 1.5s infinite;
+  }
+
+  @keyframes categorySkeletonShimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+`;
+
+const SkeletonCategoryImage = styled.div`
+  width: 100%;
+  height: 65%;
+  background: ${({ theme }) =>
+    theme.mode === 'dark'
+      ? 'linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))'
+      : 'linear-gradient(180deg, rgba(124,58,237,0.10), rgba(124,58,237,0.05))'};
+`;
+
+const SkeletonCategoryBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[3]};
+  padding: ${({ theme }) => theme.spacing[5]};
+`;
+
+const SkeletonCategoryLine = styled.div`
+  width: ${({ $w }) => $w || '100%'};
+  height: ${({ $h }) => $h || '16px'};
+  border-radius: ${({ theme }) => theme.radii.sm};
+  background: ${({ theme }) =>
+    theme.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(124,58,237,0.1)'};
+`;
+
 // const items = [
 //   { label: 'Category 01', name: 'LINEUP', count: '12 Products', tone: 'violet' },
 //   { label: 'Category 02', name: 'HEADSET', count: '8 Products', tone: 'blue' },
@@ -40,14 +93,20 @@ const Grid = styled.div`
 export default function CategorySec() {
   const [category, setCategory] = useState([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
   // console.log(category);
+
   useEffect(() => {
     const fetchCategory = async () => {
       try {
+        setLoading(true);
         const data = await getBrowse();
         setCategory(data);
       } catch (error) {
         console.error('데이터 로드 실패:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -62,21 +121,31 @@ export default function CategorySec() {
         sub="플레이 스타일에 맞는 기어 컬렉션을 찾아보세요."
       />
       <Grid>
-        {category.map((item) => (
-          <BaseToneCard
-            img={item.bgImg}
-            key={item.categoryId}
-            // label={`category 0${i + 1}`}
-            name={item.categoryId}
-            count={`${item.totalCount} Products`}
-            tone={item.categoryId}
-            onClick={() => {
-              item.categoryId === 'LINEUP'
-                ? navigate('/categories')
-                : navigate(`/categories/${item.categoryId.toLowerCase()}`);
-            }}
-          />
-        ))}
+        {loading
+          ? Array.from({ length: 4 }).map((_, index) => (
+              <SkeletonCategoryCard key={index}>
+                <SkeletonCategoryImage />
+                <SkeletonCategoryBody>
+                  <SkeletonCategoryLine $w="84px" $h="16px" />
+                  <SkeletonCategoryLine $w="58%" $h="24px" />
+                  <SkeletonCategoryLine $w="42%" $h="18px" />
+                </SkeletonCategoryBody>
+              </SkeletonCategoryCard>
+            ))
+          : category.map((item) => (
+              <BaseToneCard
+                img={item.bgImg}
+                key={item.categoryId}
+                name={item.categoryId}
+                count={`${item.totalCount} Products`}
+                tone={item.categoryId}
+                onClick={() => {
+                  item.categoryId === 'LINEUP'
+                    ? navigate('/categories')
+                    : navigate(`/categories/${item.categoryId.toLowerCase()}`);
+                }}
+              />
+            ))}
       </Grid>
     </SectionWrap>
   );
