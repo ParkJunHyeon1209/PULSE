@@ -25,8 +25,19 @@ const SPARK_ANIM = {
   mint: sparkBreathe2,
   pink: sparkBreathe3,
   blue: sparkBreathe4,
+  LINEUP: sparkBreathe1,
+  HEADSET: sparkBreathe4,
+  GEAR: sparkBreathe2,
+  CONSOLE: sparkBreathe3,
+  DROPS: sparkBreathe4,
+  collab: sparkBreathe1,
+  indigo: sparkBreathe1,
 };
-const SPARK_DUR = { violet: '4s', mint: '4s', pink: '4.5s', blue: '5s' };
+const SPARK_DUR = {
+  violet: '4s', mint: '4s', pink: '4.5s', blue: '5s',
+  LINEUP: '4s', HEADSET: '5s', GEAR: '4s', CONSOLE: '4.5s', DROPS: '5s',
+  collab: '4s', indigo: '4.2s',
+};
 
 const SparkWrap = styled.div`
   position: relative;
@@ -35,8 +46,9 @@ const SparkWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: ${({ $anim, $tone }) => $anim ?? SPARK_ANIM[$tone]}
-    ${({ $dur, $tone }) => $dur ?? SPARK_DUR[$tone]} ease-in-out infinite;
+  will-change: filter, transform;
+  animation: ${({ $anim, $tone }) => $anim ?? SPARK_ANIM[$tone] ?? sparkBreathe1}
+    ${({ $dur, $tone }) => $dur ?? SPARK_DUR[$tone] ?? '4s'} ease-in-out infinite;
 `;
 
 const SparkArm = styled.div`

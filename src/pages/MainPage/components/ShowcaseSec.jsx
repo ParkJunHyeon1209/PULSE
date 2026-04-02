@@ -313,6 +313,8 @@ export default function ShowcaseSec() {
                   count={card.desc}
                   tone={card.tag}
                   height="100%"
+                  //  imgBlendMode="hard-light"
+                  imgFilter="brightness(1.2) saturate(1.2)"
                   badge={card.tag}
                   beamOver
                   arrow={card.arrow}

@@ -12,7 +12,10 @@ const BandOverlay = styled.div`
 
 const BandWrap = styled.div`
   overflow: hidden;
-  padding: ${({ theme }) => `${theme.spacing[4]} 0`};
+  height: ${({ $height }) => $height || 'auto'};
+  display: flex;
+  align-items: center;
+  padding: ${({ $height, theme }) => ($height ? '0' : `${theme.spacing[4]} 0`)};
   border-top: 1px solid ${({ theme }) => theme.colors.border};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   background: ${({ theme }) => theme.colors.bandBg};
@@ -81,10 +84,10 @@ function BandLine({ hidden = false }) {
   );
 }
 
-export default function HeroBand() {
+export default function HeroBand({ height }) {
   return (
     <BandOverlay>
-      <BandWrap>
+      <BandWrap $height={height}>
         <BandTrack>
           <BandLine />
           <BandLine hidden />

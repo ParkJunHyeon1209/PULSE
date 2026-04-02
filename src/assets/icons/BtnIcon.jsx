@@ -245,8 +245,8 @@ export function HamburgerIcon() {
 export function OrderIcon() {
   return (
     <svg
-      width="14"
-      height="14"
+      width="16"
+      height="16"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.8"

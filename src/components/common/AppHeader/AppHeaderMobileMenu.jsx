@@ -251,11 +251,11 @@ export default function AppHeaderMobileMenu() {
                 <UserIcon />
                 마이페이지
               </MenuItem>
-              <MenuItem type="button" onClick={() => go('/orders')}>
+              <MenuItem type="button" onClick={() => go('/mypage?tab=order')}>
                 <OrderIcon />
                 주문 내역
               </MenuItem>
-              <MenuItem type="button" onClick={() => go('/wishlist')}>
+              <MenuItem type="button" onClick={() => go('/mypage?tab=wishlist')}>
                 <HeartIcon strokeWidth="1.8" />
                 찜목록
               </MenuItem>

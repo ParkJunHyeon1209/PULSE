@@ -1,13 +1,44 @@
 import styled from '@emotion/styled';
 import BaseBtn from './BaseBtn';
-import {
-  LavStarIcon,
-  TwitterIcon,
-  KakaoIcon,
-  InstaIcon,
-  YoutubeIcon,
-} from '../../assets/icons/BtnIcon';
+import { LavStarIcon, TwitterIcon, KakaoIcon, YoutubeIcon, InstaIcon } from '../../assets/icons/BtnIcon';
 import AppLogo from './AppLogo';
+import useOverlayStore from '../../store/useOverlayStore';
+import BaseWipModal from './modals/BaseWipModal';
+
+const SNS_ITEMS = [
+  { id: 'sns_twitter', label: 'SNS', title: 'X (Twitter)', icon: TwitterIcon },
+  { id: 'sns_kakao', label: 'SNS', title: 'KakaoTalk', icon: KakaoIcon },
+  { id: 'sns_youtube', label: 'SNS', title: 'YouTube', icon: YoutubeIcon },
+  { id: 'sns_instagram', label: 'SNS', title: 'Instagram', icon: InstaIcon },
+];
+
+const FOOTER_COLS = [
+  {
+    title: 'Explore',
+    items: [
+      { id: 'explore_new', label: 'EXPLORE', title: '신제품' },
+      { id: 'explore_best', label: 'EXPLORE', title: '베스트셀러' },
+      { id: 'explore_drop', label: 'EXPLORE', title: '한정 드롭' },
+      { id: 'explore_schedule', label: 'EXPLORE', title: '드롭 일정' },
+      { id: 'explore_community', label: 'EXPLORE', title: '커뮤니티' },
+    ],
+  },
+  {
+    title: 'Brand',
+    items: [
+      { id: 'brand_story', label: 'PULSE BRAND', title: '브랜드 스토리' },
+      { id: 'brand_design', label: 'PULSE BRAND', title: '디자인 시스템' },
+      { id: 'brand_press', label: 'PULSE BRAND', title: 'Press Kit' },
+      { id: 'brand_contact', label: 'PULSE BRAND', title: 'Contact' },
+      { id: 'brand_privacy', label: 'PULSE BRAND', title: 'Privacy' },
+    ],
+  },
+];
+
+const ALL_WIP_ITEMS = [
+  ...SNS_ITEMS,
+  ...FOOTER_COLS.flatMap((col) => col.items),
+];
 
 const FootScope = styled.div`
   position: relative;
@@ -220,6 +251,8 @@ const FootBadge = styled(FootNote)`
 `;
 
 export default function AppFooter() {
+  const openModal = useOverlayStore((state) => state.openModal);
+
   return (
     <FootScope>
       <FootPlanet aria-hidden="true">
@@ -232,18 +265,11 @@ export default function AppFooter() {
             <AppLogo />
             <FootDec>{'네온이 번지는 순간,\n당신의 플레이가 시작된다.'}</FootDec>
             <FootSns>
-              <BaseBtn variant="ic-btn" aria-label="X" size="36px">
-                <TwitterIcon />
-              </BaseBtn>
-              <BaseBtn variant="ic-btn" aria-label="Kakao" size="36px">
-                <KakaoIcon />
-              </BaseBtn>
-              <BaseBtn variant="ic-btn" aria-label="YouTube" size="36px">
-                <YoutubeIcon />
-              </BaseBtn>
-              <BaseBtn variant="ic-btn" aria-label="Instagram" size="36px">
-                <InstaIcon />
-              </BaseBtn>
+              {SNS_ITEMS.map((sns) => (
+                <BaseBtn key={sns.id} variant="ic-btn" aria-label={sns.title} size="36px" onClick={() => openModal(sns.id)}>
+                  <sns.icon />
+                </BaseBtn>
+              ))}
             </FootSns>
           </FootBrand>
 
@@ -258,27 +284,18 @@ export default function AppFooter() {
             <FootColBtn type="button">Accessories</FootColBtn>
           </FootCol>
 
-          <FootCol>
-            <FootColTitle>
-              <LavStarIcon>✦</LavStarIcon>Explore
-            </FootColTitle>
-            <FootColBtn type="button">신제품</FootColBtn>
-            <FootColBtn type="button">베스트셀러</FootColBtn>
-            <FootColBtn type="button">한정 드롭</FootColBtn>
-            <FootColBtn type="button">드롭 일정</FootColBtn>
-            <FootColBtn type="button">커뮤니티</FootColBtn>
-          </FootCol>
-
-          <FootCol>
-            <FootColTitle>
-              <LavStarIcon>✦</LavStarIcon>Brand
-            </FootColTitle>
-            <FootColBtn type="button">브랜드 스토리</FootColBtn>
-            <FootColBtn type="button">디자인 시스템</FootColBtn>
-            <FootColBtn type="button">Press Kit</FootColBtn>
-            <FootColBtn type="button">Contact</FootColBtn>
-            <FootColBtn type="button">Privacy</FootColBtn>
-          </FootCol>
+          {FOOTER_COLS.map((col) => (
+            <FootCol key={col.title}>
+              <FootColTitle>
+                <LavStarIcon>✦</LavStarIcon>{col.title}
+              </FootColTitle>
+              {col.items.map((item) => (
+                <FootColBtn key={item.id} type="button" onClick={() => openModal(item.id)}>
+                  {item.title}
+                </FootColBtn>
+              ))}
+            </FootCol>
+          ))}
         </FootInner>
 
         <FootBottom>
@@ -289,6 +306,9 @@ export default function AppFooter() {
           </FootBadge>
         </FootBottom>
       </FootWrap>
+      {ALL_WIP_ITEMS.map((item) => (
+        <BaseWipModal key={item.id} id={item.id} label={item.label} title={item.title} />
+      ))}
     </FootScope>
   );
 }

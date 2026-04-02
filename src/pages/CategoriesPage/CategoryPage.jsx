@@ -8,8 +8,8 @@ import CategorySection from './components/CategorySection';
 import CategoryHero from './components/CategoryHero';
 import CategoryPromoBanner from './components/CategoryPromoBanner';
 import useThemeStore from '../../store/useThemeStore';
-import categoryBannerDark from '../../assets/img/banners/1_dark.webp';
-import categoryBannerLight from '../../assets/img/banners/1_light.webp';
+import categoryBannerDark from '../../assets/img/banners/D_LineUp.webp';
+import categoryBannerLight from '../../assets/img/banners/L_LineUp.webp';
 
 // 프로모션 배너 이미지 모음
 import gearBannerDark from '../../assets/img/banners/D_mouse&keySey.webp';
@@ -75,7 +75,13 @@ export default function CategoryPage() {
   return (
     <PageContainer>
       <PageInner>
-        <CategoryHero title="PULSE" label="PULSE PLATFORM" backgroundImage={heroBackgroundImage} />
+        <CategoryHero
+          title="PULSE"
+          label="PULSE PLATFORM"
+          backgroundImage={heroBackgroundImage}
+          bgOpacity={isDarkMode ? 0.6 : 0.8}
+          bgFilter={isDarkMode ? 'brightness(0.9) saturate(1.3)' : 'brightness(1.05) saturate(1.15)'}
+        />
 
         {productsGroup.map((section, index) => (
           <SectionWrap key={section.key}>
@@ -114,7 +120,7 @@ export default function CategoryPage() {
 }
 
 const SectionWrap = styled.div`
-  margin-top: 50px;
+  margin-top: 120px;
   width: 100%;
 `;
 

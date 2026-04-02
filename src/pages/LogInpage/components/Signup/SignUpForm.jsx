@@ -61,12 +61,11 @@ const DividerText = styled.span`
 `;
 
 const Switch = styled.div`
-  margin-top: ${({ theme }) => theme.spacing[8]};
   display: flex;
   gap: ${({ theme }) => theme.spacing[2]};
   justify-content: center;
   align-items: center;
-  font-size: 13px;
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
   color: ${({ theme }) => theme.colors.textSecondary};
 `;
 

@@ -9,6 +9,7 @@ import {
   SunIcon,
   MoonIcon,
   HeartIcon,
+  OrderIcon,
 } from '../../../assets/icons/BtnIcon';
 import usePanel from '../../../hooks/usePanel';
 import useCartStore from '../../../store/useCartStore';
@@ -165,6 +166,7 @@ const DropProfile = styled.div`
   padding: ${({ theme }) => `${theme.spacing[3]} 13px 10px`};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   margin-bottom: ${({ theme }) => theme.spacing[1]};
+  cursor: pointer;
 `;
 
 const DropProfileAvatar = styled.div`
@@ -180,6 +182,10 @@ const DropProfileAvatar = styled.div`
   font-weight: 700;
   color: #fff;
   flex-shrink: 0;
+  > span {
+
+    transform: translateY(1px);
+  }
 `;
 
 const DropProfileInfo = styled.div`
@@ -330,8 +336,8 @@ export default function AppHeaderUser() {
         <Drop $open={open}>
           {isLogin ? (
             <>
-              <DropProfile>
-                <DropProfileAvatar>{initial}</DropProfileAvatar>
+              <DropProfile onClick={()=> navigate('/mypage?tab=profile')}>
+                <DropProfileAvatar><span>{initial}</span></DropProfileAvatar>
                 <DropProfileInfo>
                   <DropProfileName>{user?.name ?? 'PULSE USER'}</DropProfileName>
                   <DropProfileEmail>{user?.email ?? ''}</DropProfileEmail>
@@ -354,16 +360,7 @@ export default function AppHeaderUser() {
                   navigate('/mypage?tab=order');
                 }}
               >
-                <svg
-                  width="14"
-                  height="14"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
+                <OrderIcon />
                 주문 내역
               </DropItem>
               <DropItem

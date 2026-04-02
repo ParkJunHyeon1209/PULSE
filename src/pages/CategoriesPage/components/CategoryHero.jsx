@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import BaseSection from '../../../components/common/BaseSection';
 import CategoryTabs from './CategoryTabs';
+import BaseRadialGlow from '../../../components/common/BaseRadialGlow';
+import HeroBand from '../../MainPage/components/HeroBand';
 
 const HeroSection = styled.section`
   width: 100vw;
@@ -29,6 +31,28 @@ const HeroBackground = styled.div`
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+`;
+
+const HeroOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  background: ${({ theme }) =>
+    theme.mode === 'dark'
+      ? `linear-gradient(
+          to top,
+          rgba(6, 4, 20, 0.72) 0%,
+          rgba(6, 4, 20, 0.4) 40%,
+          transparent 70%
+        )`
+      : `linear-gradient(
+          to top,
+          rgba(236, 233, 255, 0.8) 0%,
+          rgba(236, 233, 255, 0.2) 40%,
+          transparent 70%
+        )`};
 `;
 
 const BottomFade = styled.div`
@@ -61,6 +85,7 @@ const BottomFade = styled.div`
         )`};
 `;
 
+
 const SideFade = styled.div`
   position: absolute;
   inset: 0;
@@ -88,10 +113,7 @@ const HeroCenterContent = styled.div`
   //padding: ${({ theme }) => theme.spacing[10]} ${({ theme }) => theme.spacing[6]};
   //padding-bottom: 130px;
 
-  padding: ${({ theme, $hasTabs }) =>
-    $hasTabs
-      ? `${theme.spacing[10]} ${theme.spacing[6]} 130px`
-      : `${theme.spacing[10]} ${theme.spacing[6]} ${theme.spacing[10]}`};
+  padding: ${({ theme}) => `${theme.spacing[10]} ${theme.spacing[6]} ${theme.spacing[10]}`};
   text-align: center;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -181,7 +203,7 @@ const HeroSectionHead = styled.div`
     letter-spacing: 0.04em;
     color: ${({ theme }) => theme.colors.text};
     text-transform: uppercase;
-    text-shadow: 0 0 18px rgba(167, 139, 250, 0.16);
+    text-shadow: 0 0 18px ${({ theme }) => theme.colors.background}80;
   }
 
   // label 아래로 내리기
@@ -206,6 +228,8 @@ export default function CategoryHero({
   title,
   label,
   backgroundImage,
+  bgOpacity,
+  bgFilter,
   tabs,
   activeTab,
   onClickTab,
@@ -217,9 +241,13 @@ export default function CategoryHero({
       <HeroBackground
         style={{
           backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none',
+          opacity: bgOpacity ?? 1,
+          filter: bgFilter,
         }}
       />
 
+      <BaseRadialGlow $opacity={0.5} style={{ zIndex: 1 }} />
+      <HeroOverlay />
       <SideFade />
       {hasTabs && <BottomFade />}
 
@@ -231,10 +259,12 @@ export default function CategoryHero({
         </HeroBlurBand>
       </HeroCenterContent>
 
-      {hasTabs && (
+      {hasTabs ? (
         <HeroTabsArea>
           <CategoryTabs tabs={tabs} activeTab={activeTab} onClickTab={onClickTab} inHero />
         </HeroTabsArea>
+      ) : (
+        <HeroBand height="56px" />
       )}
     </HeroSection>
   );
