@@ -5,6 +5,10 @@ export const rewardsRate = {
   VIP: 0.05,
 };
 
+export const grade = ['MEMBER', 'SILVER', 'GOLD', 'VIP'];
+
+export const toNextGrade = [100000, 300000, 500000];
+
 export const getGradeByTotalOrderPrice = (totalOrderPrice = 0) => {
   const amount = Number(totalOrderPrice) || 0;
 

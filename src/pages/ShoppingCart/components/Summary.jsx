@@ -222,6 +222,7 @@ export default function Summary() {
       items,
       status: '결제완료',
       totalPrice: finalTotal,
+      earnedPoint: rewardPoint,
     });
 
     if (!createdOrder) {

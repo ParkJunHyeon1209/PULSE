@@ -5,6 +5,14 @@ import useAuthStore from '../../../store/useAuthStore';
 import useOverlayStore from '../../../store/useOverlayStore';
 import BaseModal from '../../../components/common/BaseModal';
 
+const formatTel = (value = '') => {
+  const numbers = value.replace(/\D/g, '').slice(0, 11);
+
+  if (numbers.length < 4) return numbers;
+  if (numbers.length < 8) return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+  return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7)}`;
+};
+
 function ProfileUpdateModal() {
   const isOpen = useOverlayStore((state) => Boolean(state.modals.profileUpdate));
   const closeModal = useOverlayStore((state) => state.closeModal);
@@ -38,28 +46,19 @@ export default function Profile() {
   const openModal = useOverlayStore((state) => state.openModal);
 
   const [formData, setFormData] = useState({
-    name: user?.name || '',
-    nickname: user.nickname ?? user?.name ?? '',
-    email: user?.id || '',
+    name: user?.name,
+    nickname: user?.nickname ?? user?.name ?? '',
+    email: user?.email || user?.id,
     tel: user?.tel || '',
     currentPassword: '',
     newPassword: '',
     newPasswordCheck: '',
   });
 
-  const [submitAttempted, setSubmitAttempted] = useState(false);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   const isChangingPassword =
     !!formData.currentPassword || !!formData.newPassword || !!formData.newPasswordCheck;
+
+  const [submitAttempted, setSubmitAttempted] = useState(false);
 
   const passwordErrors = useMemo(() => {
     const errors = {
@@ -104,6 +103,15 @@ export default function Profile() {
     !passwordErrors.newPassword &&
     !passwordErrors.newPasswordCheck;
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === 'tel' ? formatTel(value) : value,
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitAttempted(true);
@@ -116,7 +124,7 @@ export default function Profile() {
       ...user,
       name: formData.name,
       nickname: formData.nickname,
-      email: formData.email,
+      id: formData.email,
       tel: formData.tel,
       password: formData.newPassword ? formData.newPassword : user.password,
     };
@@ -141,7 +149,7 @@ export default function Profile() {
   const handleCancel = () => {
     setFormData({
       name: user.name,
-      nickname: user.name,
+      nickname: user.nickname ?? user.name,
       email: user.id,
       tel: user.tel,
       currentPassword: '',
@@ -153,7 +161,13 @@ export default function Profile() {
   };
 
   return (
-    <ProfileWrap onSubmit={handleSubmit}>
+    <ProfileWrap onSubmit={handleSubmit} autoComplete="off">
+      {/* 브라우저에 저장한 이메일 및 비밀번호 자동 완성을 방지하기 위한 더미 입력 필드 */}
+      <AutoFillTrap aria-hidden="true">
+        <input type="text" name="fake-username" autoComplete="username" tabIndex={-1} />
+        <input type="password" name="fake-password" autoComplete="new-password" tabIndex={-1} />
+      </AutoFillTrap>
+
       <UserInfo>
         <UserNameWrap>
           <UserName>
@@ -162,6 +176,7 @@ export default function Profile() {
               id="name"
               type="text"
               name="name"
+              autoComplete="off"
               value={formData.name}
               onChange={handleChange}
             />
@@ -173,6 +188,7 @@ export default function Profile() {
               id="nickname"
               type="text"
               name="nickname"
+              autoComplete="off"
               value={formData.nickname}
               onChange={handleChange}
             />
@@ -181,12 +197,30 @@ export default function Profile() {
 
         <UserEmail>
           <label htmlFor="email">이메일</label>
-          <input id="email" type="email" name="email" value={formData.email} disabled />
+          <input
+            id="email"
+            type="email"
+            name="email"
+            autoComplete="off"
+            value={formData.email}
+            disabled
+          />
         </UserEmail>
 
         <UserTel>
           <label htmlFor="tel">전화번호</label>
-          <input id="tel" type="tel" name="tel" value={formData.tel} onChange={handleChange} />
+          <input
+            id="tel"
+            type="text"
+            name="tel"
+            autoComplete="off"
+            readOnly
+            onFocus={(event) => {
+              event.target.readOnly = false;
+            }}
+            value={formData.tel}
+            onChange={handleChange}
+          />
         </UserTel>
       </UserInfo>
 
@@ -204,6 +238,11 @@ export default function Profile() {
             id="currentPassword"
             type="password"
             name="currentPassword"
+            autoComplete="off"
+            readOnly
+            onFocus={(event) => {
+              event.target.readOnly = false;
+            }}
             value={formData.currentPassword}
             onChange={handleChange}
           />
@@ -220,6 +259,7 @@ export default function Profile() {
             id="newPassword"
             type="password"
             name="newPassword"
+            autoComplete="off"
             value={formData.newPassword}
             onChange={handleChange}
           />
@@ -236,6 +276,7 @@ export default function Profile() {
             id="newPasswordCheck"
             type="password"
             name="newPasswordCheck"
+            autoComplete="off"
             value={formData.newPasswordCheck}
             onChange={handleChange}
           />
@@ -243,7 +284,7 @@ export default function Profile() {
       </UserPw>
 
       <BtnWrap>
-        <CancelBtn type="button" onClick={handleCancel} variant="secondary">
+        <CancelBtn type="button" icon={false} onClick={handleCancel} variant="secondary">
           취소
         </CancelBtn>
         <SubmitBtn type="submit">저장하기</SubmitBtn>
@@ -270,7 +311,27 @@ const ProfileWrap = styled.form`
     border-top-left-radius: ${({ theme }) => theme.radii.sm};
     border-top-right-radius: ${({ theme }) => theme.radii.sm};
     background-color: ${({ theme }) => theme.colors.background + '80'};
+    color: ${({ theme }) => theme.colors.text};
+    box-shadow: none;
+    -webkit-text-fill-color: ${({ theme }) => theme.colors.text};
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus {
+      -webkit-text-fill-color: ${({ theme }) => theme.colors.text};
+      box-shadow: 0 0 0 1000px ${({ theme }) => theme.colors.background + 'f2'} inset;
+      transition: background-color 9999s ease-out 0s;
+    }
   }
+`;
+
+const AutoFillTrap = styled.div`
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
 `;
 
 const UserInfo = styled.div`
@@ -310,6 +371,9 @@ const UserEmail = styled.div`
   input {
     cursor: not-allowed;
     color: ${({ theme }) => theme.colors.textSecondary};
+    -webkit-text-fill-color: ${({ theme }) => theme.colors.textSecondary};
+    background-color: ${({ theme }) => theme.colors.cardBg};
+    opacity: 0.5;
   }
 `;
 

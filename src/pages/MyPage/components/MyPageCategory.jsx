@@ -9,10 +9,10 @@ import useWishlistStore from '../../../store/useWishlistStore';
 import useOrderStore from '../../../store/useOrderStore';
 import {
   AddressIcon,
+  CartIcon,
   CouponIcon,
   HeartIcon,
   LogoutIcon,
-  OrderIcon,
   ReviewIcon,
   UserIcon,
 } from '../../../assets/icons/BtnIcon';
@@ -36,6 +36,18 @@ function LogoutModal() {
       <div className="btnwrap" style={{ display: 'flex', gap: '12px' }}>
         <BaseBtn
           padding="12px 32px"
+          variant="secondary"
+          icon={false}
+          style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
+          onClick={() => {
+            closeModal('logout');
+          }}
+        >
+          취소
+        </BaseBtn>
+
+        <BaseBtn
+          padding="12px 32px"
           style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
           onClick={() => {
             logout();
@@ -44,15 +56,6 @@ function LogoutModal() {
           }}
         >
           확인
-        </BaseBtn>
-        <BaseBtn
-          padding="12px 32px"
-          style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
-          onClick={() => {
-            closeModal('logout');
-          }}
-        >
-          취소
         </BaseBtn>
       </div>
     </BaseModal>
@@ -73,7 +76,7 @@ export default function MyPageCategory({ category, setCategory }) {
         <ul>
           <CategoryType $isActive={isActive('order')} onClick={() => setCategory('order')}>
             <div className="icontext">
-              <OrderIcon width={16} height={16} />
+              <CartIcon width={16} height={16} />
               주문내역
             </div>
             <span>{orderCount || 0}</span>
@@ -182,6 +185,35 @@ const CategoryList = styled.ul`
       color: ${({ theme }) => theme.colors.error};
     }
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    min-width: 100%;
+    width: 100%;
+    padding-left: 0;
+    order: 2;
+    gap: 0;
+
+    > li:not(:last-child) {
+      display: none;
+    }
+
+    > li:last-child {
+      align-self: flex-end;
+      width: auto;
+      padding-left: 0;
+      border-left: none;
+      border-top: 1px solid ${({ theme }) => theme.colors.textSecondary + '33'};
+
+      > div {
+        padding-top: ${({ theme }) => theme.spacing[4]};
+        justify-content: flex-end;
+      }
+
+      button {
+        width: auto;
+      }
+    }
+  }
 `;
 
 const CategoryType = styled.li`
@@ -201,12 +233,6 @@ const CategoryType = styled.li`
   overflow: hidden;
   border-left: 1px solid
     ${({ theme, $isActive }) => ($isActive ? theme.colors.primary : 'transparent')};
-
-  /* .icontext {
-    display: flex;
-    align-items: center;
-    gap: ${({ theme }) => theme.spacing[2]};
-  } */
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};

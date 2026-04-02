@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import React, { useEffect, useMemo, useState } from 'react';
 import MyInfo from './components/MyInfo';
 import Statistics from './components/Statistics';
+import GradeProgress from './components/GradeProgress';
 import MainMyPage from './components/MainMyPage';
 import MyPageCategory from './components/MyPageCategory';
 import CategoryRender from './components/CategoryRender';
@@ -108,6 +109,7 @@ export default function MyPage() {
     if (!user) return;
 
     if (user.isHaveOrdered) return;
+    if (user.hasReceivedFirstOrderCoupon) return;
 
     const hasFirstOrderCoupon = user.coupons?.some((coupon) => coupon.type === 'FIRST_ORDER');
 
@@ -117,6 +119,7 @@ export default function MyPage() {
 
     login({
       ...user,
+      hasReceivedFirstOrderCoupon: true,
       coupons: [
         ...(user.coupons || []),
         {
@@ -134,7 +137,8 @@ export default function MyPage() {
   return (
     <MyPageWrap>
       <MyInfo setCategory={handleSetCategory} />
-      <Statistics />
+      <Statistics setCategory={handleSetCategory} />
+      <GradeProgress />
       <MainMyPage>
         <MyPageCategory category={category} setCategory={handleSetCategory} />
         <CategoryRender category={category} />
@@ -146,7 +150,19 @@ export default function MyPage() {
 
 const MyPageWrap = styled.div`
   margin-top: 100px;
+  max-width: 1280px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: ${({ theme }) => theme.spacing[8]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    gap: ${({ theme }) => theme.spacing[6]};
+    margin-top: 88px;
+  }
+
+  @media (max-width: 400px) {
+    gap: ${({ theme }) => theme.spacing[5]};
+    margin-top: 80px;
+  }
 `;

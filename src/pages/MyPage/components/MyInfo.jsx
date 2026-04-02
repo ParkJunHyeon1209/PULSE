@@ -2,60 +2,12 @@ import React from 'react';
 import styled from '@emotion/styled';
 import useAuthStore from '../../../store/useAuthStore';
 import BaseSection from '../../../components/common/BaseSection';
-import { theme } from '../../../styles/theme';
 import BaseBtn from '../../../components/common/BaseBtn';
-import CategoryRender from './CategoryRender';
-import useOverlayStore from '../../../store/useOverlayStore';
-import { useNavigate } from 'react-router-dom';
-import BaseModal from '../../../components/common/BaseModal';
-
-function ConfirmLogoutModal() {
-  const isOpen = useOverlayStore((state) => Boolean(state.modals.confirmlogout));
-  const closeModal = useOverlayStore((state) => state.closeModal);
-  const navigate = useNavigate();
-  const logout = useAuthStore((state) => state.logout);
-
-  return (
-    <BaseModal
-      isOpen={isOpen}
-      label="PULSE PLATFORM"
-      onClose={() => {
-        closeModal('confirmlogout');
-      }}
-      title="로그아웃 하시겠습니까?"
-    >
-      <p>정말 로그아웃 하시겠습니까?</p>
-      <div className="btnwrap" style={{ display: 'flex', gap: '12px' }}>
-        <BaseBtn
-          padding="12px 32px"
-          style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
-          onClick={() => {
-            logout();
-            closeModal('confirmlogout');
-            navigate('/', { replace: true });
-          }}
-        >
-          확인
-        </BaseBtn>
-        <BaseBtn
-          padding="12px 32px"
-          style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
-          onClick={() => {
-            closeModal('confirmlogout');
-          }}
-        >
-          취소
-        </BaseBtn>
-      </div>
-    </BaseModal>
-  );
-}
 
 export default function MyInfo({ setCategory }) {
   const user = useAuthStore((state) => state.user);
-  const openModal = useOverlayStore((state) => state.openModal);
-  const handleProfile = () => {
-    return setCategory('profile');
+  const handleProfile = (category) => {
+    return setCategory(category);
   };
 
   return (
@@ -76,14 +28,13 @@ export default function MyInfo({ setCategory }) {
         </UserInfo>
       </Profile>
       <Settings>
-        <BaseBtn variant="secondary" icon={false} onClick={handleProfile}>
+        <SettingBtn variant="secondary" icon={false} onClick={() => handleProfile('profile')}>
           프로필 편집
-        </BaseBtn>
-        <BaseBtn variant="secondary" icon={false} onClick={() => openModal('logout')}>
-          로그아웃
-        </BaseBtn>
+        </SettingBtn>
+        <SettingBtn variant="secondary" icon={false} onClick={() => handleProfile('address')}>
+          배송지관리
+        </SettingBtn>
       </Settings>
-      <ConfirmLogoutModal />
     </MyInfoWrap>
   );
 }
@@ -93,16 +44,34 @@ const MyInfoWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    padding: ${({ theme }) => theme.spacing[10]} ${({ theme }) => theme.spacing[6]};
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${({ theme }) => theme.spacing[5]};
+  }
+
+  @media (max-width: 400px) {
+    padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[3]};
+    gap: ${({ theme }) => theme.spacing[4]};
+  }
 `;
 const Profile = styled.div`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing[8]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    width: 100%;
+    align-items: flex-start;
+    gap: ${({ theme }) => theme.spacing[4]};
+  }
 `;
 const InitialName = styled.div`
   max-width: 128px;
-  width: ${({ theme }) => theme.fontSize.xxl};
-  height: ${({ theme }) => theme.fontSize.xxl};
+  width: clamp(64px, 7.5vw, 88px);
+  height: clamp(64px, 7.5vw, 88px);
   position: relative;
   border-radius: 50%;
   background-color: ${({ theme }) => theme.colors.primary};
@@ -120,15 +89,37 @@ const UserInfo = styled.div`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing[2]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    min-width: 0;
+    flex: 1;
+  }
+
+  > div:first-of-type > div:first-of-type {
+    margin-bottom: ${({ theme }) => theme.spacing[2]};
+  }
+
+  > div:first-of-type h2 {
+    margin-bottom: ${({ theme }) => theme.spacing[2]};
+    font-size: clamp(28px, 3vw, 38px);
+  }
+
+  > div:first-of-type p {
+    padding-top: 0;
+    font-size: ${({ theme }) => theme.fontSize.xxxs};
+    font-family: ${({ theme }) => theme.fontFamily.mono};
+    line-height: 1.35;
+  }
 `;
 const GradeBadge = styled.p`
   align-self: flex-end;
-  border: 1px solid ${theme.colors.primary};
-  color: ${theme.colors.primary};
-  background-color: ${theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.background};
   padding: ${({ theme }) => `${theme.spacing[1]} ${theme.spacing[3]}`};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   border-radius: ${({ theme }) => theme.radii.pill};
+  font-family: ${({ theme }) => theme.fontFamily.mono};
 `;
 const Settings = styled.div`
   position: relative;
@@ -137,7 +128,29 @@ const Settings = styled.div`
   gap: ${({ theme }) => theme.spacing[4]};
   > button {
     color: ${({ theme }) => theme.colors.textSecondary};
-    background: ${theme.tones.violet.hoverColor + '04'};
+    background: ${({ theme }) => theme.tones.violet.hoverColor + '04'};
     padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[4]}`};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    width: 100%;
+    align-self: stretch;
+    flex-wrap: wrap;
+    gap: ${({ theme }) => theme.spacing[3]};
+  }
+`;
+
+const SettingBtn = styled(BaseBtn)`
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    flex: 1 1 calc(50% - 12px);
+    min-width: 0;
+  }
+
+  @media (max-width: 400px) {
+    flex-basis: 100%;
+  }
+
+  > span {
+    font-size: ${({ theme }) => theme.fontSize.xxxs};
   }
 `;

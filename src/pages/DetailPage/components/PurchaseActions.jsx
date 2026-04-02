@@ -32,6 +32,11 @@ export default function PurchaseActions({ product, quantity = 1, onAddToCart, on
       return;
     }
 
+    const estimatedTotalPrice =
+      ((Number(product.price) || 0) + (Number(product.carePrice) || 0)) * quantity;
+    const rewardRate = rewardsRate[user?.grade || 'MEMBER'] || 0;
+    const rewardPoint = Math.floor(estimatedTotalPrice * rewardRate);
+
     const createdOrder = addOrder({
       items: [
         {
@@ -41,12 +46,11 @@ export default function PurchaseActions({ product, quantity = 1, onAddToCart, on
         },
       ],
       status: '결제완료',
+      totalPrice: estimatedTotalPrice,
+      earnedPoint: rewardPoint,
     });
 
     if (!createdOrder || !user) return;
-
-    const rewardRate = rewardsRate[user.grade || 'MEMBER'] || 0;
-    const rewardPoint = Math.floor(createdOrder.totalPrice * rewardRate);
     const nextTotalOrderPrice = (user.totalOrderPrice || 0) + createdOrder.totalPrice;
     const nextGrade = getGradeByTotalOrderPrice(nextTotalOrderPrice);
 
