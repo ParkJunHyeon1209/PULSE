@@ -77,7 +77,6 @@ const DividerText = styled.span`
 `;
 
 const Switch = styled.div`
-  margin-top: ${({ theme }) => theme.spacing[8]};
   gap: ${({ theme }) => theme.spacing[2]};
   display: flex;
   justify-content: center;

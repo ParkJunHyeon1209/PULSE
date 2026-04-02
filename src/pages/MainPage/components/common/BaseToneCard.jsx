@@ -10,6 +10,8 @@ const Card = styled.article`
   height: ${({ $height }) => $height || '210px'};
   border-radius: ${({ theme }) => theme.radii.xl};
   cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
   box-shadow: ${({ theme }) => theme.effects.hoverShadowCategoryBase};
   transition:
     transform ${({ theme }) => theme.motion.slow},
@@ -92,6 +94,7 @@ const Beam = styled.div`
   filter: blur(28px);
   opacity: 0.6;
   transform: translateX(-50%);
+  mix-blend-mode: screen;
   background: ${({ theme, $bg }) => theme.effects[$bg]};
   transition:
     opacity ${({ theme }) => theme.motion.slow},
@@ -171,6 +174,14 @@ const Count = styled.div`
   text-overflow: ellipsis;
 `;
 
+const BottomDim = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, transparent 50%);
+  pointer-events: none;
+`;
+
 const BrowseImg = styled.div`
   position: absolute;
   inset: 0;
@@ -179,6 +190,8 @@ const BrowseImg = styled.div`
   background-position: ${({ $imgPosition }) => $imgPosition || 'center'};
   opacity: ${({ $imgOpacity }) => $imgOpacity ?? 0.6};
   transform: scale(1);
+  mix-blend-mode: ${({ $imgBlendMode }) => $imgBlendMode || 'normal'};
+  filter: ${({ $imgFilter }) => $imgFilter || 'none'};
   transition:
     opacity ${({ theme }) => theme.motion.slow},
     transform ${({ theme }) => theme.motion.slow};
@@ -207,6 +220,8 @@ const CardInner = ({
   name,
   count,
   nameSize,
+  imgBlendMode,
+  imgFilter,
 }) => (
   <>
     <Inner $bg={TONE_BG[tone]} />
@@ -217,6 +232,8 @@ const CardInner = ({
           $img={img}
           $imgOpacity={imgOpacity}
           $imgPosition={imgPosition}
+          $imgBlendMode={imgBlendMode}
+          $imgFilter={imgFilter}
         />
         <Beam className="card-beam" $bg={TONE_BEAM[tone]} />
       </>
@@ -228,9 +245,12 @@ const CardInner = ({
           $img={img}
           $imgOpacity={imgOpacity}
           $imgPosition={imgPosition}
+          $imgBlendMode={imgBlendMode}
+          $imgFilter={imgFilter}
         />
       </>
     )}
+    {white && <BottomDim />}
     <SparkContainer className="card-spark">
       <BaseSparkIcon tone={tone} />
     </SparkContainer>
@@ -282,6 +302,8 @@ export default function BaseToneCard({
   flipped = false,
   backSlot,
   nameSize,
+  imgBlendMode,
+  imgFilter,
   ...props
 }) {
   const hasFlip = !!backSlot;
@@ -304,6 +326,8 @@ export default function BaseToneCard({
               name={name}
               count={count}
               nameSize={nameSize}
+              imgBlendMode={imgBlendMode}
+              imgFilter={imgFilter}
             />
           </FlipFace>
           <BackFace $flipped={flipped}>
@@ -327,6 +351,8 @@ export default function BaseToneCard({
           name={name}
           count={count}
           nameSize={nameSize}
+          imgBlendMode={imgBlendMode}
+          imgFilter={imgFilter}
         />
       )}
     </Card>

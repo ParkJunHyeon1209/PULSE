@@ -96,7 +96,7 @@ const SpecRow = styled.div`
 const AnimatedWrap = styled.div`
   max-height: ${({ $open }) => ($open ? '4000px' : '0')};
   opacity: ${({ $open }) => ($open ? '1' : '0')};
-  overflow: hidden;
+  overflow: ${({ $open }) => ($open ? 'visible' : 'hidden')};
   transition:
     max-height ${({ $open }) => ($open ? '0.6s ease' : '0.35s ease')},
     opacity ${({ $open }) => ($open ? '0.4s ease 0.1s' : '0.2s ease')};
@@ -105,7 +105,7 @@ const AnimatedWrap = styled.div`
 const DetailContentWrap = styled.div`
   visibility: ${({ $visible }) => ($visible ? 'visible' : 'hidden')};
   height: ${({ $visible }) => ($visible ? 'auto' : '0')};
-  overflow: hidden;
+  overflow: ${({ $visible }) => ($visible ? 'visible' : 'hidden')};
 `;
 
 const ButtonLabel = styled.span`

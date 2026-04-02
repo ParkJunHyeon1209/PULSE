@@ -15,30 +15,26 @@ const InputGroup = styled.div`
 
 const InputLabel = styled.label`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
+  font-family: ${({ theme }) => theme.fontFamily.mono};
   font-weight: 500;
   letter-spacing: 1px;
-  line-height: 1.6;
+  line-height: 2;
 `;
 
 const LabelRow = styled.div`
-  position: relative;
   display: inline-flex;
   align-items: center;
+  gap: 6px;
   width: fit-content;
   min-height: 20px;
-  margin-bottom: ${({ theme }) => theme.spacing[1]};
-  padding-right: 22px;
 `;
 
 const Tooltip = styled.div`
-  position: absolute;
-  top: 50%;
-  right: 0;
+  position: relative;
   display: inline-flex;
   align-items: center;
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   color: ${({ theme }) => theme.colors.textSecondary};
-  transform: translateY(-50%);
 
   &:hover .pw-tooltip,
   &:focus-within .pw-tooltip {
@@ -60,7 +56,7 @@ const Input = styled.input`
   border-bottom: 2px solid
     ${({ theme, $pwError, $isMatcError }) =>
       $pwError || $isMatcError ? theme.colors.error : theme.tones.blue.activeBorder};
-  padding: ${({ theme }) => theme.spacing[1]} 0;
+  padding: 2px 0;
   line-height: 1.5;
   color: ${({ theme }) => theme.colors.text + 'cc'};
   outline: none;
@@ -73,8 +69,12 @@ const Input = styled.input`
 `;
 
 const ErrorMessage = styled.p`
+  position: absolute;
+  top: calc(100% + 1px);
+  left: 0;
+  width: 100%;
   color: ${({ theme }) => theme.colors.error};
-  font-size: 12px;
+  font-size: 11px;
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -82,15 +82,21 @@ const ErrorMessage = styled.p`
 `;
 
 const SuccessMessage = styled.p`
+  position: absolute;
+  top: calc(100% + 1px);
+  left: 0;
+  width: 100%;
   color: ${({ theme }) => theme.colors.success};
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
-  margin-top: ${({ theme }) => theme.spacing[1]};
+  font-size: 11px;
 `;
 
 const MatchMessage = styled.p`
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
   color: ${({ $isMatcError, theme }) => ($isMatcError ? theme.colors.success : theme.colors.error)};
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
-  margin-top: 5px;
+  font-size: 11px;
   font-weight: 500;
   transition: color 0.2s ease;
   white-space: nowrap;
@@ -105,6 +111,14 @@ const StrengthContainer = styled.div`
   width: 100%;
   height: 4px;
   margin-top: ${({ theme }) => theme.spacing[1]};
+`;
+
+const MessageContainer = styled.div`
+  position: absolute;
+  top: calc(100% + 1px);
+  left: 0;
+  width: 100%;
+  pointer-events: none;
 `;
 
 const getActiveColor = ({ $score, theme }) => {
@@ -226,7 +240,7 @@ export default function SignUpPasswordInput({
             name="password"
             type={showPw ? 'text' : 'password'}
             value={pw}
-            placeholder="8자 이상"
+            placeholder="비밀번호 입력"
             $pwError={pwError}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -239,15 +253,15 @@ export default function SignUpPasswordInput({
           <StrengthBar className="medium" $score={pwScore} />
           <StrengthBar className="strong" $score={pwScore} />
         </StrengthContainer>
+        <MessageContainer>
+          {pwError === true && (
+            <ErrorMessage>
+              <Close /> 8~15자의 영대문자, 숫자, 특수문자만을 포함하여 만드세요.
+            </ErrorMessage>
+          )}
+          {pwError === false && <SuccessMessage>사용 가능한 비밀번호입니다.</SuccessMessage>}
+        </MessageContainer>
       </InputGroup>
-      <div className="message-container">
-        {pwError === true && (
-          <ErrorMessage>
-            <Close /> 8~15자의 영대문자, 숫자, 특수문자만을 포함하여 만드세요.
-          </ErrorMessage>
-        )}
-        {pwError === false && <SuccessMessage>사용 가능한 비밀번호입니다.</SuccessMessage>}
-      </div>
       {/* 비밀번호 재입력란 */}
       <InputGroup>
         <InputLabel>CONFIRM PASSWORD</InputLabel>

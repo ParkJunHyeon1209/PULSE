@@ -4,11 +4,12 @@ import AgreementContent from './AgreementContent';
 import styled from '@emotion/styled';
 
 const AgreeInput = styled.div`
+  margin-top: 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: ${({ theme }) => theme.spacing[1]} 0;
+  padding:  ${({ theme }) => theme.spacing[2]} 0 ${({ theme }) => theme.spacing[1]} 0;
 
   span {
     font-size: ${({ theme }) => theme.fontSize.xxxs};

@@ -139,6 +139,8 @@ export default function CategorySec() {
                 name={item.categoryId}
                 count={`${item.totalCount} Products`}
                 tone={item.categoryId}
+                imgBlendMode="hard-light"
+                imgFilter="brightness(1.2) saturate(1)"
                 onClick={() => {
                   item.categoryId === 'LINEUP'
                     ? navigate('/categories')

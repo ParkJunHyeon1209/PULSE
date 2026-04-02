@@ -1,5 +1,6 @@
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
+import BaseRadialGlow from '../../../components/common/BaseRadialGlow';
 import banner1D from '../../../assets/img/banners/1_dark.webp';
 import banner1L from '../../../assets/img/banners/1_light.webp';
 import banner2D from '../../../assets/img/banners/2_dark.webp';
@@ -60,16 +61,7 @@ const SlideLayer = styled.div`
   }
 `;
 
-const GlowLayer = styled.div`
-  position: absolute;
-  inset: 0;
-  opacity: 0.4;
-  background: ${({ theme }) => `
-    radial-gradient(circle at 18% 24%, ${theme.tones.blue.subtleColor}, transparent 28%),
-    radial-gradient(circle at 82% 18%, rgba(${theme.colors.accentRgb}, 0.2), transparent 24%),
-    radial-gradient(circle at 52% 76%, rgba(${theme.colors.primaryRgb}, 0.18), transparent 32%)
-  `};
-`;
+const GlowLayer = BaseRadialGlow;
 
 const MobileDim = styled.div`
   display: none;

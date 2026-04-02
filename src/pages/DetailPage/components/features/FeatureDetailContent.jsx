@@ -7,18 +7,27 @@ const DetailContent = styled.div`
 `;
 
 const FeatureImage = styled.img`
-  width: 100%;
-  height: auto;
   display: block;
+  max-width: none;
+  aspect-ratio: 1280 / 1766;
   margin-top: ${({ theme }) => theme.spacing[14]};
   border-radius: ${({ theme }) => theme.radii.xl};
+  width: calc(100% + 160px);
+  margin-left: -80px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    width: calc(100% + 96px);
+    margin-left: -48px;
+  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    object-fit: contain;
+    width: calc(100% + 64px);
+    margin-left: -32px;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    object-fit: contain;
+    width: calc(100% + 32px);
+    margin-left: -16px;
   }
 `;
 

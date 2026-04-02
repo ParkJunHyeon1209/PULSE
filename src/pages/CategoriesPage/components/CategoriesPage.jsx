@@ -26,8 +26,8 @@ import consoleBannerDark from '../../../assets/img/banners/D_ConsoleSet.webp';
 import consoleBannerLight from '../../../assets/img/banners/L_ConsoleSet.webp';
 import controllerBannerDark from '../../../assets/img/banners/D_Controller.webp';
 import controllerBannerLight from '../../../assets/img/banners/L_Controller.webp';
-import dropsBannerDark from '../../../assets/img/banners/1_dark.webp';
-import dropsBannerLight from '../../../assets/img/banners/1_light.webp';
+import dropsBannerDark from '../../../assets/img/banners/D_LineUp.webp';
+import dropsBannerLight from '../../../assets/img/banners/L_LineUp.webp';
 import dropsOnlyBannerDark from '../../../assets/img/banners/D_Drops.webp';
 import dropsOnlyBannerLight from '../../../assets/img/banners/L_Drops.webp';
 import etcBannerDark from '../../../assets/img/banners/D_DropsExtras.webp';
@@ -723,6 +723,8 @@ export default function CategoriesPage() {
           title={currentCategory.title}
           label={currentCategory.label}
           backgroundImage={currentHeroBackground}
+  
+          bgFilter={isDarkMode ? 'brightness(0.9) saturate(1.3)' : 'brightness(1.03) saturate(1.2)'}
           tabs={currentCategory.tabs}
           activeTab={activeTab}
           onClickTab={setActiveTab}

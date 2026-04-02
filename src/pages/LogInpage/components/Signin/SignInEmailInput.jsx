@@ -9,18 +9,17 @@ const InputGroup = styled.div`
 
 const InputLabel = styled.label`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
+  font-family: ${({ theme }) => theme.fontFamily.mono};
   font-weight: 500;
-  margin-bottom: ${({ theme }) => theme.spacing[1]};
   letter-spacing: 1px;
-  line-height: 1.6;
-  color: ${({ theme }) => theme.colors.text};
+  line-height: 2;
 `;
 
 const Input = styled.input`
   background: transparent;
   border: none;
   border-bottom: 2px solid ${({ theme }) => theme.input.lineBorder};
-  padding: ${({ theme }) => theme.spacing[1]} 0;
+  padding: 2px 0;
   line-height: 1.5;
   outline: none;
   width: 100%;

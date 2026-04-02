@@ -18,19 +18,20 @@ const InputGroup = styled.div`
 
 const InputLabel = styled.label`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
+  font-family: ${({ theme }) => theme.fontFamily.mono};
   font-weight: 500;
-  margin-bottom: ${({ theme }) => theme.spacing[1]};
   letter-spacing: 1px;
-  line-height: 1.6;
+  line-height: 2;
 `;
 
 const Input = styled.input`
   background: transparent;
+
   border: none;
   border-bottom: 2px solid
     ${({ theme, $firstNameError, $lastNameError }) =>
       $firstNameError || $lastNameError ? theme.colors.error : theme.tones.blue.activeBorder};
-  padding: ${({ theme }) => theme.spacing[1]} 0;
+  padding: 2px 0;
   line-height: 1.5;
   color: ${({ theme }) => theme.colors.text + 'cc'};
   outline: none;
@@ -43,9 +44,12 @@ const Input = styled.input`
 `;
 
 const ErrorMessage = styled.p`
+  position: absolute;
+  top: calc(100% + 1px);
+  left: 0;
+  width: 100%;
   color: ${({ theme }) => theme.colors.error};
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
-  margin-top: ${({ theme }) => theme.spacing[1]};
+  font-size: 11px;
   white-space: nowrap;
   display: flex;
   align-items: center;

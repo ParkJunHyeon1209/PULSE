@@ -10,7 +10,8 @@ const FindLink = styled.a`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   text-decoration: none;
   align-self: flex-end;
-  margin-bottom: ${({ theme }) => theme.spacing[5]};
+  margin-bottom: ${({ theme }) => theme.spacing[1]};
+  margin-top: 14px;
   color: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
 

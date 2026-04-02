@@ -4,10 +4,10 @@ import ShowBtn from '../common/ShowBtn';
 
 const InputLabel = styled.label`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
+    font-family: ${({ theme }) => theme.fontFamily.mono};
   font-weight: 500;
-  margin-bottom: ${({ theme }) => theme.spacing[1]};
   letter-spacing: 1px;
-  line-height: 1.6;
+  line-height: 2;
 `;
 
 const InputGroup = styled.div`
@@ -18,14 +18,16 @@ const InputGroup = styled.div`
 
 const Input = styled.input`
   background: transparent;
+  background-color: transparent;
   border: none;
   border-bottom: 2px solid ${({ theme }) => theme.input.lineBorder};
-  padding: ${({ theme }) => theme.spacing[1]} 0;
+  padding: 2px 0;
   line-height: 1.5;
   outline: none;
   width: 100%;
 
   &::placeholder {
+    font-family: ${({ theme }) => theme.fontFamily.mono};
     font-size: ${({ theme }) => theme.fontSize.xxs};
     color: ${({ theme }) => theme.input.placeholder};
   }
@@ -42,7 +44,7 @@ export default function SignInPasswordInput({ pw, setPw, showPw, setShowPw }) {
             id="password"
             name="password"
             type={showPw ? 'text' : 'password'}
-            placeholder="••••••••"
+            placeholder="••••••••••"
             value={pw}
             onChange={(e) => setPw(e.target.value)}
           />
