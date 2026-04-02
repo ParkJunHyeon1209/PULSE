@@ -119,10 +119,35 @@ const CheckboxRow = styled.label`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   font-family: ${({ theme }) => theme.fontFamily.body};
   cursor: pointer;
+`;
 
-  input {
-    margin: 0;
-    flex: 0 0 auto;
+const GradientCheckbox = styled.input`
+  flex-shrink: 0;
+  appearance: none;
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border: 1px solid ${({ theme }) => theme.checkbox.border};
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:checked {
+    background: ${({ theme }) => theme.gradients.navActive};
+    box-shadow:
+      0 0 0 1px #7c3aed,
+      0 0 0 4px #7c3aed30;
+    border: none;
+  }
+
+  &:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -58%);
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
   }
 `;
 
@@ -133,7 +158,6 @@ const BasePillButton = styled.button`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   font-weight: 500;
   font-family: ${({ theme }) => theme.fontFamily.body};
-  cursor: pointer;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     height: 34px;
@@ -213,7 +237,7 @@ export default function AddressModal({ editingId, form, onClose, onChangeForm, o
           </FieldLabel>
 
           <CheckboxRow>
-            <input
+            <GradientCheckbox
               type="checkbox"
               name="isDefault"
               checked={form.isDefault}
