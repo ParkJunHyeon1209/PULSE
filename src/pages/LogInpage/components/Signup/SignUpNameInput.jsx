@@ -11,28 +11,28 @@ const InputNameGroup = styled.div`
 const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  margin: ${({ theme, $isFirst }) => ($isFirst ? '0 0 2px' : `${theme.spacing[4]} 0 2px`)};
   width: 100%;
   position: relative;
 `;
 
 const InputLabel = styled.label`
-  font-size: ${({ theme }) => theme.fontSize.xxs};
-  font-weight: bold;
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  font-weight: 500;
   margin-bottom: ${({ theme }) => theme.spacing[1]};
   letter-spacing: 1px;
-  line-height: 1;
+  line-height: 1.6;
 `;
 
 const Input = styled.input`
   background: transparent;
   border: none;
   border-bottom: 2px solid
-    ${(props) =>
-      props.$firstNameError || props.$lastNameError
-        ? props.theme.colors.error
-        : props.theme.input.lineBorder};
-  padding: ${({ theme }) => theme.spacing[2]} 0;
+    ${({ theme, $firstNameError, $lastNameError }) =>
+      $firstNameError || $lastNameError ? theme.colors.error : theme.tones.blue.activeBorder};
+  padding: ${({ theme }) => theme.spacing[1]} 0;
+  line-height: 1.5;
+  color: ${({ theme }) => theme.colors.text + 'cc'};
   outline: none;
   width: 100%;
 
@@ -62,6 +62,7 @@ export default function SignupNameInput({
   lastNameError,
   setFirstNameError,
   setLastNameError,
+  isFirst = false,
 }) {
   const handleLastNameBlur = () => {
     const isInvalid = lastName.length > 0 && !nameRegex.test(lastName);
@@ -76,7 +77,7 @@ export default function SignupNameInput({
     <>
       {/* 이름 입력란 */}
       <InputNameGroup>
-        <InputGroup>
+        <InputGroup $isFirst={isFirst}>
           <InputLabel>FIRST NAME</InputLabel>
           <Input
             id="firstName"
@@ -98,7 +99,7 @@ export default function SignupNameInput({
             </ErrorMessage>
           )}
         </InputGroup>
-        <InputGroup>
+        <InputGroup $isFirst={isFirst}>
           <InputLabel>LAST NAME</InputLabel>
           <Input
             id="lastName"

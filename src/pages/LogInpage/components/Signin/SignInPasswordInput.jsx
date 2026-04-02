@@ -3,17 +3,17 @@ import React from 'react';
 import ShowBtn from '../common/ShowBtn';
 
 const InputLabel = styled.label`
-  font-size: ${({ theme }) => theme.fontSize.xxs};
-  font-weight: bold;
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  font-weight: 500;
   margin-bottom: ${({ theme }) => theme.spacing[1]};
   letter-spacing: 1px;
-  line-height: 1;
+  line-height: 1.6;
 `;
 
 const InputGroup = styled.div`
   position: relative;
   width: 100%;
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  margin: ${({ theme }) => theme.spacing[4]} 0 2px;
 `;
 
 const Input = styled.input`
@@ -21,6 +21,7 @@ const Input = styled.input`
   border: none;
   border-bottom: 2px solid ${({ theme }) => theme.input.lineBorder};
   padding: ${({ theme }) => theme.spacing[1]} 0;
+  line-height: 1.5;
   outline: none;
   width: 100%;
 

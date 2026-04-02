@@ -5,15 +5,15 @@ import BaseSection from '../../../components/common/BaseSection';
 import BaseToneCard from './common/BaseToneCard';
 import { getDropProducts } from '../../../data/mainApi';
 import useSlider from '../../../hooks/useSlider';
+import { ArrowUpRightIconL } from '../../../assets/icons/BtnIcon';
 
-const CARD_WIDTH = 'clamp(260px, 30vw, 404px)';
-const CARD_OFFSET = 'clamp(208px, 29vw, 404px)';
+const CARD_WIDTH = 'clamp(260px, 32vw, 400px)';
+const CARD_OFFSET = 'clamp(208px, 30.5vw, 400px)';
 
 const SectionWrap = styled.section`
   display: grid;
   gap: ${({ theme }) => theme.spacing[18]};
   padding: ${({ theme }) => `${theme.spacing[24]} 0 ${theme.spacing[20]}`};
-  /* overflow: hidden; */
 `;
 
 const HeadWrap = styled.div`
@@ -57,7 +57,7 @@ const CardWrap = styled.div`
   left: 50%;
   width: ${CARD_WIDTH};
   aspect-ratio: 3 / 4;
-  cursor: ${({ $slot }) => ($slot === -1 || $slot === 1 ? 'pointer' : 'default')};
+  cursor: ${({ $slot }) => ($slot === null ? 'default' : 'pointer')};
   transform: ${({ $slot }) => getCardTransform($slot)};
   transform-origin: center center;
 
@@ -66,7 +66,7 @@ const CardWrap = styled.div`
   }
   will-change: transform, opacity, filter;
   opacity: ${({ $slot }) => ($slot === 0 ? 1 : $slot === null ? 0 : 0.65)};
-  filter: ${({ $slot }) => ($slot === 0 ? ' brightness(1.04) saturate(1.1)' : 'grayscale(70%)')};
+  filter: ${({ $slot }) => ($slot === 0 ? ' brightness(1.04) saturate(1.1)' : 'grayscale(50%)')};
   z-index: ${({ $slot }) => ($slot === 0 ? 10 : $slot === null ? 0 : 5)};
   pointer-events: ${({ $slot }) => ($slot === null ? 'none' : 'auto')};
   transition:
@@ -129,13 +129,103 @@ const SkeletonToneLine = styled.div`
     theme.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(124,58,237,0.1)'};
 `;
 
+const BackContent = styled.div`
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 ${({ theme }) => theme.spacing[6]};
+  margin-bottom: ${({ theme }) => theme.spacing[5]};
+  z-index: 2;
+  gap: ${({ theme }) => theme.spacing[1]};
+`;
+
+const BackTitle = styled.h3`
+  font-family: ${({ theme }) => theme.fontFamily.hero};
+  font-size: clamp(18px, 2.5vw, 32px);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: ${({ theme }) => theme.colors.wColor};
+  transition: font-size 300ms ease;
+`;
+
+const BackDesc = styled.p`
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  color: ${({ theme }) => theme.colors.wColor + 'b3'};
+  line-height: 1.4;
+`;
+
+const BackSpecTable = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  margin-top: ${({ theme }) => theme.spacing[5]};
+  padding: 0 ${({ theme }) => theme.spacing[1]};
+`;
+
+const BackSpecRow = styled.div`
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: ${({ theme }) => theme.spacing[3]};
+  padding: ${({ theme }) => `${theme.spacing[2]} 0`};
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+
+  > span:first-of-type {
+    color: ${({ theme }) => theme.colors.wColor + '80'};
+    font-weight: 600;
+  }
+
+  > span:last-of-type {
+    color: ${({ theme }) => theme.colors.wColor};
+  }
+`;
+
+const BackTopRow = styled.div`
+  position: absolute;
+  top: ${({ theme }) => theme.spacing[5]};
+  right: ${({ theme }) => theme.spacing[5]};
+`;
+
+const GoBtn = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: ${({ theme }) => theme.radii.full};
+  color: ${({ theme }) => theme.colors.wColor};
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition:
+    background ${({ theme }) => theme.motion.fast},
+    transform ${({ theme }) => theme.motion.fast};
+
+  & > * {
+    pointer-events: none;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.28);
+    transform: scale(1.08);
+  }
+
+  &:active {
+    transform: scale(0.94);
+  }
+`;
+
 export default function ShowcaseSec() {
   const [dropProducts, setDropProducts] = useState([]);
+  const [flippedId, setFlippedId] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const count = dropProducts.length;
   const { activeIndex, move, setIsPaused } = useSlider(count);
   const touchX = useRef(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDropProducts = async () => {
@@ -150,11 +240,6 @@ export default function ShowcaseSec() {
 
     fetchDropProducts();
   }, []);
-
-  // console.log(dropProducts);
-  // useEffect(() => {
-  //   getDropProducts().then(setDropProducts);
-  // }, []);
 
   const getPos = (i) => {
     const diff = (i - activeIndex + count) % count;
@@ -205,7 +290,7 @@ export default function ShowcaseSec() {
                 if (loading) return;
                 if (slot === -1) move(-1);
                 else if (slot === 1) move(1);
-                else navigate(`product/${card.id}`);
+                else setFlippedId((prev) => (prev === card.id ? null : card.id));
               }}
             >
               {loading ? (
@@ -221,6 +306,7 @@ export default function ShowcaseSec() {
                 <BaseToneCard
                   white={true}
                   imgOpacity={0.9}
+                  imgPosition="top"
                   img={card.image}
                   label={card.meta}
                   name={card.title}
@@ -230,6 +316,37 @@ export default function ShowcaseSec() {
                   badge={card.tag}
                   beamOver
                   arrow={card.arrow}
+                  nameSize="clamp(18px, 2.5vw, 32px)"
+                  flipped={flippedId === card.id && slot === 0}
+                  backSlot={
+                    <BackContent>
+                      <BackTopRow>
+                        <GoBtn
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/product/${card.id}`);
+                          }}
+                        >
+                          <ArrowUpRightIconL width={24} height={24} />
+                        </GoBtn>
+                      </BackTopRow>
+                      <BackTitle>{card.title}</BackTitle>
+                      <BackDesc>{card.desc}</BackDesc>
+                      {card.specs && Object.keys(card.specs).length > 0 && (
+                        <BackSpecTable>
+                          {Object.entries(card.specs)
+                            .slice(0, 4)
+                            .map(([key, val]) => (
+                              <BackSpecRow key={key}>
+                                <span>{key}</span>
+                                <span>{val}</span>
+                              </BackSpecRow>
+                            ))}
+                        </BackSpecTable>
+                      )}
+                    </BackContent>
+                  }
                 />
               )}
             </CardWrap>

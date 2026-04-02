@@ -5,25 +5,28 @@ import { Close } from '../common/CommonSvg';
 const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: ${({ theme }) => theme.spacing[2]};
+  margin: ${({ theme }) => theme.spacing[4]} 0 2px;
   width: 100%;
   position: relative;
 `;
 
 const InputLabel = styled.label`
-  font-size: ${({ theme }) => theme.fontSize.xxs};
-  font-weight: bold;
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  font-weight: 500;
   margin-bottom: ${({ theme }) => theme.spacing[1]};
   letter-spacing: 1px;
-  line-height: 1;
+  line-height: 1.6;
 `;
 
 const Input = styled.input`
   background: transparent;
   border: none;
   border-bottom: 2px solid
-    ${(props) => (props.$emailError ? props.theme.colors.error : props.theme.input.lineBorder)};
-  padding: ${({ theme }) => theme.spacing[2]} 0;
+    ${({ theme, $emailError }) =>
+      $emailError ? theme.colors.error : theme.tones.blue.activeBorder};
+  padding: ${({ theme }) => theme.spacing[1]} 0;
+  line-height: 1.5;
+  color: ${({ theme }) => theme.colors.text + 'cc'};
   outline: none;
   width: 100%;
 
@@ -47,25 +50,43 @@ const SuccessMessage = styled.p`
   margin-top: ${({ theme }) => theme.spacing[1]};
 `;
 
+const InputRow = styled.div`
+  display: flex;
+  align-items: flex-end;
+  gap: ${({ theme }) => theme.spacing[3]};
+`;
+
+const InputWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
+
 const CheckBtn = styled.button`
-  width: 100px;
-  height: 45px;
-  padding: ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[4]};
+  padding: ${({ theme }) => theme.spacing[3]} ${({ theme }) => theme.spacing[4]};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   font-weight: 500;
   border-radius: 12px;
-  cursor: 'pointer';
-  transition: all 0.2s ease;
+  transition:
+    border-color ${({ theme }) => theme.motion.fast},
+    box-shadow ${({ theme }) => theme.motion.fast},
+    transform ${({ theme }) => theme.motion.fast},
+    color ${({ theme }) => theme.motion.fast},
+    background ${({ theme }) => theme.motion.fast};
 
   color: ${({ theme }) => theme.tones.blue.color};
   background: ${({ theme }) => theme.tones.blue.containerBg};
   border: 1px solid ${({ theme }) => theme.tones.blue.containerBorder};
-  box-shadow: ${({ theme }) => theme.tones.blue.containerShadow};
+  box-shadow:
+    0 0 0 2px rgba(147, 197, 253, 0.08),
+    0 0 12px rgba(56, 130, 255, 0.05);
 
   &:hover {
     transform: translateY(-1px);
     border-color: ${({ theme }) => theme.tones.blue.activeBorder};
-    box-shadow: ${({ theme }) => theme.tones.blue.hoverShadow};
+    box-shadow:
+      0 0 0 2px rgba(147, 197, 253, 0.22),
+      0 0 14px rgba(56, 130, 255, 0.4);
   }
 
   &:active {
@@ -127,22 +148,24 @@ export default function SignUpEamilInput({
     <>
       {/* 이메일 입력란 */}
       <InputGroup>
-        <InputLabel>EMAIL</InputLabel>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <Input
-            id="id"
-            name="id"
-            type="email"
-            value={email}
-            placeholder="signal@pulse.kr"
-            $emailError={emailError}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
+        <InputRow>
+          <InputWrap>
+            <InputLabel>EMAIL</InputLabel>
+            <Input
+              id="id"
+              name="id"
+              type="email"
+              value={email}
+              placeholder="signal@pulse.kr"
+              $emailError={emailError}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          </InputWrap>
           <CheckBtn type="button" disabled={emailError || !email} onClick={handleCheckId}>
             중복 확인
           </CheckBtn>
-        </div>
+        </InputRow>
         <div className="message-container">
           {!emailError && isUnique === true && (
             <SuccessMessage>사용 가능한 아이디입니다.</SuccessMessage>

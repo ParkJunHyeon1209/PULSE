@@ -23,11 +23,11 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  gap: ${({ theme }) => theme.spacing[2]};
   width: 100%;
 
   .signin-btn {
     font-weight: 400;
+    margin: 20px 0;
   }
 `;
 
@@ -39,7 +39,8 @@ const Title = styled.h2`
 const SubText = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: ${({ theme }) => theme.fontSize.xxs};
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  margin-top: ${({ theme }) => theme.spacing[2]};
+  margin-bottom: ${({ theme }) => theme.spacing[6]};
 `;
 
 const FindLink = styled.a`
@@ -157,7 +158,7 @@ export default function SignInForm({ onClick }) {
         <Title>다시 돌아왔군요.</Title>
         <SubText>계정에 로그인해 드롭을 놓치지 마세요.</SubText>
         {/* 이메일 입력창 */}
-        <SignInEmailInput email={email} setEmail={setEmail} />
+        <SignInEmailInput email={email} setEmail={setEmail} isFirst />
         {/* 비밀번호 입력창 */}
         <SignInPasswordInput pw={pw} setPw={setPw} showPw={showPw} setShowPw={setShowPw} />
         <FindPw

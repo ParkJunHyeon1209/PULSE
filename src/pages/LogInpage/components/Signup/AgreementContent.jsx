@@ -12,15 +12,29 @@ const Container = styled.div`
 `;
 
 const AllAgreeBox = styled.div`
-  background: ${({ theme }) => theme.tabs.itemHoverBg};
-  box-shadow: ${({ theme }) => theme.tones.violet.activeShadow};
-  border: 1px solid ${({ theme }) => theme.tones.violet.activeBorder};
+  background: ${({ theme }) => theme.tones.violet.containerBg};
+  box-shadow: ${({ theme }) =>
+    theme.mode === 'dark'
+      ? 'inset 0 1px 0 rgba(167,139,250,.08), 0 0 0 1px rgba(124,58,237,.12), 0 8px 20px rgba(124,58,237,.08)'
+      : 'inset 0 1px 0 rgba(255,255,255,.35), 0 0 0 1px rgba(124,58,237,.08), 0 8px 18px rgba(124,58,237,.05)'};
+  border: 1px solid ${({ theme }) => theme.tones.violet.containerBorder};
   margin-bottom: ${({ theme }) => theme.spacing[4]};
   padding: ${({ theme }) => theme.spacing[4]};
   border-radius: 12px;
   display: flex;
   align-items: center;
   cursor: pointer;
+  transition: border-color ${({ theme }) => theme.motion.fast},
+    box-shadow ${({ theme }) => theme.motion.fast},
+    transform ${({ theme }) => theme.motion.fast};
+
+  &:hover {
+    border-color: ${({ theme }) => theme.tones.violet.activeBorder};
+    box-shadow: ${({ theme }) =>
+      theme.mode === 'dark'
+        ? 'inset 0 1px 0 rgba(167,139,250,.08), 0 0 0 1px rgba(124,58,237,.18), 0 10px 24px rgba(124,58,237,.12)'
+        : 'inset 0 1px 0 rgba(255,255,255,.35), 0 0 0 1px rgba(124,58,237,.14), 0 10px 20px rgba(124,58,237,.08)'};
+  }
 
   .text-group {
     margin-left: 12px;
@@ -41,33 +55,61 @@ const AllAgreeBox = styled.div`
     }
   }
 `;
-const CustomCheckbox = styled.div`
+const AgreementCheckbox = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'checked' && prop !== '$variant',
+})`
   width: 18px;
   height: 18px;
-  border: 1px solid ${({ theme }) => theme.checkbox.border};
-  background: ${(props) => (props.checked ? props.theme.gradients.navActive : 'transparent')};
-  /* box-shadow: ${({ theme }) => theme.checkbox.shadow}; */
+  flex-shrink: 0;
+  position: relative;
+  border: ${({ theme, checked, $variant = 'item' }) =>
+    checked && $variant === 'all'
+      ? 'none'
+      : `1px solid ${
+          $variant === 'all'
+            ? theme.checkbox.border
+            : checked
+              ? theme.tones.violet.activeColor
+              : theme.tones.violet.containerBorder
+        }`};
+  background: ${({ theme, checked, $variant = 'item' }) =>
+    $variant === 'all'
+      ? checked
+        ? theme.gradients.navActive
+        : `${theme.colors.primary}18`
+      : checked
+        ? theme.tones.violet.activeLine
+        : theme.tones.violet.tabActiveBg};
+  box-shadow: ${({ theme, checked, $variant = 'item' }) =>
+    $variant === 'all'
+      ? checked
+        ? `0 0 0 1px ${theme.checkbox.border}, 0 0 0 4px ${theme.checkbox.border}30`
+        : 'none'
+      : checked
+        ? `0 0 0 1px ${theme.tones.violet.activeColor}, 0 0 0 3px ${
+            theme.mode === 'dark' ? 'rgba(167,139,250,.16)' : 'rgba(124,58,237,.12)'
+          }`
+        : 'inset 0 1px 0 rgba(255,255,255,.05)'};
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background ${({ theme }) => theme.motion.fast},
+    border-color ${({ theme }) => theme.motion.fast},
+    box-shadow ${({ theme }) => theme.motion.fast},
+    transform ${({ theme }) => theme.motion.fast};
 
-  .text-group {
-    display: flex;
-    justify-content: space-between;
-  }
-  span {
-    font-size: 10px;
+  &::after {
+    content: ${({ checked }) => (checked ? "'\\2713'" : "''")};
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -58%);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
     color: ${({ theme }) => theme.colors.wColor};
   }
-`;
-const AllAgreeCheckbox = styled(CustomCheckbox)`
-  width: 18px;
-  height: 18px;
-  background: ${(props) => (props.checked ? props.theme.gradients.navActive : 'transparent')};
-  border: 1px solid ${({ theme }) => theme.checkbox.border};
-  /* box-shadow: ${({ theme }) => theme.checkbox.shadow}; */
-  border-radius: 4px;
 `;
 
 const Divider = styled.div`
@@ -104,12 +146,12 @@ const Badge = styled.span`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   padding: 2px 6px;
   border-radius: 10px;
-  background: ${(props) =>
-    props.isRequired ? props.theme.tones.violet.tabActiveBg : props.theme.tabs.itemHoverBg};
-  color: ${(props) =>
-    props.isRequired ? props.theme.tones.violet.color : props.theme.colors.textSecondary};
+  background: ${({ isRequired, theme }) =>
+    isRequired ? theme.tones.violet.tabActiveBg : theme.tabs.itemHoverBg};
+  color: ${({ isRequired, theme }) =>
+    isRequired ? theme.tones.violet.color : theme.colors.textSecondary};
   border: 1px solid
-    ${(props) => (props.isRequired ? props.theme.tones.violet.containerBorder : props.theme.Line)};
+    ${({ isRequired, theme }) => (isRequired ? theme.tones.violet.containerBorder : theme.Line)};
 `;
 
 const LabelText = styled.span`
@@ -197,7 +239,7 @@ export default function AgreementContent({ agreement, setAgreement, onClose }) {
   return (
     <Container>
       <AllAgreeBox onClick={handleAllAgree}>
-        <AllAgreeCheckbox checked={isAllAgreed}>{isAllAgreed && <span>✔</span>}</AllAgreeCheckbox>
+        <AgreementCheckbox checked={isAllAgreed} $variant="all" />
         <div className="text-group">
           <strong className="main-text">전체 약관 동의</strong>
           <span className="sub-text">필수 및 선택 항목 모두 동의</span>
@@ -210,9 +252,7 @@ export default function AgreementContent({ agreement, setAgreement, onClose }) {
         <ItemWrapper>
           <TitleRow>
             <CheckSection onClick={() => handleCheck('agreeTerms')}>
-              <CustomCheckbox checked={agreement.agreeTerms}>
-                {agreement.agreeTerms && <span>✔</span>}
-              </CustomCheckbox>
+              <AgreementCheckbox checked={agreement.agreeTerms} />
               <Badge isRequired>필수</Badge>
               <LabelText $checked={agreement.agreeTerms}>서비스 이용약관</LabelText>
             </CheckSection>
@@ -250,9 +290,7 @@ export default function AgreementContent({ agreement, setAgreement, onClose }) {
         <ItemWrapper>
           <TitleRow>
             <CheckSection onClick={() => handleCheck('agreePrivacy')}>
-              <CustomCheckbox checked={agreement.agreePrivacy}>
-                {agreement.agreePrivacy && <span>✔</span>}
-              </CustomCheckbox>
+              <AgreementCheckbox checked={agreement.agreePrivacy} />
               <Badge isRequired>필수</Badge>
               <LabelText $checked={agreement.agreePrivacy}>개인정보처리방침</LabelText>
             </CheckSection>
@@ -290,9 +328,7 @@ export default function AgreementContent({ agreement, setAgreement, onClose }) {
         <ItemWrapper>
           <TitleRow>
             <CheckSection onClick={() => handleCheck('agreeMarketing')}>
-              <CustomCheckbox checked={agreement.agreeMarketing}>
-                {agreement.agreeMarketing && <span>✔</span>}
-              </CustomCheckbox>
+              <AgreementCheckbox checked={agreement.agreeMarketing} />
               <Badge>선택</Badge>
               <LabelText $checked={agreement.agreeMarketing}>마케팅 정보 수신 동의</LabelText>
             </CheckSection>
