@@ -67,7 +67,9 @@ const FieldLabel = styled.label`
 const FormInput = styled.input`
   width: 100%;
   height: 44px;
-  border: 1px solid ${({ theme }) => theme.input.lineBorder};
+  border: 1px solid
+    ${({ theme, $hasError }) =>
+      $hasError ? theme.input.state.errorBorder : theme.input.lineBorder};
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.surface};
   color: ${({ theme }) => theme.colors.text};
@@ -81,15 +83,19 @@ const FormInput = styled.input`
   }
 
   &:focus {
-    border-color: ${({ theme }) => theme.tones.violet.focusBorder};
-    box-shadow: ${({ theme }) => theme.tones.violet.focusShadow};
+    border-color: ${({ theme, $hasError }) =>
+      $hasError ? theme.colors.error : theme.tones.violet.focusBorder};
+    box-shadow: ${({ theme, $hasError }) =>
+      $hasError ? `0 0 0 3px ${theme.colors.error}14` : theme.tones.violet.focusShadow};
   }
 `;
 
 const FormTextarea = styled.textarea`
   width: 100%;
   min-height: 44px;
-  border: 1px solid ${({ theme }) => theme.input.lineBorder};
+  border: 1px solid
+    ${({ theme, $hasError }) =>
+      $hasError ? theme.input.state.errorBorder : theme.input.lineBorder};
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.surface};
   color: ${({ theme }) => theme.colors.text};
@@ -103,9 +109,19 @@ const FormTextarea = styled.textarea`
   }
 
   &:focus {
-    border-color: ${({ theme }) => theme.tones.violet.focusBorder};
-    box-shadow: ${({ theme }) => theme.tones.violet.focusShadow};
+    border-color: ${({ theme, $hasError }) =>
+      $hasError ? theme.colors.error : theme.tones.violet.focusBorder};
+    box-shadow: ${({ theme, $hasError }) =>
+      $hasError ? `0 0 0 3px ${theme.colors.error}14` : theme.tones.violet.focusShadow};
   }
+`;
+
+const ErrorText = styled.p`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.error};
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  font-weight: 600;
+  line-height: 1.4;
 `;
 
 const CheckboxRow = styled.label`
@@ -189,7 +205,7 @@ const ModalPrimaryButton = styled(BasePillButton)`
   box-shadow: ${({ theme }) => theme.tones.violet.shadow};
 `;
 
-export default function AddressModal({ editingId, form, onClose, onChangeForm, onSubmit }) {
+export default function AddressModal({ editingId, form, errors, onClose, onChangeForm, onSubmit }) {
   return (
     <ModalOverlay onClick={onClose}>
       <ModalCard onClick={(e) => e.stopPropagation()}>
@@ -203,7 +219,9 @@ export default function AddressModal({ editingId, form, onClose, onChangeForm, o
               value={form.name}
               onChange={onChangeForm}
               placeholder="이름을 입력하세요"
+              $hasError={Boolean(errors.name)}
             />
+            {errors.name && <ErrorText>{errors.name}</ErrorText>}
           </FieldLabel>
 
           <FieldLabel>
@@ -213,7 +231,9 @@ export default function AddressModal({ editingId, form, onClose, onChangeForm, o
               value={form.phone}
               onChange={onChangeForm}
               placeholder="010-0000-0000"
+              $hasError={Boolean(errors.phone)}
             />
+            {errors.phone && <ErrorText>{errors.phone}</ErrorText>}
           </FieldLabel>
 
           <FieldLabel>
@@ -223,7 +243,9 @@ export default function AddressModal({ editingId, form, onClose, onChangeForm, o
               value={form.address1}
               onChange={onChangeForm}
               placeholder="기본 주소를 입력하세요"
+              $hasError={Boolean(errors.address1)}
             />
+            {errors.address1 && <ErrorText>{errors.address1}</ErrorText>}
           </FieldLabel>
 
           <FieldLabel>
@@ -233,7 +255,9 @@ export default function AddressModal({ editingId, form, onClose, onChangeForm, o
               value={form.address2}
               onChange={onChangeForm}
               placeholder="상세 주소를 입력하세요"
+              $hasError={Boolean(errors.address2)}
             />
+            {errors.address2 && <ErrorText>{errors.address2}</ErrorText>}
           </FieldLabel>
 
           <CheckboxRow>
