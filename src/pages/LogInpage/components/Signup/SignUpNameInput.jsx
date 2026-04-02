@@ -44,7 +44,7 @@ const Input = styled.input`
 
 const ErrorMessage = styled.p`
   color: ${({ theme }) => theme.colors.error};
-  font-size: 12px;
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
   margin-top: ${({ theme }) => theme.spacing[1]};
   white-space: nowrap;
   display: flex;

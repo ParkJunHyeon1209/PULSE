@@ -68,13 +68,13 @@ const ErrorMessage = styled.p`
 `;
 const SuccessMessage = styled.p`
   color: ${({ theme }) => theme.colors.success};
-  font-size: 12px;
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
   margin-top: ${({ theme }) => theme.spacing[1]};
 `;
 
 const MatchMessage = styled.p`
   color: ${(props) => (props.$isMatcError ? props.theme.colors.success : props.theme.colors.error)};
-  font-size: 12px;
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
   margin-top: 5px;
   font-weight: 500;
   transition: color 0.2s ease;
