@@ -175,7 +175,6 @@ export default function SignInForm({ onClick }) {
           type="submit"
           height="42px"
           flex="none"
-          icon={false}
         >
           SIGN IN
         </BaseBtn>

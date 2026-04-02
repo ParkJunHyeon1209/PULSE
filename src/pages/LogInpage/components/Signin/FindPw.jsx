@@ -82,7 +82,7 @@ export default function FindPw({ findEmail, setFindEmail, isFindPwOpen, setIsFin
           <SignInEmailInput email={findEmail} setEmail={setFindEmail} />
         </div>
         <ButtonGroup>
-          <BaseBtn variant="secondary" icon={false} onClick={handleCloseFindPw} flex="1">
+          <BaseBtn variant="secondary" onClick={handleCloseFindPw} flex="1">
             닫기
           </BaseBtn>
           <BaseBtn type="button" disabled={!isEmailValid} onClick={handleSendTempPw} flex="3">

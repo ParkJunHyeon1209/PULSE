@@ -339,7 +339,7 @@ export default function AgreementContent({ agreement, setAgreement, onClose }) {
       <Divider />
 
       <ButtonGroup>
-        <BaseBtn variant="secondary" icon={false} onClick={onClose}>
+        <BaseBtn variant="secondary" onClick={onClose}>
           닫기
         </BaseBtn>
         <BaseBtn height="49px" flex="4" disabled={!canSubmit} onClick={onClose}>

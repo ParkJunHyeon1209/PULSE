@@ -61,7 +61,7 @@ const DividerText = styled.span`
 const Switch = styled.div`
   margin-top: ${({ theme }) => theme.spacing[8]};
   display: flex;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing[2]};
   justify-content: center;
   align-items: center;
   font-size: 13px;
@@ -191,7 +191,6 @@ export default function SignUpForm({ onClick }) {
           type="submit"
           height="42px"
           flex="none"
-          icon={false}
           disabled={
             !email ||
             !pw ||
