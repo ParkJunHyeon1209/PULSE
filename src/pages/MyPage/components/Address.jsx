@@ -16,6 +16,13 @@ const EMPTY_FORM = {
   isDefault: false,
 };
 
+const EMPTY_ERRORS = {
+  name: '',
+  phone: '',
+  address1: '',
+  address2: '',
+};
+
 const AddressWrap = styled.div`
   width: 100%;
 `;
@@ -185,6 +192,72 @@ const AddCardButton = styled.button`
   }
 `;
 
+/* 연락처는 숫자만 남겨서 검사 */
+const normalizePhone = (value) => value.replace(/[^\d]/g, '');
+
+/* 연락처 입력 시 자동 하이픈 포맷 */
+const formatPhone = (value) => {
+  const numbers = normalizePhone(value).slice(0, 11);
+
+  /* 휴대폰 번호 포맷 */
+  if (numbers.startsWith('01')) {
+    if (numbers.length <= 3) return numbers;
+    if (numbers.length <= 7) return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+    return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7)}`;
+  }
+  /* 일반 지역번호 / 회사번호 포맷 */
+  if (numbers.length <= 3) return numbers;
+  if (numbers.length <= 6) return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+  if (numbers.length <= 10)
+    return `${numbers.slice(0, 3)}-${numbers.slice(3, 6)}-${numbers.slice(6)}`;
+  return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7)}`;
+};
+
+/* 필드별 유효성 검사 */
+const validateField = (name, value) => {
+  switch (name) {
+    case 'name': {
+      const trimmed = value.trim();
+      if (!trimmed) return '받는 분 이름을 입력해주세요.';
+      if (trimmed.length < 2) return '이름은 2자 이상 입력해주세요.';
+      if (!/^[가-힣a-zA-Z\s]+$/.test(trimmed)) {
+        return '이름은 한글 또는 영문만 입력해주세요.';
+      }
+      return '';
+    }
+
+    case 'phone': {
+      const phoneNumbers = normalizePhone(value);
+      if (!phoneNumbers) return '연락처를 입력해주세요.';
+      /* 휴대폰 번호 검사 */
+      const mobileRegex = /^01[0-9]\d{7,8}$/;
+      /* 일반 지역번호 / 회사번호 검사 */
+      const localRegex = /^0[3-9][0-9]\d{7,8}$/;
+      if (!mobileRegex.test(phoneNumbers) && !localRegex.test(phoneNumbers)) {
+        return '올바른 연락처를 입력해주세요.';
+      }
+      return '';
+    }
+
+    case 'address1':
+      return value.trim() ? '' : '기본 주소를 입력해주세요.';
+
+    case 'address2':
+      return value.trim() ? '' : '상세 주소를 입력해주세요.';
+
+    default:
+      return '';
+  }
+};
+
+/* 저장/수정 버튼 클릭 시 전체 검사 */
+const validateForm = (form) => ({
+  name: validateField('name', form.name),
+  phone: validateField('phone', form.phone),
+  address1: validateField('address1', form.address1),
+  address2: validateField('address2', form.address2),
+});
+
 export default function Address() {
   const user = useAuthStore((state) => state.user);
   const storageKey = `pulse-addresses-${user?.id || 'guest'}`;
@@ -196,6 +269,8 @@ export default function Address() {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
+  const [errors, setErrors] = useState(EMPTY_ERRORS);
+  const [isSubmitted, setIsSubmitted] = useState(false); // 저장 버튼 누른 뒤부터 실시간 재검사용
 
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
@@ -209,6 +284,8 @@ export default function Address() {
   const resetForm = () => {
     setEditingId(null);
     setForm(EMPTY_FORM);
+    setErrors(EMPTY_ERRORS);
+    setIsSubmitted(false);
   };
 
   const sortDefaultFirst = (list) => {
@@ -228,10 +305,24 @@ export default function Address() {
 
   const handleChangeForm = (e) => {
     const { name, value, type, checked } = e.target;
+    let nextValue = type === 'checkbox' ? checked : value;
+
+    if (name === 'phone') {
+      nextValue = formatPhone(value);
+    }
+
     setForm((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: nextValue,
     }));
+
+    /* 저장 시도 후에는 수정하는 필드만 실시간 재검사 */
+    if (isSubmitted && name !== 'isDefault') {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: validateField(name, nextValue),
+      }));
+    }
   };
 
   const handleEditAddress = (item) => {
@@ -243,19 +334,37 @@ export default function Address() {
       address2: item.address2,
       isDefault: item.isDefault,
     });
+    setErrors(EMPTY_ERRORS);
+    setIsSubmitted(false);
     setIsModalOpen(true);
   };
 
   const handleAddAddress = () => {
-    if (!form.name || !form.phone || !form.address1 || !form.address2) return;
+    setIsSubmitted(true);
+
+    const nextErrors = validateForm(form);
+    const hasError = Object.values(nextErrors).some(Boolean);
+
+    if (hasError) {
+      setErrors(nextErrors);
+      return;
+    }
+
+    const cleanedForm = {
+      ...form,
+      name: form.name.trim(),
+      phone: formatPhone(form.phone),
+      address1: form.address1.trim(),
+      address2: form.address2.trim(),
+    };
 
     setAddresses((prev) => {
       const isFirstAddress = prev.length === 0;
 
       if (editingId) {
         const updated = prev.map((item) => {
-          if (item.id === editingId) return { ...item, ...form };
-          if (form.isDefault) return { ...item, isDefault: false };
+          if (item.id === editingId) return { ...item, ...cleanedForm };
+          if (cleanedForm.isDefault) return { ...item, isDefault: false };
           return item;
         });
 
@@ -263,8 +372,8 @@ export default function Address() {
       }
 
       const newAddress = createAddress({
-        ...form,
-        isDefault: isFirstAddress ? true : form.isDefault,
+        ...cleanedForm,
+        isDefault: isFirstAddress ? true : cleanedForm.isDefault,
       });
 
       const updated = newAddress.isDefault
@@ -365,6 +474,7 @@ export default function Address() {
         <AddressModal
           editingId={editingId}
           form={form}
+          errors={errors}
           onClose={handleCloseModal}
           onChangeForm={handleChangeForm}
           onSubmit={handleAddAddress}
