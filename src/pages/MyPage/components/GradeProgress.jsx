@@ -71,84 +71,102 @@ export default function GradeProgress() {
   });
 
   return (
-    <GradeProgressWrap $glow={tone.glow}>
-      <LeftSection>
-        <TopRow>
-          <Title>MEMBER PROGRESS</Title>
-        </TopRow>
+    <GradeProgressContainer>
+      <GradeProgressWrap $glow={tone.glow}>
+        <LeftSection>
+          <TopRow>
+            <Title>MEMBER PROGRESS</Title>
+          </TopRow>
 
-        <GradeLine>
-          <GradeText $active>{currentGrade}</GradeText>
-          {!isMaxGrade && (
-            <>
-              <GradeArrow />
-              <GradeText>{nextGrade}</GradeText>
-            </>
-          )}
-          <TooltipTrigger>
-            <TooltipButton type="button" aria-label="등급 진행 정보 보기">
-              ?
-            </TooltipButton>
-            <StyledTooltip className="grade-tooltip" position="bottom" offset="14px">
-              <TooltipTitle>GRADE GUIDE</TooltipTitle>
-              {gradeGuide.map((item) => (
-                <TooltipRow key={item.gradeName}>
-                  <TooltipRowHead>
-                    <TooltipGrade $color={item.color} $lightColor={item.lightColor}>
-                      {item.gradeName}
-                    </TooltipGrade>
-                    <TooltipTarget>{item.label}</TooltipTarget>
-                  </TooltipRowHead>
-                  {item.gradeName !== 'MEMBER' && (
-                    <>
-                      <TooltipProgressTrack>
-                        <TooltipProgressFill $progress={item.progress} $color={item.color} />
-                      </TooltipProgressTrack>
-                      <TooltipPercent>{Math.round(item.progress)}%</TooltipPercent>
-                    </>
-                  )}
-                </TooltipRow>
-              ))}
-            </StyledTooltip>
-          </TooltipTrigger>
-        </GradeLine>
+          <GradeLine>
+            <GradeText $active>{currentGrade}</GradeText>
+            {!isMaxGrade && (
+              <>
+                <GradeArrow />
+                <GradeText>{nextGrade}</GradeText>
+              </>
+            )}
+            <TooltipTrigger>
+              <TooltipButton type="button" aria-label="등급 진행 정보 보기">
+                ?
+              </TooltipButton>
+              <StyledTooltip className="grade-tooltip" position="bottom" offset="14px">
+                <TooltipTitle>GRADE GUIDE</TooltipTitle>
+                {gradeGuide.map((item) => (
+                  <TooltipRow key={item.gradeName}>
+                    <TooltipRowHead>
+                      <TooltipGrade $color={item.color} $lightColor={item.lightColor}>
+                        {item.gradeName}
+                      </TooltipGrade>
+                      <TooltipTarget>{item.label}</TooltipTarget>
+                    </TooltipRowHead>
+                    {item.gradeName !== 'MEMBER' && (
+                      <>
+                        <TooltipProgressTrack>
+                          <TooltipProgressFill $progress={item.progress} $color={item.color} />
+                        </TooltipProgressTrack>
+                        <TooltipPercent>{Math.round(item.progress)}%</TooltipPercent>
+                      </>
+                    )}
+                  </TooltipRow>
+                ))}
+              </StyledTooltip>
+            </TooltipTrigger>
+          </GradeLine>
 
-        <ProgressMeta>
-          <CurrentSpend>
-            <strong>{currentAmount.toLocaleString('ko-KR')}</strong> KRW
-          </CurrentSpend>
-        </ProgressMeta>
+          <ProgressMeta>
+            <CurrentSpend>
+              <strong>{currentAmount.toLocaleString('ko-KR')}</strong> KRW
+            </CurrentSpend>
+          </ProgressMeta>
 
-        <ProgressBar aria-label="grade progress">
-          <ProgressFill $progress={safeProgress} $color={tone.color} $glow={tone.glow} />
-        </ProgressBar>
+          <ProgressBar aria-label="grade progress">
+            <ProgressFill $progress={safeProgress} $color={tone.color} $glow={tone.glow} />
+          </ProgressBar>
 
-        <ToNextGradeText>
-          {isMaxGrade
-            ? '누적 주문 금액 기준으로 VIP 혜택을 계속 누릴 수 있어요.'
-            : `${nextGrade} 등급 기준 ${threshold.toLocaleString('ko-KR')}원 중 ${currentAmount.toLocaleString('ko-KR')}원 달성`}
-        </ToNextGradeText>
-      </LeftSection>
+          <ToNextGradeText>
+            {isMaxGrade
+              ? '누적 주문 금액 기준으로 VIP 혜택을 계속 누릴 수 있어요.'
+              : `${nextGrade} 등급 기준 ${threshold.toLocaleString('ko-KR')}원 중 ${currentAmount.toLocaleString('ko-KR')}원 달성`}
+          </ToNextGradeText>
+        </LeftSection>
 
-      <RightSection>
-        <AchievementLabel>ACHIEVEMENT</AchievementLabel>
-        <AchievementRate $color={tone.color}>{Math.round(safeProgress)}%</AchievementRate>
-        <AchievementCaption>
-          {isMaxGrade ? 'MAX LEVEL' : `${nextGrade}까지 진행률`}
-        </AchievementCaption>
-      </RightSection>
-    </GradeProgressWrap>
+        <RightSection>
+          <AchievementLabel>ACHIEVEMENT</AchievementLabel>
+          <AchievementRate $color={tone.color}>{Math.round(safeProgress)}%</AchievementRate>
+          <AchievementCaption>
+            {isMaxGrade ? 'MAX LEVEL' : `${nextGrade}까지 진행률`}
+          </AchievementCaption>
+        </RightSection>
+      </GradeProgressWrap>
+    </GradeProgressContainer>
   );
 }
+
+const GradeProgressContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 ${({ theme }) => theme.spacing[20]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    padding: 0 ${({ theme }) => theme.spacing[6]};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: 0 ${({ theme }) => theme.spacing[6]};
+  }
+`;
 
 const GradeProgressWrap = styled.section`
   position: relative;
   overflow: visible;
   isolation: isolate;
   z-index: 10;
-  max-width: 1120px;
+  box-sizing: border-box;
   width: 100%;
-  margin: 0 auto;
+  max-width: 1200px;
   padding: ${({ theme }) => theme.spacing[6]};
   display: grid;
   grid-template-columns: minmax(0, 1.8fr) minmax(220px, 0.7fr);
@@ -215,7 +233,7 @@ const GradeProgressWrap = styled.section`
 
 const LeftSection = styled.div`
   position: relative;
-  z-index: 1;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[3]};
@@ -235,7 +253,7 @@ const Title = styled.h2`
 
 const GradeLine = styled.div`
   position: relative;
-  z-index: 5;
+  z-index: 20;
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing[2]};
@@ -284,7 +302,7 @@ const GradeArrow = styled.span`
 
 const TooltipTrigger = styled.span`
   position: relative;
-  z-index: 20;
+  z-index: 40;
   display: inline-flex;
   align-items: center;
 
@@ -333,7 +351,7 @@ const TooltipButton = styled.button`
 
 const StyledTooltip = styled(BaseTooltip)`
   min-width: 260px;
-  z-index: 120;
+  z-index: 999;
   background: ${({ theme }) =>
     theme.mode === 'light' ? 'rgba(250, 248, 255, 0.98)' : 'rgba(10, 8, 26, 0.98)'};
   border-color: ${({ theme }) =>
@@ -513,7 +531,7 @@ const ToNextGradeText = styled.p`
 
 const RightSection = styled.aside`
   position: relative;
-  z-index: 1;
+  z-index: 0;
   min-height: 100%;
   padding: ${({ theme }) => theme.spacing[5]};
   display: flex;

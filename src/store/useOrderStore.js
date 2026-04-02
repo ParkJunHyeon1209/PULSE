@@ -38,7 +38,7 @@ const useOrderStore = create(
     (set, get) => ({
       orders: [],
 
-      addOrder: ({ items = [], status = '결제완료', totalPrice: finalTotalPrice }) => {
+      addOrder: ({ items = [], status = '결제완료', totalPrice: finalTotalPrice, earnedPoint = 0 }) => {
         if (!Array.isArray(items) || items.length === 0) {
           return null;
         }
@@ -56,6 +56,7 @@ const useOrderStore = create(
           createdAt: new Date().toISOString(),
           status,
           totalPrice,
+          earnedPoint: Math.max(Number(earnedPoint) || 0, 0),
           items: normalizedItems,
         };
 

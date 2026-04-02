@@ -113,7 +113,7 @@ export default function SignInForm({ onClick }) {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const { login: storeLogin } = useAuthStore.getState();
+    const { login: storeLogin, user: persistedUser } = useAuthStore.getState();
 
     try {
       const res = await loginApi(email, pw);
@@ -124,20 +124,23 @@ export default function SignInForm({ onClick }) {
           (acc, order) => acc + (Number(order.totalPrice) || 0),
           0
         );
+        const savedUser = persistedUser?.id === email ? persistedUser : null;
 
         const userData = {
           id: email,
           password: pw,
           name: res.userInfo.name,
-          nickname: res.userInfo.name,
+          nickname: savedUser?.nickname || res.userInfo.name,
+          tel: savedUser?.tel || '',
           orders: orders,
           isHaveOrdered: orders.length > 0,
           totalOrderPrice,
           wishIdList: wishIdList,
-          point: 0,
-          reviews: [],
+          point: savedUser?.point || 0,
+          reviews: savedUser?.reviews || [],
           grade: getGradeByTotalOrderPrice(totalOrderPrice),
-          coupons: [],
+          hasReceivedFirstOrderCoupon: savedUser?.hasReceivedFirstOrderCoupon || false,
+          coupons: savedUser?.coupons || [],
         };
 
         storeLogin(userData);

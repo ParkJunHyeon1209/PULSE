@@ -192,12 +192,12 @@ export function SearchIcon({ strokeWidth = '1.5', ...props }) {
   );
 }
 
-export function CartIcon({ strokeWidth = '1', ...props }) {
+export function CartIcon({ size, strokeWidth = '1', ...props }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
+      width={size || '18'}
+      height={size || '18'}
       viewBox="0 0 18 18"
       fill="none"
       {...props}
@@ -427,12 +427,12 @@ export function YoutubeIcon({ strokeWidth = '0.75', ...props }) {
 }
 
 // 카드 아이콘
-export function HeartIcon({ strokeWidth = '1.8', ...props }) {
+export function HeartIcon({ size, strokeWidth = '1.8', ...props }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
+      width={size || '16'}
+      height={size || '16'}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -516,6 +516,54 @@ export function QtyPlusIcon({ size = 16, ...props }) {
         stroke="currentColor"
         strokeWidth="1"
         strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+export function ThunderIcon({ size = 16, ...props }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      fill="currentColor"
+      viewBox="0 0 16 16"
+      {...props}
+    >
+      <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z" />
+    </svg>
+  );
+}
+
+export function PointIcon({ size = 16, ...props }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      fill="currentColor"
+      viewBox="0 0 16 16"
+      {...props}
+    >
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.5 4.002V12h1.283V9.164h1.668C10.033 9.164 11 8.08 11 6.586c0-1.482-.955-2.584-2.538-2.584zm2.77 4.072c.893 0 1.419-.545 1.419-1.488s-.526-1.482-1.42-1.482H6.778v2.97z" />
+    </svg>
+  );
+}
+
+export function HeartFillIcon({ size = 16, ...props }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      fill="currentColor"
+      viewBox="0 0 16 16"
+      {...props}
+    >
+      <path
+        fillRule="evenodd"
+        d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"
       />
     </svg>
   );
@@ -647,11 +695,11 @@ export function ReviewIcon({ size = 15, ...props }) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <g opacity="0.6">
+      <g opacity="1" clipPath="url(#clip0_1846_1856)">
         <path
           d="M13.125 9.375C13.125 9.70652 12.9933 10.0245 12.7589 10.2589C12.5245 10.4933 12.2065 10.625 11.875 10.625H4.375L1.875 13.125V3.125C1.875 2.79348 2.0067 2.47554 2.24112 2.24112C2.47554 2.0067 2.79348 1.875 3.125 1.875H11.875C12.2065 1.875 12.5245 2.0067 12.7589 2.24112C12.9933 2.47554 13.125 2.79348 13.125 3.125V9.375Z"
-          stroke="#C8CDFF"
-          strokeOpacity="0.42"
+          stroke="currentColor"
+          strokeOpacity="1"
         />
       </g>
     </svg>
@@ -668,16 +716,16 @@ export function CouponIcon({ ...props }) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <g opacity="0.6" clipPath="url(#clip0_1846_1858)">
+      <g opacity="1" clipPath="url(#clip0_1846_1858)">
         <path
           d="M12.5 7.5V13.75H2.5V7.5M7.5 13.75V4.375M7.5 4.375H4.6875C4.2731 4.375 3.87567 4.21038 3.58265 3.91735C3.28962 3.62433 3.125 3.2269 3.125 2.8125C3.125 2.3981 3.28962 2.00067 3.58265 1.70765C3.87567 1.41462 4.2731 1.25 4.6875 1.25C6.875 1.25 7.5 4.375 7.5 4.375ZM7.5 4.375H10.3125C10.7269 4.375 11.1243 4.21038 11.4174 3.91735C11.7104 3.62433 11.875 3.2269 11.875 2.8125C11.875 2.3981 11.7104 2.00067 11.4174 1.70765C11.1243 1.41462 10.7269 1.25 10.3125 1.25C8.125 1.25 7.5 4.375 7.5 4.375ZM13.75 4.375H1.25V7.5H13.75V4.375Z"
-          stroke="#C8CDFF"
-          strokeOpacity="0.42"
+          stroke="currentColor"
+          strokeOpacity="1"
         />
       </g>
       <defs>
         <clipPath id="clip0_1846_1858">
-          <rect width="15" height="15" fill="white" />
+          <rect width="15" height="15" fill="currentColor" />
         </clipPath>
       </defs>
     </svg>
@@ -694,23 +742,41 @@ export function AddressIcon({ ...props }) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <g opacity="0.6" clipPath="url(#clip0_1846_1854)">
+      <g opacity="1" clipPath="url(#clip0_1846_1854)">
         <path
           d="M13.125 6.25C13.125 10.625 7.5 14.375 7.5 14.375C7.5 14.375 1.875 10.625 1.875 6.25C1.875 4.75816 2.46763 3.32742 3.52252 2.27252C4.57742 1.21763 6.00816 0.625 7.5 0.625C8.99184 0.625 10.4226 1.21763 11.4775 2.27252C12.5324 3.32742 13.125 4.75816 13.125 6.25Z"
-          stroke="#C8CDFF"
-          strokeOpacity="0.42"
+          stroke="currentColor"
+          strokeOpacity="1"
         />
         <path
           d="M7.5 8.125C8.53553 8.125 9.375 7.28553 9.375 6.25C9.375 5.21447 8.53553 4.375 7.5 4.375C6.46447 4.375 5.625 5.21447 5.625 6.25C5.625 7.28553 6.46447 8.125 7.5 8.125Z"
-          stroke="#C8CDFF"
-          strokeOpacity="0.42"
+          stroke="currentColor"
+          strokeOpacity="1"
         />
       </g>
       <defs>
         <clipPath id="clip0_1846_1854">
-          <rect width="15" height="15" fill="white" />
+          <rect width="15" height="15" fill="currentColor" />
         </clipPath>
       </defs>
+    </svg>
+  );
+}
+
+export function CouponIcon2({ ...props }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 22.01 22"
+      fill="none"
+      width="16px"
+      height="16px"
+      {...props}
+    >
+      <path
+        d="M21.89,9.93c-.24-1.09-.82-2.04-1.65-2.75.04-.51.01-1.03-.1-1.52-.56-2.47-2.87-4.11-5.32-3.89-.32-.38-.69-.71-1.12-.98C12.58.07,11.24-.16,9.94.12c-1.09.24-2.04.82-2.75,1.65-.5-.04-1.01-.01-1.51.1-1.3.29-2.42,1.07-3.13,2.2-.6.93-.86,2.02-.77,3.1-.39.33-.73.72-1.01,1.16-1.35,2.13-.87,4.92,1.01,6.5-.04.5,0,1.02.11,1.51.55,2.47,2.85,4.1,5.31,3.89.32.38.71.72,1.13.99.83.53,1.76.78,2.68.78,1.44,0,2.86-.62,3.83-1.77.5.04,1.02,0,1.51-.11,2.47-.55,4.1-2.85,3.89-5.31.38-.32.71-.69.98-1.12.72-1.12.96-2.46.67-3.76ZM8.01,6.52h.01c.81,0,1.47.67,1.47,1.48s-.66,1.48-1.47,1.48-1.49-.67-1.49-1.48.67-1.48,1.48-1.48ZM8.89,14.89c-.24.23-.55.36-.88.36s-.64-.13-.88-.36c-.24-.24-.37-.55-.37-.89s.13-.65.36-.89l6-6c.47-.47,1.31-.47,1.78,0,.49.49.49,1.29,0,1.78l-6.01,6ZM14.02,15.47c-.81,0-1.47-.66-1.47-1.47s.64-1.47,1.46-1.47,1.49.66,1.49,1.47-.67,1.47-1.48,1.47Z"
+        fill="currentColor"
+      />
     </svg>
   );
 }

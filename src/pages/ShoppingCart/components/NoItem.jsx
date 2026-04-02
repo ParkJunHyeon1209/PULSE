@@ -45,7 +45,12 @@ export default function NoItem() {
       <img src={emptyCart} alt="빈 카트" />
       <p>카트가 비어 있습니다.</p>
       <p>{`아직 추가된 장비가 없습니다. \n당신의 PULSE를 찾아보세요.`}</p>
-      <BaseBtn onClick={() => navigate('/')} variant="secondary" tone="violet" padding="12px 24px">
+      <BaseBtn
+        onClick={() => navigate('/categories')}
+        variant="secondary"
+        tone="violet"
+        padding="12px 24px"
+      >
         EXPLORE GEAR
       </BaseBtn>
     </NoItemWrap>

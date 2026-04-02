@@ -21,7 +21,7 @@ function AlertModal() {
     >
       <p>
         최소 1개 이상의 상품이 필요합니다. 상품을 <br />
-        제거하려면 삭제 버튼을 이용해 주세요.
+        제거하시려면 삭제 버튼을 이용해 주세요.
       </p>
     </BaseModal>
   );
@@ -35,27 +35,32 @@ export default function ListContent() {
   const increaseQuantity = useCartStore((state) => state.addToCart);
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
 
-  const handleToggleChecked = (e, item) => {
+  const stopLinkNavigation = (e) => {
     e.preventDefault();
     e.stopPropagation();
+  };
+
+  const stopEventOnly = (e) => {
+    e.stopPropagation();
+  };
+
+  const handleToggleChecked = (e, item) => {
+    stopEventOnly(e);
     onChange(item);
   };
 
   const handleRemoveCart = (e, item) => {
-    e.preventDefault();
-    e.stopPropagation();
+    stopLinkNavigation(e);
     removeCart(item);
   };
 
   const handleDecreaseQuantity = (e, item) => {
-    e.preventDefault();
-    e.stopPropagation();
+    stopLinkNavigation(e);
     decreaseQuantity(item);
   };
 
   const handleIncreaseQuantity = (e, item) => {
-    e.preventDefault();
-    e.stopPropagation();
+    stopLinkNavigation(e);
     increaseQuantity(item);
   };
 
@@ -70,7 +75,8 @@ export default function ListContent() {
             <GradientCheckbox
               type="checkbox"
               checked={item.checked}
-              onClick={(e) => handleToggleChecked(e, item)}
+              onMouseDown={stopLinkNavigation}
+              onClick={stopEventOnly}
               onChange={(e) => handleToggleChecked(e, item)}
             />
             <img src={item.image} alt={item.title} />
@@ -92,6 +98,7 @@ export default function ListContent() {
 
                 <CloseBtn
                   variant="ic-btn"
+                  onMouseDown={stopLinkNavigation}
                   onClick={(e) => handleRemoveCart(e, item)}
                   icon={false}
                   flex="0"
@@ -115,11 +122,19 @@ export default function ListContent() {
               <div className="bottom-row">
                 <p>{(item.price * item.quantity).toLocaleString()}원</p>
                 <div className="qty">
-                  <button onClick={(e) => handleDecreaseQuantity(e, item)}>
+                  <button
+                    type="button"
+                    onMouseDown={stopLinkNavigation}
+                    onClick={(e) => handleDecreaseQuantity(e, item)}
+                  >
                     <MinusIcon />
                   </button>
                   <span>{item.quantity}</span>
-                  <button onClick={(e) => handleIncreaseQuantity(e, item)}>
+                  <button
+                    type="button"
+                    onMouseDown={stopLinkNavigation}
+                    onClick={(e) => handleIncreaseQuantity(e, item)}
+                  >
                     <QtyPlusIcon />
                   </button>
                 </div>

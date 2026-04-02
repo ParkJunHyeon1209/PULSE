@@ -29,7 +29,12 @@ export default function OrderConfirmModal({ id, onConfirm }) {
       </p>
 
       <div style={{ marginTop: '28px', display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
-        <BaseBtn variant="secondary" padding="12px 24px" onClick={() => closeModal(id)}>
+        <BaseBtn
+          variant="secondary"
+          icon={false}
+          padding="12px 24px"
+          onClick={() => closeModal(id)}
+        >
           취소
         </BaseBtn>
         <BaseBtn padding="12px 24px" onClick={handleConfirm}>

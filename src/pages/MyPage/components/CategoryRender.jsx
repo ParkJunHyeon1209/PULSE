@@ -24,4 +24,10 @@ export default function CategoryRender({ category }) {
 
 const CategoryWrap = styled.div`
   flex: 4;
+  padding-right: ${({ theme }) => theme.spacing[20]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    width: 100%;
+    padding-right: 0;
+  }
 `;

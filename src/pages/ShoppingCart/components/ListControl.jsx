@@ -25,6 +25,16 @@ function ConfirmModal() {
       <div className="btn-wrap" style={{ display: 'flex', gap: `16px` }}>
         <BaseBtn
           padding="12px 32px"
+          variant="secondary"
+          icon={false}
+          style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
+          onClick={() => closeModal('confirm')}
+        >
+          취소
+        </BaseBtn>
+
+        <BaseBtn
+          padding="12px 32px"
           style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
           onClick={() => {
             resetCart();
@@ -32,14 +42,6 @@ function ConfirmModal() {
           }}
         >
           확인
-        </BaseBtn>
-
-        <BaseBtn
-          padding="12px 32px"
-          style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
-          onClick={() => closeModal('confirm')}
-        >
-          취소
         </BaseBtn>
       </div>
     </BaseModal>
