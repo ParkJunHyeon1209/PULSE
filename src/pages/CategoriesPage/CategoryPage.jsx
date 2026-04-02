@@ -41,15 +41,20 @@ const promoBannerImages = {
 export default function CategoryPage() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
   const heroBackgroundImage = isDarkMode ? categoryBannerDark : categoryBannerLight;
 
   useEffect(() => {
     async function loadProducts() {
-      const data = await getAllProducts();
-      setProducts(data);
+      try {
+        setLoading(true);
+        const data = await getAllProducts();
+        setProducts(data);
+      } finally {
+        setLoading(false);
+      }
     }
-
     loadProducts();
   }, []);
 
@@ -85,6 +90,8 @@ export default function CategoryPage() {
               viewLabel="VIEW"
               products={section.products}
               columns={4}
+              loading={loading}
+              skeletonCount={4}
               onClickViewAll={() => {
                 navigate(`/categories/${section.key}`);
                 window.scrollTo(0, 0);

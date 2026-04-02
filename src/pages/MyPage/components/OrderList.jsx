@@ -133,7 +133,7 @@ export default function OrderList() {
 
                 <ShippingBtns>
                   {order.status === '결제완료' && (
-                    <button onClick={() => handleCancelOrder(order.id)}>주문 취소</button>
+                    <button onClick={() => handleCancelOrder(order.id)}>주문내역 삭제</button>
                   )}
 
                   {(order.status === '배송중' || order.status === '배송완료') && (

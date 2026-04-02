@@ -179,6 +179,59 @@ function ChevronIcon({ direction = 'right' }) {
   );
 }
 
+const SkeletonCard = styled.div`
+  position: relative;
+  flex-shrink: 0;
+  flex-basis: clamp(150px, 28%, 300px);
+  min-height: clamp(280px, 37vw, 400px);
+  border-radius: ${({ theme }) => theme.radii.xl};
+  overflow: hidden;
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  background: ${({ theme }) => theme.colors.cardBg};
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, ${({ theme }) => (theme.mode === 'dark' ? 0.08 : 0.22)}),
+      transparent
+    );
+    animation: collectionSkeletonShimmer 1.5s infinite;
+  }
+
+  @keyframes collectionSkeletonShimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+`;
+
+const SkeletonImage = styled.div`
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  background: ${({ theme }) =>
+    theme.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(124,58,237,0.08)'};
+`;
+
+const SkeletonBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[3]};
+  padding: ${({ theme }) => theme.spacing[4]};
+`;
+
+const SkeletonLine = styled.div`
+  width: ${({ $w }) => $w || '100%'};
+  height: ${({ $h }) => $h || '14px'};
+  border-radius: ${({ theme }) => theme.radii.sm};
+  background: ${({ theme }) =>
+    theme.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(124,58,237,0.1)'};
+`;
+
 export default function CollectionSec() {
   const [productsList, setProductsList] = useState([]);
   const gridRef = useRef(null);
@@ -187,6 +240,7 @@ export default function CollectionSec() {
   const [isLeftHover, setIsLeftHover] = useState(false);
   const [isRightHover, setIsRightHover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 730);
@@ -198,10 +252,13 @@ export default function CollectionSec() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setLoading(true);
         const data = await getColProducts();
         setProductsList(data);
       } catch (error) {
         console.error('데이터 로드 실패:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -261,13 +318,13 @@ export default function CollectionSec() {
       />
 
       <CarouselWrap>
-        <EdgeFade $direction="left" $visible={canScrollLeft} />
-        <EdgeFade $direction="right" $visible={canScrollRight} />
+        <EdgeFade $direction="left" $visible={!loading && canScrollLeft} />
+        <EdgeFade $direction="right" $visible={!loading && canScrollRight} />
 
         <ArrowHitButton
           type="button"
           $direction="left"
-          $visible={canScrollLeft}
+          $visible={!loading && canScrollLeft}
           onClick={() => handleScroll('left')}
           onMouseEnter={() => setIsLeftHover(true)}
           onMouseLeave={() => setIsLeftHover(false)}
@@ -281,7 +338,7 @@ export default function CollectionSec() {
         <ArrowHitButton
           type="button"
           $direction="right"
-          $visible={canScrollRight}
+          $visible={!loading && canScrollRight}
           onClick={() => handleScroll('right')}
           onMouseEnter={() => setIsRightHover(true)}
           onMouseLeave={() => setIsRightHover(false)}
@@ -293,9 +350,26 @@ export default function CollectionSec() {
         </ArrowHitButton>
 
         <Grid ref={gridRef}>
-          {recommendedProducts.map((item) => (
-            <BaseProductCard key={item.id} product={item} hideAddBtn={isMobile} compactPadding />
-          ))}
+          {loading
+            ? Array.from({ length: 8 }).map((_, index) => (
+                <SkeletonCard key={index}>
+                  <SkeletonImage />
+                  <SkeletonBody>
+                    <SkeletonLine $w="70px" $h="20px" />
+                    <SkeletonLine $w="78%" $h="18px" />
+                    <SkeletonLine $w="54%" />
+                    <SkeletonLine $w="38%" $h="20px" />
+                  </SkeletonBody>
+                </SkeletonCard>
+              ))
+            : recommendedProducts.map((item) => (
+                <BaseProductCard
+                  key={item.id}
+                  product={item}
+                  hideAddBtn={isMobile}
+                  compactPadding
+                />
+              ))}
         </Grid>
       </CarouselWrap>
     </SectionWrap>
