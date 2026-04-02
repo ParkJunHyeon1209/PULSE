@@ -34,7 +34,7 @@ const Input = styled.input`
 `;
 const ErrorMessage = styled.p`
   color: ${({ theme }) => theme.colors.error};
-  font-size: 12px;
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
   margin-top: ${({ theme }) => theme.spacing[1]};
   white-space: nowrap;
   display: flex;
@@ -43,15 +43,15 @@ const ErrorMessage = styled.p`
 `;
 const SuccessMessage = styled.p`
   color: ${({ theme }) => theme.colors.success};
-  font-size: 12px;
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
   margin-top: ${({ theme }) => theme.spacing[1]};
 `;
 
 const CheckBtn = styled.button`
   width: 100px;
   height: 45px;
-  padding: 8px 16px;
-  font-size: 11px;
+  padding: ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[4]};
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
   font-weight: 500;
   border-radius: 12px;
   cursor: 'pointer';

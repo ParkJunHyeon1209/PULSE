@@ -8,10 +8,10 @@ const AgreeInput = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 0;
+  padding: ${({ theme }) => theme.spacing[1]} 0;
 
   span {
-    font-size: 12px;
+    font-size: ${({ theme }) => theme.fontSize.xxxs};
   }
 
   input {
@@ -19,7 +19,8 @@ const AgreeInput = styled.div`
     -webkit-appearance: none;
     width: 18px;
     height: 18px;
-    border: 2px solid #555;
+    border: 2px solid ${({ theme }) => theme.tones.blue.lineBorder};
+
     border-radius: 4px;
     transition: all 0.2s ease;
     display: flex;
@@ -33,7 +34,7 @@ const AgreeInput = styled.div`
 
     &:checked::after {
       content: '✔';
-      font-size: 12px;
+      font-size: ${({ theme }) => theme.fontSize.xxxs};
       color: ${({ theme }) => theme.colors.wColor};
     }
   }
