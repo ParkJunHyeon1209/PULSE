@@ -5,7 +5,7 @@ import { MinusIcon, QtyPlusIcon } from '../../../assets/icons/BtnIcon';
 export default function QuantitySelector({ quantity, onDecrease, onIncrease }) {
   return (
     <OptionBox>
-      <QuantityButton type="button" onClick={onDecrease}>
+      <QuantityButton type="button" onClick={onDecrease} disabled={quantity <= 1}>
         <MinusIcon size={16} />
       </QuantityButton>
 
@@ -41,22 +41,35 @@ const QuantityButton = styled.button`
   color: ${({ theme }) => theme.colors.primary};
   transition:
     background-color ${({ theme }) => theme.motion.fast},
-    box-shadow ${({ theme }) => theme.motion.fast};
+    box-shadow ${({ theme }) => theme.motion.fast},
+    color ${({ theme }) => theme.motion.fast},
+    opacity ${({ theme }) => theme.motion.fast};
 
   > svg {
     transition: transform ${({ theme }) => theme.motion.fast};
   }
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: ${({ theme }) => theme.colors.primary + '18'};
   }
 
-  &:active {
+  &:active:not(:disabled) {
     background: ${({ theme }) => theme.colors.primary + '22'};
     box-shadow: none;
 
     > svg {
       transform: scale(0.84);
+    }
+  }
+
+  &:disabled {
+    cursor: default;
+    color: ${({ theme }) => theme.colors.textSecondary};
+    opacity: 0.55;
+    background: transparent;
+
+    > svg {
+      transform: none;
     }
   }
 `;

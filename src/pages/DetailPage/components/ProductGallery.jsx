@@ -62,7 +62,11 @@ export default function ProductGallery({
         {(galleryImages?.length ?? 0) > 1 && (
           <>
             <ArrowButton type="button" $left onClick={handlePrev} aria-label="이전 이미지">
-              <ArrowIconL  width="24" height="24" style={{ transform: 'rotate(180deg) translateX(1px)' }} />
+              <ArrowIconL
+                width="24"
+                height="24"
+                style={{ transform: 'rotate(180deg) translateX(1px)' }}
+              />
             </ArrowButton>
 
             <ArrowButton type="button" onClick={handleNext} aria-label="다음 이미지">
@@ -102,7 +106,6 @@ const ImageSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[3]};
-
 `;
 
 const MainImageWrapper = styled.div`
@@ -166,15 +169,15 @@ const ArrowButton = styled.button`
     background: color-mix(in srgb, ${({ theme }) => theme.colors.modalBg} 18%, transparent);
     /* border-color: ${({ theme }) => theme.colors.secondary}; */
     color: ${({ theme }) => theme.colors.secondary};
-    box-shadow: 0 0 6px ${({ theme }) => theme.colors.primary}; 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
   }
 
   &:active {
     transform: translateY(-50%) scale(0.88);
     background: color-mix(in srgb, ${({ theme }) => theme.colors.modalBg} 10%, transparent);
 
-    box-shadow: 0 0 4px ${({ theme }) => theme.colors.primary};  }
-
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     ${({ $left }) => ($left ? 'left: 4px;' : 'right: 4px;')}
@@ -188,7 +191,6 @@ const ThumbnailList = styled.div`
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: ${({ theme }) => theme.spacing[2]};
   width: 100%;
-
 `;
 
 const ThumbnailButton = styled.button`
@@ -225,7 +227,7 @@ const ThumbnailImage = styled.img`
 `;
 
 const Features = styled.div`
-  margin-top: ${({ theme }) => theme.spacing[3]};;
+  margin-top: ${({ theme }) => theme.spacing[3]};
   display: flex;
   flex-direction: column;
   font-weight: 700;

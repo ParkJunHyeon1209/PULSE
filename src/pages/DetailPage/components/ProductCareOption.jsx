@@ -17,7 +17,9 @@ export default function ProductCareOption({ product, isChecked, onToggle }) {
         <CareContent>
           <CareTitleRow>
             <Checkbox type="checkbox" checked={isChecked} onChange={() => {}} />
-            <CareTitle>{careService.title}</CareTitle>
+            <CareTitle>
+              {careService.title} {product.type}
+            </CareTitle>
           </CareTitleRow>
           <CareDesc>{careService.desc}</CareDesc>
 
