@@ -19,11 +19,12 @@ const SignUpContainer = styled.div`
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[2]};
+
   width: 100%;
 
   .signup-btn {
     font-weight: 400;
+    margin: 20px 0;
   }
 `;
 
@@ -35,7 +36,8 @@ const Title = styled.h2`
 const SubText = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: ${({ theme }) => theme.fontSize.xxs};
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+  margin-top: ${({ theme }) => theme.spacing[2]};
+  margin-bottom: ${({ theme }) => theme.spacing[6]};
 `;
 
 const DividerWrapper = styled.div`
@@ -151,6 +153,7 @@ export default function SignUpForm({ onClick }) {
         <Title>신호를 시작하세요.</Title>
         <SubText>PULSE 계정을 만들고 드롭 알림을 받아보세요.</SubText>
         <SignUpNameInput
+          isFirst
           firstName={firstName}
           lastName={lastName}
           setFirstName={setFirstName}

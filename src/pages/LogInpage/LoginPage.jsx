@@ -13,6 +13,37 @@ const LogInPageContainer = styled.div`
   display: flex;
   width: 100%;
   min-height: 100vh;
+
+  /* Chrome 테마가 인풋 배경을 덮지 않도록 배경색으로 고정 */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-text-fill-color: ${({ theme }) => theme.colors.text + 'cc'};
+    caret-color: ${({ theme }) => theme.colors.text + 'cc'};
+    -webkit-box-shadow: 0 0 0 40px ${({ theme }) => theme.colors.background} inset;
+    box-shadow: 0 0 0 40px ${({ theme }) => theme.colors.background} inset;
+    -webkit-transition:
+      background-color 120s ease-out 0s,
+      color 120s ease-out 0s,
+      box-shadow 0.2s ease;
+    transition:
+      background-color 120s ease-out 0s,
+      color 120s ease-out 0s,
+      box-shadow 0.2s ease;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+  }
 `;
 
 const LogoWrap = styled.div`
@@ -86,7 +117,7 @@ export default function LoginPage() {
   const theme = useTheme();
 
   return (
-    <LogInPageContainer >
+    <LogInPageContainer>
       <LogoWrap>
         <AppLogo size="120px" src={theme.mode === 'dark' ? logoDark : logoLight} alt="PULSE" />
       </LogoWrap>

@@ -5,7 +5,7 @@ const styles = (theme) => css`
   @font-face {
     font-family: 'Pretendard';
     src: url('/fonts/PretendardVariable.woff2') format('woff2');
-    font-weight: 300 700;
+    font-weight: 300 800;
     font-style: normal;
     font-display: swap;
   }

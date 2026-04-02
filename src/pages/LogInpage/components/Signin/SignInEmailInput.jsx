@@ -3,15 +3,16 @@ import React from 'react';
 
 const InputGroup = styled.div`
   position: relative;
+  margin: ${({ theme, $isFirst }) => ($isFirst ? '0 0 2px' : `${theme.spacing[4]} 0 2px`)};
   width: 100%;
 `;
 
 const InputLabel = styled.label`
-  font-size: ${({ theme }) => theme.fontSize.xxs};
-  font-weight: bold;
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  font-weight: 500;
   margin-bottom: ${({ theme }) => theme.spacing[1]};
   letter-spacing: 1px;
-  line-height: 1;
+  line-height: 1.6;
   color: ${({ theme }) => theme.colors.text};
 `;
 
@@ -20,6 +21,7 @@ const Input = styled.input`
   border: none;
   border-bottom: 2px solid ${({ theme }) => theme.input.lineBorder};
   padding: ${({ theme }) => theme.spacing[1]} 0;
+  line-height: 1.5;
   outline: none;
   width: 100%;
   color: ${({ theme }) => theme.colors.text};
@@ -30,10 +32,10 @@ const Input = styled.input`
   }
 `;
 
-export default function SignInEmailInput({ email, setEmail }) {
+export default function SignInEmailInput({ email, setEmail, isFirst = false }) {
   return (
     <>
-      <InputGroup>
+      <InputGroup $isFirst={isFirst}>
         {/* 이메일 입력창 */}
         <InputLabel>EMAIL</InputLabel>
         <Input

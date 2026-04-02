@@ -8,23 +8,37 @@ import { Close } from '../common/CommonSvg';
 const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
+  margin: ${({ theme }) => theme.spacing[4]} 0 2px;
   width: 100%;
   position: relative;
 `;
 
 const InputLabel = styled.label`
-  font-size: ${({ theme }) => theme.fontSize.xxs};
-  font-weight: bold;
-  margin-bottom: ${({ theme }) => theme.spacing[1]};
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  font-weight: 500;
   letter-spacing: 1px;
-  line-height: 1;
+  line-height: 1.6;
+`;
+
+const LabelRow = styled.div`
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 20px;
+  margin-bottom: ${({ theme }) => theme.spacing[1]};
+  padding-right: 22px;
 `;
 
 const Tooltip = styled.div`
-  position: relative;
+  position: absolute;
+  top: 50%;
+  right: 0;
   display: inline-flex;
+  align-items: center;
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   color: ${({ theme }) => theme.colors.textSecondary};
+  transform: translateY(-50%);
 
   &:hover .pw-tooltip,
   &:focus-within .pw-tooltip {
@@ -44,11 +58,11 @@ const Input = styled.input`
   background: transparent;
   border: none;
   border-bottom: 2px solid
-    ${(props) =>
-      props.$pwError || props.$isMatcError
-        ? props.theme.colors.error
-        : props.theme.input.lineBorder};
-  padding: ${({ theme }) => theme.spacing[2]} 0;
+    ${({ theme, $pwError, $isMatcError }) =>
+      $pwError || $isMatcError ? theme.colors.error : theme.tones.blue.activeBorder};
+  padding: ${({ theme }) => theme.spacing[1]} 0;
+  line-height: 1.5;
+  color: ${({ theme }) => theme.colors.text + 'cc'};
   outline: none;
   width: 100%;
 
@@ -66,6 +80,7 @@ const ErrorMessage = styled.p`
   align-items: center;
   gap: 2px;
 `;
+
 const SuccessMessage = styled.p`
   color: ${({ theme }) => theme.colors.success};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
@@ -73,7 +88,7 @@ const SuccessMessage = styled.p`
 `;
 
 const MatchMessage = styled.p`
-  color: ${(props) => (props.$isMatcError ? props.theme.colors.success : props.theme.colors.error)};
+  color: ${({ $isMatcError, theme }) => ($isMatcError ? theme.colors.success : theme.colors.error)};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   margin-top: 5px;
   font-weight: 500;
@@ -89,20 +104,20 @@ const StrengthContainer = styled.div`
   gap: ${({ theme }) => theme.spacing[1]};
   width: 100%;
   height: 4px;
+  margin-top: ${({ theme }) => theme.spacing[1]};
 `;
 
-const getActiveColor = (props) => {
-  const { $score, theme } = props;
+const getActiveColor = ({ $score, theme }) => {
   if ($score >= 3) return theme.status.info;
   if ($score >= 2) return theme.colors.primary;
   if ($score >= 1) return theme.colors.error;
-  return '#333';
+  return theme.colors.primary + '80';
 };
 
 const StrengthBar = styled.div`
   flex: 1;
   border-radius: 2px;
-  background-color: #333;
+  background-color: ${({ theme }) => theme.colors.primary + '18'};
   position: relative;
   overflow: hidden;
 
@@ -118,16 +133,18 @@ const StrengthBar = styled.div`
   }
 
   &.weak::after {
-    width: ${(props) => (props.$score >= 1 ? '100%' : '0%')};
+    width: ${({ $score }) => ($score >= 1 ? '100%' : '0%')};
     transition-delay: 0s;
   }
+
   &.medium::after {
-    width: ${(props) => (props.$score >= 2 ? '100%' : '0%')};
-    transition-delay: ${(props) => (props.$score >= 2 ? '0.1s' : '0s')};
+    width: ${({ $score }) => ($score >= 2 ? '100%' : '0%')};
+    transition-delay: ${({ $score }) => ($score >= 2 ? '0.1s' : '0s')};
   }
+
   &.strong::after {
-    width: ${(props) => (props.$score >= 3 ? '100%' : '0%')};
-    transition-delay: ${(props) => (props.$score >= 3 ? '0.2s' : '0s')};
+    width: ${({ $score }) => ($score >= 3 ? '100%' : '0%')};
+    transition-delay: ${({ $score }) => ($score >= 3 ? '0.2s' : '0s')};
   }
 `;
 
@@ -160,8 +177,8 @@ export default function SignUpPasswordInput({
       if (hasUppercase) score++;
       if (hasSpecial) score++;
     }
-    setPwScore(score);
 
+    setPwScore(score);
     setPwError(null);
   };
 
@@ -189,12 +206,12 @@ export default function SignUpPasswordInput({
     <>
       {/* 비밀번호 입력란 */}
       <InputGroup>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <LabelRow>
           <InputLabel className="password-label">PASSWORD</InputLabel>
 
           {/* 툴팁 트리거를 라벨 옆으로 분리 */}
           <Tooltip className="pw-trigger">
-            <BaseBtn variant="ic-btn" size={'16px'} padding={'4px'} className="pw-info">
+            <BaseBtn variant="ic-btn" size="16px" padding="4px" className="pw-info">
               ?
             </BaseBtn>
             <BaseTooltip className="pw-tooltip" position="bottom" mobileShift="48px">
@@ -202,7 +219,7 @@ export default function SignUpPasswordInput({
               <span>• 영대문자, 숫자, 특수문자 포함</span>
             </BaseTooltip>
           </Tooltip>
-        </div>
+        </LabelRow>
         <div style={{ position: 'relative' }}>
           <Input
             id="password"
@@ -216,13 +233,13 @@ export default function SignUpPasswordInput({
           />
           <ShowBtn showPw={showPw} setShowPw={setShowPw} />
         </div>
+        {/* 비밀번호 안전도 게이지바 */}
+        <StrengthContainer>
+          <StrengthBar className="weak" $score={pwScore} />
+          <StrengthBar className="medium" $score={pwScore} />
+          <StrengthBar className="strong" $score={pwScore} />
+        </StrengthContainer>
       </InputGroup>
-      {/* 비밀번호 안전도 게이지바 */}
-      <StrengthContainer>
-        <StrengthBar className="weak" $score={pwScore} />
-        <StrengthBar className="medium" $score={pwScore} />
-        <StrengthBar className="strong" $score={pwScore} />
-      </StrengthContainer>
       <div className="message-container">
         {pwError === true && (
           <ErrorMessage>

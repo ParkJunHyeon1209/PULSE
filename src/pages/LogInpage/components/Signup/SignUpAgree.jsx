@@ -19,17 +19,44 @@ const AgreeInput = styled.div`
     -webkit-appearance: none;
     width: 18px;
     height: 18px;
-    border: 2px solid ${({ theme }) => theme.tones.blue.lineBorder};
-
+    flex-shrink: 0;
+    border: 1px solid ${({ theme }) => theme.tones.blue.containerBorder};
+    background: ${({ theme }) => theme.tones.blue.tabActiveBg};
     border-radius: 4px;
-    transition: all 0.2s ease;
+    transition:
+      background ${({ theme }) => theme.motion.fast},
+      border-color ${({ theme }) => theme.motion.fast},
+      box-shadow ${({ theme }) => theme.motion.fast},
+      transform ${({ theme }) => theme.motion.fast};
     display: flex;
     align-items: center;
     justify-content: center;
 
+    &:hover {
+      border-color: ${({ theme }) => theme.tones.blue.activeBorder};
+      background: ${({ theme }) => theme.tones.blue.containerBg};
+      box-shadow: 0 6px 16px
+        ${({ theme }) =>
+          theme.mode === 'dark' ? 'rgba(96,165,250,.12)' : 'rgba(59,130,246,.08)'};
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow:
+        0 0 0 1px ${({ theme }) => theme.tones.blue.activeColor},
+        0 0 0 4px
+          ${({ theme }) =>
+            theme.mode === 'dark' ? 'rgba(147,197,253,.16)' : 'rgba(59,130,246,.12)'};
+    }
+
     &:checked {
-      background-color: ${({ theme }) => theme.tones.blue.color};
-      border-color: ${({ theme }) => theme.tones.blue.color};
+      background: ${({ theme }) => theme.tones.blue.activeLine};
+      border-color: ${({ theme }) => theme.tones.blue.activeColor};
+      box-shadow:
+        0 0 0 1px ${({ theme }) => theme.tones.blue.activeColor},
+        0 0 0 3px
+          ${({ theme }) =>
+            theme.mode === 'dark' ? 'rgba(147,197,253,.16)' : 'rgba(59,130,246,.12)'};
     }
 
     &:checked::after {

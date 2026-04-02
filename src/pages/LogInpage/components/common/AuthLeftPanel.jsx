@@ -45,6 +45,7 @@ const PanelShell = styled.div`
 `;
 
 const Section = styled(BaseSection)`
+  transform: translateY(4px);
   div:first-of-type {
     letter-spacing: 1px;
   }
@@ -54,7 +55,7 @@ const BottomContent = styled.div`
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
-  gap: ${({ theme }) => theme.spacing[12]};
+  gap: ${({ theme }) => theme.spacing[10]};
   width: 100%;
   position: relative;
   z-index: 2;
@@ -68,9 +69,9 @@ const TextGroup = styled.div`
 const MainHeading = styled.h2`
   font-size: 30px;
   font-weight: 800;
-  line-height: 1.3;
-  letter-spacing: 1px;
-  margin-top: 2px;
+  line-height: 1.5;
+  font-family: ${({ theme }) => theme.fontFamily.body};
+  letter-spacing: 0.04em;
 
   span {
     background: ${({ $highlight }) => $highlight};
@@ -86,7 +87,7 @@ const Description = styled.p`
   font-weight: 600;
   line-height: 1.6;
   white-space: pre-line;
-  margin-top: ${({ theme }) => theme.spacing[3]};
+  margin-top: ${({ theme }) => theme.spacing[4]};
 `;
 
 const DataWrapper = styled.div`
