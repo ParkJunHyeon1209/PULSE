@@ -289,26 +289,29 @@ const ContentInfo = styled(Link)`
         @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
           padding-right: ${({ theme }) => theme.spacing[2]};
         }
-        > button:hover {
-          background: ${({ theme }) => theme.colors.primary + '18'};
-          > svg {
-            color: ${({ theme }) => theme.colors.primary};
-          }
+      }
+
+      > button:hover {
+        background: ${({ theme }) => theme.colors.primary + '15'};
+
+        > svg {
+          color: ${({ theme }) => theme.colors.primary};
         }
-        > button:active {
-          background: ${({ theme }) => theme.colors.primary + '22'};
-          > svg {
-            transform: scale(0.84);
-          }
-        }
-        > span {
-          min-width: 18px;
-          text-align: center;
-          font-variant-numeric: tabular-nums;
-          transition: font-size 0.3s ease;
-          @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-            font-size: ${({ theme }) => theme.fontSize.xxxs};
-          }
+      }
+
+      > button:active > svg {
+        transform: scale(0.88);
+      }
+
+      > span {
+        min-width: 18px;
+        text-align: center;
+        font-weight: bold;
+        font-variant-numeric: tabular-nums;
+        transition: font-size 0.3s ease;
+
+        @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+          font-size: ${({ theme }) => theme.fontSize.xxxs};
         }
       }
     }
