@@ -20,9 +20,6 @@ const SummaryWrap = styled.div`
   padding: ${({ theme }) => theme.spacing[8]}
     clamp(${({ theme }) => theme.spacing[5]}, 4vw, ${({ theme }) => theme.spacing[10]});
   max-height: max-content;
-  position: sticky;
-  top: 120px;
-  flex: 1;
   background-color: ${({ theme }) => theme.colors.cardBg};
   border: 1px solid ${({ theme }) => theme.checkbox.border + '35'};
   border-radius: ${({ theme }) => theme.radii.lg};
