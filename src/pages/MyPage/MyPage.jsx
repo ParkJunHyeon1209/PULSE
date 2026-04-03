@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import React, { useEffect, useMemo, useState } from 'react';
-import MyInfo from './components/MyInfo';
-import Statistics from './components/Statistics';
-import GradeProgress from './components/GradeProgress';
-import MainMyPage from './components/MainMyPage';
-import MyPageCategory from './components/MyPageCategory';
-import CategoryRender from './components/CategoryRender';
+import MyInfo from './components/overview/MyInfo';
+import Statistics from './components/overview/Statistics';
+import GradeProgress from './components/overview/GradeProgress';
+import MainMyPage from './components/layout/MainMyPage';
+import MyPageCategory from './components/layout/MyPageCategory';
+import CategoryRender from './components/layout/CategoryRender';
 import useAuthStore from '../../store/useAuthStore';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import useOverlayStore from '../../store/useOverlayStore';

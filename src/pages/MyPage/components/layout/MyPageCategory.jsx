@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import useOverlayStore from '../../../store/useOverlayStore';
+import useOverlayStore from '../../../../store/useOverlayStore';
 import { useNavigate } from 'react-router-dom';
-import BaseModal from '../../../components/common/BaseModal';
-import BaseBtn from '../../../components/common/BaseBtn';
-import useAuthStore from '../../../store/useAuthStore';
-import useReviewStore from '../../../store/useReviewStore';
-import useWishlistStore from '../../../store/useWishlistStore';
-import useOrderStore from '../../../store/useOrderStore';
+import BaseModal from '../../../../components/common/BaseModal';
+import BaseBtn from '../../../../components/common/BaseBtn';
+import useAuthStore from '../../../../store/useAuthStore';
+import useReviewStore from '../../../../store/useReviewStore';
+import useWishlistStore from '../../../../store/useWishlistStore';
+import useOrderStore from '../../../../store/useOrderStore';
 import {
   AddressIcon,
   CartIcon,
@@ -16,7 +16,7 @@ import {
   LogoutIcon,
   ReviewIcon,
   UserIcon,
-} from '../../../assets/icons/BtnIcon';
+} from '../../../../assets/icons/BtnIcon';
 
 const ensureArray = (value) => (Array.isArray(value) ? value : []);
 
@@ -73,7 +73,9 @@ export default function MyPageCategory({ category, setCategory }) {
   const wishlistCount = useWishlistStore((state) => state.wishlistIds).length;
   const orderCount = useOrderStore((state) => state.orders.length);
   const reviewCount =
-    ensureArray(reviews).length > 0 ? ensureArray(reviews).length : ensureArray(user?.reviewList).length;
+    ensureArray(reviews).length > 0
+      ? ensureArray(reviews).length
+      : ensureArray(user?.reviewList).length;
 
   return (
     <CategoryList>
@@ -143,7 +145,6 @@ const CategoryList = styled.ul`
   min-width: 240px;
   flex: 1;
   flex-shrink: 0;
-  padding-left: ${({ theme }) => theme.spacing[20]};
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[3]};

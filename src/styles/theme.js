@@ -262,6 +262,7 @@ const baseTokens = {
     5: '20px',
     6: '24px',
     8: '32px',
+    9: '36px',
     10: '40px',
     12: '48px',
     14: '56px',
@@ -301,6 +302,7 @@ export const darkTheme = {
 
     // 반투명 카드 배경/테두리 색상
     cardBg: 'rgba(255,255,255,0.04)',
+    cardBgLight: 'rgba(255,255,255,0.04)',
     cardBgGrad: 'linear-gradient(180deg, transparent 30%, rgba(12,8,32,3) 100%)',
     cardBgGradH: 'linear-gradient(180deg, transparent 20%, rgba(9, 6, 19, 1) 100%)',
     cardBorder: 'rgba(255,255,255,0.08)',
@@ -592,6 +594,7 @@ export const lightTheme = {
     promoBg: 'rgba(228,224,255,1)',
     surface: 'rgba(124,58,237,0.08)',
     cardBg: 'rgba(255,255,255,0.7)',
+    cardBgLight: 'rgba(252,250,255,.4)',
     cardBgGrad: 'linear-gradient(180deg, transparent 30%, rgba(49, 49, 49, 0.7) 90%)',
     cardBgGradH: 'linear-gradient(180deg, transparent 20%, rgba(10, 4, 22, 0.8) 100%)',
     cardBorder: 'rgba(124,58,237,0.18)',

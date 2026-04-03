@@ -23,6 +23,7 @@ const SectionTitle = styled.h2`
   margin: 0 0 ${({ theme, $hasSub }) => ($hasSub ? theme.spacing[2] : '0')};
   font-family: ${({ theme, $font }) => theme.fontFamily[$font] || $font || theme.fontFamily.hero};
   font-size: ${({ theme, $size }) => theme.fontSize[$size] || $size || theme.fontSize.xl};
+  font-weight: ${({ $weight }) => $weight || 400};
   letter-spacing: 0.06em;
   color: ${({ theme }) => theme.colors.text};
   line-height: 1;
@@ -84,16 +85,18 @@ export default function BaseSection({
   align = 'left',
   titleFont,
   titleSize,
+  titleWeight,
   star = false,
   inline = false,
   solidColor = false,
   className,
+
 }) {
   const isCenter = align === 'center';
   const hasSub = Boolean(sub);
 
   return (
-    <SectionHeadWrap className={className} $center={isCenter}>
+    <SectionHeadWrap className={className} $center={isCenter} >
       {(label || star) && (
         <SectionLabel $center={isCenter}>
           <LavStarIcon>✦</LavStarIcon>
@@ -103,22 +106,39 @@ export default function BaseSection({
       )}
       {inline && title && colorTitle ? (
         <TitleRow>
-          <SectionTitle $hasSub={Boolean(sub)} $font={titleFont} $size={titleSize}>
+          <SectionTitle $hasSub={Boolean(sub)} $font={titleFont} $size={titleSize} $weight={titleWeight}>
             {title}
           </SectionTitle>
-          <SectionColorTitle $hasSub={hasSub} $font={titleFont} $size={titleSize} $solid={solidColor}>
+          <SectionColorTitle
+            $hasSub={hasSub}
+            $font={titleFont}
+            $size={titleSize}
+            $weight={titleWeight}
+            $solid={solidColor}
+          >
             {colorTitle}
           </SectionColorTitle>
         </TitleRow>
       ) : (
         <>
           {title && (
-            <SectionTitle $hasSub={Boolean(colorTitle || sub)} $font={titleFont} $size={titleSize}>
+            <SectionTitle
+              $hasSub={Boolean(colorTitle || sub)}
+              $font={titleFont}
+              $size={titleSize}
+              $weight={titleWeight}
+            >
               {title}
             </SectionTitle>
           )}
           {colorTitle && (
-            <SectionColorTitle $hasSub={hasSub} $font={titleFont} $size={titleSize} $solid={solidColor}>
+            <SectionColorTitle
+              $hasSub={hasSub}
+              $font={titleFont}
+              $size={titleSize}
+              $weight={titleWeight}
+              $solid={solidColor}
+            >
               {colorTitle}
             </SectionColorTitle>
           )}

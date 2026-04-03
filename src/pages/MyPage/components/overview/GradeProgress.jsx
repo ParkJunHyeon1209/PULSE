@@ -1,31 +1,9 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import BaseTooltip from '../../../components/common/BaseTooltip';
-import useAuthStore from '../../../store/useAuthStore';
-import { grade, toNextGrade } from '../../../utils/myPageMap';
-
-const gradeToneMap = {
-  MEMBER: {
-    color: '#9ab2ff',
-    lightColor: '#315efb',
-    glow: 'rgba(96, 165, 250, 0.32)',
-  },
-  SILVER: {
-    color: '#d8e0ec',
-    lightColor: '#7c8da6',
-    glow: 'rgba(226, 232, 240, 0.28)',
-  },
-  GOLD: {
-    color: '#ffd86b',
-    lightColor: '#ca8a04',
-    glow: 'rgba(251, 191, 36, 0.28)',
-  },
-  VIP: {
-    color: '#d39bff',
-    lightColor: '#9333ea',
-    glow: 'rgba(192, 132, 252, 0.3)',
-  },
-};
+import BaseTooltip from '../../../../components/common/BaseTooltip';
+import BaseBtn from '../../../../components/common/BaseBtn';
+import useAuthStore from '../../../../store/useAuthStore';
+import { grade, toNextGrade, gradeToneMap } from '../../../../utils/myPageMap';
 
 export default function GradeProgress() {
   const user = useAuthStore((state) => state.user);
@@ -52,7 +30,7 @@ export default function GradeProgress() {
       return {
         gradeName,
         label: '0 KRW - 99,999 KRW',
-        progress: 0,
+        progress: 100,
         color: rowTone.color,
         lightColor: rowTone.lightColor,
       };
@@ -72,7 +50,7 @@ export default function GradeProgress() {
 
   return (
     <GradeProgressContainer>
-      <GradeProgressWrap $glow={tone.glow}>
+      <GradeProgressWrap $glow={tone.glow} $color={tone.color} $lightColor={tone.lightColor}>
         <LeftSection>
           <TopRow>
             <Title>MEMBER PROGRESS</Title>
@@ -84,7 +62,7 @@ export default function GradeProgress() {
             </GradeText>
             {!isMaxGrade && (
               <>
-                <GradeArrow />
+                <GradeArrow $color={tone.color} $lightColor={tone.lightColor} />
                 <GradeText
                   $color={(gradeToneMap[nextGrade] || gradeToneMap.MEMBER).color}
                   $lightColor={(gradeToneMap[nextGrade] || gradeToneMap.MEMBER).lightColor}
@@ -94,10 +72,21 @@ export default function GradeProgress() {
               </>
             )}
             <TooltipTrigger>
-              <TooltipButton type="button" aria-label="등급 진행 정보 보기">
+              <TooltipBtn
+                variant="ic-btn"
+                size="16px"
+                padding="4px"
+                aria-label="등급 진행 정보 보기"
+              >
                 ?
-              </TooltipButton>
-              <StyledTooltip className="grade-tooltip" position="bottom" offset="14px">
+              </TooltipBtn>
+              <StyledTooltip
+                className="grade-tooltip"
+                position="bottom"
+                offset="14px"
+                $color={tone.color}
+                $lightColor={tone.lightColor}
+              >
                 <TooltipTitle>GRADE GUIDE</TooltipTitle>
                 {gradeGuide.map((item) => (
                   <TooltipRow key={item.gradeName}>
@@ -107,14 +96,14 @@ export default function GradeProgress() {
                       </TooltipGrade>
                       <TooltipTarget>{item.label}</TooltipTarget>
                     </TooltipRowHead>
-                    {item.gradeName !== 'MEMBER' && (
-                      <>
-                        <TooltipProgressTrack>
-                          <TooltipProgressFill $progress={item.progress} $color={item.color} />
-                        </TooltipProgressTrack>
-                        <TooltipPercent>{Math.round(item.progress)}%</TooltipPercent>
-                      </>
-                    )}
+                    <TooltipProgressTrack $lightColor={item.lightColor}>
+                      <TooltipProgressFill
+                        $progress={item.progress}
+                        $color={item.color}
+                        $lightColor={item.lightColor}
+                      />
+                    </TooltipProgressTrack>
+                    <TooltipPercent>{Math.round(item.progress)}%</TooltipPercent>
                   </TooltipRow>
                 ))}
               </StyledTooltip>
@@ -122,13 +111,22 @@ export default function GradeProgress() {
           </GradeLine>
 
           <ProgressMeta>
-            <CurrentSpend>
+            <CurrentSpend $color={tone.color} $lightColor={tone.lightColor}>
               <strong>{currentAmount.toLocaleString('ko-KR')}</strong> KRW
             </CurrentSpend>
           </ProgressMeta>
 
-          <ProgressBar aria-label="grade progress">
-            <ProgressFill $progress={safeProgress} $color={tone.color} $glow={tone.glow} />
+          <ProgressBar
+            $color={tone.color}
+            $lightColor={tone.lightColor}
+            aria-label="grade progress"
+          >
+            <ProgressFill
+              $progress={safeProgress}
+              $color={tone.color}
+              $lightColor={tone.lightColor}
+              $glow={tone.glow}
+            />
           </ProgressBar>
 
           <ToNextGradeText>
@@ -140,7 +138,9 @@ export default function GradeProgress() {
 
         <RightSection>
           <AchievementLabel>ACHIEVEMENT</AchievementLabel>
-          <AchievementRate>{Math.round(safeProgress)}%</AchievementRate>
+          <AchievementRate $color={tone.color} $lightColor={tone.lightColor}>
+            {Math.round(safeProgress)}%
+          </AchievementRate>
           <AchievementCaption>
             {isMaxGrade ? 'MAX LEVEL' : `${nextGrade}까지 진행률`}
           </AchievementCaption>
@@ -155,15 +155,7 @@ const GradeProgressContainer = styled.div`
   justify-content: center;
   box-sizing: border-box;
   width: 100%;
-  padding: 0 ${({ theme }) => theme.spacing[20]};
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding: 0 ${({ theme }) => theme.spacing[6]};
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    padding: 0 ${({ theme }) => theme.spacing[6]};
-  }
+  padding-inline: ${({ theme }) => theme.grid.margin};
 `;
 
 const GradeProgressWrap = styled.section`
@@ -182,14 +174,14 @@ const GradeProgressWrap = styled.section`
   border-radius: 28px;
   background: radial-gradient(
     circle at top right,
-    ${({ theme, $glow }) => (theme.mode === 'light' ? 'rgba(124, 58, 237, 0.10)' : $glow)},
-    transparent 26%
+    ${({ theme, $glow, $lightColor }) => (theme.mode === 'light' ? `${$lightColor}38` : $glow)},
+    transparent 45%
   );
 
-  box-shadow: ${({ theme }) =>
+  box-shadow: ${({ theme, $lightColor, $color }) =>
     theme.mode === 'light'
-      ? '0 18px 44px rgba(124, 58, 237, 0.10)'
-      : '0 18px 46px rgba(0, 0, 0, 0.28)'};
+      ? `0 1px 34px ${$lightColor}22`
+      : `0 1px 36px rgba(0, 0, 0, 0.28), 0 0 38px ${$color}22`};
   backdrop-filter: ${({ theme }) => theme.effects.blurCard};
 
   &::before {
@@ -249,8 +241,9 @@ const TopRow = styled.div`
 
 const Title = styled.h2`
   font-family: ${({ theme }) => theme.fontFamily.mono};
-  font-size: ${({ theme }) => theme.fontSize.xxs};
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
   letter-spacing: 0.16em;
+  font-weight: 600;
   color: ${({ theme }) => theme.colors.textSecondary};
 `;
 
@@ -266,11 +259,11 @@ const GradeLine = styled.div`
 const GradeText = styled.span`
   font-family: ${({ theme }) => theme.fontFamily.hero};
   font-size: ${({ theme }) => theme.fontSize.s};
-  font-weight: ${({ $active }) => ($active ? 700 : 500)};
+  font-weight: ${({ $active }) => ($active ? 600 : 500)};
   color: ${({ theme, $color, $lightColor }) =>
     theme.mode === 'light' ? $lightColor || theme.colors.primary : $color || theme.colors.text};
-  text-shadow: ${({ theme, $active }) =>
-    $active && theme.mode === 'light' ? '0 0 10px rgba(124, 58, 237, 0.12)' : 'none'};
+  text-shadow: ${({ theme, $active, $lightColor }) =>
+    $active && theme.mode === 'light' ? `0 0 10px ${$lightColor}1f` : 'none'};
   letter-spacing: 0.08em;
 `;
 
@@ -278,10 +271,10 @@ const GradeArrow = styled.span`
   position: relative;
   width: 24px;
   height: 1px;
-  background: ${({ theme }) =>
+  background: ${({ theme, $lightColor, $color }) =>
     theme.mode === 'light'
-      ? 'linear-gradient(90deg, rgba(124, 58, 237, 0.18), rgba(124, 58, 237, 0.72))'
-      : 'linear-gradient(90deg, rgba(167, 139, 250, 0.22), rgba(167, 139, 250, 0.82))'};
+      ? `linear-gradient(90deg, ${$lightColor}2e, ${$lightColor}b8)`
+      : `linear-gradient(90deg, ${$color}38, ${$color}d0)`};
 
   &::after {
     content: '';
@@ -291,11 +284,11 @@ const GradeArrow = styled.span`
     width: 7px;
     height: 7px;
     border-top: 1.5px solid
-      ${({ theme }) =>
-        theme.mode === 'light' ? 'rgba(124, 58, 237, 0.72)' : 'rgba(167, 139, 250, 0.82)'};
+      ${({ theme, $lightColor, $color }) =>
+        theme.mode === 'light' ? `${$lightColor}b8` : `${$color}d0`};
     border-right: 1.5px solid
-      ${({ theme }) =>
-        theme.mode === 'light' ? 'rgba(124, 58, 237, 0.72)' : 'rgba(167, 139, 250, 0.82)'};
+      ${({ theme, $lightColor, $color }) =>
+        theme.mode === 'light' ? `${$lightColor}b8` : `${$color}d0`};
     transform: translateY(-50%) rotate(45deg);
   }
 `;
@@ -305,6 +298,7 @@ const TooltipTrigger = styled.span`
   z-index: 40;
   display: inline-flex;
   align-items: center;
+  transform: translateY(-1px);
 
   &:hover .grade-tooltip,
   &:focus-within .grade-tooltip {
@@ -320,33 +314,8 @@ const TooltipTrigger = styled.span`
   }
 `;
 
-const TooltipButton = styled.button`
-  width: 20px;
-  height: 20px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background: ${({ theme }) =>
-    theme.mode === 'light' ? 'rgba(124, 58, 237, 0.08)' : 'rgba(124, 58, 237, 0.14)'};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  font-family: ${({ theme }) => theme.fontFamily.mono};
-  font-size: 11px;
-  line-height: 1;
+const TooltipBtn = styled(BaseBtn)`
   cursor: help;
-  transition:
-    border-color ${({ theme }) => theme.motion.normal},
-    color ${({ theme }) => theme.motion.normal},
-    background ${({ theme }) => theme.motion.normal};
-
-  &:hover,
-  &:focus-visible {
-    outline: none;
-    color: ${({ theme }) => theme.colors.primary};
-    border-color: ${({ theme }) => theme.colors.primary};
-  }
 `;
 
 const StyledTooltip = styled(BaseTooltip)`
@@ -354,12 +323,10 @@ const StyledTooltip = styled(BaseTooltip)`
   z-index: 999;
   background: ${({ theme }) =>
     theme.mode === 'light' ? 'rgba(250, 248, 255, 0.98)' : 'rgba(10, 8, 26, 0.98)'};
-  border-color: ${({ theme }) =>
-    theme.mode === 'light' ? 'rgba(124, 58, 237, 0.18)' : 'rgba(167, 139, 250, 0.18)'};
-  box-shadow: ${({ theme }) =>
-    theme.mode === 'light'
-      ? '0 18px 40px rgba(124, 58, 237, 0.12)'
-      : '0 24px 52px rgba(0, 0, 0, 0.42)'};
+  border-color: ${({ theme, $lightColor, $color }) =>
+    theme.mode === 'light' ? `${$lightColor}2e` : `${$color}2e`};
+  box-shadow: ${({ theme, $lightColor }) =>
+    theme.mode === 'light' ? `0 18px 40px ${$lightColor}1f` : '0 24px 52px rgba(0, 0, 0, 0.42)'};
   backdrop-filter: blur(24px);
 `;
 
@@ -390,11 +357,24 @@ const TooltipRowHead = styled.span`
 `;
 
 const TooltipGrade = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   color: ${({ theme, $color, $lightColor }) => (theme.mode === 'light' ? $lightColor : $color)};
   font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   font-weight: 700;
   letter-spacing: 0.14em;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+  }
 `;
 
 const TooltipTarget = styled.span`
@@ -412,8 +392,8 @@ const TooltipProgressTrack = styled.span`
   height: 6px;
   align-self: center;
   border-radius: ${({ theme }) => theme.radii.pill};
-  background: ${({ theme }) =>
-    theme.mode === 'light' ? 'rgba(124, 58, 237, 0.1)' : 'rgba(255, 255, 255, 0.08)'};
+  background: ${({ theme, $lightColor }) =>
+    theme.mode === 'light' ? `${$lightColor}1a` : 'rgba(255, 255, 255, 0.08)'};
 `;
 
 const TooltipProgressFill = styled.span`
@@ -422,8 +402,11 @@ const TooltipProgressFill = styled.span`
   min-width: ${({ $progress }) => ($progress > 0 ? '8px' : '0')};
   height: 100%;
   border-radius: inherit;
-  background: ${({ $color }) => `linear-gradient(90deg, ${$color}, #22d3ee)`};
-  opacity: 0.82;
+  background: ${({ theme, $color, $lightColor }) => {
+    const c = theme.mode === 'light' ? $lightColor : $color;
+    return `linear-gradient(90deg, ${c} 0%, ${c}cc 55%, ${c}77 100%)`;
+  }};
+  opacity: 0.88;
 `;
 
 const TooltipPercent = styled.span`
@@ -442,14 +425,21 @@ const CurrentSpend = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: ${({ theme }) => theme.fontSize.xxs};
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 
   strong {
     margin-right: 8px;
-    color: ${({ theme }) => theme.colors.text};
-    font-size: clamp(30px, 3vw, 44px);
+    font-size: ${({ theme }) => theme.fontSize.lg};
     font-weight: 700;
     letter-spacing: -0.04em;
+    background: ${({ theme, $color, $lightColor }) => {
+      const accent = theme.mode === 'light' ? $lightColor : $color;
+      return `linear-gradient(135deg, ${theme.colors.text} 0%, ${accent} 100%)`;
+    }};
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 `;
 
@@ -459,21 +449,21 @@ const ProgressBar = styled.div`
   width: 100%;
   height: 14px;
   border-radius: ${({ theme }) => theme.radii.pill};
-  background: ${({ theme }) =>
-    theme.mode === 'light' ? 'rgba(124, 58, 237, 0.10)' : 'rgba(255, 255, 255, 0.08)'};
-  box-shadow: ${({ theme }) =>
+  background: ${({ theme, $lightColor }) =>
+    theme.mode === 'light' ? `${$lightColor}1a` : 'rgba(255, 255, 255, 0.08)'};
+  box-shadow: ${({ theme, $lightColor }) =>
     theme.mode === 'light'
-      ? 'inset 0 1px 2px rgba(124, 58, 237, 0.10)'
+      ? `inset 0 1px 2px ${$lightColor}1a`
       : 'inset 0 1px 3px rgba(0, 0, 0, 0.35)'};
 
   &::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: ${({ theme }) =>
+    background: ${({ theme, $color }) =>
       theme.mode === 'light'
         ? 'none'
-        : 'linear-gradient(90deg, rgba(124, 58, 237, 0.12), rgba(59, 130, 246, 0.09) 55%, rgba(34, 211, 238, 0.06))'};
+        : `linear-gradient(90deg, ${$color}1f, rgba(59, 130, 246, 0.09) 55%, rgba(34, 211, 238, 0.06))`};
     pointer-events: none;
   }
 `;
@@ -485,10 +475,10 @@ const ProgressFill = styled.div`
   height: 100%;
   overflow: hidden;
   border-radius: inherit;
-  background: ${({ theme, $color }) =>
-    theme.mode === 'light'
-      ? `linear-gradient(90deg, ${$color}, #22d3ee)`
-      : `linear-gradient(90deg, ${$color} 0%, #7c5cff 24%, #3b82f6 62%, #22d3ee 100%)`};
+  background: ${({ theme, $color, $lightColor }) => {
+    const c = theme.mode === 'light' ? $lightColor : $color;
+    return `linear-gradient(90deg, ${c} 0%, ${c}ee 30%, ${c}bb 62%, ${c}66 100%)`;
+  }};
   box-shadow: ${({ theme, $glow }) =>
     theme.mode === 'light'
       ? '0 0 14px rgba(59, 130, 246, 0.16)'
@@ -526,6 +516,7 @@ const ProgressFill = styled.div`
 const ToNextGradeText = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: ${({ theme }) => theme.fontSize.xxs};
+  font-weight: 500;
   line-height: 1.6;
 `;
 
@@ -547,21 +538,29 @@ const AchievementLabel = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
 `;
 
 const AchievementRate = styled.p`
-  color: ${({ theme }) => theme.colors.text};
   font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: clamp(42px, 5vw, 68px);
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.01em;
+  background: ${({ theme, $color, $lightColor }) => {
+    const accent = theme.mode === 'light' ? $lightColor : $color;
+    return `linear-gradient(135deg, ${theme.colors.text} 0%, ${accent} 100%)`;
+  }};
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 `;
 
 const AchievementCaption = styled.p`
   margin-top: ${({ theme }) => theme.spacing[2]};
+
   color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
-  letter-spacing: 0.14em;
+  font-size: ${({ theme }) => theme.fontSize.xxs};
+  font-weight: 600;
+  letter-spacing: 0.04em;
 `;

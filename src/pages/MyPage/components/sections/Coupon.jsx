@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import useAuthStore from '../../../store/useAuthStore';
-import { rewardsRate } from '../../../utils/myPageMap';
+import useAuthStore from '../../../../store/useAuthStore';
+import { rewardsRate } from '../../../../utils/myPageMap';
 
 const formatKoreanDate = (dateValue) => {
   const date = new Date(dateValue);

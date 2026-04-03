@@ -27,7 +27,7 @@ const SummaryWrap = styled.div`
   backdrop-filter: ${({ theme }) => theme.effects.blurPromo};
 
   .shipping-info {
-    cursor: default;
+    cursor: help;
     opacity: 0.4;
     transition: opacity 0.3s ease;
   }
