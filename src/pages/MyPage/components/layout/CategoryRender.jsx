@@ -1,10 +1,10 @@
 import React from 'react';
-import OrderList from './OrderList';
-import WishList from './WishList';
-import Review from './Review';
-import Coupon from './Coupon';
-import Profile from './Profile';
-import Adress from './Address';
+import OrderList from '../sections/OrderList';
+import WishList from '../sections/WishList';
+import Review from '../sections/Review';
+import Coupon from '../sections/Coupon';
+import Profile from '../sections/Profile';
+import Adress from '../sections/Address';
 import styled from '@emotion/styled';
 import CurrentCategory from './CurrentCategory';
 
@@ -24,10 +24,4 @@ export default function CategoryRender({ category }) {
 
 const CategoryWrap = styled.div`
   flex: 4;
-  padding-right: ${({ theme }) => theme.spacing[20]};
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: 100%;
-    padding-right: 0;
-  }
 `;

@@ -33,6 +33,7 @@ const Tooltip = styled.div`
   position: relative;
   display: inline-flex;
   align-items: center;
+  cursor: help;
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   color: ${({ theme }) => theme.colors.textSecondary};
 

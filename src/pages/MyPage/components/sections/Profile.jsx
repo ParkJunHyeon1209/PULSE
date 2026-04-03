@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import React, { useMemo, useState } from 'react';
-import BaseBtn from '../../../components/common/BaseBtn';
-import useAuthStore from '../../../store/useAuthStore';
-import useOverlayStore from '../../../store/useOverlayStore';
-import BaseModal from '../../../components/common/BaseModal';
+import BaseBtn from '../../../../components/common/BaseBtn';
+import useAuthStore from '../../../../store/useAuthStore';
+import useOverlayStore from '../../../../store/useOverlayStore';
+import BaseModal from '../../../../components/common/BaseModal';
 
 const formatTel = (value = '') => {
   const numbers = value.replace(/\D/g, '').slice(0, 11);

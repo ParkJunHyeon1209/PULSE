@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
-import useAuthStore from '../../../store/useAuthStore';
-import useOrderStore from '../../../store/useOrderStore';
-import { getGradeByTotalOrderPrice } from '../../../utils/myPageMap';
-import BaseBtn from '../../../components/common/BaseBtn';
-import MyPageEmptyState from './MyPageEmptyState';
+import useAuthStore from '../../../../store/useAuthStore';
+import useOrderStore from '../../../../store/useOrderStore';
+import { getGradeByTotalOrderPrice } from '../../../../utils/myPageMap';
+import BaseBtn from '../../../../components/common/BaseBtn';
+import MyPageEmptyState from '../shared/MyPageEmptyState';
 
 const CategoryWrap = styled.div`
   display: flex;

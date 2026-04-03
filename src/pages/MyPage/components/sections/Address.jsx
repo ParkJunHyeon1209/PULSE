@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import React, { useEffect, useState } from 'react';
-import useAuthStore from '../../../store/useAuthStore';
-import AddressModal from './AddressModal';
+import useAuthStore from '../../../../store/useAuthStore';
+import AddressModal from '../modals/AddressModal';
 
 const createAddress = (data) => ({
   id: crypto.randomUUID(),

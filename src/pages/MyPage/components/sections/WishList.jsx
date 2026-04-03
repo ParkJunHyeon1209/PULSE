@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { getAllProducts } from '../../../data/categoryProductsApi';
-import useWishlistStore from '../../../store/useWishlistStore';
-import BaseProductCard from '../../../components/common/BaseProductCard';
-import MyPageEmptyState from './MyPageEmptyState';
+import { getAllProducts } from '../../../../data/categoryProductsApi';
+import useWishlistStore from '../../../../store/useWishlistStore';
+import BaseProductCard from '../../../../components/common/BaseProductCard';
+import MyPageEmptyState from '../shared/MyPageEmptyState';
 
 const ITEMS_PER_PAGE = 6;
 

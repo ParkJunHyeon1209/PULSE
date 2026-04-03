@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import useReviewStore from '../../../store/useReviewStore';
-import useAuthStore from '../../../store/useAuthStore';
-import MyPageEmptyState from './MyPageEmptyState';
-import BaseBtn from '../../../components/common/BaseBtn';
-import useOverlayStore from '../../../store/useOverlayStore';
-import BaseModal from '../../../components/common/BaseModal';
+import useReviewStore from '../../../../store/useReviewStore';
+import useAuthStore from '../../../../store/useAuthStore';
+import MyPageEmptyState from '../shared/MyPageEmptyState';
+import BaseBtn from '../../../../components/common/BaseBtn';
+import useOverlayStore from '../../../../store/useOverlayStore';
+import BaseModal from '../../../../components/common/BaseModal';
 
 const CategoryWrap = styled.div`
   display: flex;
