@@ -15,7 +15,7 @@ export default function MyInfo({ setCategory }) {
       <Profile>
         <InitialName>
           <span>
-            {user?.nickname?.charAt(0).toUpperCase() ?? user?.name?.charAt(0).toUpperCase() ?? 'P'}
+            {user?.nickname?.charAt(0).toUpperCase() || user?.name?.charAt(0).toUpperCase() || 'P'}
           </span>
         </InitialName>
         <UserInfo>

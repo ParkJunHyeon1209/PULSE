@@ -101,6 +101,7 @@ const StatisticsItem = styled.li`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[3]};
+  color: ${({ theme }) => theme.colors.textSecondary};
   border: 1px solid ${({ theme }) => theme.colors.primary + '33'};
   border-radius: ${({ theme }) => theme.radii.md};
   background-color: ${({ theme }) => theme.colors.cardBg};
@@ -127,8 +128,9 @@ const StatisticsItem = styled.li`
 `;
 
 const StatisticsCount = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  color: ${({ theme }) => theme.colors.textPrimary};
+  font-family: ${({ theme }) => theme.fontFamily.mono};
+  font-size: ${({ theme }) => theme.fontSize.m};
+  color: ${({ theme }) => theme.colors.text + 'cc'};
 `;
 
 const StatisticsIcon = styled.div`

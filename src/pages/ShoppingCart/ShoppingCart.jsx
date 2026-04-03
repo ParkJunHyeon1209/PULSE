@@ -39,7 +39,7 @@ const MainWrap = styled.div`
 
 const MainLeft = styled.div`
   flex: 1;
-  min-width: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[6]};

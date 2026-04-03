@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 import useReviewStore from '../../../store/useReviewStore';
 import useAuthStore from '../../../store/useAuthStore';
 import MyPageEmptyState from './MyPageEmptyState';
@@ -25,15 +26,14 @@ const ReviewList = styled.ul`
     justify-content: space-between;
     gap: ${({ theme }) => theme.spacing[5]};
     border: 1px solid ${({ theme }) => theme.colors.primary + '22'};
-    border-radius: ${({ theme }) => theme.radii.xl};
-    background: linear-gradient(
-      180deg,
-      ${({ theme }) => theme.colors.cardBg} 0%,
-      ${({ theme }) => theme.colors.cardBg}ee 100%
-    );
+    border-radius: ${({ theme }) => theme.radii.lg};
     box-shadow:
       inset 0 1px 0 ${({ theme }) => theme.colors.text + '08'},
       0 8px 24px ${({ theme }) => theme.colors.shadow};
+  }
+
+  > li:hover {
+    background: ${({ theme }) => theme.colors.cardBg + 'ee'};
   }
 
   > li.empty-item {
@@ -54,13 +54,15 @@ const ReviewMain = styled.div`
   align-items: flex-start;
   gap: ${({ theme }) => theme.spacing[4]};
   flex: 1;
+  cursor: pointer;
 `;
 
 const ReviewThumb = styled.div`
-  width: 64px;
-  height: 64px;
+  width: 100px;
+  height: 100px;
   flex-shrink: 0;
-  border-radius: ${({ theme }) => theme.radii.lg};
+  align-self: center;
+  border-radius: ${({ theme }) => theme.radii.md};
   overflow: hidden;
   border: 1px solid ${({ theme }) => theme.colors.primary + '20'};
   background:
@@ -103,7 +105,7 @@ const ReviewContent = styled.div`
 const ReviewHeader = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[1]};
+  gap: ${({ theme }) => theme.spacing[2]};
 `;
 
 const ProductName = styled.h3`
@@ -132,7 +134,7 @@ const Rating = styled.div`
 const ReviewDate = styled.span`
   font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: ${({ theme }) => theme.fontSize.xxs};
-  letter-spacing: 0.16em;
+  letter-spacing: 0.04em;
   color: ${({ theme }) => theme.colors.textSecondary};
   opacity: 0.85;
 `;
@@ -172,7 +174,7 @@ const ReviewForm = styled.form`
   gap: ${({ theme }) => theme.spacing[4]};
 `;
 
-const FieldLabel = styled.label`
+const FieldLabel = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[2]};
@@ -187,7 +189,27 @@ const FieldLabel = styled.label`
     background: ${({ theme }) => theme.colors.cardBg};
     color: ${({ theme }) => theme.colors.text};
     line-height: 1.6;
+    resize: none;
   }
+`;
+
+const FieldTitle = styled.span`
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  color: ${({ theme }) => theme.colors.textSecondary};
+`;
+
+const FieldHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.spacing[3]};
+`;
+
+const CharacterCount = styled.span`
+  font-family: ${({ theme }) => theme.fontFamily.mono};
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  opacity: 0.8;
 `;
 
 const RatingRow = styled.div`
@@ -196,22 +218,29 @@ const RatingRow = styled.div`
   gap: ${({ theme }) => theme.spacing[2]};
 `;
 
-const StarButton = styled(BaseBtn)`
-  && {
-    min-width: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-    font-size: ${({ theme }) => theme.fontSize.s};
-    color: ${({ $active, theme }) => ($active ? '#f6c63b' : theme.colors.textSecondary)};
+const StarButton = styled.button`
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  font-size: ${({ theme }) => theme.fontSize.s};
+  line-height: 1;
+  color: ${({ $active, theme }) => ($active ? '#f6c63b' : theme.colors.textSecondary)};
+  transition:
+    color ${({ theme }) => theme.motion.fast},
+    transform ${({ theme }) => theme.motion.fast};
+
+  &:hover {
+    color: #f6c63b;
+    transform: translateY(-1px);
   }
 `;
 
 const ModalActions = styled.div`
   display: flex;
   justify-content: flex-end;
-  gap: ${({ theme }) => theme.spacing[2]};
+  gap: ${({ theme }) => theme.spacing[3]};
   margin-top: ${({ theme }) => theme.spacing[2]};
 `;
 
@@ -260,7 +289,7 @@ const formatDate = (value) => {
     day: '2-digit',
   })
     .format(date)
-    .replace(/\.\s/g, '. ')
+    .replace(/\s/g, '')
     .replace(/\.$/, '');
 };
 
@@ -295,6 +324,40 @@ const previewReviews = [
 
 const REVIEW_EDIT_MODAL_ID = 'reviewEdit';
 
+function ReviewDeleteModal({ isOpen, reviewTitle, onClose, onConfirm }) {
+  return (
+    <BaseModal
+      isOpen={isOpen}
+      label="PULSE REVIEW"
+      title="리뷰를 삭제하시겠습니까?"
+      width="420px"
+      onClose={onClose}
+    >
+      <p>{reviewTitle ? `"${reviewTitle}" 리뷰를 삭제합니다.` : '선택한 리뷰를 삭제합니다.'}</p>
+      <p>삭제한 리뷰는 되돌릴 수 없습니다.</p>
+      <ModalActions>
+        <BaseBtn
+          type="button"
+          variant="secondary"
+          icon={false}
+          style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
+          onClick={onClose}
+        >
+          취소
+        </BaseBtn>
+        <BaseBtn
+          type="button"
+          icon={false}
+          style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
+          onClick={onConfirm}
+        >
+          삭제
+        </BaseBtn>
+      </ModalActions>
+    </BaseModal>
+  );
+}
+
 function ReviewEditModal({
   isOpen,
   review,
@@ -315,7 +378,7 @@ function ReviewEditModal({
     >
       <ReviewForm onSubmit={onSubmit}>
         <FieldLabel>
-          평점
+          <FieldTitle>평점</FieldTitle>
           <RatingRow>
             {Array.from({ length: 5 }, (_, index) => {
               const nextRating = index + 1;
@@ -336,11 +399,16 @@ function ReviewEditModal({
         </FieldLabel>
 
         <FieldLabel>
-          리뷰 내용
+          <FieldHeader>
+            <FieldTitle>리뷰 내용</FieldTitle>
+            <CharacterCount>{content.length}/150</CharacterCount>
+          </FieldHeader>
           <textarea
             value={content}
             onChange={(event) => onChangeContent(event.target.value)}
             placeholder="리뷰 내용을 입력해주세요."
+            aria-label="리뷰 내용"
+            maxLength={150}
           />
         </FieldLabel>
 
@@ -358,9 +426,12 @@ function ReviewEditModal({
 }
 
 export default function Review() {
+  const navigate = useNavigate();
   const reviews = useReviewStore((state) => state.reviews);
   const updateReview = useReviewStore((state) => state.updateReview);
   const deleteReview = useReviewStore((state) => state.deleteReview);
+  const user = useAuthStore((state) => state.user);
+  const setUser = useAuthStore((state) => state.login);
   const userReviewList = useAuthStore((state) => state.user?.reviewList);
   const openModal = useOverlayStore((state) => state.openModal);
   const closeModal = useOverlayStore((state) => state.closeModal);
@@ -371,6 +442,7 @@ export default function Review() {
   const [selectedReviewId, setSelectedReviewId] = useState(null);
   const [draftContent, setDraftContent] = useState('');
   const [draftRating, setDraftRating] = useState(5);
+  const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
   useEffect(() => {
     setUserReviewDrafts(ensureArray(userReviewList));
@@ -389,7 +461,24 @@ export default function Review() {
   }, [previewReviewList, reviews, userReviewDrafts]);
 
   const reviewList = reviewSource.list;
-  const selectedReview = reviewList.find((review, index) => getReviewId(review, index) === selectedReviewId);
+  const selectedReview = reviewList.find(
+    (review, index) => getReviewId(review, index) === selectedReviewId
+  );
+  const pendingDeleteReview = reviewList.find(
+    (review, index) => getReviewId(review, index) === pendingDeleteId
+  );
+
+  const syncUserReviewList = (nextReviewList) => {
+    if (!user) {
+      return;
+    }
+
+    setUser({
+      ...user,
+      reviewList: nextReviewList,
+      reviews: nextReviewList,
+    });
+  };
 
   const handleOpenEditModal = (review, index) => {
     setSelectedReviewId(getReviewId(review, index));
@@ -403,24 +492,48 @@ export default function Review() {
     setSelectedReviewId(null);
   };
 
-  const handleDeleteReview = (reviewId) => {
-    if (!window.confirm('이 리뷰를 삭제하시겠습니까?')) {
+  const handleMoveToProduct = (review) => {
+    if (!review?.productId) {
+      return;
+    }
+
+    navigate(`/product/${review.productId}`);
+  };
+
+  const handleOpenDeleteModal = (reviewId) => {
+    setPendingDeleteId(reviewId);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setPendingDeleteId(null);
+  };
+
+  const handleConfirmDelete = () => {
+    if (!pendingDeleteId) {
       return;
     }
 
     if (reviewSource.type === 'store') {
-      deleteReview(reviewId);
+      deleteReview(pendingDeleteId);
+      syncUserReviewList(userReviewList.filter((review) => review.id !== pendingDeleteId));
+      handleCloseDeleteModal();
       return;
     }
 
     if (reviewSource.type === 'user') {
-      setUserReviewDrafts((prev) =>
-        prev.filter((review, index) => getReviewId(review, index) !== reviewId)
+      const nextUserReviews = userReviewDrafts.filter(
+        (review, index) => getReviewId(review, index) !== pendingDeleteId
       );
+      setUserReviewDrafts(nextUserReviews);
+      syncUserReviewList(nextUserReviews);
+      handleCloseDeleteModal();
       return;
     }
 
-    setPreviewReviewList((prev) => prev.filter((review, index) => getReviewId(review, index) !== reviewId));
+    setPreviewReviewList((prev) =>
+      prev.filter((review, index) => getReviewId(review, index) !== pendingDeleteId)
+    );
+    handleCloseDeleteModal();
   };
 
   const handleSubmitEdit = (event) => {
@@ -439,12 +552,15 @@ export default function Review() {
 
     if (reviewSource.type === 'store') {
       updateReview(nextReview);
-    } else if (reviewSource.type === 'user') {
-      setUserReviewDrafts((prev) =>
-        prev.map((review, index) =>
-          getReviewId(review, index) === selectedReviewId ? nextReview : review
-        )
+      syncUserReviewList(
+        userReviewList.map((review) => (review.id === nextReview.id ? nextReview : review))
       );
+    } else if (reviewSource.type === 'user') {
+      const nextUserReviews = userReviewDrafts.map((review, index) =>
+        getReviewId(review, index) === selectedReviewId ? nextReview : review
+      );
+      setUserReviewDrafts(nextUserReviews);
+      syncUserReviewList(nextUserReviews);
     } else {
       setPreviewReviewList((prev) =>
         prev.map((review, index) =>
@@ -466,7 +582,17 @@ export default function Review() {
 
             return (
               <li key={reviewId}>
-                <ReviewMain>
+                <ReviewMain
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => handleMoveToProduct(review)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      handleMoveToProduct(review);
+                    }
+                  }}
+                >
                   <ReviewThumb>
                     {getReviewImage(review) ? (
                       <img src={getReviewImage(review)} alt={getReviewTitle(review)} />
@@ -493,7 +619,10 @@ export default function Review() {
                     variant="secondary"
                     type="button"
                     icon={false}
-                    onClick={() => handleOpenEditModal(review, index)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleOpenEditModal(review, index);
+                    }}
                   >
                     수정
                   </BaseBtn>
@@ -501,7 +630,10 @@ export default function Review() {
                     variant="secondary"
                     type="button"
                     icon={false}
-                    onClick={() => handleDeleteReview(reviewId)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleOpenDeleteModal(reviewId);
+                    }}
                   >
                     삭제
                   </BaseBtn>
@@ -529,6 +661,12 @@ export default function Review() {
         onChangeRating={setDraftRating}
         onClose={handleCloseEditModal}
         onSubmit={handleSubmitEdit}
+      />
+      <ReviewDeleteModal
+        isOpen={Boolean(pendingDeleteId)}
+        reviewTitle={pendingDeleteReview ? getReviewTitle(pendingDeleteReview) : ''}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleConfirmDelete}
       />
     </CategoryWrap>
   );
