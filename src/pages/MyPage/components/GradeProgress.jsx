@@ -11,8 +11,8 @@ const gradeToneMap = {
     glow: 'rgba(96, 165, 250, 0.32)',
   },
   SILVER: {
-    color: '#cdd6e7',
-    lightColor: '#475569',
+    color: '#d8e0ec',
+    lightColor: '#7c8da6',
     glow: 'rgba(226, 232, 240, 0.28)',
   },
   GOLD: {
@@ -79,11 +79,18 @@ export default function GradeProgress() {
           </TopRow>
 
           <GradeLine>
-            <GradeText $active>{currentGrade}</GradeText>
+            <GradeText $active $color={tone.color} $lightColor={tone.lightColor}>
+              {currentGrade}
+            </GradeText>
             {!isMaxGrade && (
               <>
                 <GradeArrow />
-                <GradeText>{nextGrade}</GradeText>
+                <GradeText
+                  $color={(gradeToneMap[nextGrade] || gradeToneMap.MEMBER).color}
+                  $lightColor={(gradeToneMap[nextGrade] || gradeToneMap.MEMBER).lightColor}
+                >
+                  {nextGrade}
+                </GradeText>
               </>
             )}
             <TooltipTrigger>
@@ -133,7 +140,7 @@ export default function GradeProgress() {
 
         <RightSection>
           <AchievementLabel>ACHIEVEMENT</AchievementLabel>
-          <AchievementRate $color={tone.color}>{Math.round(safeProgress)}%</AchievementRate>
+          <AchievementRate>{Math.round(safeProgress)}%</AchievementRate>
           <AchievementCaption>
             {isMaxGrade ? 'MAX LEVEL' : `${nextGrade}까지 진행률`}
           </AchievementCaption>
@@ -257,17 +264,14 @@ const GradeLine = styled.div`
 `;
 
 const GradeText = styled.span`
-  font-family: ${({ theme }) => theme.fontFamily.mono};
+  font-family: ${({ theme }) => theme.fontFamily.hero};
   font-size: ${({ theme }) => theme.fontSize.s};
   font-weight: ${({ $active }) => ($active ? 700 : 500)};
-  color: ${({ theme, $active }) =>
-    $active
-      ? theme.mode === 'light'
-        ? theme.colors.primary
-        : theme.colors.text
-      : theme.colors.textSecondary};
+  color: ${({ theme, $color, $lightColor }) =>
+    theme.mode === 'light' ? $lightColor || theme.colors.primary : $color || theme.colors.text};
   text-shadow: ${({ theme, $active }) =>
     $active && theme.mode === 'light' ? '0 0 10px rgba(124, 58, 237, 0.12)' : 'none'};
+  letter-spacing: 0.08em;
 `;
 
 const GradeArrow = styled.span`
@@ -547,7 +551,7 @@ const AchievementLabel = styled.p`
 `;
 
 const AchievementRate = styled.p`
-  color: ${({ $color }) => $color};
+  color: ${({ theme }) => theme.colors.text};
   font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: clamp(42px, 5vw, 68px);
   font-weight: 700;

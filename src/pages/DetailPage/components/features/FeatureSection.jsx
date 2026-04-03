@@ -2,6 +2,7 @@ import React, { Suspense, lazy, useState, useRef } from 'react';
 import styled from '@emotion/styled';
 // import { categoryDetailApi } from '../../../../data/mockCategoryApi';
 import BundleCard from './BundleCard';
+import ProductReviewSection from './ProductReviewSection';
 import BaseSection from '../../../../components/common/BaseSection';
 
 const FeatureDetailContent = lazy(() => import('./FeatureDetailContent'));
@@ -271,6 +272,8 @@ export default function FeatureSection({
           {isDetailOpen ? '상세정보 접기' : '상세정보 더보기'}
         </ButtonLabel>
       </DetailToggleButton>
+
+      <ProductReviewSection product={product} onRequireLogin={onRequireLogin} />
 
       <BundleCardWrap>
         <BundleCard
