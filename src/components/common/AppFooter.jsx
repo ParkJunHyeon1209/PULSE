@@ -104,6 +104,7 @@ const FootWrap = styled.footer`
   position: relative;
   width: 100%;
   background: ${({ theme }) => theme.colors.background};
+  font-weight: 700;
 `;
 
 const FootInner = styled.div`
@@ -120,32 +121,51 @@ const FootInner = styled.div`
   & > *:not(:first-of-type) {
     justify-self: end;
   }
+  & > *:nth-child(3) {
+    transform: translateX(17px);
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+      transform: translateX(0);
+    }
+  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
-    grid-template-columns: repeat(2, minmax(0, 360px));
-    justify-content: center;
-    text-align: center;
-    gap: ${({ theme }) => theme.spacing[16]};
+    grid-template-columns: repeat(3, 1fr);
+    gap: ${({ theme }) => `${theme.spacing[10]} ${theme.spacing[8]}`};
+    /* padding: ${({ theme }) => `${theme.spacing[12]} ${theme.spacing[12]} 36px`}; */
 
-    & > *:not(:first-of-type) {
-      justify-self: auto;
+    & > *:first-of-type {
+      grid-column: 1 / -1;
+      padding-bottom: ${({ theme }) => theme.spacing[8]};
+      border-bottom: 1px solid transparent;
+      border-image: ${({ theme }) => theme.foot.divider} 1;
+    }
+
+    & > *:nth-child(2) {
+      justify-self: start;
+    }
+
+    & > *:nth-child(3) {
+      justify-self: center;
+    }
+
+    & > *:nth-child(4) {
+      justify-self: end;
     }
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    grid-template-columns: 1fr;
     padding: ${({ theme }) => `${theme.spacing[10]} ${theme.grid.margin} ${theme.spacing[8]}`};
-    & > * {
-      width: 50%;
-      margin: 0 auto;
-    }
+    gap: ${({ theme }) => `${theme.spacing[8]} ${theme.spacing[4]}`};
+  }
 
-    & > *:not(:last-child) {
-      padding-bottom: ${({ theme }) => theme.spacing[6]};
-      border-bottom: 1px solid transparent;
-      border-image: ${({ theme }) => theme.foot.divider} 1;
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: ${({ theme }) => `${theme.spacing[8]} ${theme.spacing[5]} ${theme.spacing[6]}`};
+    gap: ${({ theme }) => `${theme.spacing[6]} ${theme.spacing[3]}`};
+    & > *:nth-child(2),
+    & > *:nth-child(3),
+    & > *:nth-child(4) {
+      justify-self: center;
     }
-    gap: ${({ theme }) => theme.spacing[10]};
   }
 `;
 
@@ -153,7 +173,18 @@ const FootBrand = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
   @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: start;
+    width: 100%;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    display: flex;
+    flex-direction: column;
     align-items: center;
   }
 `;
@@ -164,12 +195,23 @@ const FootDec = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   line-height: 1.8;
   white-space: pre-line;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin-top: ${({ theme }) => theme.spacing[3]};
+    max-width: 100%;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    text-align: center;
+    max-width: 220px;
+    margin-top: ${({ theme }) => theme.spacing[3]};
+  }
 `;
 
 const FootSns = styled.div`
   display: flex;
-  height: 100%;
-  max-width: fit-content;
   gap: ${({ theme }) => theme.spacing[3]};
   margin: ${({ theme }) => theme.spacing[6]} 0;
 
@@ -181,9 +223,25 @@ const FootSns = styled.div`
   button:hover svg {
     opacity: 1;
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+    align-self: start;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    margin: ${({ theme }) => theme.spacing[4]} auto 0;
+  }
 `;
 
-const FootCol = styled.div``;
+const FootCol = styled.div`
+  min-width: 0;
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    text-align: center;
+  }
+`;
 
 const FootColTitle = styled.h3`
   margin-bottom: ${({ theme }) => theme.spacing[5]};
@@ -191,7 +249,17 @@ const FootColTitle = styled.h3`
   font-size: ${({ theme }) => theme.fontSize.xxs};
   letter-spacing: 0.2em;
   text-transform: uppercase;
+  font-weight: 700;
+
   color: ${({ theme }) => theme.colors.textSecondary};
+  transition:
+    font-size ${({ theme }) => theme.motion.normal},
+    letter-spacing ${({ theme }) => theme.motion.normal};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: ${({ theme }) => theme.fontSize.xxxs};
+    letter-spacing: 0.14em;
+  }
 `;
 
 const FootColBtn = styled.button`
@@ -200,18 +268,20 @@ const FootColBtn = styled.button`
   margin-bottom: ${({ theme }) => theme.spacing[3]};
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: ${({ theme }) => theme.fontSize.xxs};
-  font-weight: 400;
+  font-weight: 700;
+  opacity: 0.8;
   transition:
     color ${({ theme }) => theme.motion.normal},
     transform ${({ theme }) => theme.motion.normal};
-  text-align: start;
-  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
-    text-align: center;
-  }
+  text-align: inherit;
 
   &:hover {
     color: ${({ theme }) => theme.colors.text};
     transform: translateX(4px);
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: ${({ theme }) => theme.fontSize.xxxs};
   }
 `;
 
@@ -249,6 +319,12 @@ const FootNote = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   letter-spacing: 0.06em;
 `;
+
+const FootNoteHide = styled.span`
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    display: none;
+  }
+`;
 const FootBadge = styled(FootNote)`
   padding-left: ${({ theme }) => theme.spacing[1]};
   color: ${({ theme }) => theme.tones.violet.subtleColor};
@@ -257,6 +333,14 @@ const FootBadge = styled(FootNote)`
 export default function AppFooter() {
   const openModal = useOverlayStore((state) => state.openModal);
   const navigate = useNavigate();
+  const handleFooterItemClick = (item) => {
+    if (item.id === 'brand_story') {
+      navigate('/brand');
+      return;
+    }
+
+    openModal(item.id);
+  };
 
   return (
     <FootScope>
@@ -312,7 +396,7 @@ export default function AppFooter() {
                 {col.title}
               </FootColTitle>
               {col.items.map((item) => (
-                <FootColBtn key={item.id} type="button" onClick={() => openModal(item.id)}>
+                <FootColBtn key={item.id} type="button" onClick={() => handleFooterItemClick(item)}>
                   {item.title}
                 </FootColBtn>
               ))}
@@ -321,7 +405,9 @@ export default function AppFooter() {
         </FootInner>
 
         <FootBottom>
-          <FootNote>© 2026 PULSE · Gaming Gear Platform · Brand Concept Project</FootNote>
+          <FootNote>
+            © 2026 PULSE · Gaming Gear Platform<FootNoteHide> · Brand Concept Project</FootNoteHide>
+          </FootNote>
           <FootBadge>
             <LavStarIcon $animate={true}>✦</LavStarIcon>
             Play Your Signal · 2026 S/S

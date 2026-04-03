@@ -304,7 +304,8 @@ export default function ShowcaseSec() {
                 </SkeletonToneCard>
               ) : (
                 <BaseToneCard
-                  white={true}
+                  white
+                  isCenter={slot === 0}
                   imgOpacity={0.9}
                   imgPosition="top"
                   img={card.image}
@@ -313,7 +314,6 @@ export default function ShowcaseSec() {
                   count={card.desc}
                   tone={card.tag}
                   height="100%"
-                  //  imgBlendMode="hard-light"
                   imgFilter="brightness(1.2) saturate(1.2)"
                   badge={card.tag}
                   beamOver

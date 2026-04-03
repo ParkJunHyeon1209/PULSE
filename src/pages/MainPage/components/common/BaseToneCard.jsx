@@ -21,13 +21,16 @@ const Card = styled.article`
   will-change: transform;
 
   &:hover {
-    transform: ${({ $flipped }) => ($flipped ? 'none' : 'translateY(-4px) scale(1.03)')};
-    box-shadow: ${({ theme, $tone }) =>
-      theme.effects[`hoverShadowCategory${$tone}`] || theme.effects.hoverShadowCategoryBase};
+    transform: ${({ $flipped, $isCenter }) =>
+      !$isCenter ? 'none' : $flipped ? 'none' : 'translateY(-4px) scale(1.03)'};
+    box-shadow: ${({ theme, $tone, $isCenter }) =>
+      $isCenter
+        ? theme.effects[`hoverShadowCategory${$tone}`] || theme.effects.hoverShadowCategoryBase
+        : theme.effects.hoverShadowCategoryBase};
   }
 
   &:active {
-    transform: scale(0.97);
+    transform: ${({ $isCenter }) => ($isCenter ? 'scale(0.97)' : 'none')};
     transition: transform 0.1s;
   }
 
@@ -42,8 +45,9 @@ const Card = styled.article`
   }
 
   &:hover .card-spark {
-    opacity: 1;
-    transform: translate(-50%, -65%) scale(1.12);
+    opacity: ${({ $isCenter }) => ($isCenter ? 1 : 0)};
+    transform: ${({ $isCenter }) =>
+      $isCenter ? 'translate(-50%, -65%) scale(1.12)' : 'translate(-50%, -65%)'};
   }
 
   &:hover .card-arrow {
@@ -106,7 +110,7 @@ const SparkContainer = styled.div`
   left: 50%;
   top: 50%;
   z-index: 2;
-  opacity: 0.72;
+  opacity: ${({ $isCenter }) => ($isCenter ? 0.72 : 0)};
   transform: translate(-50%, -65%);
   transition:
     opacity ${({ theme }) => theme.motion.slow},
@@ -118,6 +122,7 @@ const BadgeWrap = styled.div`
   top: ${({ theme }) => theme.spacing[4]};
   left: ${({ theme }) => theme.spacing[4]};
   z-index: 3;
+  pointer-events: ${({ $isCenter }) => ($isCenter ? 'auto' : 'none')};
 `;
 
 const ArrowWrap = styled.div`
@@ -222,6 +227,7 @@ const CardInner = ({
   nameSize,
   imgBlendMode,
   imgFilter,
+  isCenter,
 }) => (
   <>
     <Inner $bg={TONE_BG[tone]} />
@@ -251,12 +257,12 @@ const CardInner = ({
       </>
     )}
     {white && <BottomDim />}
-    <SparkContainer className="card-spark">
+    <SparkContainer className="card-spark" $isCenter={isCenter}>
       <BaseSparkIcon tone={tone} />
     </SparkContainer>
 
     {badge && (
-      <BadgeWrap>
+      <BadgeWrap $isCenter={isCenter}>
         <BaseBtn
           variant="c-badge"
           tone={BADGE_TONE[badge]}
@@ -304,12 +310,13 @@ export default function BaseToneCard({
   nameSize,
   imgBlendMode,
   imgFilter,
+  isCenter = true,
   ...props
 }) {
   const hasFlip = !!backSlot;
 
   return (
-    <Card $tone={tone} $height={height} $hasFlip={hasFlip} $flipped={flipped} {...props}>
+    <Card $tone={tone} $height={height} $hasFlip={hasFlip} $flipped={flipped} $isCenter={isCenter} {...props}>
       {hasFlip ? (
         <FlipInner $flipped={flipped}>
           <FlipFace $flipped={flipped}>
@@ -328,6 +335,7 @@ export default function BaseToneCard({
               nameSize={nameSize}
               imgBlendMode={imgBlendMode}
               imgFilter={imgFilter}
+              isCenter={isCenter}
             />
           </FlipFace>
           <BackFace $flipped={flipped}>
@@ -353,6 +361,7 @@ export default function BaseToneCard({
           nameSize={nameSize}
           imgBlendMode={imgBlendMode}
           imgFilter={imgFilter}
+          isCenter={isCenter}
         />
       )}
     </Card>

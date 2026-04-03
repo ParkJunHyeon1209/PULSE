@@ -135,7 +135,8 @@ const ModalHeader = styled.div`
 const ModalBody = styled.div`
   font-size: ${({ theme }) => theme.fontSize.xxs};
   color: ${({ theme }) => theme.colors.textSecondary};
-  padding-top: ${({ theme }) => theme.spacing[5]};
+  padding-top: ${({ theme }) => theme.spacing[3]};
+  font-weight: 600;
   line-height: 1.65;
 `;
 

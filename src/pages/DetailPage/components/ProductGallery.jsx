@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import styled from '@emotion/styled';
 import { CardBadge } from '../../../components/common/CardParts';
 import { BADGE_TONE } from '../../../utils/toneMap';
-import { ArrowIconL } from '../../../assets/icons/BtnIcon';
+import { ChevronIcon } from '../../../assets/icons/BtnIcon';
 
 export default function ProductGallery({
   product,
@@ -62,15 +62,11 @@ export default function ProductGallery({
         {(galleryImages?.length ?? 0) > 1 && (
           <>
             <ArrowButton type="button" $left onClick={handlePrev} aria-label="이전 이미지">
-              <ArrowIconL
-                width="24"
-                height="24"
-                style={{ transform: 'rotate(180deg) translateX(1px)' }}
-              />
+              <ChevronIcon direction="left" style={{ transform: 'translateX(-1px)' }} />
             </ArrowButton>
 
             <ArrowButton type="button" onClick={handleNext} aria-label="다음 이미지">
-              <ArrowIconL width="24" height="24" style={{ transform: 'translateX(1px)' }} />
+              <ChevronIcon direction="right" style={{ transform: 'translateX(1px)' }} />
             </ArrowButton>
           </>
         )}
@@ -143,40 +139,38 @@ const MainImage = styled.img`
 
 const ArrowButton = styled.button`
   position: absolute;
-  display: flex;
   top: 50%;
-  ${({ $left }) => ($left ? 'left: 8px;' : 'right: 8px;')}
-  transform: translateY(-50%);
+  ${({ $left }) => ($left ? 'left: 18px;' : 'right: 18px;')}
+  transform: translateY(-50%) ${({ $left }) => ($left ? 'translateX(-2px)' : 'translateX(2px)')};
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background: ${({ theme }) => theme.iconBtn.wish.bg};
-  color: ${({ theme }) => theme.colors.secondary}99;
-  font-size: 20px;
-  font-weight: 700;
+  border-radius: 999px;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2;
+  backdrop-filter: ${({ theme }) => theme.effects.blurSoft};
+  opacity: 0.78;
+  background: ${({ theme }) =>
+    theme.mode === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.18)'};
   transition:
-    background-color ${({ theme }) => theme.motion.fast},
     transform ${({ theme }) => theme.motion.fast},
-    box-shadow ${({ theme }) => theme.motion.fast},
-    color ${({ theme }) => theme.motion.fast};
+    opacity ${({ theme }) => theme.motion.fast},
+    background ${({ theme }) => theme.motion.fast},
+    box-shadow ${({ theme }) => theme.motion.fast};
 
   &:hover {
-    background: color-mix(in srgb, ${({ theme }) => theme.colors.modalBg} 18%, transparent);
-    /* border-color: ${({ theme }) => theme.colors.secondary}; */
-    color: ${({ theme }) => theme.colors.secondary};
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+    opacity: 1;
+    transform: translateY(-50%) ${({ $left }) => ($left ? 'translateX(-6px)' : 'translateX(6px)')};
+    background: ${({ theme }) =>
+      theme.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.32)'};
+    box-shadow: ${({ theme }) =>
+      theme.mode === 'dark' ? '0 0 18px rgba(124,58,237,0.18)' : '0 0 18px rgba(124,58,237,0.12)'};
   }
 
   &:active {
-    transform: translateY(-50%) scale(0.88);
-    background: color-mix(in srgb, ${({ theme }) => theme.colors.modalBg} 10%, transparent);
-
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+    transform: translateY(-50%) ${({ $left }) => ($left ? 'translateX(-6px)' : 'translateX(6px)')}
+      scale(0.88);
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
