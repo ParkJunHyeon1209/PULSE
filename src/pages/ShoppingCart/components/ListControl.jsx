@@ -79,7 +79,11 @@ const ListControlWrap = styled.div`
   display: flex;
   justify-content: space-between;
   color: ${({ theme }) => theme.colors.textSecondary};
-  background-color: ${({ theme }) => theme.colors.cardBg};
+  background: linear-gradient(
+    180deg,
+    ${({ theme }) => theme.colors.cardBgLight} 20%,
+    ${({ theme }) => theme.colors.cardBg} 100%
+  );
   backdrop-filter: ${({ theme }) => theme.effects.blurPromo};
   border-bottom: 1px solid ${({ theme }) => theme.tones.violet.hoverColor + '08'};
   > .check-box {
@@ -92,10 +96,14 @@ const ListControlWrap = styled.div`
     gap: ${({ theme }) => theme.spacing[6]};
     > button:first-of-type {
       position: relative;
+      color: ${({ theme }) => theme.colors.textSecondary};
+      transition: color ${({ theme }) => theme.motion.fast} ease;
+    }
+    > button:last-of-type {
       color: ${({ theme }) => theme.colors.accent + '96'};
       transition: color ${({ theme }) => theme.motion.fast} ease;
     }
-    > button:first-of-type:hover {
+    > button:hover {
       color: ${({ theme }) => theme.colors.accent};
     }
     > button:first-of-type::after {

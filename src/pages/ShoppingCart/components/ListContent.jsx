@@ -149,7 +149,8 @@ export default function ListContent() {
 }
 
 const List = styled.ul`
-  background-color: ${({ isDarkMode }) => (isDarkMode ? null : '#ffffff30')};
+  /* background-color: ${({ isDarkMode }) => (isDarkMode ? 'transparent' : '#ffffff30')}; */
+  background: color-mix(in srgb, ${({ theme }) => theme.colors.cardBgLight} 50%, transparent);
 `;
 
 const ListItem = styled.li`

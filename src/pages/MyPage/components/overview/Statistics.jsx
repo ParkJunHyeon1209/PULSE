@@ -3,7 +3,12 @@ import useAuthStore from '../../../../store/useAuthStore';
 import styled from '@emotion/styled';
 import useWishlistStore from '../../../../store/useWishlistStore';
 import useOrderStore from '../../../../store/useOrderStore';
-import { CouponIcon2, HeartFillIcon, PointIcon, ThunderIcon } from '../../../../assets/icons/BtnIcon';
+import {
+  CouponIcon2,
+  HeartFillIcon,
+  ReviewIcon,
+  ThunderIcon,
+} from '../../../../assets/icons/BtnIcon';
 
 const VARIANT_COLORS = {
   blue: {
@@ -71,12 +76,12 @@ export default function Statistics({ setCategory }) {
       category: 'wish',
     },
     {
-      key: 'point',
+      key: 'review',
       variant: 'blue',
-      icon: <PointIcon />,
-      value: user?.point?.toLocaleString() || 0,
-      label: 'MEMBER POINT',
-      category: 'coupon',
+      icon: <ReviewIcon />,
+      value: user?.reviews.length?.toLocaleString() || 0,
+      label: 'REVIEW ',
+      category: 'review',
     },
     {
       key: 'coupon',

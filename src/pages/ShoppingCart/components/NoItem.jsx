@@ -25,10 +25,13 @@ const NoItemWrap = styled.div`
   }
   > p:first-of-type {
     margin-bottom: ${({ theme }) => theme.spacing[4]};
+    font-family: ${({ theme }) => theme.fontFamily.display};
   }
 
   > p:last-of-type {
     margin-bottom: ${({ theme }) => theme.spacing[6]};
+    font-size: ${({ theme }) => theme.fontSize.xxxs};
+    color: ${({ theme }) => theme.colors.textSecondary};
   }
   > button {
     border: 1px solid ${({ theme }) => theme.colors.primary + '20'};
