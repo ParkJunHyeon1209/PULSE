@@ -11,12 +11,14 @@ import ShoppingCart from './pages/ShoppingCart/ShoppingCart';
 import CursorTrail from './components/common/CursorTrail';
 import ScrollToTop from './components/common/ScrollToTop';
 import MyPage from './pages/MyPage/MyPage';
+import ScrollToTopButton from './components/common/ScrollToTopButton';
 
 export default function App() {
   return (
     <>
       <CursorTrail />
       <ScrollToTop />
+      <ScrollToTopButton />
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<MainPage />} />
