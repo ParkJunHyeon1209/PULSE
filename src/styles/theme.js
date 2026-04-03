@@ -88,7 +88,7 @@ const baseTokens = {
     // badge, promise card title, 작은 아이콘 상태색
     col: { ...violetBtnTone },
     mint: {
-      bg: 'linear-gradient(135deg,rgba(14,168,112,0.32) 0%,rgba(8,140,90,0.28) 40%,rgba(14,168,112,0.24) 100%)',
+      bg: 'linear-gradient(135deg,rgba(14,168,112,0.52) 0%,rgba(8,140,90,0.38) 40%,rgba(14,168,112,0.44) 100%)',
       // bg: 'linear-gradient(135deg,rgba(14,168,112,0.92) 0%,rgba(8,140,90,0.88) 40%,rgba(14,168,112,0.84) 100%)',
       shadow:
         '0 0 0 1px rgba(52,211,153,0.28),0 0 12px 4px rgba(16,185,129,0.22),0 0 28px 10px rgba(16,185,129,0.12),0 4px 16px rgba(8,140,90,0.18)',
@@ -354,6 +354,7 @@ export const darkTheme = {
     lavBlue: 'linear-gradient(90deg, #a78bfa, #60a5fa)',
     Headline: 'linear-gradient(90deg, #a78bfa, #ec4899)',
     navActive: 'linear-gradient(90deg, #a78bfa, #7c3aed)',
+    top: 'linear-gradient(180deg, rgb(20, 12, 56), #2c1a6e)',
     bgMesh: `
       radial-gradient(ellipse 60% 45% at 1% 55%,rgba(100,40,220,0.22) 0%,transparent 62%),
       /* previous adjusted value: radial-gradient(ellipse 55% 45% at 18% 55%,rgba(100,60,220,0.22) 0%,transparent 62%) */
@@ -628,6 +629,7 @@ export const lightTheme = {
     // lavPink = 라벤더에서 핑크로 가는 그라디언트
     Headline: 'linear-gradient(90deg, #7c3aed, #ec4899)',
     navActive: 'linear-gradient(90deg, #7c3aed, #6d28d9)',
+    top: 'linear-gradient(180deg, rgba(252,250,255,0.97), #dabaff)',
     bgMesh: `
       radial-gradient(ellipse 55% 55% at 8% 44%,rgba(100,40,220,0.36) 0%,transparent 62%),
       /* previous adjusted value: radial-gradient(ellipse 55% 45% at 18% 55%,rgba(100,60,220,0.06) 0%,transparent 62%) */
