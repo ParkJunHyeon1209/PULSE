@@ -173,19 +173,19 @@ const DropProfileAvatar = styled.div`
   width: 32px;
   height: 32px;
   border-radius: ${({ theme }) => theme.radii.full};
-  background: ${({ theme }) => theme.gradients.navActive};
+  mix-blend-mode: ${({ theme }) => (theme.mode === 'dark' ? 'hard-light' : 'normal')};
+  background: ${({ theme }) => theme.colors.primary};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: ${({ theme }) => theme.fontFamily.display};
+  font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: ${({ theme }) => theme.fontSize.xs};
-  font-weight: 700;
+  font-weight: 600;
   color: #fff;
   flex-shrink: 0;
-  > span {
-
-    transform: translateY(1px);
-  }
+  /* > span {
+    transform: translateY(2px);
+  } */
 `;
 
 const DropProfileInfo = styled.div`
@@ -193,9 +193,9 @@ const DropProfileInfo = styled.div`
 `;
 
 const DropProfileName = styled.div`
-  font-size: ${({ theme }) => theme.fontSize.xxs};
-  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSize.xs};
   color: ${({ theme }) => theme.colors.text};
+  font-weight: 700;
 `;
 
 const DropProfileEmail = styled.div`
@@ -215,7 +215,7 @@ const AvatarCircle = styled(BaseBtn)`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: ${({ theme }) => theme.fontFamily.display};
+  font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: ${({ theme }) => theme.fontSize.s};
   font-weight: 700;
   color: #fff;
@@ -313,7 +313,34 @@ export default function AppHeaderUser() {
   const wrapRef = usePanel({ open, onClose: closeLogin });
   const { isLogin, user, logout } = useAuthStore();
   const navigate = useNavigate();
-  const initial = user?.nickname?.[0]?.toUpperCase() ?? user?.name?.[0]?.toUpperCase() ?? 'P';
+  const initial = (() => {
+    const INITIAL_MAP = {
+      ᄀ: 'K',
+      ᄁ: 'K',
+      ᄂ: 'N',
+      ᄃ: 'D',
+      ᄄ: 'D',
+      ᄅ: 'R',
+      ᄆ: 'M',
+      ᄇ: 'B',
+      ᄈ: 'B',
+      ᄉ: 'S',
+      ᄊ: 'S',
+      ᄋ: 'A',
+      ᄌ: 'J',
+      ᄍ: 'J',
+      ᄎ: 'C',
+      ᄏ: 'K',
+      ᄐ: 'T',
+      ᄑ: 'P',
+      ᄒ: 'H',
+    };
+    if (user?.nickname) return user.nickname[0].toUpperCase();
+    const char = user?.name?.[0];
+    if (!char) return 'P';
+    const decomposed = char.normalize('NFD')[0];
+    return INITIAL_MAP[decomposed] ?? char.toUpperCase();
+  })();
   const handleLogout = () => {
     logout();
     closeLogin();
@@ -329,15 +356,17 @@ export default function AppHeaderUser() {
         ) : (
           <AvatarButton height={'42px'} variant="ic-btn" aria-label="User menu" onClick={onOpen}>
             <UserIcon />
-            <AvatarStatus />
+            {/* <AvatarStatus /> */}
           </AvatarButton>
         )}
 
         <Drop $open={open}>
           {isLogin ? (
             <>
-              <DropProfile onClick={()=> navigate('/mypage?tab=profile')}>
-                <DropProfileAvatar><span>{initial}</span></DropProfileAvatar>
+              <DropProfile onClick={() => navigate('/mypage?tab=profile')}>
+                <DropProfileAvatar>
+                  <span>{initial}</span>
+                </DropProfileAvatar>
                 <DropProfileInfo>
                   <DropProfileName>{user?.name ?? 'PULSE USER'}</DropProfileName>
                   <DropProfileEmail>{user?.email ?? ''}</DropProfileEmail>
