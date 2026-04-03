@@ -91,7 +91,14 @@ export default function WishList() {
   };
 
   if (isLoading) {
-    return <p>위시 리스트를 불러오고 있습니다.</p>;
+    return (
+      <LoadingScreen>
+        <LoadingWrap>
+          <LoadingSpinner />
+          <LoadingText>상품 정보를 불러오고 있습니다.</LoadingText>
+        </LoadingWrap>
+      </LoadingScreen>
+    );
   }
 
   return (
@@ -164,6 +171,57 @@ export default function WishList() {
 }
 
 const WishSection = styled.section``;
+
+const LoadingScreen = styled.div`
+  width: 100%;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid ${({ theme }) => theme.checkbox.border + '35'};
+  border-radius: ${({ theme }) => theme.radii.lg};
+  background-color: ${({ theme }) => theme.colors.cardBg};
+  box-shadow: 0 1px 20px ${({ theme }) => theme.checkbox.border + '18'};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    min-height: 360px;
+  }
+`;
+
+const LoadingWrap = styled.div`
+  width: 100%;
+  padding: ${({ theme }) => theme.spacing[20]} 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: ${({ theme }) => theme.spacing[4]};
+  color: ${({ theme }) => theme.colors.primary};
+`;
+
+const LoadingSpinner = styled.div`
+  width: 56px;
+  height: 56px;
+  border-radius: ${({ theme }) => theme.radii.full};
+  border: 3px solid rgba(${({ theme }) => theme.colors.primaryRgb}, 0.18);
+  border-top-color: ${({ theme }) => theme.colors.primary};
+  animation: spin 0.8s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+const LoadingText = styled.p`
+  margin: 0;
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  font-weight: 600;
+  line-height: 1.6;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.primary};
+`;
 
 const WishListWrap = styled.ul`
   display: flex;

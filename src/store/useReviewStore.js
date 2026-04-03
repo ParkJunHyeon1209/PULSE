@@ -32,7 +32,7 @@ const useReviewStore = create(
     }),
 
     {
-      name: 'review-storage',
+      name: 'review-list',
     }
   )
 );

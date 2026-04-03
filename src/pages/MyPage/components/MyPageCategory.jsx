@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import BaseModal from '../../../components/common/BaseModal';
 import BaseBtn from '../../../components/common/BaseBtn';
 import useAuthStore from '../../../store/useAuthStore';
+import useReviewStore from '../../../store/useReviewStore';
 import useWishlistStore from '../../../store/useWishlistStore';
 import useOrderStore from '../../../store/useOrderStore';
 import {
@@ -16,6 +17,8 @@ import {
   ReviewIcon,
   UserIcon,
 } from '../../../assets/icons/BtnIcon';
+
+const ensureArray = (value) => (Array.isArray(value) ? value : []);
 
 function LogoutModal() {
   const isOpen = useOverlayStore((state) => Boolean(state.modals.logout));
@@ -66,8 +69,11 @@ export default function MyPageCategory({ category, setCategory }) {
   const openModal = useOverlayStore((state) => state.openModal);
   const isActive = (itemCategory) => category === itemCategory;
   const user = useAuthStore((state) => state.user);
+  const reviews = useReviewStore((state) => state.reviews);
   const wishlistCount = useWishlistStore((state) => state.wishlistIds).length;
   const orderCount = useOrderStore((state) => state.orders.length);
+  const reviewCount =
+    ensureArray(reviews).length > 0 ? ensureArray(reviews).length : ensureArray(user?.reviewList).length;
 
   return (
     <CategoryList>
@@ -92,7 +98,7 @@ export default function MyPageCategory({ category, setCategory }) {
               <ReviewIcon />
               작성 리뷰
             </div>
-            <span>{user?.reviewList?.length || 0}</span>
+            <span>{reviewCount}</span>
           </CategoryType>
           <CategoryType $isActive={isActive('coupon')} onClick={() => setCategory('coupon')}>
             <div className="icontext">
