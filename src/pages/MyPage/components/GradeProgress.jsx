@@ -173,16 +173,12 @@ const GradeProgressWrap = styled.section`
   gap: ${({ theme }) => theme.spacing[5]};
   border: 1px solid transparent;
   border-radius: 28px;
-  background:
-    radial-gradient(
-      circle at top right,
-      ${({ theme, $glow }) => (theme.mode === 'light' ? 'rgba(124, 58, 237, 0.10)' : $glow)},
-      transparent 26%
-    ),
-    ${({ theme }) =>
-      theme.mode === 'light'
-        ? 'linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(245, 241, 255, 0.96) 100%)'
-        : 'linear-gradient(180deg, rgba(14, 10, 28, 0.96) 0%, rgba(8, 6, 18, 0.98) 100%)'};
+  background: radial-gradient(
+    circle at top right,
+    ${({ theme, $glow }) => (theme.mode === 'light' ? 'rgba(124, 58, 237, 0.10)' : $glow)},
+    transparent 26%
+  );
+
   box-shadow: ${({ theme }) =>
     theme.mode === 'light'
       ? '0 18px 44px rgba(124, 58, 237, 0.10)'

@@ -28,25 +28,17 @@ const CurrentRoute = styled.div`
 `;
 
 const MainWrap = styled.div`
-  display: grid;
-  grid-template-columns: 1fr minmax(300px, 400px);
-  grid-template-rows: auto auto;
-  grid-template-areas:
-    'left summary'
-    'recommend summary';
+  display: flex;
+  align-items: flex-start;
   gap: ${({ theme }) => theme.spacing[6]};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      'left'
-      'summary'
-      'recommend';
+    flex-direction: column;
   }
 `;
 
 const MainLeft = styled.div`
-  grid-area: left;
+  flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -54,12 +46,24 @@ const MainLeft = styled.div`
 `;
 
 const SummaryWrap = styled.div`
-  grid-area: summary;
+  width: min(100%, 400px);
+  flex: 0 0 min(100%, 400px);
   min-width: 0;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 120px;
+  align-self: flex-start;
+  height: max-content;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    width: 100%;
+    flex-basis: auto;
+    position: static;
+    top: auto;
+  }
 `;
 
 const RecommendWrap = styled.div`
-  grid-area: recommend;
   min-width: 0;
 `;
 
@@ -101,13 +105,13 @@ export default function ShoppingCart() {
               <NoItem />
             )}
           </CartList>
+          <RecommendWrap>
+            <Recommend />
+          </RecommendWrap>
         </MainLeft>
         <SummaryWrap>
           <Summary />
         </SummaryWrap>
-        <RecommendWrap>
-          <Recommend />
-        </RecommendWrap>
       </MainWrap>
       {/* tag가 best인 제품만 추천 */}
     </ShoppingCartWrap>

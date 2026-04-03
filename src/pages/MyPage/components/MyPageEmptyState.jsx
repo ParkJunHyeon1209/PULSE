@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import BaseBtn from '../../../components/common/BaseBtn';
 import useThemeStore from '../../../store/useThemeStore';
-import { CartIcon, HeartIcon } from '../../../assets/icons/BtnIcon';
+import { CartIcon, HeartIcon, ReviewIcon } from '../../../assets/icons/BtnIcon';
 
 export default function MyPageEmptyState({
   category,
@@ -17,7 +17,13 @@ export default function MyPageEmptyState({
 
   return (
     <EmptyStateWrap $isDarkMode={isDarkMode}>
-      {category === 'order' ? <CartIcon size={'80px'} /> : <HeartIcon size={'80px'} />}
+      {category === 'order' ? (
+        <CartIcon size={'80px'} />
+      ) : category === 'wish' ? (
+        <HeartIcon size={'80px'} />
+      ) : (
+        <ReviewIcon size={'80px'} />
+      )}
       <p>{title}</p>
       <p>{description}</p>
       <BaseBtn onClick={() => navigate(to)} variant="secondary" tone="violet" padding="12px 24px">
@@ -53,7 +59,7 @@ const EmptyStateWrap = styled.div`
     height: 80px;
     margin-bottom: ${({ theme }) => theme.spacing[5]};
     color: ${({ theme }) => theme.colors.primary};
-    opacity: ${({ $isDarkMode }) => ($isDarkMode ? 0.72 : 0.92)};
+    opacity: ${({ $isDarkMode }) => ($isDarkMode ? 0.4 : 0.45)};
   }
 
   > p:first-of-type {

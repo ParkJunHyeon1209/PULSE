@@ -1,9 +1,16 @@
 import styled from '@emotion/styled';
 import BaseBtn from './BaseBtn';
-import { LavStarIcon, TwitterIcon, KakaoIcon, YoutubeIcon, InstaIcon } from '../../assets/icons/BtnIcon';
+import {
+  LavStarIcon,
+  TwitterIcon,
+  KakaoIcon,
+  YoutubeIcon,
+  InstaIcon,
+} from '../../assets/icons/BtnIcon';
 import AppLogo from './AppLogo';
 import useOverlayStore from '../../store/useOverlayStore';
 import BaseWipModal from './modals/BaseWipModal';
+import { useNavigate } from 'react-router-dom';
 
 const SNS_ITEMS = [
   { id: 'sns_twitter', label: 'SNS', title: 'X (Twitter)', icon: TwitterIcon },
@@ -35,10 +42,7 @@ const FOOTER_COLS = [
   },
 ];
 
-const ALL_WIP_ITEMS = [
-  ...SNS_ITEMS,
-  ...FOOTER_COLS.flatMap((col) => col.items),
-];
+const ALL_WIP_ITEMS = [...SNS_ITEMS, ...FOOTER_COLS.flatMap((col) => col.items)];
 
 const FootScope = styled.div`
   position: relative;
@@ -252,6 +256,7 @@ const FootBadge = styled(FootNote)`
 
 export default function AppFooter() {
   const openModal = useOverlayStore((state) => state.openModal);
+  const navigate = useNavigate();
 
   return (
     <FootScope>
@@ -266,7 +271,13 @@ export default function AppFooter() {
             <FootDec>{'네온이 번지는 순간,\n당신의 플레이가 시작된다.'}</FootDec>
             <FootSns>
               {SNS_ITEMS.map((sns) => (
-                <BaseBtn key={sns.id} variant="ic-btn" aria-label={sns.title} size="36px" onClick={() => openModal(sns.id)}>
+                <BaseBtn
+                  key={sns.id}
+                  variant="ic-btn"
+                  aria-label={sns.title}
+                  size="36px"
+                  onClick={() => openModal(sns.id)}
+                >
                   <sns.icon />
                 </BaseBtn>
               ))}
@@ -277,17 +288,28 @@ export default function AppFooter() {
             <FootColTitle>
               <LavStarIcon>✦</LavStarIcon>Products
             </FootColTitle>
-            <FootColBtn type="button">Headset Series</FootColBtn>
-            <FootColBtn type="button">Keyboard Series</FootColBtn>
-            <FootColBtn type="button">Mouse Series</FootColBtn>
-            <FootColBtn type="button">Mic Series</FootColBtn>
-            <FootColBtn type="button">Accessories</FootColBtn>
+            <FootColBtn type="button" onClick={() => navigate('/categories')}>
+              LineUp Series
+            </FootColBtn>
+            <FootColBtn type="button" onClick={() => navigate('/categories/headset')}>
+              Headset Series
+            </FootColBtn>
+            <FootColBtn type="button" onClick={() => navigate('/categories/gear')}>
+              Gear Series
+            </FootColBtn>
+            <FootColBtn type="button" onClick={() => navigate('/categories/console')}>
+              Console Series
+            </FootColBtn>
+            <FootColBtn type="button" onClick={() => navigate('/categories/drops')}>
+              Drops Series
+            </FootColBtn>
           </FootCol>
 
           {FOOTER_COLS.map((col) => (
             <FootCol key={col.title}>
               <FootColTitle>
-                <LavStarIcon>✦</LavStarIcon>{col.title}
+                <LavStarIcon>✦</LavStarIcon>
+                {col.title}
               </FootColTitle>
               {col.items.map((item) => (
                 <FootColBtn key={item.id} type="button" onClick={() => openModal(item.id)}>
