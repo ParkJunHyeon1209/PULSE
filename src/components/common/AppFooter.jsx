@@ -13,31 +13,31 @@ import BaseWipModal from './modals/BaseWipModal';
 import { useNavigate } from 'react-router-dom';
 
 const SNS_ITEMS = [
-  { id: 'sns_twitter', label: 'SNS', title: 'X (Twitter)', icon: TwitterIcon },
-  { id: 'sns_kakao', label: 'SNS', title: 'KakaoTalk', icon: KakaoIcon },
-  { id: 'sns_youtube', label: 'SNS', title: 'YouTube', icon: YoutubeIcon },
-  { id: 'sns_instagram', label: 'SNS', title: 'Instagram', icon: InstaIcon },
+  { id: 'snsTwitter', label: 'SNS', title: 'X (Twitter)', icon: TwitterIcon },
+  { id: 'snsKakao', label: 'SNS', title: 'KakaoTalk', icon: KakaoIcon },
+  { id: 'snsYoutube', label: 'SNS', title: 'YouTube', icon: YoutubeIcon },
+  { id: 'snsInstagram', label: 'SNS', title: 'Instagram', icon: InstaIcon },
 ];
 
 const FOOTER_COLS = [
   {
     title: 'Explore',
     items: [
-      { id: 'explore_new', label: 'EXPLORE', title: '신제품' },
-      { id: 'explore_best', label: 'EXPLORE', title: '베스트셀러' },
-      { id: 'explore_drop', label: 'EXPLORE', title: '한정 드롭' },
-      { id: 'explore_schedule', label: 'EXPLORE', title: '드롭 일정' },
-      { id: 'explore_community', label: 'EXPLORE', title: '커뮤니티' },
+      { id: 'exploreNew', label: 'EXPLORE', title: '신제품' },
+      { id: 'exploreBest', label: 'EXPLORE', title: '베스트셀러' },
+      { id: 'exploreDrop', label: 'EXPLORE', title: '한정 드롭' },
+      { id: 'exploreSchedule', label: 'EXPLORE', title: '드롭 일정' },
+      { id: 'exploreCommunity', label: 'EXPLORE', title: '커뮤니티' },
     ],
   },
   {
     title: 'Brand',
     items: [
-      { id: 'brand_story', label: 'PULSE BRAND', title: '브랜드 스토리' },
-      { id: 'brand_design', label: 'PULSE BRAND', title: '디자인 시스템' },
-      { id: 'brand_press', label: 'PULSE BRAND', title: 'Press Kit' },
-      { id: 'brand_contact', label: 'PULSE BRAND', title: 'Contact' },
-      { id: 'brand_privacy', label: 'PULSE BRAND', title: 'Privacy' },
+      { id: 'brandStory', label: 'PULSE BRAND', title: '브랜드 스토리' },
+      { id: 'brandDesign', label: 'PULSE BRAND', title: '디자인 시스템' },
+      { id: 'brandPress', label: 'PULSE BRAND', title: 'Press Kit' },
+      { id: 'brandContact', label: 'PULSE BRAND', title: 'Contact' },
+      { id: 'brandPrivacy', label: 'PULSE BRAND', title: 'Privacy' },
     ],
   },
 ];
@@ -121,7 +121,7 @@ const FootInner = styled.div`
   & > *:not(:first-of-type) {
     justify-self: end;
   }
-  & > *:nth-child(3) {
+  & > *:nth-of-type(3) {
     transform: translateX(17px);
     @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
       transform: translateX(0);
@@ -140,15 +140,15 @@ const FootInner = styled.div`
       border-image: ${({ theme }) => theme.foot.divider} 1;
     }
 
-    & > *:nth-child(2) {
+    & > *:nth-of-type(2) {
       justify-self: start;
     }
 
-    & > *:nth-child(3) {
+    & > *:nth-of-type(3) {
       justify-self: center;
     }
 
-    & > *:nth-child(4) {
+    & > *:nth-of-type(4) {
       justify-self: end;
     }
   }
@@ -161,9 +161,9 @@ const FootInner = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     padding: ${({ theme }) => `${theme.spacing[8]} ${theme.spacing[5]} ${theme.spacing[6]}`};
     gap: ${({ theme }) => `${theme.spacing[6]} ${theme.spacing[3]}`};
-    & > *:nth-child(2),
-    & > *:nth-child(3),
-    & > *:nth-child(4) {
+    & > *:nth-of-type(2),
+    & > *:nth-of-type(3),
+    & > *:nth-of-type(4) {
       justify-self: center;
     }
   }
@@ -334,7 +334,7 @@ export default function AppFooter() {
   const openModal = useOverlayStore((state) => state.openModal);
   const navigate = useNavigate();
   const handleFooterItemClick = (item) => {
-    if (item.id === 'brand_story') {
+    if (item.id === 'brandStory') {
       navigate('/brand');
       return;
     }
