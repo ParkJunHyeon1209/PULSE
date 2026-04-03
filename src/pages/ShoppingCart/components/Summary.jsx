@@ -20,7 +20,7 @@ const SummaryWrap = styled.div`
   padding: ${({ theme }) => theme.spacing[8]}
     clamp(${({ theme }) => theme.spacing[5]}, 4vw, ${({ theme }) => theme.spacing[10]});
   max-height: max-content;
-  background-color: ${({ theme }) => theme.colors.cardBg};
+  background-color: ${({ theme }) => theme.colors.cardBgLight};
   border: 1px solid ${({ theme }) => theme.checkbox.border + '35'};
   border-radius: ${({ theme }) => theme.radii.lg};
   box-shadow: 0 1px 20px ${({ theme }) => theme.checkbox.border + '20'};
@@ -125,7 +125,9 @@ const SummaryWrap = styled.div`
       font-size: ${({ theme }) => theme.fontSize.xxs};
       transition: font-size 0.3s ease;
       box-shadow: 0 0 2px ${({ theme }) => theme.colors.shadow};
-      transition: box-shadow 0.3s ease, font-size 0.3s ease;
+      transition:
+        box-shadow 0.3s ease,
+        font-size 0.3s ease;
 
       &:focus {
         box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary + '20'};

@@ -49,7 +49,6 @@ function LoginModal() {
 }
 
 const TAB_MAP = {
-  main: 'main',
   wishlist: 'wish',
   order: 'order',
   review: 'review',
@@ -58,7 +57,7 @@ const TAB_MAP = {
   address: 'address',
 };
 
-const DEFAULT_TAB = TAB_MAP.main;
+const DEFAULT_TAB = TAB_MAP.address;
 
 export default function MyPage() {
   const [searchParams, setSearchParams] = useSearchParams();

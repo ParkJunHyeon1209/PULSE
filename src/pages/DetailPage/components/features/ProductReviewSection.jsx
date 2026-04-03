@@ -267,20 +267,9 @@ const FieldLabel = styled.div`
 const FieldTitle = styled.span`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   color: ${({ theme }) => theme.colors.textSecondary};
-`;
-
-const FieldHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${({ theme }) => theme.spacing[3]};
-`;
-
-const CharacterCount = styled.span`
-  font-family: ${({ theme }) => theme.fontFamily.mono};
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  opacity: 0.8;
+  > textarea {
+    resize: none;
+  }
 `;
 
 const ModalActions = styled.div`
@@ -438,16 +427,12 @@ function ReviewEditModal({
         </FieldLabel>
 
         <FieldLabel>
-          <FieldHeader>
-            <FieldTitle>리뷰 내용</FieldTitle>
-            <CharacterCount>{content.length}/150</CharacterCount>
-          </FieldHeader>
+          <FieldTitle>리뷰 내용</FieldTitle>
           <textarea
             value={content}
             onChange={(event) => onChangeContent(event.target.value)}
             placeholder="리뷰 내용을 입력해주세요."
             aria-label="리뷰 내용"
-            maxLength={150}
           />
         </FieldLabel>
 
@@ -664,11 +649,9 @@ export default function ProductReviewSection({ product, onRequireLogin }) {
             onChange={(event) => setContent(event.target.value)}
             placeholder="실사용 기준으로 좋았던 점, 아쉬웠던 점을 자유롭게 남겨주세요."
             aria-label="리뷰 작성"
-            maxLength={150}
           />
 
-          <ComposerFooter style={{ justifyContent: 'space-between', alignItems: 'center' }}>
-            <CharacterCount>{content.length}/150</CharacterCount>
+          <ComposerFooter>
             <BaseBtn type="submit" icon={false}>
               리뷰 작성
             </BaseBtn>

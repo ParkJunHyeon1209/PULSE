@@ -14,6 +14,17 @@ const CategoryWrap = styled.div`
   gap: ${({ theme }) => theme.spacing[4]};
 `;
 
+const ReviewToolbar = styled.div`
+  align-self: flex-end;
+  display: flex;
+  justify-content: flex-end;
+
+  > button {
+    font-size: ${({ theme }) => theme.fontSize.xxxs};
+    color: ${({ theme }) => theme.colors.error};
+  }
+`;
+
 const ReviewList = styled.ul`
   display: flex;
   flex-direction: column;
@@ -189,27 +200,12 @@ const FieldLabel = styled.div`
     background: ${({ theme }) => theme.colors.cardBg};
     color: ${({ theme }) => theme.colors.text};
     line-height: 1.6;
-    resize: none;
   }
 `;
 
 const FieldTitle = styled.span`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   color: ${({ theme }) => theme.colors.textSecondary};
-`;
-
-const FieldHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${({ theme }) => theme.spacing[3]};
-`;
-
-const CharacterCount = styled.span`
-  font-family: ${({ theme }) => theme.fontFamily.mono};
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  opacity: 0.8;
 `;
 
 const RatingRow = styled.div`
@@ -298,31 +294,41 @@ const renderStars = (count) =>
 
 const ensureArray = (value) => (Array.isArray(value) ? value : []);
 
-const previewReviews = [
-  {
-    id: 'preview-review-1',
-    productTitle: 'PULSE Arcade Stick Pro',
-    rating: 5,
-    createdAt: '2026-03-28',
-    content: '버튼 반응이 빠르고 그립감도 좋아서 대전 게임 할 때 만족도가 높아요.',
-  },
-  {
-    id: 'preview-review-2',
-    productTitle: 'Neon Wireless Pad X',
-    rating: 4,
-    createdAt: '2026-03-18',
-    content: '무선 연결이 안정적이고 배터리도 오래가서 거실용으로 편하게 쓰고 있어요.',
-  },
-  {
-    id: 'preview-review-3',
-    productTitle: 'Retro Pocket Console',
-    rating: 5,
-    createdAt: '2026-03-07',
-    content: '휴대성이 좋아서 이동 중에도 플레이하기 좋고 화면 색감도 기대 이상이에요.',
-  },
-];
-
 const REVIEW_EDIT_MODAL_ID = 'reviewEdit';
+
+function ReviewClearModal({ isOpen, onClose, onConfirm }) {
+  return (
+    <BaseModal
+      isOpen={isOpen}
+      label="PULSE REVIEW"
+      title="전체 삭제 하시겠습니까?"
+      width="420px"
+      onClose={onClose}
+    >
+      <p>작성한 리뷰를 모두 삭제합니다.</p>
+      <p>삭제한 리뷰는 되돌릴 수 없습니다.</p>
+      <ModalActions>
+        <BaseBtn
+          type="button"
+          variant="secondary"
+          icon={false}
+          style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
+          onClick={onClose}
+        >
+          취소
+        </BaseBtn>
+        <BaseBtn
+          type="button"
+          icon={false}
+          style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
+          onClick={onConfirm}
+        >
+          전체 삭제
+        </BaseBtn>
+      </ModalActions>
+    </BaseModal>
+  );
+}
 
 function ReviewDeleteModal({ isOpen, reviewTitle, onClose, onConfirm }) {
   return (
@@ -399,16 +405,12 @@ function ReviewEditModal({
         </FieldLabel>
 
         <FieldLabel>
-          <FieldHeader>
-            <FieldTitle>리뷰 내용</FieldTitle>
-            <CharacterCount>{content.length}/150</CharacterCount>
-          </FieldHeader>
+          <FieldTitle>리뷰 내용</FieldTitle>
           <textarea
             value={content}
             onChange={(event) => onChangeContent(event.target.value)}
             placeholder="리뷰 내용을 입력해주세요."
             aria-label="리뷰 내용"
-            maxLength={150}
           />
         </FieldLabel>
 
@@ -430,6 +432,7 @@ export default function Review() {
   const reviews = useReviewStore((state) => state.reviews);
   const updateReview = useReviewStore((state) => state.updateReview);
   const deleteReview = useReviewStore((state) => state.deleteReview);
+  const clearReviews = useReviewStore((state) => state.clearReviews);
   const user = useAuthStore((state) => state.user);
   const setUser = useAuthStore((state) => state.login);
   const userReviewList = useAuthStore((state) => state.user?.reviewList);
@@ -437,12 +440,12 @@ export default function Review() {
   const closeModal = useOverlayStore((state) => state.closeModal);
   const isEditModalOpen = useOverlayStore((state) => Boolean(state.modals[REVIEW_EDIT_MODAL_ID]));
 
-  const [previewReviewList, setPreviewReviewList] = useState(previewReviews);
   const [userReviewDrafts, setUserReviewDrafts] = useState(ensureArray(userReviewList));
   const [selectedReviewId, setSelectedReviewId] = useState(null);
   const [draftContent, setDraftContent] = useState('');
   const [draftRating, setDraftRating] = useState(5);
   const [pendingDeleteId, setPendingDeleteId] = useState(null);
+  const [isClearModalOpen, setIsClearModalOpen] = useState(false);
 
   useEffect(() => {
     setUserReviewDrafts(ensureArray(userReviewList));
@@ -457,8 +460,8 @@ export default function Review() {
       return { type: 'user', list: userReviewDrafts };
     }
 
-    return { type: 'preview', list: previewReviewList };
-  }, [previewReviewList, reviews, userReviewDrafts]);
+    return { type: 'preview', list: [] };
+  }, [reviews, userReviewDrafts]);
 
   const reviewList = reviewSource.list;
   const selectedReview = reviewList.find(
@@ -508,6 +511,14 @@ export default function Review() {
     setPendingDeleteId(null);
   };
 
+  const handleOpenClearModal = () => {
+    setIsClearModalOpen(true);
+  };
+
+  const handleCloseClearModal = () => {
+    setIsClearModalOpen(false);
+  };
+
   const handleConfirmDelete = () => {
     if (!pendingDeleteId) {
       return;
@@ -530,9 +541,6 @@ export default function Review() {
       return;
     }
 
-    setPreviewReviewList((prev) =>
-      prev.filter((review, index) => getReviewId(review, index) !== pendingDeleteId)
-    );
     handleCloseDeleteModal();
   };
 
@@ -561,19 +569,32 @@ export default function Review() {
       );
       setUserReviewDrafts(nextUserReviews);
       syncUserReviewList(nextUserReviews);
-    } else {
-      setPreviewReviewList((prev) =>
-        prev.map((review, index) =>
-          getReviewId(review, index) === selectedReviewId ? nextReview : review
-        )
-      );
     }
 
     handleCloseEditModal();
   };
 
+  const handleConfirmClear = () => {
+    if (reviewSource.type === 'store') {
+      clearReviews();
+      syncUserReviewList([]);
+    } else if (reviewSource.type === 'user') {
+      setUserReviewDrafts([]);
+      syncUserReviewList([]);
+    }
+
+    handleCloseClearModal();
+  };
+
   return (
     <CategoryWrap>
+      {reviewList.length > 0 && (
+        <ReviewToolbar>
+          <button type="button" onClick={handleOpenClearModal}>
+            전체 삭제
+          </button>
+        </ReviewToolbar>
+      )}
       <ReviewList>
         {reviewList.length > 0 ? (
           reviewList.map((review, index) => {
@@ -667,6 +688,11 @@ export default function Review() {
         reviewTitle={pendingDeleteReview ? getReviewTitle(pendingDeleteReview) : ''}
         onClose={handleCloseDeleteModal}
         onConfirm={handleConfirmDelete}
+      />
+      <ReviewClearModal
+        isOpen={isClearModalOpen}
+        onClose={handleCloseClearModal}
+        onConfirm={handleConfirmClear}
       />
     </CategoryWrap>
   );
