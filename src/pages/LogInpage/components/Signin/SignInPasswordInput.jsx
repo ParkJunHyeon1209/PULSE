@@ -4,7 +4,7 @@ import ShowBtn from '../common/ShowBtn';
 
 const InputLabel = styled.label`
   font-size: ${({ theme }) => theme.fontSize.xxxs};
-    font-family: ${({ theme }) => theme.fontFamily.mono};
+  font-family: ${({ theme }) => theme.fontFamily.mono};
   font-weight: 500;
   letter-spacing: 1px;
   line-height: 2;
@@ -33,7 +33,36 @@ const Input = styled.input`
   }
 `;
 
-export default function SignInPasswordInput({ pw, setPw, showPw, setShowPw }) {
+const ErrorMessage = styled.p`
+  position: absolute;
+  top: calc(100% + 1px);
+  left: 0;
+  width: 100%;
+  color: ${({ theme }) => theme.colors.error};
+  font-size: 11px;
+  white-space: pre-wrap;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+
+  opacity: 0;
+  transition: all ${({ theme }) => theme.motion.slow};
+  ${(props) =>
+    props.$show &&
+    `
+    opacity: 1;
+    transition-delay: ${props.$isModalOpen ? '1.1s' : '0.3s'};
+  `}
+`;
+
+export default function SignInPasswordInput({
+  pw,
+  setPw,
+  showPw,
+  setShowPw,
+  errorMsg,
+  $isModalOpen,
+}) {
   return (
     <>
       {/* 비밀번호 입력창 */}
@@ -50,6 +79,9 @@ export default function SignInPasswordInput({ pw, setPw, showPw, setShowPw }) {
           />
           <ShowBtn showPw={showPw} setShowPw={setShowPw} />
         </div>
+        <ErrorMessage $show={!!errorMsg} $isModalOpen={$isModalOpen}>
+          {errorMsg}
+        </ErrorMessage>
       </InputGroup>
     </>
   );
