@@ -3,7 +3,7 @@ import React from 'react';
 import ShowBtn from '../common/ShowBtn';
 import BaseTooltip from '../../../../components/common/BaseTooltip';
 import BaseBtn from '../../../../components/common/BaseBtn';
-import { Close } from '../common/CommonSvg';
+import { Check, Close } from '../common/CommonSvg';
 
 const InputGroup = styled.div`
   display: flex;
@@ -57,6 +57,7 @@ const Input = styled.input`
   border-bottom: 2px solid
     ${({ theme, $pwError, $isMatcError }) =>
       $pwError || $isMatcError ? theme.colors.error : theme.tones.blue.activeBorder};
+  transition: border-bottom-color 0.4s ease-in-out;
   padding: 2px 0;
   line-height: 1.5;
   color: ${({ theme }) => theme.colors.text + 'cc'};
@@ -80,6 +81,17 @@ const ErrorMessage = styled.p`
   display: flex;
   align-items: center;
   gap: 2px;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+  animation: fadeIn 0.4s ease-in-out forwards;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 `;
 
 const SuccessMessage = styled.p`
@@ -89,9 +101,24 @@ const SuccessMessage = styled.p`
   width: 100%;
   color: ${({ theme }) => theme.colors.success};
   font-size: 11px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+  animation: fadeIn 0.4s ease-in-out forwards;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 `;
 
-const MatchMessage = styled.p`
+const MatchMessage = styled.div`
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
@@ -223,8 +250,6 @@ export default function SignUpPasswordInput({
       <InputGroup>
         <LabelRow>
           <InputLabel className="password-label">PASSWORD</InputLabel>
-
-          {/* 툴팁 트리거를 라벨 옆으로 분리 */}
           <Tooltip className="pw-trigger">
             <BaseBtn variant="ic-btn" size="16px" padding="4px" className="pw-info">
               ?
@@ -260,7 +285,12 @@ export default function SignUpPasswordInput({
               <Close /> 8~15자의 영대문자, 숫자, 특수문자만을 포함하여 만드세요.
             </ErrorMessage>
           )}
-          {pwError === false && <SuccessMessage>사용 가능한 비밀번호입니다.</SuccessMessage>}
+          {pwError === false && (
+            <SuccessMessage>
+              <Check />
+              사용 가능한 비밀번호입니다.
+            </SuccessMessage>
+          )}
         </MessageContainer>
       </InputGroup>
       {/* 비밀번호 재입력란 */}
@@ -277,9 +307,16 @@ export default function SignUpPasswordInput({
           <ShowBtn showPw={showPwConfirm} setShowPw={setShowPwConfirm} />
         </div>
         {pw && pwConfirm && (
-          <MatchMessage $isMatcError={pw === pwConfirm}>
-            {pw !== pwConfirm && <Close />}
-            {pw === pwConfirm ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
+          <MatchMessage $isMatchError={pw === pwConfirm}>
+            {pw === pwConfirm ? (
+              <SuccessMessage>
+                <Check /> 비밀번호가 일치합니다.
+              </SuccessMessage>
+            ) : (
+              <ErrorMessage>
+                <Close /> 비밀번호가 일치하지 않습니다.
+              </ErrorMessage>
+            )}
           </MatchMessage>
         )}
       </InputGroup>
