@@ -245,4 +245,55 @@ const CategoryType = styled.li`
     color: ${({ theme }) => theme.colors.primary};
     background-color: ${({ theme }) => theme.colors.primary + '15'};
   }
+
+  > span {
+    min-width: 26px;
+    height: 24px;
+    padding: 0 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: ${({ theme }) => theme.radii.pill};
+
+    font-size: ${({ theme }) => theme.fontSize.xxxs};
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+
+    color: ${({ theme, $isActive }) =>
+      $isActive ? theme.colors.wColor : theme.colors.textSecondary};
+
+    background: ${({ theme, $isActive }) =>
+      $isActive
+        ? `linear-gradient(135deg, ${theme.colors.primary}55, ${theme.colors.primary}22)`
+        : `linear-gradient(180deg, rgba(255,255,255,0.08), transparent), ${theme.colors.btn2Bg}`};
+
+    border: 1px solid
+      ${({ theme, $isActive }) => ($isActive ? theme.colors.primary + '66' : theme.colors.border)};
+
+    box-shadow: ${({ theme, $isActive }) =>
+      $isActive
+        ? `inset 0 1px 0 rgba(255,255,255,0.16), 0 4px 12px ${theme.colors.primary}22, 0 0 14px ${theme.colors.primary}1a`
+        : `inset 0 1px 0 rgba(255,255,255,0.08), 0 2px 6px ${theme.colors.primary}10`};
+
+    backdrop-filter: ${({ theme }) => theme.effects.blurSoft};
+    transition:
+      color 0.2s ease,
+      background 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 1px 1px auto 1px;
+      height: 45%;
+      border-radius: inherit;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent);
+      pointer-events: none;
+    }
+  }
 `;
