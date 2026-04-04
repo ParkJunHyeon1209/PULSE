@@ -134,7 +134,7 @@ export default function LoginPage() {
           {activeTab === 'signin' ? (
             <SignInForm onClick={() => setActiveTab('signup')} />
           ) : (
-            <SignUpForm onClick={() => setActiveTab('signin')} />
+            <SignUpForm setActiveTab={setActiveTab} onClick={() => setActiveTab('signin')} />
           )}
         </div>
       </RightSection>
