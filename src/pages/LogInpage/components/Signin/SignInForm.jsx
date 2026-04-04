@@ -43,19 +43,6 @@ const SubText = styled.p`
   margin-bottom: ${({ theme }) => theme.spacing[6]};
 `;
 
-const FindLink = styled.a`
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
-  text-decoration: none;
-  align-self: flex-end;
-  margin-bottom: ${({ theme }) => theme.spacing[5]};
-  color: ${({ theme }) => theme.colors.primary};
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
 const DividerWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -105,12 +92,18 @@ export default function SignInForm({ onClick }) {
   const [isFindPwOpen, setIsFindPwOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const [loginError, setLoginError] = useState('');
   const navigate = useNavigate();
   const wishIdList = useWishlistStore((state) => state.wishlistIds);
   const orders = useOrderStore((state) => state.orders);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    if (!email || !pw) {
+      setLoginError('이메일과 비밀번호를 모두 입력해주세요.');
+      return;
+    }
 
     const { login: storeLogin, user: persistedUser } = useAuthStore.getState();
 
@@ -150,8 +143,9 @@ export default function SignInForm({ onClick }) {
       }
     } catch (error) {
       console.error('로그인 에러:', error.message);
-      setModalMessage('아이디 또는 비밀번호를 확인해주세요.');
+      setModalMessage('이메일 또는 비밀번호를 확인해주세요.');
       setIsModalOpen(true);
+      setLoginError('이메일 또는 비밀번호를 확인해주세요.');
     }
   };
 
@@ -163,7 +157,14 @@ export default function SignInForm({ onClick }) {
         {/* 이메일 입력창 */}
         <SignInEmailInput email={email} setEmail={setEmail} isFirst />
         {/* 비밀번호 입력창 */}
-        <SignInPasswordInput pw={pw} setPw={setPw} showPw={showPw} setShowPw={setShowPw} />
+        <SignInPasswordInput
+          pw={pw}
+          setPw={setPw}
+          showPw={showPw}
+          setShowPw={setShowPw}
+          errorMsg={loginError}
+          $isModalOpen={isModalOpen}
+        />
         <FindPw
           findEmail={findEmail}
           setFindEmail={setFindEmail}

@@ -82,7 +82,7 @@ const SwitchButton = styled.button`
   }
 `;
 
-export default function SignUpForm({ onClick }) {
+export default function SignUpForm({ onClick, setActiveTab }) {
   const [email, setEmail] = useState('');
   const [isUnique, setIsUnique] = useState(null);
   const [emailError, setEmailError] = useState(false);
@@ -103,6 +103,7 @@ export default function SignUpForm({ onClick }) {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const navigate = useNavigate();
 
@@ -113,6 +114,12 @@ export default function SignUpForm({ onClick }) {
     const isAgreed = agreement.agreeTerms && agreement.agreePrivacy;
     const isNoError =
       !emailError && !pwError && !firstNameError && !lastNameError && isUnique === true;
+
+    if (!(isFilled && isAgreed && isNoError)) {
+      setModalMessage('회원가입 정보를 확인해주세요. \n 누락되거나 잘못 입력된 항목이 있습니다.');
+      setIsModalOpen(true);
+      return;
+    }
 
     if (isFilled && isAgreed && isNoError) {
       try {
@@ -129,6 +136,7 @@ export default function SignUpForm({ onClick }) {
 
         if (res.success) {
           setModalMessage('가입이 성공적으로 이루어졌습니다.');
+          setIsSuccess(true);
           setIsModalOpen(true);
         }
       } catch (error) {
@@ -141,8 +149,9 @@ export default function SignUpForm({ onClick }) {
   const handleModalClose = () => {
     setIsModalOpen(false);
 
+    setIsModalOpen(false);
     if (modalMessage.includes('성공')) {
-      navigate('/');
+      setActiveTab('signin');
     }
   };
 
@@ -193,17 +202,6 @@ export default function SignUpForm({ onClick }) {
           type="submit"
           height="42px"
           flex="none"
-          disabled={
-            !email ||
-            !pw ||
-            emailError ||
-            pwError ||
-            firstNameError ||
-            lastNameError ||
-            isUnique !== true ||
-            !agreement.agreeTerms ||
-            !agreement.agreePrivacy
-          }
         >
           CREATE ACCOUNT
         </BaseBtn>

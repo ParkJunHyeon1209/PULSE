@@ -31,6 +31,7 @@ const Input = styled.input`
   border-bottom: 2px solid
     ${({ theme, $firstNameError, $lastNameError }) =>
       $firstNameError || $lastNameError ? theme.colors.error : theme.tones.blue.activeBorder};
+  transition: border-bottom-color 0.4s ease-in-out;
   padding: 2px 0;
   line-height: 1.5;
   color: ${({ theme }) => theme.colors.text + 'cc'};
@@ -54,6 +55,17 @@ const ErrorMessage = styled.p`
   display: flex;
   align-items: center;
   gap: 2px;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+  animation: fadeIn 0.4s ease-in-out forwards;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 `;
 const nameRegex = /^[가-힣]+$/;
 

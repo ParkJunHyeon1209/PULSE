@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { checkIdApi } from '../../../../data/authApi';
-import { Close } from '../common/CommonSvg';
+import { Check, Close } from '../common/CommonSvg';
 
 const InputGroup = styled.div`
   display: flex;
@@ -24,6 +24,7 @@ const Input = styled.input`
   border-bottom: 2px solid
     ${({ theme, $emailError }) =>
       $emailError ? theme.colors.error : theme.tones.blue.activeBorder};
+  transition: border-bottom-color 0.4s ease-in-out;
   padding: 2px 0;
   line-height: 1.5;
   color: ${({ theme }) => theme.colors.text + 'cc'};
@@ -46,7 +47,19 @@ const ErrorMessage = styled.p`
   display: flex;
   align-items: center;
   gap: 2px;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+  animation: fadeIn 0.4s ease-in-out forwards;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 `;
+
 const SuccessMessage = styled.p`
   position: absolute;
   top: calc(100% + 1px);
@@ -54,6 +67,21 @@ const SuccessMessage = styled.p`
   width: 100%;
   color: ${({ theme }) => theme.colors.success};
   font-size: 11px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+  animation: fadeIn 0.4s ease-in-out forwards;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 `;
 
 const InputRow = styled.div`
@@ -174,7 +202,10 @@ export default function SignUpEamilInput({
         </InputRow>
         <>
           {!emailError && isUnique === true && (
-            <SuccessMessage>사용 가능한 아이디입니다.</SuccessMessage>
+            <SuccessMessage>
+              <Check />
+              사용 가능한 아이디입니다.
+            </SuccessMessage>
           )}
           {(emailError || isUnique === false) && (
             <ErrorMessage>
