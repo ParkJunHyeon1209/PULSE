@@ -9,7 +9,7 @@ const SectionLabel = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing[3]};
   font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
-  letter-spacing: 0.28em;
+  letter-spacing: 0.2em;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.textSecondary};
   text-transform: uppercase;
@@ -36,6 +36,12 @@ const SectionColorTitle = styled(SectionTitle)`
   -webkit-background-clip: ${({ $solid }) => ($solid ? 'unset' : 'text')};
   background-clip: ${({ $solid }) => ($solid ? 'unset' : 'text')};
   color: ${({ $solid, theme }) => ($solid ? theme.colors.primary : 'transparent')};
+`;
+
+const TitlePrefix = styled.span`
+  font-family: ${({ theme, $font }) => theme.fontFamily[$font] || $font || theme.fontFamily.hero};
+  margin-right: 0.1em;
+  font-weight: 500;
 `;
 
 const TitleRow = styled.div`
@@ -79,6 +85,8 @@ const SectionSub = styled.p`
  */
 export default function BaseSection({
   label,
+  titlePrefix,
+  titlePrefixFont,
   title,
   colorTitle,
   sub,
@@ -90,13 +98,12 @@ export default function BaseSection({
   inline = false,
   solidColor = false,
   className,
-
 }) {
   const isCenter = align === 'center';
   const hasSub = Boolean(sub);
 
   return (
-    <SectionHeadWrap className={className} $center={isCenter} >
+    <SectionHeadWrap className={className} $center={isCenter}>
       {(label || star) && (
         <SectionLabel $center={isCenter}>
           <LavStarIcon>✦</LavStarIcon>
@@ -106,7 +113,14 @@ export default function BaseSection({
       )}
       {inline && title && colorTitle ? (
         <TitleRow>
-          <SectionTitle $hasSub={Boolean(sub)} $font={titleFont} $size={titleSize} $weight={titleWeight}>
+          <SectionTitle
+            className="base-section-title"
+            $hasSub={Boolean(sub)}
+            $font={titleFont}
+            $size={titleSize}
+            $weight={titleWeight}
+          >
+            {titlePrefix ? <TitlePrefix $font={titlePrefixFont}>{titlePrefix}</TitlePrefix> : null}
             {title}
           </SectionTitle>
           <SectionColorTitle
@@ -123,11 +137,15 @@ export default function BaseSection({
         <>
           {title && (
             <SectionTitle
+              className="base-section-title"
               $hasSub={Boolean(colorTitle || sub)}
               $font={titleFont}
               $size={titleSize}
               $weight={titleWeight}
             >
+              {titlePrefix ? (
+                <TitlePrefix $font={titlePrefixFont}>{titlePrefix}</TitlePrefix>
+              ) : null}
               {title}
             </SectionTitle>
           )}
