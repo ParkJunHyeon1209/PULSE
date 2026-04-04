@@ -45,7 +45,7 @@ export const identitySection = {
     title: '만의',
     titlePrefixFont: 'hero',
     colorTitle: 'Signal Color System',
-    sub: '퍼플의 깊이와 블루의 선명함. PULSE의 모든 화면은 이 두 빛을 중심으로 설계됩니다.',
+    sub: '퍼플의 깊이와 블루의 선명함. PULSE의 모든 화면은 이 세 빛을 중심으로 설계됩니다.',
     titleSize: 'lg',
   },
   title: '로고와 컬러 시스템',

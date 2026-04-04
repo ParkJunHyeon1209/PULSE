@@ -38,6 +38,7 @@ const ReviewList = styled.ul`
     gap: ${({ theme }) => theme.spacing[5]};
     border: 1px solid ${({ theme }) => theme.colors.primary + '22'};
     border-radius: ${({ theme }) => theme.radii.lg};
+    background-color: ${({ theme }) => theme.colors.cardBgLight};
     box-shadow:
       inset 0 1px 0 ${({ theme }) => theme.colors.text + '08'},
       0 8px 24px ${({ theme }) => theme.colors.shadow};
@@ -137,9 +138,13 @@ const Rating = styled.div`
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  color: #f6c63b;
   letter-spacing: 0.08em;
   font-size: ${({ theme }) => theme.fontSize.xxs};
+`;
+
+const Star = styled.span`
+  color: ${({ $filled, theme }) => ($filled ? '#f6c63b' : theme.colors.textSecondary)};
+  opacity: ${({ $filled }) => ($filled ? 1 : 0.4)};
 `;
 
 const ReviewDate = styled.span`
@@ -154,8 +159,11 @@ const ReviewText = styled.p`
   margin: 0;
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: ${({ theme }) => theme.fontSize.xs};
-  line-height: 1.75;
-  word-break: keep-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const ReviewActions = styled.div`
@@ -290,7 +298,11 @@ const formatDate = (value) => {
 };
 
 const renderStars = (count) =>
-  Array.from({ length: 5 }, (_, index) => (index < count ? '★' : '☆')).join(' ');
+  Array.from({ length: 5 }, (_, index) => (
+    <Star key={`star-${index}`} $filled={index < count}>
+      {index < count ? '★' : '☆'}
+    </Star>
+  ));
 
 const ensureArray = (value) => (Array.isArray(value) ? value : []);
 

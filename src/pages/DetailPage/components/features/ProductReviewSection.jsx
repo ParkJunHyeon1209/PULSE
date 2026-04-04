@@ -18,7 +18,7 @@ const ComposerCard = styled.div`
   padding: ${({ theme }) => theme.spacing[6]};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   border-radius: ${({ theme }) => theme.radii.lg};
-  background: ${({ theme }) => theme.colors.cardBg};
+  background-color: ${({ theme }) => theme.colors.cardBgLight};
   box-shadow:
     inset 0 1px 0 ${({ theme }) => theme.colors.text + '08'},
     0 8px 24px ${({ theme }) => theme.colors.shadow};
@@ -67,7 +67,7 @@ const ReviewTextarea = styled.textarea`
   padding: ${({ theme }) => theme.spacing[4]};
   border: 1px solid ${({ theme }) => theme.colors.primary + '18'};
   border-radius: ${({ theme }) => theme.radii.lg};
-  background: ${({ theme }) => theme.colors.cardBg};
+  background: ${({ theme }) => theme.colors.cardBgLight};
   color: ${({ theme }) => theme.colors.text};
   line-height: 1.7;
   resize: none;
@@ -93,11 +93,7 @@ const ReviewItem = styled.li`
   gap: ${({ theme }) => theme.spacing[5]};
   border: 1px solid ${({ theme }) => theme.colors.primary + '22'};
   border-radius: ${({ theme }) => theme.radii.lg};
-  background: linear-gradient(
-    180deg,
-    ${({ theme }) => theme.colors.cardBg} 0%,
-    ${({ theme }) => theme.colors.cardBg}ee 100%
-  );
+  background-color: ${({ theme }) => theme.colors.cardBgLight};
   box-shadow:
     inset 0 1px 0 ${({ theme }) => theme.colors.text + '08'},
     0 8px 24px ${({ theme }) => theme.colors.shadow};
@@ -114,11 +110,16 @@ const ReviewMain = styled.div`
   align-items: flex-start;
   gap: ${({ theme }) => theme.spacing[4]};
   flex: 1;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    flex-wrap: wrap;
+  }
 `;
 
 const ReviewThumb = styled.div`
-  width: 72px;
-  height: 72px;
+  width: 90px;
+  height: 90px;
+  align-self: flex-start;
   flex-shrink: 0;
   border-radius: ${({ theme }) => theme.radii.md};
   overflow: hidden;
@@ -131,11 +132,11 @@ const ReviewThumb = styled.div`
     ),
     ${({ theme }) => theme.colors.cardBg};
   display: flex;
-  align-items: center;
   justify-content: center;
   box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.cardBorder};
 
   > img {
+    align-self: flex-start;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -153,9 +154,10 @@ const ReviewContent = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[3]};
   padding-top: ${({ theme }) => theme.spacing[1]};
-  padding-right: ${({ theme }) => theme.spacing[24]};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    display: contents;
+    word-break: keep-all;
     padding-right: 0;
   }
 `;
@@ -164,6 +166,10 @@ const ReviewHeader = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[1]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    width: calc(100% - 90px - ${({ theme }) => theme.spacing[4]});
+  }
 `;
 
 const ProductName = styled.h3`
@@ -184,9 +190,13 @@ const Rating = styled.div`
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  color: #f6c63b;
   letter-spacing: 0.08em;
   font-size: ${({ theme }) => theme.fontSize.xxs};
+`;
+
+const Star = styled.span`
+  color: ${({ $filled, theme }) => ($filled ? '#f6c63b' : theme.colors.textSecondary)};
+  opacity: ${({ $filled }) => ($filled ? 1 : 0.4)};
 `;
 
 const ReviewDate = styled.span`
@@ -207,7 +217,11 @@ const ReviewText = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: ${({ theme }) => theme.fontSize.xs};
   line-height: 1.75;
-  word-break: keep-all;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    flex: 0 0 100%;
+    width: 100%;
+  }
 `;
 
 const ReviewActions = styled.div`
@@ -303,7 +317,11 @@ const formatDate = (value) => {
 };
 
 const renderStars = (count) =>
-  Array.from({ length: 5 }, (_, index) => (index < count ? '★' : '☆')).join(' ');
+  Array.from({ length: 5 }, (_, index) => (
+    <Star key={`star-${index}`} $filled={index < count}>
+      {index < count ? '★' : '☆'}
+    </Star>
+  ));
 
 const getReviewId = (review, index) => review.id ?? `${review.productId ?? 'review'}-${index}`;
 
@@ -327,6 +345,48 @@ const getReviewContent = (review) =>
   review.text ||
   '리뷰 내용이 아직 없습니다.';
 
+const maskKoreanName = (name) => {
+  if (name.length <= 2) {
+    return `${name[0]}*`;
+  }
+
+  const middleMask = '*'.repeat(Math.max(name.length - 2, 1));
+  return `${name[0]}${middleMask}${name[name.length - 1]}`;
+};
+
+const maskEnglishName = (name) => {
+  if (name.length <= 4) {
+    const visibleLength = Math.ceil(name.length / 2);
+    return `${name.slice(0, visibleLength)}${'*'.repeat(name.length - visibleLength)}`;
+  }
+
+  return `${name.slice(0, 4)}${'*'.repeat(name.length - 4)}`;
+};
+
+const getMaskedAuthor = (review) => {
+  const author = String(review.author || '').trim();
+
+  if (!author) {
+    return 'PULSE MEMBER';
+  }
+
+  if (review.authorType === 'nickname') {
+    return author;
+  }
+
+  const compactAuthor = author.replace(/\s/g, '');
+
+  if (/^[가-힣]+$/.test(compactAuthor)) {
+    return maskKoreanName(compactAuthor);
+  }
+
+  if (/^[a-zA-Z]+$/.test(compactAuthor)) {
+    return maskEnglishName(compactAuthor);
+  }
+
+  return author;
+};
+
 const buildMockReviews = (product) => [
   {
     id: `mock-review-${product?.id || 'item'}-1`,
@@ -338,6 +398,7 @@ const buildMockReviews = (product) => [
       '디자인이 깔끔하고 실제 사용감도 좋아요. 케이블 정리만 조금 더 편하면 더 좋을 것 같아요.',
     createdAt: '2026-04-01',
     author: 'ARCADE KID',
+    authorType: 'nickname',
     authorId: 'arcade-kid',
   },
   {
@@ -350,6 +411,7 @@ const buildMockReviews = (product) => [
       '패키징부터 완성도 있었고 실제 플레이할 때 손에 익는 느낌이 좋아서 재구매 의사 있습니다.',
     createdAt: '2026-03-29',
     author: 'NEON CAT',
+    authorType: 'nickname',
     authorId: 'neon-cat',
   },
 ];
@@ -526,7 +588,8 @@ export default function ProductReviewSection({ product, onRequireLogin }) {
       rating,
       content: content.trim(),
       createdAt: new Date().toISOString(),
-      author: user?.nickname || user?.name || user?.id || 'PULSE MEMBER',
+      author: user?.nickname || user?.name || 'PULSE MEMBER',
+      authorType: user?.nickname ? 'nickname' : user?.name ? 'name' : 'nickname',
       authorId: user?.id || '',
     };
 
@@ -672,11 +735,7 @@ export default function ProductReviewSection({ product, onRequireLogin }) {
                 <ReviewItem key={reviewId}>
                   <ReviewMain>
                     <ReviewThumb>
-                      {review.productImage ? (
-                        <img src={review.productImage} alt={review.productTitle || product.title} />
-                      ) : (
-                        <span aria-hidden="true">🎮</span>
-                      )}
+                      <img src={review.productImage} alt={review.productTitle || product.title} />
                     </ReviewThumb>
 
                     <ReviewContent>
@@ -687,7 +746,7 @@ export default function ProductReviewSection({ product, onRequireLogin }) {
                             {renderStars(getReviewRating(review))}
                           </Rating>
                           <ReviewDate>{formatDate(getReviewDate(review))}</ReviewDate>
-                          <ReviewAuthor>{review.author || 'PULSE MEMBER'}</ReviewAuthor>
+                          <ReviewAuthor>{getMaskedAuthor(review)}</ReviewAuthor>
                         </ReviewMeta>
                       </ReviewHeader>
 
