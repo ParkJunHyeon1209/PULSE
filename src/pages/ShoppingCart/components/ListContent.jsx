@@ -40,15 +40,6 @@ export default function ListContent() {
     e.stopPropagation();
   };
 
-  const stopEventOnly = (e) => {
-    e.stopPropagation();
-  };
-
-  const handleToggleChecked = (e, item) => {
-    stopEventOnly(e);
-    onChange(item);
-  };
-
   const handleRemoveCart = (e, item) => {
     stopLinkNavigation(e);
     removeCart(item);
@@ -71,14 +62,14 @@ export default function ListContent() {
           key={`${item.id}${item.optionSummary ? `-${item.optionSummary}` : ''}${item.isCareChecked ? '-care' : ''}`}
           $isSelected={item.checked}
         >
+          <CheckToggleArea
+            type="button"
+            aria-label={`${item.title} 선택 ${item.checked ? '해제' : '선택'}`}
+            onClick={() => onChange(item)}
+          >
+            <GradientCheckbox type="checkbox" checked={item.checked} readOnly tabIndex={-1} />
+          </CheckToggleArea>
           <ContentInfo to={`/product/${item.id}`}>
-            <GradientCheckbox
-              type="checkbox"
-              checked={item.checked}
-              onMouseDown={stopLinkNavigation}
-              onClick={stopEventOnly}
-              onChange={(e) => handleToggleChecked(e, item)}
-            />
             <img src={item.image} alt={item.title} />
             <div className="primary-info">
               <div className="top-row">
@@ -175,15 +166,30 @@ const ListItem = styled.li`
   }
 `;
 
+const CheckToggleArea = styled.button`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: calc(${({ theme }) => theme.spacing[6]} + 16px + ${({ theme }) => theme.spacing[6]});
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: ${({ theme }) => theme.spacing[6]};
+  z-index: 1;
+`;
+
 const ContentInfo = styled(Link)`
   flex: 1;
   display: flex;
   gap: ${({ theme }) => theme.spacing[6]};
   align-items: center;
+  padding-left: calc(16px + ${({ theme }) => theme.spacing[6]});
   transition: gap 0.3s ease;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     gap: ${({ theme }) => theme.spacing[3]};
+    padding-left: calc(16px + ${({ theme }) => theme.spacing[3]});
   }
 
   > img {
@@ -374,6 +380,7 @@ const GradientCheckbox = styled.input`
   border-radius: 4px;
   cursor: pointer;
   background: ${({ theme }) => theme.colors.primary}18;
+  pointer-events: none;
 
   &:checked {
     background: ${({ theme }) => theme.gradients.navActive};
