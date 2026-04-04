@@ -104,7 +104,7 @@ const FootWrap = styled.footer`
   position: relative;
   width: 100%;
   background: ${({ theme }) => theme.colors.background};
-  font-weight: 700;
+  font-weight: 600;
 `;
 
 const FootInner = styled.div`
@@ -268,7 +268,7 @@ const FootColBtn = styled.button`
   margin-bottom: ${({ theme }) => theme.spacing[3]};
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: ${({ theme }) => theme.fontSize.xxs};
-  font-weight: 700;
+  font-weight: 500;
   opacity: 0.8;
   transition:
     color ${({ theme }) => theme.motion.normal},

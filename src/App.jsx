@@ -5,6 +5,7 @@ import MainPage from './pages/MainPage/MainPage';
 import CategoryPage from './pages/CategoriesPage/CategoryPage';
 import CategoriesPage from './pages/CategoriesPage/components/CategoriesPage';
 import DetailPage from './pages/DetailPage/DetailPage';
+import BrandPage from './pages/BrandPage/BrandPage';
 import LoginPage from './pages/LogInpage/LoginPage';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import ShoppingCart from './pages/ShoppingCart/ShoppingCart';
@@ -22,6 +23,7 @@ export default function App() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<MainPage />} />
+          <Route path="/brand" element={<BrandPage />} />
           <Route path="/categories/" element={<CategoryPage />} />
           <Route path="/categories/:categoryName" element={<CategoriesPage />} />
           <Route path="/product/:id" element={<DetailPage />} />
