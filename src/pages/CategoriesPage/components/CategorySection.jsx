@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from '@emotion/styled';
+import { keyframes } from '@emotion/react';
+
+const fadeUp = keyframes`
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+`;
 import BaseProductCard from '../../../components/common/BaseProductCard';
 import {
   ProductCardSkeletonItem,
@@ -76,6 +82,19 @@ const PagerIconWrap = styled.span`
 const ProductGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(${({ columns }) => columns}, minmax(0, 1fr));
+
+  > * {
+    opacity: 0;
+    animation: ${fadeUp} 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  > *:nth-child(1) { animation-delay: 0ms; }
+  > *:nth-child(2) { animation-delay: 40ms; }
+  > *:nth-child(3) { animation-delay: 80ms; }
+  > *:nth-child(4) { animation-delay: 120ms; }
+  > *:nth-child(5) { animation-delay: 160ms; }
+  > *:nth-child(6) { animation-delay: 200ms; }
+  > *:nth-child(7) { animation-delay: 240ms; }
+  > *:nth-child(8) { animation-delay: 280ms; }
   gap: ${({ theme }) => theme.grid.gap};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -315,7 +334,7 @@ export default function CategorySection({
           cardMinHeight={cardMinHeight}
         />
       ) : (
-        <ProductGrid columns={columns}>
+        <ProductGrid key={page} columns={columns}>
           {visibleProducts.map((product, index) => (
             <BaseProductCard
               key={product.id}

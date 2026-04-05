@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import BaseBtn from './BaseBtn';
-import StarIcon, { LavStarIcon, DelIcon } from '../../assets/icons/BtnIcon';
+import { LavStarIcon, DelIcon } from '../../assets/icons/BtnIcon';
 import usePanel from '../../hooks/usePanel';
 
 const scaleIn = keyframes`
@@ -149,7 +149,7 @@ const ModalBody = styled.div`
 // width — 최대 너비 (선택, 기본 360px)
 // closable — X버튼 표시 여부 (선택, 기본 true)
 export default function BaseModal({ isOpen, onClose, children, ...props }) {
-  const { label, title, titleSize, width, closable = true } = props;
+  const { label, title, titleSize, width, closable = true, closeOnOverlay = false } = props;
   const [mounted, setMounted] = useState(isOpen);
   const [closing, setClosing] = useState(false);
   const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
@@ -162,7 +162,6 @@ export default function BaseModal({ isOpen, onClose, children, ...props }) {
 
   const handleClose = () => {
     setClosing(true);
-    onClose();
   };
 
   usePanel({ open: isOpen, onClose: handleClose, outsideClick: false });
@@ -195,8 +194,9 @@ export default function BaseModal({ isOpen, onClose, children, ...props }) {
   return createPortal(
     <Overlay
       $closing={closing}
+      onClick={closeOnOverlay && handleClose}
       onAnimationEnd={() => {
-        if (closing) setMounted(false);
+        if (closing) { setMounted(false); onClose(); }
       }}
     >
       <ModalWrap $closing={closing} $width={width} onClick={(e) => e.stopPropagation()}>

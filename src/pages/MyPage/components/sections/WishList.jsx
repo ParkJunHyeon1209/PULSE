@@ -1,5 +1,11 @@
 import styled from '@emotion/styled';
+import { keyframes } from '@emotion/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+
+const fadeUp = keyframes`
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+`;
 import { getAllProducts } from '../../../../data/categoryProductsApi';
 import useWishlistStore from '../../../../store/useWishlistStore';
 import useAuthStore from '../../../../store/useAuthStore';
@@ -150,7 +156,7 @@ export default function WishList() {
       )}
 
       {filteredList.length > 0 ? (
-        <WishListWrap>
+        <WishListWrap key={`${page}-${activeFilter}`}>
           {visibleWishList.map((product, index) => (
             <li key={product.id}>
               <BaseProductCard
@@ -270,6 +276,17 @@ const LoadingText = styled.p`
 const WishListWrap = styled.ul`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  > * {
+    opacity: 0;
+    animation: ${fadeUp} 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  > *:nth-child(1) { animation-delay: 0ms; }
+  > *:nth-child(2) { animation-delay: 40ms; }
+  > *:nth-child(3) { animation-delay: 80ms; }
+  > *:nth-child(4) { animation-delay: 120ms; }
+  > *:nth-child(5) { animation-delay: 160ms; }
+  > *:nth-child(6) { animation-delay: 200ms; }
   gap: 12px;
   margin: 0;
   padding: 0;
