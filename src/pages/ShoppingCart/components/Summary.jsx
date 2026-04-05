@@ -121,7 +121,8 @@ const SummaryWrap = styled.div`
       padding: ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[5]};
       border: 1px solid ${({ theme }) => theme.tones.violet.hoverColor + '07'};
       border-radius: ${({ theme }) => theme.radii.pill};
-      background-color: ${({ theme }) => theme.colors.cardBg};
+      background-color: ${({ theme }) => theme.colors.cardBgLight};
+      color: ${({ theme }) => theme.colors.text};
       font-size: ${({ theme }) => theme.fontSize.xxs};
       transition: font-size 0.3s ease;
       box-shadow: 0 0 2px ${({ theme }) => theme.colors.shadow};
@@ -134,6 +135,9 @@ const SummaryWrap = styled.div`
       }
 
       &::placeholder {
+        color: ${({ theme }) => theme.colors.textSecondary};
+        opacity: 0.6;
+        font-weight: 600;
         font-size: ${({ theme }) => theme.fontSize.xxs};
         transition: font-size 0.3s ease;
       }

@@ -262,7 +262,7 @@ const ContentInfo = styled(Link)`
       gap: ${({ theme }) => theme.spacing[2]};
       font-size: ${({ theme }) => theme.fontSize.xxs};
       transition: gap 0.3s ease;
-      background-color: ${({ theme }) => theme.colors.cardBg};
+      background-color: ${({ theme }) => theme.colors.cardBgLight};
       border: 1px solid ${({ theme }) => theme.colors.border};
       border-radius: ${({ theme }) => theme.radii.pill};
       overflow: hidden;
@@ -382,11 +382,22 @@ const GradientCheckbox = styled.input`
   background: ${({ theme }) => theme.colors.primary}18;
   pointer-events: none;
 
+  transition:
+    border-color 0.18s,
+    background 0.18s,
+    box-shadow 0.18s;
+
+  &:hover:not(:checked) {
+    border-color: ${({ theme }) => theme.colors.primary + '88'};
+    background: ${({ theme }) => theme.colors.primary + '28'};
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.primary + '18'};
+  }
+
   &:checked {
     background: ${({ theme }) => theme.gradients.navActive};
     box-shadow:
-      0 0 0 1px #7c3aed,
-      0 0 0 4px #7c3aed30;
+      0 0 0 1px ${({ theme }) => theme.colors.primary},
+      0 0 0 4px ${({ theme }) => theme.colors.primary + '30'};
     border: none;
   }
 
@@ -398,6 +409,6 @@ const GradientCheckbox = styled.input`
     transform: translate(-50%, -58%);
     font-size: 14px;
     font-weight: 700;
-    color: white;
+    color: ${({ theme }) => theme.colors.wColor};
   }
 `;

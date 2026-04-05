@@ -1,9 +1,14 @@
 import styled from '@emotion/styled';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { getAllProducts } from '../../../../data/categoryProductsApi';
 import useWishlistStore from '../../../../store/useWishlistStore';
+import useAuthStore from '../../../../store/useAuthStore';
+import useCartStore from '../../../../store/useCartStore';
 import BaseProductCard from '../../../../components/common/BaseProductCard';
 import MyPageEmptyState from '../shared/MyPageEmptyState';
+import { rewardsRate } from '../../../../utils/myPageMap';
+import WishToolbar from './WishToolbar';
+import WishTotalBar from './WishTotalBar';
 
 const ITEMS_PER_PAGE = 6;
 
@@ -40,6 +45,7 @@ export default function WishList() {
   const [productsList, setProductsList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [activeFilter, setActiveFilter] = useState('ALL');
   const wishlistIds = useWishlistStore((state) => state.wishlistIds);
   const sectionRef = useRef(null);
 
@@ -58,12 +64,21 @@ export default function WishList() {
     fetchProducts();
   }, []);
 
-  const isLikedList = productsList.filter((product) => wishlistIds.includes(product.id));
-  const totalPages = Math.max(1, Math.ceil(isLikedList.length / ITEMS_PER_PAGE));
+  const likedProducts = useMemo(
+    () => productsList.filter((product) => wishlistIds.includes(product.id)),
+    [productsList, wishlistIds]
+  );
+
+  const filteredList = useMemo(() => {
+    if (activeFilter === 'ALL') return likedProducts;
+    return likedProducts.filter((product) => product.category?.toUpperCase() === activeFilter);
+  }, [likedProducts, activeFilter]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredList.length / ITEMS_PER_PAGE));
 
   useEffect(() => {
     setPage(1);
-  }, [isLikedList.length]);
+  }, [likedProducts.length, activeFilter]);
 
   useEffect(() => {
     if (page > totalPages) {
@@ -73,10 +88,17 @@ export default function WishList() {
 
   const visibleWishList = useMemo(() => {
     const startIndex = (page - 1) * ITEMS_PER_PAGE;
-    return isLikedList.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [isLikedList, page]);
+    return filteredList.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredList, page]);
 
   const progressPercent = totalPages === 1 ? 100 : (page / totalPages) * 100;
+
+  const user = useAuthStore((state) => state.user);
+  const addToCart = useCartStore((state) => state.addToCart);
+  const grade = user?.grade || 'MEMBER';
+  const rate = rewardsRate[grade] ?? 0.01;
+  const totalPrice = filteredList.reduce((acc, p) => acc + (Number(p.price) || 0), 0);
+  const totalPoints = Math.floor(totalPrice * rate);
 
   const scrollToSectionTop = () => {
     if (!sectionRef.current) return;
@@ -88,6 +110,15 @@ export default function WishList() {
       top,
       behavior: 'smooth',
     });
+  };
+
+  const handleMovePage = (nextPage) => {
+    setPage(nextPage);
+    requestAnimationFrame(scrollToSectionTop);
+  };
+
+  const handleAddAllToCart = () => {
+    filteredList.forEach((product) => addToCart(product));
   };
 
   if (isLoading) {
@@ -103,35 +134,48 @@ export default function WishList() {
 
   return (
     <WishSection ref={sectionRef}>
-      <WishListWrap>
-      {isLikedList.length > 0 && !isLoading ? (
-        visibleWishList.map((product) => (
-          <li key={product.id}>
-            <BaseProductCard product={product} />
-          </li>
-        ))
-      ) : (
-        <li>
-          <MyPageEmptyState
-            category="wish"
-            title="찜한 상품이 없습니다."
-            description={`아직 저장된 위시리스트가 없습니다.\n마음에 드는 장비를 찜해보세요.`}
-            buttonLabel="BROWSE WISHLIST"
-          />
-        </li>
-      )}
-      </WishListWrap>
+      <WishToolbar
+        activeFilter={activeFilter}
+        onFilterChange={setActiveFilter}
+        count={filteredList.length}
+      />
 
-      {isLikedList.length > ITEMS_PER_PAGE && (
+      {filteredList.length > 0 && (
+        <WishTotalBar
+          totalPrice={totalPrice}
+          totalPoints={totalPoints}
+          count={filteredList.length}
+          onAddAll={handleAddAllToCart}
+        />
+      )}
+
+      {filteredList.length > 0 ? (
+        <WishListWrap>
+          {visibleWishList.map((product, index) => (
+            <li key={product.id}>
+              <BaseProductCard
+                product={product}
+                variantIndex={index}
+                compactPadding
+                cardMinHeight="unset"
+              />
+            </li>
+          ))}
+        </WishListWrap>
+      ) : (
+        <MyPageEmptyState
+          category="wish"
+          title="찜한 상품이 없습니다."
+          description={`아직 저장된 위시리스트가 없습니다.\n마음에 드는 장비를 찜해보세요.`}
+          buttonLabel="BROWSE WISHLIST"
+        />
+      )}
+
+      {filteredList.length > ITEMS_PER_PAGE && (
         <PaginationBar>
           <PagerButton
             type="button"
-            onClick={() => {
-              setPage((prev) => prev - 1);
-              requestAnimationFrame(() => {
-                scrollToSectionTop();
-              });
-            }}
+            onClick={() => handleMovePage(page - 1)}
             disabled={page === 1}
             aria-label="이전 페이지"
           >
@@ -151,12 +195,7 @@ export default function WishList() {
 
           <PagerButton
             type="button"
-            onClick={() => {
-              setPage((prev) => prev + 1);
-              requestAnimationFrame(() => {
-                scrollToSectionTop();
-              });
-            }}
+            onClick={() => handleMovePage(page + 1)}
             disabled={page === totalPages}
             aria-label="다음 페이지"
           >
@@ -170,17 +209,22 @@ export default function WishList() {
   );
 }
 
-const WishSection = styled.section``;
+const WishSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[4]};
+`;
 
 const LoadingScreen = styled.div`
   width: 100%;
   min-height: 420px;
+
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid ${({ theme }) => theme.checkbox.border + '35'};
   border-radius: ${({ theme }) => theme.radii.lg};
-  background-color: ${({ theme }) => theme.colors.cardBg};
+  background-color: ${({ theme }) => theme.colors.cardBgLight};
   box-shadow: 0 1px 20px ${({ theme }) => theme.checkbox.border + '18'};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
@@ -224,55 +268,29 @@ const LoadingText = styled.p`
 `;
 
 const WishListWrap = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing[3]};
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 
-  > li {
-    flex: 1 1 calc(33.333% - ${({ theme }) => theme.spacing[3]});
-    min-width: 200px;
+  @media (max-width: 910px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   > li > article {
-    min-height: 280px;
-  }
-
-  > li:only-of-type {
-    flex-basis: 100%;
     width: 100%;
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    > li {
-      flex-basis: calc(50% - ${({ theme }) => theme.spacing[3]});
+    aspect-ratio: 3 / 4;
+    min-height: 310px;
+    max-height: 370px;
+    @media (max-width: 910px) {
+      aspect-ratio: 3 / 4;
+      height: auto;
+      min-height: unset;
     }
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    > li {
-      flex: 1 1 100%;
-      min-width: 0;
-    }
-
-    > li > article {
-      min-height: 228px;
-      height: 228px;
-      aspect-ratio: unset;
-      border-radius: ${({ theme }) => theme.radii.xl};
-    }
-
-    > li > article > div:nth-of-type(1) {
-      padding: ${({ theme }) => theme.spacing[3]};
-    }
-
-    > li > article > div:nth-of-type(3) {
-      gap: ${({ theme }) => theme.spacing[2]};
-      padding: ${({ theme }) => theme.spacing[3]};
-    }
-
-    > li > article > button {
-      bottom: ${({ theme }) => theme.spacing[3]};
-      right: ${({ theme }) => theme.spacing[3]};
+    > img {
+      object-fit: cover;
     }
   }
 `;
@@ -335,6 +353,7 @@ const ProgressTrack = styled.div`
   height: 4px;
   border-radius: ${({ theme }) => theme.radii.pill};
   background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 10px ${({ theme }) => theme.colors.primary + '33'};
   overflow: hidden;
 `;
 

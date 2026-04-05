@@ -119,10 +119,12 @@ const ModalLabel = styled.p`
 `;
 
 const ModalTitle = styled.h2`
+  font-family: ${({ theme }) => theme.fontFamily.body};
   font-size: ${({ $titleSize, theme }) => $titleSize || theme.fontSize.s};
   font-weight: 700;
   margin-bottom: ${({ theme }) => theme.spacing[2]};
   color: ${({ theme }) => theme.colors.text};
+  opacity: 0.9;
 `;
 
 const ModalHeader = styled.div`

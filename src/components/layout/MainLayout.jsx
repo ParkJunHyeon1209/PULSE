@@ -13,6 +13,7 @@ const LayoutContainer = styled.div`
   width: 100%;
   min-height: 100vh;
   align-items: center;
+  overflow-x: clip;
 `;
 
 const MainContent = styled.main`

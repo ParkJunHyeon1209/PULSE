@@ -126,6 +126,7 @@ export default function GradeProgress() {
               $color={tone.color}
               $lightColor={tone.lightColor}
               $glow={tone.glow}
+              $isGold={currentGrade === 'GOLD'}
             />
           </ProgressBar>
 
@@ -463,7 +464,7 @@ const ProgressBar = styled.div`
     background: ${({ theme, $color }) =>
       theme.mode === 'light'
         ? 'none'
-        : `linear-gradient(90deg, ${$color}1f, rgba(59, 130, 246, 0.09) 55%, rgba(34, 211, 238, 0.06))`};
+        : `linear-gradient(90deg, ${$color}1f, ${$color}12 55%, ${$color}08)`};
     pointer-events: none;
   }
 `;
@@ -475,16 +476,20 @@ const ProgressFill = styled.div`
   height: 100%;
   overflow: hidden;
   border-radius: inherit;
-  background: ${({ theme, $color, $lightColor }) => {
-    const c = theme.mode === 'light' ? $lightColor : $color;
-    return `linear-gradient(90deg, ${c} 0%, ${c}ee 30%, ${c}bb 62%, ${c}66 100%)`;
+  background: ${({ theme, $color, $lightColor, $isGold }) => {
+    if (theme.mode === 'light') {
+      return `linear-gradient(90deg, ${$lightColor}66 0%, ${$lightColor}cc 45%, ${$lightColor} 100%)`;
+    }
+    if ($isGold) {
+      return `linear-gradient(90deg, ${$lightColor}66 0%, ${$color} 45%, ${$lightColor} 100%)`;
+    }
+    return `linear-gradient(90deg, ${$color}66 0%, ${$color}cc 45%, ${$lightColor} 100%)`;
   }};
   box-shadow: ${({ theme, $glow }) =>
-    theme.mode === 'light'
-      ? '0 0 14px rgba(59, 130, 246, 0.16)'
-      : `0 0 8px rgba(124, 92, 255, 0.55), 0 0 18px rgba(59, 130, 246, 0.35), 0 0 28px rgba(34, 211, 238, 0.2), 0 0 18px ${$glow}`};
-  mix-blend-mode: multiply;
-  opacity: ${({ theme }) => (theme.mode === 'light' ? 0.7 : 0.78)};
+    theme.mode === 'light' ? `0 0 14px ${$glow}` : `0 0 12px ${$glow}, 0 0 28px ${$glow}`};
+  mix-blend-mode: ${({ theme, $isGold }) =>
+    theme.mode === 'dark' && $isGold ? 'normal' : 'multiply'};
+  opacity: ${({ theme, $isGold }) => (theme.mode === 'light' ? 0.7 : $isGold ? 0.92 : 0.78)};
   transition: width ${({ theme }) => theme.motion.slow};
 
   &::before {
@@ -516,7 +521,6 @@ const ProgressFill = styled.div`
 const ToNextGradeText = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: ${({ theme }) => theme.fontSize.xxs};
-  font-weight: 500;
   line-height: 1.6;
 `;
 

@@ -30,7 +30,7 @@ const AddressWrap = styled.div`
 const AddressLayout = styled.div`
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: ${({ theme }) => theme.spacing[3]};
+  gap: 14px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
@@ -38,19 +38,17 @@ const AddressLayout = styled.div`
 `;
 
 const AddressCard = styled.article`
-  height: 180px;
   border: 1px solid
     ${({ theme, $isDefault }) => ($isDefault ? theme.colors.primary : theme.colors.cardBorder)};
   border-radius: ${({ theme }) => theme.radii.xl};
-  padding: ${({ theme }) => `${theme.spacing[3]} ${theme.spacing[4]}`};
+  padding: 20px 22px;
   background: ${({ theme, $isDefault }) =>
     $isDefault
-      ? `linear-gradient(180deg, rgba(${theme.colors.primaryRgb}, 0.08) 0%, rgba(255,255,255,0.02) 100%)`
+      ? `linear-gradient(180deg, rgba(${theme.colors.primaryRgb}, 0.08) 0%, transparent 100%)`
       : theme.colors.cardBg};
 
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[2]};
 `;
 
 const AddressTop = styled.div`
@@ -71,14 +69,17 @@ const AddressTop = styled.div`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 32px;
-    padding: 0 ${({ theme }) => theme.spacing[3]};
+    gap: 5px;
+    padding: 3px 10px;
     border-radius: ${({ theme }) => theme.radii.pill};
     border: 1px solid rgba(${({ theme }) => theme.colors.primaryRgb}, 0.4);
-    background: rgba(${({ theme }) => theme.colors.primaryRgb}, 0.16);
+    background: rgba(${({ theme }) => theme.colors.primaryRgb}, 0.1);
     color: ${({ theme }) => theme.colors.primary};
+    font-family: ${({ theme }) => theme.fontFamily.mono};
     font-size: ${({ theme }) => theme.fontSize.xxxs};
-    font-weight: 600;
+    font-weight: 700;
+    /* letter-spacing: -0.1em; */
+    text-transform: uppercase;
     white-space: nowrap;
   }
 
@@ -88,30 +89,32 @@ const AddressTop = styled.div`
     h3 {
       font-size: ${({ theme }) => theme.fontSize.xxs};
     }
-
-    span {
-      height: 28px;
-      padding: 0 ${({ theme }) => theme.spacing[2]};
-    }
   }
 `;
 
 const AddressMiddle = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[1]};
   flex: 1;
+  margin-top: ${({ theme }) => theme.spacing[1]};
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
-  font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.6;
   font-family: ${({ theme }) => theme.fontFamily.body};
+  > p + p {
+    font-size: ${({ theme }) => theme.fontSize.xxs};
+    line-height: 1.5;
+    font-weight: 600;
+  }
+  > p:nth-of-type(2) {
+    margin-top: ${({ theme }) => theme.spacing[3]};
+  }
 `;
 
 const ActionArea = styled.div`
-  margin-top: auto;
-  padding-top: ${({ theme }) => theme.spacing[3]};
-  border-top: 1px solid ${({ theme }) => theme.Line};
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `;
 
 const ActionRow = styled.div`
@@ -121,11 +124,10 @@ const ActionRow = styled.div`
 `;
 
 const BasePillButton = styled.button`
-  height: 31px;
+  height: 32px;
   padding: 0 ${({ theme }) => theme.spacing[3]};
   border-radius: ${({ theme }) => theme.radii.pill};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
-  font-weight: 500;
   font-family: ${({ theme }) => theme.fontFamily.body};
   cursor: pointer;
 
@@ -182,7 +184,6 @@ const AddCardButton = styled.button`
 
   span {
     font-size: ${({ theme }) => theme.fontSize.xxxs};
-    font-weight: 500;
     color: inherit;
   }
 

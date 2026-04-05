@@ -11,6 +11,15 @@ const PageWrap = styled.div`
   display: grid;
   gap: ${({ theme }) => theme.spacing[16]};
   padding-inline: ${({ theme }) => theme.grid.margin};
+  transition: gap 0.35s ease;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    gap: ${({ theme }) => theme.spacing[10]};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    gap: 0;
+  }
 `;
 
 const Full = styled.div`

@@ -10,10 +10,34 @@ export const grade = ['MEMBER', 'SILVER', 'GOLD', 'VIP'];
 export const toNextGrade = [100000, 300000, 500000];
 
 export const gradeToneMap = {
-  MEMBER: { color: '#5eead4', lightColor: '#0d9488', glow: 'rgba(94,234,212,0.28)', border: 'rgba(94,234,212,.55)', bg: 'rgba(94,234,212,.08)' },
-  SILVER: { color: '#d8e0ec', lightColor: '#7c8da6', glow: 'rgba(226,232,240,0.28)', border: 'rgba(216,224,236,.58)', bg: 'rgba(216,224,236,.08)' },
-  GOLD:   { color: '#ffd86b', lightColor: '#ca8a04', glow: 'rgba(251,191,36,0.28)',  border: 'rgba(255,216,107,.55)', bg: 'rgba(255,216,107,.1)' },
-  VIP:    { color: '#d39bff', lightColor: '#9333ea', glow: 'rgba(192,132,252,0.3)',  border: 'rgba(211,155,255,.55)', bg: 'rgba(211,155,255,.1)' },
+  MEMBER: {
+    color: '#5eead4',
+    lightColor: '#0d9488',
+    glow: 'rgba(94,234,212,0.28)',
+    border: 'rgba(94,234,212,.55)',
+    bg: 'rgba(94,234,212,.08)',
+  },
+  SILVER: {
+    color: '#d8e0ec',
+    lightColor: '#7c8da6',
+    glow: 'rgba(226,232,240,0.28)',
+    border: 'rgba(216,224,236,.58)',
+    bg: 'rgba(216,224,236,.08)',
+  },
+  GOLD: {
+    color: '#ffd86b',
+    lightColor: '#f5ae13',
+    glow: 'rgba(251,191,36,0.28)',
+    border: 'rgba(255,216,107,.55)',
+    bg: 'rgba(255,216,107,.1)',
+  },
+  VIP: {
+    color: '#d39bff',
+    lightColor: '#9333ea',
+    glow: 'rgba(192,132,252,0.3)',
+    border: 'rgba(211,155,255,.55)',
+    bg: 'rgba(211,155,255,.1)',
+  },
 };
 
 export const getGradeByTotalOrderPrice = (totalOrderPrice = 0) => {

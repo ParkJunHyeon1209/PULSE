@@ -286,7 +286,9 @@ const CardInner = ({
 
     <Info>
       <Label $white={white}>{label}</Label>
-      <Name $white={white} $nameSize={nameSize}>{name}</Name>
+      <Name $white={white} $nameSize={nameSize}>
+        {name}
+      </Name>
       <Count $white={white}>{count}</Count>
     </Info>
   </>
@@ -316,7 +318,14 @@ export default function BaseToneCard({
   const hasFlip = !!backSlot;
 
   return (
-    <Card $tone={tone} $height={height} $hasFlip={hasFlip} $flipped={flipped} $isCenter={isCenter} {...props}>
+    <Card
+      $tone={tone}
+      $height={height}
+      $hasFlip={hasFlip}
+      $flipped={flipped}
+      $isCenter={isCenter}
+      {...props}
+    >
       {hasFlip ? (
         <FlipInner $flipped={flipped}>
           <FlipFace $flipped={flipped}>

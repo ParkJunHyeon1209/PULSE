@@ -6,6 +6,7 @@ import BaseToneCard from './common/BaseToneCard';
 import { getDropProducts } from '../../../data/mainApi';
 import useSlider from '../../../hooks/useSlider';
 import { ArrowUpRightIconL } from '../../../assets/icons/BtnIcon';
+import { ToneCardSkeletonItem } from '../../../components/common/Skeleton';
 
 const CARD_WIDTH = 'clamp(260px, 32vw, 400px)';
 const CARD_OFFSET = 'clamp(208px, 30.5vw, 400px)';
@@ -25,6 +26,10 @@ const Track = styled.div`
   position: relative;
   height: clamp(348px, 38vw, 510px);
   perspective: 1200px;
+
+  &.is-resizing * {
+    transition: none;
+  }
 `;
 
 const getCardScale = (slot) => {
@@ -73,60 +78,6 @@ const CardWrap = styled.div`
     transform 550ms cubic-bezier(0.32, 0.72, 0, 1),
     opacity 400ms ease,
     filter 400ms ease;
-`;
-
-const SkeletonToneCard = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: ${({ theme }) => theme.radii.xxl};
-  overflow: hidden;
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background: ${({ theme }) => theme.card?.ci1 || theme.colors.cardBg};
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    transform: translateX(-100%);
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, ${({ theme }) => (theme.mode === 'dark' ? 0.08 : 0.22)}),
-      transparent
-    );
-    animation: showcaseSkeletonShimmer 1.6s infinite;
-  }
-
-  @keyframes showcaseSkeletonShimmer {
-    100% {
-      transform: translateX(100%);
-    }
-  }
-`;
-
-const SkeletonToneImage = styled.div`
-  width: 100%;
-  height: 68%;
-  background: ${({ theme }) =>
-    theme.mode === 'dark'
-      ? 'linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))'
-      : 'linear-gradient(180deg, rgba(124,58,237,0.10), rgba(124,58,237,0.05))'};
-`;
-
-const SkeletonToneBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[3]};
-  padding: ${({ theme }) => theme.spacing[5]};
-`;
-
-const SkeletonToneLine = styled.div`
-  width: ${({ $w }) => $w || '100%'};
-  height: ${({ $h }) => $h || '16px'};
-  border-radius: ${({ theme }) => theme.radii.sm};
-  background: ${({ theme }) =>
-    theme.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(124,58,237,0.1)'};
 `;
 
 const BackContent = styled.div`
@@ -223,9 +174,26 @@ export default function ShowcaseSec() {
   const [flippedId, setFlippedId] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const count = dropProducts.length;
+  const count = loading ? 3 : dropProducts.length;
   const { activeIndex, move, setIsPaused } = useSlider(count);
   const touchX = useRef(null);
+  const trackRef = useRef(null);
+
+  useEffect(() => {
+    let timeout;
+    const onResize = () => {
+      trackRef.current?.classList.add('is-resizing');
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        trackRef.current?.classList.remove('is-resizing');
+      }, 150);
+    };
+    window.addEventListener('resize', onResize);
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener('resize', onResize);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchDropProducts = async () => {
@@ -274,6 +242,7 @@ export default function ShowcaseSec() {
       </HeadWrap>
 
       <Track
+        ref={trackRef}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         onTouchStart={onTouchStart}
@@ -294,14 +263,17 @@ export default function ShowcaseSec() {
               }}
             >
               {loading ? (
-                <SkeletonToneCard>
-                  <SkeletonToneImage />
-                  <SkeletonToneBody>
-                    <SkeletonToneLine $w="90px" $h="16px" />
-                    <SkeletonToneLine $w="68%" $h="24px" />
-                    <SkeletonToneLine $w="44%" $h="18px" />
-                  </SkeletonToneBody>
-                </SkeletonToneCard>
+                <ToneCardSkeletonItem
+                  as="article"
+                  height="100%"
+                  surfaceVariant="showcase"
+                  labelWidth="90px"
+                  labelHeight="16px"
+                  titleWidth="68%"
+                  titleHeight="24px"
+                  countWidth="44%"
+                  countHeight="18px"
+                />
               ) : (
                 <BaseToneCard
                   white

@@ -12,6 +12,7 @@ export default function BaseDropModal({
   return (
     <BaseModal
       isOpen={isOpen}
+      onClose={() => closeModal(id)}
       label={label}
       width="360px"
       title={title}

@@ -20,6 +20,13 @@ const VARIANT_COLORS = {
     valLight: '#db2777',
   },
   review: {
+    border: 'rgba(0,76,255,.18)',
+    hoverBorder: 'rgba(0,76,255,.38)',
+    glow: '#004CFF',
+    valDark: '#4D85FF',
+    valLight: '#2563eb',
+  },
+  coupon: {
     border: 'rgba(107,47,255,.18)',
     hoverBorder: 'rgba(107,47,255,.38)',
     glow: '#6B2FFF',
@@ -91,16 +98,16 @@ const EmptyStateWrap = styled.div`
   }
 
   > p:first-of-type {
-    margin-bottom: ${({ theme }) => theme.spacing[4]};
-    font-size: ${({ theme }) => theme.fontSize.s};
+    margin-bottom: ${({ theme }) => theme.spacing[3]};
+    font-size: ${({ theme }) => theme.fontSize.xs};
     font-weight: 700;
     color: ${({ theme }) => theme.colors.text};
   }
 
   > p:last-of-type {
     margin-bottom: ${({ theme }) => theme.spacing[6]};
+    font-size: ${({ theme }) => theme.fontSize.xxxs};
     color: ${({ theme }) => theme.colors.textSecondary};
-    line-height: 1.6;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
@@ -130,6 +137,7 @@ const EmptyBtn = styled(BaseBtn)`
   flex: none;
   border: 1px solid ${({ $c }) => $c.border};
   background: ${({ $c }) => $c.glow}18;
+  box-shadow: 0 0 9px ${({ $c }) => $c.glow}20;
 
   > span {
     font-size: ${({ theme }) => theme.fontSize.xxxs};
