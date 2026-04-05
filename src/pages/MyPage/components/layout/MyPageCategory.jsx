@@ -1,9 +1,6 @@
 import styled from '@emotion/styled';
-import React from 'react';
 import useOverlayStore from '../../../../store/useOverlayStore';
-import { useNavigate } from 'react-router-dom';
-import BaseModal from '../../../../components/common/BaseModal';
-import BaseBtn from '../../../../components/common/BaseBtn';
+import LogoutModal from '../../../../components/common/LogoutModal';
 import useAuthStore from '../../../../store/useAuthStore';
 import useReviewStore from '../../../../store/useReviewStore';
 import useWishlistStore from '../../../../store/useWishlistStore';
@@ -20,50 +17,6 @@ import {
 
 const ensureArray = (value) => (Array.isArray(value) ? value : []);
 
-function LogoutModal() {
-  const isOpen = useOverlayStore((state) => Boolean(state.modals.logout));
-  const closeModal = useOverlayStore((state) => state.closeModal);
-  const navigate = useNavigate();
-  const logout = useAuthStore((state) => state.logout);
-
-  return (
-    <BaseModal
-      isOpen={isOpen}
-      label="PULSE PLATFORM"
-      onClose={() => {
-        closeModal('logout');
-      }}
-      title="로그아웃 하시겠습니까?"
-    >
-      <p>정말 로그아웃 하시겠습니까?</p>
-      <div className="btnwrap" style={{ display: 'flex', gap: '12px' }}>
-        <BaseBtn
-          padding="12px 32px"
-          variant="secondary"
-          icon={false}
-          style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
-          onClick={() => {
-            closeModal('logout');
-          }}
-        >
-          취소
-        </BaseBtn>
-
-        <BaseBtn
-          padding="12px 32px"
-          style={{ marginTop: '28px', display: 'block', marginLeft: 'auto' }}
-          onClick={() => {
-            logout();
-            closeModal('logout');
-            navigate('/', { replace: true });
-          }}
-        >
-          확인
-        </BaseBtn>
-      </div>
-    </BaseModal>
-  );
-}
 
 export default function MyPageCategory({ category, setCategory }) {
   const openModal = useOverlayStore((state) => state.openModal);
@@ -105,7 +58,10 @@ export default function MyPageCategory({ category, setCategory }) {
           <CategoryType $isActive={isActive('coupon')} onClick={() => setCategory('coupon')}>
             <div className="icontext">
               <CouponIcon />
-              혜택 • 쿠폰
+              <DotDividerText>
+                <span>혜택</span>
+                <span>쿠폰</span>
+              </DotDividerText>
             </div>
             <span>{user?.coupons?.length || 0}</span>
           </CategoryType>
@@ -142,7 +98,7 @@ export default function MyPageCategory({ category, setCategory }) {
 }
 
 const CategoryList = styled.ul`
-  min-width: 240px;
+  /* min-width: 240px; */
   flex: 1;
   flex-shrink: 0;
   display: flex;
@@ -173,12 +129,12 @@ const CategoryList = styled.ul`
     > ul {
       display: flex;
       flex-direction: column;
-      gap: ${({ theme }) => theme.spacing[2]};
+      gap: ${({ theme }) => theme.spacing[1]};
     }
   }
   > li:not(:last-child) {
     padding-bottom: ${({ theme }) => theme.spacing[4]};
-    border-bottom: 1px solid ${({ theme }) => theme.colors.textSecondary};
+    border-bottom: 1.5px solid ${({ theme }) => theme.colors.primary + '33'};
   }
   > li:last-child {
     padding-left: ${({ theme }) => theme.spacing[2]};
@@ -200,25 +156,8 @@ const CategoryList = styled.ul`
     order: 2;
     gap: 0;
 
-    > li:not(:last-child) {
+    > li {
       display: none;
-    }
-
-    > li:last-child {
-      align-self: flex-end;
-      width: auto;
-      padding-left: 0;
-      border-left: none;
-      border-top: 1px solid ${({ theme }) => theme.colors.textSecondary + '33'};
-
-      > div {
-        padding-top: ${({ theme }) => theme.spacing[4]};
-        justify-content: flex-end;
-      }
-
-      button {
-        width: auto;
-      }
     }
   }
 `;
@@ -240,6 +179,10 @@ const CategoryType = styled.li`
   overflow: hidden;
   border-left: 1px solid
     ${({ theme, $isActive }) => ($isActive ? theme.colors.primary : 'transparent')};
+  transition:
+    color 0.2s,
+    background-color 0.2s,
+    border-color 0.2s;
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
@@ -247,6 +190,7 @@ const CategoryType = styled.li`
   }
 
   > span {
+    box-sizing: border-box;
     min-width: 26px;
     height: 24px;
     padding: 0 8px;
@@ -258,7 +202,7 @@ const CategoryType = styled.li`
     border-radius: ${({ theme }) => theme.radii.pill};
 
     font-size: ${({ theme }) => theme.fontSize.xxxs};
-    font-weight: 800;
+    font-weight: 700;
     line-height: 1;
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.02em;
@@ -269,15 +213,15 @@ const CategoryType = styled.li`
     background: ${({ theme, $isActive }) =>
       $isActive
         ? `linear-gradient(135deg, ${theme.colors.primary}55, ${theme.colors.primary}22)`
-        : `linear-gradient(180deg, rgba(255,255,255,0.08), transparent), ${theme.colors.btn2Bg}`};
+        : `linear-gradient(180deg, rgba(232, 186, 255, 0.1),${theme.colors.btn2Bg})`};
 
     border: 1px solid
       ${({ theme, $isActive }) => ($isActive ? theme.colors.primary + '66' : theme.colors.border)};
 
     box-shadow: ${({ theme, $isActive }) =>
       $isActive
-        ? `inset 0 1px 0 rgba(255,255,255,0.16), 0 4px 12px ${theme.colors.primary}22, 0 0 14px ${theme.colors.primary}1a`
-        : `inset 0 1px 0 rgba(255,255,255,0.08), 0 2px 6px ${theme.colors.primary}10`};
+        ? `0 4px 12px ${theme.colors.primary}22, 0 0 14px ${theme.colors.primary}1a`
+        : `0 2px 6px ${theme.colors.primary}10`};
 
     backdrop-filter: ${({ theme }) => theme.effects.blurSoft};
     transition:
@@ -285,15 +229,27 @@ const CategoryType = styled.li`
       background 0.2s ease,
       border-color 0.2s ease,
       box-shadow 0.2s ease;
+  }
+`;
 
-    &::before {
-      content: '';
-      position: absolute;
-      inset: 1px 1px auto 1px;
-      height: 45%;
-      border-radius: inherit;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent);
-      pointer-events: none;
-    }
+const DotDividerText = styled.span`
+  display: inline-flex;
+  align-items: center;
+
+  > span + span {
+    position: relative;
+    margin-left: ${({ theme }) => theme.spacing[4]};
+  }
+
+  > span + span::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: calc(${({ theme }) => theme.spacing[2]} * -1.25);
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+    transform: translateY(-50%);
   }
 `;

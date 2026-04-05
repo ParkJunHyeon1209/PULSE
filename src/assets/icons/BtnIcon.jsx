@@ -744,6 +744,25 @@ export function ReviewIcon({ size = 15, ...props }) {
   );
 }
 
+export function ReviewFillIcon({ size = 15, ...props }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 15 15"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M3.125 1.875H11.875C12.5654 1.875 13.125 2.43464 13.125 3.125V9.375C13.125 10.0654 12.5654 10.625 11.875 10.625H4.89277L1.875 13.125V3.125C1.875 2.43464 2.43464 1.875 3.125 1.875Z"
+        fill="currentColor"
+        fillOpacity="0.92"
+      />
+    </svg>
+  );
+}
+
 export function CouponIcon({ ...props }) {
   return (
     <svg

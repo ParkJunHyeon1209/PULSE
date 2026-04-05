@@ -9,6 +9,11 @@ const MainMyPageWrap = styled.div`
   box-sizing: border-box;
   display: flex;
   gap: ${({ theme }) => theme.spacing[9]};
-  margin-top: ${({ theme }) => theme.spacing[6]};
+  margin: ${({ theme }) => theme.spacing[6]} 0 ${({ theme }) => theme.spacing[10]};
   padding: 0 ${({ theme }) => theme.grid.margin};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    flex-direction: column;
+    gap: 0;
+  }
 `;

@@ -45,18 +45,20 @@ const PillarCard = styled.article`
     ${({ theme, $accent }) =>
       theme.mode === 'dark'
         ? theme.tones[$accent].containerBorder
-        : ($accent === 'blue' ? 'rgba(56, 189, 248, 0.34)' : 'rgba(124, 58, 237, 0.28)')};
+        : $accent === 'blue'
+          ? 'rgba(56, 189, 248, 0.34)'
+          : 'rgba(124, 58, 237, 0.28)'};
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.012)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.012)),
     ${({ theme }) => theme.colors.cardBgLight};
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, ${({ theme }) => (theme.mode === 'dark' ? 0.05 : 0.84)}),
     ${({ theme, $accent }) =>
       theme.mode === 'dark'
         ? theme.tones[$accent].containerShadow
-        : ($accent === 'blue'
-            ? '0 4px 24px rgba(56, 189, 248, 0.16), 0 1px 6px rgba(56, 189, 248, 0.1)'
-            : '0 4px 24px rgba(124, 58, 237, 0.14), 0 1px 6px rgba(124, 58, 237, 0.09)')};
+        : $accent === 'blue'
+          ? '0 4px 24px rgba(56, 189, 248, 0.16), 0 1px 6px rgba(56, 189, 248, 0.1)'
+          : '0 4px 24px rgba(124, 58, 237, 0.14), 0 1px 6px rgba(124, 58, 237, 0.09)'};
   transition:
     transform ${({ theme }) => theme.motion.normal},
     box-shadow ${({ theme }) => theme.motion.normal},
@@ -67,15 +69,17 @@ const PillarCard = styled.article`
     border-color: ${({ theme, $accent }) =>
       theme.mode === 'dark'
         ? theme.tones[$accent].activeBorder
-        : ($accent === 'blue' ? 'rgba(56, 189, 248, 0.55)' : 'rgba(124, 58, 237, 0.46)')};
+        : $accent === 'blue'
+          ? 'rgba(56, 189, 248, 0.55)'
+          : 'rgba(124, 58, 237, 0.46)'};
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, ${({ theme }) => (theme.mode === 'dark' ? 0.09 : 0.9)}),
       ${({ theme, $accent }) =>
         theme.mode === 'dark'
-          ? (theme.tones[$accent].hoverShadow || theme.tones[$accent].containerShadow)
-          : ($accent === 'blue'
-              ? '0 8px 32px rgba(56, 189, 248, 0.24), 0 2px 8px rgba(56, 189, 248, 0.14)'
-              : '0 8px 32px rgba(124, 58, 237, 0.22), 0 2px 8px rgba(124, 58, 237, 0.13)')};
+          ? theme.tones[$accent].hoverShadow || theme.tones[$accent].containerShadow
+          : $accent === 'blue'
+            ? '0 8px 32px rgba(56, 189, 248, 0.24), 0 2px 8px rgba(56, 189, 248, 0.14)'
+            : '0 8px 32px rgba(124, 58, 237, 0.22), 0 2px 8px rgba(124, 58, 237, 0.13)'};
   }
 `;
 

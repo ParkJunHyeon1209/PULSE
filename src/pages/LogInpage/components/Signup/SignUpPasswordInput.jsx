@@ -36,6 +36,9 @@ const Tooltip = styled.div`
   cursor: help;
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   color: ${({ theme }) => theme.colors.textSecondary};
+  & * {
+    cursor: help;
+  }
 
   &:hover .pw-tooltip,
   &:focus-within .pw-tooltip {

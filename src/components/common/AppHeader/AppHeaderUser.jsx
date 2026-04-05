@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import BaseBtn from '../BaseBtn';
+import LogoutModal from '../LogoutModal';
 import {
   UserIcon,
   CartIcon,
@@ -308,16 +309,17 @@ export default function AppHeaderUser() {
   const open = useOverlayStore((state) => state.loginOpen);
   const onOpen = useOverlayStore((state) => state.openLogin);
   const closeLogin = useOverlayStore((state) => state.closeLogin);
+  const openModal = useOverlayStore((state) => state.openModal);
   const cart = useCartStore((state) => state.cart);
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
   const onThemeToggle = useThemeStore((state) => state.toggleTheme);
   const wrapRef = usePanel({ open, onClose: closeLogin });
-  const { isLogin, user, logout } = useAuthStore();
+  const { isLogin, user } = useAuthStore();
   const navigate = useNavigate();
   const initial = getUserInitial(user);
   const handleLogout = () => {
-    logout();
     closeLogin();
+    openModal('logout');
   };
 
   return (
@@ -426,6 +428,7 @@ export default function AppHeaderUser() {
       >
         <CartIcon strokeWidth="1" />
       </CartButton>
+      <LogoutModal />
     </>
   );
 }

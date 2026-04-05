@@ -23,5 +23,11 @@ export default function CategoryRender({ category }) {
 }
 
 const CategoryWrap = styled.div`
-  flex: 4;
+  flex: 3;
+  min-width: 0;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    flex: 1;
+    width: 100%;
+  }
 `;

@@ -14,7 +14,7 @@ const NoItemWrap = styled.div`
   justify-content: center;
   align-items: center;
   white-space: pre-wrap;
-  background-color: ${({ theme }) => theme.colors.cardBg};
+  background-color: ${({ theme }) => theme.colors.cardBgLight};
   > img {
     margin-bottom: ${({ theme }) => theme.spacing[5]};
     width: 150px;
@@ -24,8 +24,8 @@ const NoItemWrap = styled.div`
     text-align: center;
   }
   > p:first-of-type {
-    margin-bottom: ${({ theme }) => theme.spacing[4]};
-    font-family: ${({ theme }) => theme.fontFamily.display};
+    margin-bottom: ${({ theme }) => theme.spacing[3]};
+    font-weight: 700;
   }
 
   > p:last-of-type {

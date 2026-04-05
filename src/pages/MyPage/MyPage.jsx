@@ -154,6 +154,7 @@ const MyPageWrap = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: ${({ theme }) => theme.spacing[8]};
+  font-weight: 500;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     gap: ${({ theme }) => theme.spacing[6]};

@@ -20,8 +20,14 @@ const ReviewToolbar = styled.div`
   justify-content: flex-end;
 
   > button {
+    margin-right: ${({ theme }) => theme.spacing[2]};
     font-size: ${({ theme }) => theme.fontSize.xxxs};
-    color: ${({ theme }) => theme.colors.error};
+    color: ${({ theme }) => theme.colors.accent + '96'};
+    transition: color ${({ theme }) => theme.motion.fast} ease;
+  }
+
+  > button:hover {
+    color: ${({ theme }) => theme.colors.accent};
   }
 `;
 
@@ -35,6 +41,7 @@ const ReviewList = styled.ul`
     padding: ${({ theme }) => theme.spacing[5]};
     display: flex;
     justify-content: space-between;
+    background-color: ${({ theme }) => theme.colors.cardBgLight};
     gap: ${({ theme }) => theme.spacing[5]};
     border: 1px solid ${({ theme }) => theme.colors.primary + '22'};
     border-radius: ${({ theme }) => theme.radii.lg};
@@ -190,13 +197,13 @@ const ReviewActions = styled.div`
 const ReviewForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[4]};
+  gap: ${({ theme }) => theme.spacing[6]};
 `;
 
 const FieldLabel = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[2]};
+  gap: ${({ theme }) => theme.spacing[3]};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   color: ${({ theme }) => theme.colors.textSecondary};
 
@@ -206,7 +213,7 @@ const FieldLabel = styled.div`
     border: 1px solid ${({ theme }) => theme.colors.primary + '18'};
     border-radius: ${({ theme }) => theme.radii.lg};
     background: ${({ theme }) => theme.colors.cardBg};
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.text + 'cc'};
     line-height: 1.6;
   }
 `;

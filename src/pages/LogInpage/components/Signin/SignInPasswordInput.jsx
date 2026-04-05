@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import React from 'react';
 import ShowBtn from '../common/ShowBtn';
 
 const InputLabel = styled.label`

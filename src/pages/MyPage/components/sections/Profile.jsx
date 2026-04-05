@@ -72,13 +72,13 @@ export default function Profile() {
     }
 
     if (!formData.currentPassword) {
-      errors.currentPassword = '입력해주세요.';
+      errors.currentPassword = '현재 비밀번호를 입력해주세요.';
     } else if (formData.currentPassword !== user.password) {
       errors.currentPassword = '비밀번호가 일치하지 않습니다.';
     }
 
     if (!formData.newPassword) {
-      errors.newPassword = '입력해주세요.';
+      errors.newPassword = '새 비밀번호를 입력해주세요.';
     } else {
       const hasMinLength = formData.newPassword.length >= 8;
       const hasUpperCase = /[A-Z]/.test(formData.newPassword);
@@ -90,7 +90,7 @@ export default function Profile() {
     }
 
     if (!formData.newPasswordCheck) {
-      errors.newPasswordCheck = '입력해주세요.';
+      errors.newPasswordCheck = '비밀번호 확인을 입력해주세요.';
     } else if (formData.newPassword !== formData.newPasswordCheck) {
       errors.newPasswordCheck = '비밀번호가 일치하지 않습니다.';
     }
@@ -284,10 +284,18 @@ export default function Profile() {
       </UserPw>
 
       <BtnWrap>
-        <CancelBtn type="button" icon={false} onClick={handleCancel} variant="secondary">
+        <CancelBtn
+          height="42px"
+          type="button"
+          icon={false}
+          onClick={handleCancel}
+          variant="secondary"
+        >
           취소
         </CancelBtn>
-        <SubmitBtn type="submit">저장하기</SubmitBtn>
+        <SubmitBtn height="42px" icon={false} type="submit">
+          저장하기
+        </SubmitBtn>
       </BtnWrap>
       <ProfileUpdateModal />
     </ProfileWrap>
@@ -300,25 +308,45 @@ const ProfileWrap = styled.form`
   gap: ${({ theme }) => theme.spacing[8]};
 
   label {
+    font-weight: 700;
     color: ${({ theme }) => theme.colors.textSecondary};
     font-size: ${({ theme }) => theme.fontSize.xxxs};
   }
 
   input {
     width: 100%;
-    padding: ${({ theme }) => theme.spacing[3]};
-    border: 1px solid ${({ theme }) => theme.colors.primary + '33'};
+    height: 42px;
+    padding: 0 ${({ theme }) => theme.spacing[3]};
+    border: 1px solid ${({ theme }) => theme.colors.primary + '20'};
+    border-bottom: 1.5px solid
+      ${({ theme }) => (theme.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(124,58,237,0.18)')};
     border-top-left-radius: ${({ theme }) => theme.radii.sm};
     border-top-right-radius: ${({ theme }) => theme.radii.sm};
-    background-color: ${({ theme }) => theme.colors.background + '80'};
-    color: ${({ theme }) => theme.colors.text};
+    background: ${({ theme }) =>
+      theme.mode === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(124,58,237,0.04)'};
+    color: ${({ theme }) => theme.colors.text + 'cc'};
+    font-size: ${({ theme }) => theme.fontSize.xxs};
+    font-weight: 600;
+    outline: none;
     box-shadow: none;
-    -webkit-text-fill-color: ${({ theme }) => theme.colors.text};
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+    -webkit-text-fill-color: ${({ theme }) => theme.colors.text + 'cc'};
+
+    &:focus {
+      border-bottom-color: ${({ theme }) =>
+        theme.mode === 'dark' ? 'rgba(167,139,250,0.5)' : 'rgba(109,40,217,0.5)'};
+      box-shadow: ${({ theme }) =>
+        theme.mode === 'dark'
+          ? 'inset 0 2px 8px rgba(0,0,0,0.1)'
+          : 'inset 0 2px 12px rgba(127, 66, 226, 0.06)'};
+    }
 
     &:-webkit-autofill,
     &:-webkit-autofill:hover,
     &:-webkit-autofill:focus {
-      -webkit-text-fill-color: ${({ theme }) => theme.colors.text};
+      -webkit-text-fill-color: ${({ theme }) => theme.colors.text + 'cc'};
       box-shadow: 0 0 0 1000px ${({ theme }) => theme.colors.background + 'f2'} inset;
       transition: background-color 9999s ease-out 0s;
     }
@@ -338,8 +366,8 @@ const UserInfo = styled.div`
   padding: ${({ theme }) => theme.spacing[5]};
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[2]};
-  background-color: ${({ theme }) => theme.colors.cardBg};
+  gap: ${({ theme }) => theme.spacing[4]};
+  background-color: ${({ theme }) => theme.colors.cardBgLight};
   border: 1px solid ${({ theme }) => theme.colors.primary + '33'};
   border-radius: ${({ theme }) => theme.radii.lg};
 `;
@@ -388,13 +416,15 @@ const UserPw = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[4]};
-  background-color: ${({ theme }) => theme.colors.cardBg};
+  background-color: ${({ theme }) => theme.colors.cardBgLight};
   border: 1px solid ${({ theme }) => theme.colors.primary + '33'};
   border-radius: ${({ theme }) => theme.radii.lg};
 
   > h3 {
     font-size: ${({ theme }) => theme.fontSize.xxxs};
     color: ${({ theme }) => theme.colors.textSecondary};
+    opacity: 0.6;
+    font-weight: 800;
     margin-bottom: ${({ theme }) => theme.spacing[1]};
   }
 `;
@@ -414,9 +444,10 @@ const LabelRow = styled.div`
 
 const ErrorText = styled.p`
   margin: 0;
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
-  color: #e53935;
+  font-size: 11px;
+  color: ${({ theme }) => theme.colors.error};
   white-space: nowrap;
+  opacity: 0.8;
 `;
 
 const BtnWrap = styled.div`
@@ -428,8 +459,7 @@ const BtnWrap = styled.div`
 
 const CancelBtn = styled(BaseBtn)`
   width: 60px;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  border: none;
+  /* color: ${({ theme }) => theme.colors.textSecondary}; */
 `;
 
 const SubmitBtn = styled(BaseBtn)`

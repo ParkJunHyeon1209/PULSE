@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { NavLink, useNavigate } from 'react-router-dom';
 import useOverlayStore from '../../../store/useOverlayStore';
 import useAuthStore from '../../../store/useAuthStore';
+import LogoutModal from '../LogoutModal';
 import useCartStore from '../../../store/useCartStore';
 import useThemeStore from '../../../store/useThemeStore';
 import {
@@ -199,7 +200,8 @@ const PanelFoot = styled.div`
 export default function AppHeaderMobileMenu() {
   const open = useOverlayStore((state) => state.mobileMenuOpen);
   const close = useOverlayStore((state) => state.closeMobileMenu);
-  const { isLogin, logout } = useAuthStore();
+  const openModal = useOverlayStore((state) => state.openModal);
+  const { isLogin } = useAuthStore();
   const cart = useCartStore((state) => state.cart);
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
@@ -255,7 +257,7 @@ export default function AppHeaderMobileMenu() {
                 <OrderIcon />
                 주문 내역
               </MenuItem>
-              <MenuItem type="button" onClick={() => go('/mypage?tab=wishlist')}>
+              <MenuItem type="button" onClick={() => go('/mypage?tab=wish')}>
                 <HeartIcon strokeWidth="1.8" />
                 찜목록
               </MenuItem>
@@ -285,10 +287,7 @@ export default function AppHeaderMobileMenu() {
             <MenuItem
               type="button"
               $danger
-              onClick={() => {
-                logout();
-                go('/');
-              }}
+              onClick={() => openModal('logout')}
             >
               <LogoutIcon />
               로그아웃
@@ -296,6 +295,7 @@ export default function AppHeaderMobileMenu() {
           </PanelFoot>
         )}
       </Panel>
+      <LogoutModal />
     </>
   );
 }

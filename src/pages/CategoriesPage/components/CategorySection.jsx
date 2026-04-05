@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import BaseProductCard from '../../../components/common/BaseProductCard';
+import {
+  ProductCardSkeletonItem,
+} from '../../../components/common/Skeleton';
 
 const SectionBlock = styled.section`
   margin-bottom: ${({ theme }) => theme.spacing[24]};
@@ -166,57 +169,6 @@ const PagerButton = styled.button`
   }
 `;
 
-const SkeletonCard = styled.div`
-  position: relative;
-  overflow: hidden;
-  min-height: ${({ $cardMinHeight }) => $cardMinHeight || '469px'};
-  border-radius: ${({ theme }) => theme.radii.xl};
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background: ${({ theme }) => theme.colors.cardBg};
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    transform: translateX(-100%);
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, ${({ theme }) => (theme.mode === 'dark' ? 0.08 : 0.24)}),
-      transparent
-    );
-    animation: skeletonShimmer 1.5s infinite;
-  }
-
-  @keyframes skeletonShimmer {
-    100% {
-      transform: translateX(100%);
-    }
-  }
-`;
-
-const SkeletonImage = styled.div`
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  background: ${({ theme }) =>
-    theme.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(124,58,237,0.08)'};
-`;
-
-const SkeletonBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[3]};
-  padding: ${({ theme }) => theme.spacing[4]};
-`;
-
-const SkeletonLine = styled.div`
-  height: ${({ $h }) => $h || '14px'};
-  width: ${({ $w }) => $w || '100%'};
-  border-radius: ${({ theme }) => theme.radii.sm};
-  background: ${({ theme }) =>
-    theme.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(124,58,237,0.1)'};
-`;
-
 function PagerChevronIcon({ direction = 'right' }) {
   return (
     <svg
@@ -277,15 +229,11 @@ function SkeletonGrid({ count, columns, cardMinHeight }) {
   return (
     <ProductGrid columns={columns}>
       {Array.from({ length: count }).map((_, index) => (
-        <SkeletonCard key={index} $cardMinHeight={cardMinHeight}>
-          <SkeletonImage />
-          <SkeletonBody>
-            <SkeletonLine $w="68px" $h="22px" />
-            <SkeletonLine $w="78%" $h="18px" />
-            <SkeletonLine $w="52%" />
-            <SkeletonLine $w="36%" $h="20px" />
-          </SkeletonBody>
-        </SkeletonCard>
+        <ProductCardSkeletonItem
+          key={index}
+          cardMinHeight={cardMinHeight}
+          compactPadding
+        />
       ))}
     </ProductGrid>
   );

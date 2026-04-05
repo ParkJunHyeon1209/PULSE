@@ -6,7 +6,7 @@ import useOrderStore from '../../../../store/useOrderStore';
 import {
   CouponIcon2,
   HeartFillIcon,
-  ReviewIcon,
+  ReviewFillIcon,
   ThunderIcon,
 } from '../../../../assets/icons/BtnIcon';
 
@@ -78,7 +78,7 @@ export default function Statistics({ setCategory }) {
     {
       key: 'review',
       variant: 'blue',
-      icon: <ReviewIcon />,
+      icon: <ReviewFillIcon />,
       value: user?.reviews.length?.toLocaleString() || 0,
       label: 'REVIEW ',
       category: 'review',
