@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { keyframes } from '@emotion/react';
 import { useMemo, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { CardWish, CardBadge, CardAddBtn, CardGlow, CardShim } from './CardParts';
@@ -10,6 +11,20 @@ import useAuthStore from '../../store/useAuthStore';
 import useWishlistStore from '../../store/useWishlistStore';
 import BaseModal from './BaseModal';
 import BaseBtn from './BaseBtn';
+
+const cardReveal = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.96);
+    filter: blur(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+`;
 
 const CardContainer = styled.article`
   position: relative;
@@ -23,10 +38,14 @@ const CardContainer = styled.article`
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
+  opacity: 0;
   transition:
     transform ${({ theme }) => theme.motion.normal},
     box-shadow ${({ theme }) => theme.motion.normal},
-    border-radius ${({ theme }) => theme.motion.normal};
+    border-radius ${({ theme }) => theme.motion.normal},
+    filter ${({ theme }) => theme.motion.fast};
+  animation: ${cardReveal} 560ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: ${({ $variantIndex = 0 }) => `${Math.min($variantIndex, 7) * 55}ms`};
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     border-radius: ${({ theme }) => theme.radii.xl};
   }
@@ -50,6 +69,11 @@ const CardContainer = styled.article`
   &:hover {
     transform: translateY(-4px);
     box-shadow: ${({ $tone, theme }) => theme.effects[`hoverShadowCategory${$tone}`]};
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.975);
+    filter: brightness(1.08);
   }
 
   &:hover .card-overlay::after {
@@ -87,6 +111,11 @@ const CardContainer = styled.article`
     aspect-ratio: 3 / 4;
     height: auto;
     min-height: unset;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
+    animation: none;
   }
 `;
 
@@ -211,7 +240,13 @@ const categoryToneMap = {
   drops: 'indigo',
 };
 
-export default function BaseProductCard({ product, cardMinHeight, hideAddBtn, compactPadding }) {
+export default function BaseProductCard({
+  product,
+  variantIndex = 0,
+  cardMinHeight,
+  hideAddBtn,
+  compactPadding,
+}) {
   const navigate = useNavigate();
   const location = useLocation();
   const sparkTone = categoryToneMap[product.category?.toLowerCase()] || 'violet';
@@ -265,7 +300,12 @@ export default function BaseProductCard({ product, cardMinHeight, hideAddBtn, co
 
   return (
     <>
-      <CardContainer $tone={sparkTone} $cardMinHeight={cardMinHeight} onClick={handleMoveDetail}>
+      <CardContainer
+        $tone={sparkTone}
+        $cardMinHeight={cardMinHeight}
+        $variantIndex={variantIndex}
+        onClick={handleMoveDetail}
+      >
         <CardShim className="card-shim" aria-hidden="true" />
 
         {product.image ? (

@@ -34,7 +34,7 @@ const ReviewToolbar = styled.div`
 const ReviewList = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[4]};
+  gap: ${({ theme }) => theme.spacing[3]};
 
   > li {
     position: relative;

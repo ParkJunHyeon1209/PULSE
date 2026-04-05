@@ -3,12 +3,14 @@ import styled from '@emotion/styled';
 import useAuthStore from '../../../store/useAuthStore';
 import useOrderStore from '../../../store/useOrderStore';
 import useOverlayStore from '../../../store/useOverlayStore';
+import AddressRequiredModal from '../../../components/common/modals/AddressRequiredModal';
 import OrderConfirmModal from '../../../components/common/modals/OrderConfirmModal';
 import BaseBtn from '../../../components/common/BaseBtn';
 import { CartIcon } from '../../../assets/icons/BtnIcon';
 import { getGradeByTotalOrderPrice, rewardsRate } from '../../../utils/myPageMap';
 
 const BUY_NOW_MODAL_ID = 'detail-buy-now-confirm';
+const ADDRESS_REQUIRED_MODAL_ID = 'detail-address-required';
 
 export default function PurchaseActions({ product, quantity = 1, onAddToCart, onRequireLogin }) {
   const isLogin = useAuthStore((state) => state.isLogin);
@@ -16,10 +18,19 @@ export default function PurchaseActions({ product, quantity = 1, onAddToCart, on
   const setUser = useAuthStore((state) => state.login);
   const addOrder = useOrderStore((state) => state.addOrder);
   const openModal = useOverlayStore((state) => state.openModal);
+  const defaultAddress =
+    user?.defaultAddress ||
+    user?.addresses?.find((address) => address.isDefault) ||
+    null;
 
   const handleBuyNow = () => {
     if (!isLogin) {
       onRequireLogin?.();
+      return;
+    }
+
+    if (!defaultAddress) {
+      openModal(ADDRESS_REQUIRED_MODAL_ID);
       return;
     }
 
@@ -48,6 +59,12 @@ export default function PurchaseActions({ product, quantity = 1, onAddToCart, on
       status: '결제완료',
       totalPrice: estimatedTotalPrice,
       earnedPoint: rewardPoint,
+      discountInfo: {
+        subtotal: estimatedTotalPrice,
+        shippingFee: 0,
+        discountAmount: 0,
+        couponCode: '',
+      },
     });
 
     if (!createdOrder || !user) return;
@@ -86,6 +103,7 @@ export default function PurchaseActions({ product, quantity = 1, onAddToCart, on
       </ButtonGroup>
 
       <OrderConfirmModal id={BUY_NOW_MODAL_ID} onConfirm={handleConfirmBuyNow} />
+      <AddressRequiredModal id={ADDRESS_REQUIRED_MODAL_ID} />
     </>
   );
 }

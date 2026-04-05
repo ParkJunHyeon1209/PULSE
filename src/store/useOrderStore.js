@@ -6,6 +6,12 @@ const createOrderNumber = () => {
 };
 
 const normalizeOrderItem = (item) => {
+  const normalizedOptionSummary = Array.isArray(item.optionSummary)
+    ? item.optionSummary
+    : item.optionSummary
+      ? [item.optionSummary]
+      : [];
+
   return {
     id: item.id,
     title: item.title,
@@ -16,7 +22,7 @@ const normalizeOrderItem = (item) => {
     category: item.category || '',
     type: item.type || '',
     tag: item.tag || '',
-    optionSummary: Array.isArray(item.optionSummary) ? item.optionSummary : [],
+    optionSummary: normalizedOptionSummary,
     careTitle: item.careTitle || '',
     carePrice: Number(item.carePrice) || 0,
     checked: Boolean(item.checked),
@@ -33,18 +39,34 @@ const calcOrderTotalPrice = (items) => {
   }, 0);
 };
 
+const normalizeDiscountInfo = (discountInfo = {}) => {
+  return {
+    subtotal: Math.max(Number(discountInfo.subtotal) || 0, 0),
+    shippingFee: Math.max(Number(discountInfo.shippingFee) || 0, 0),
+    discountAmount: Math.max(Number(discountInfo.discountAmount) || 0, 0),
+    couponCode: discountInfo.couponCode || '',
+  };
+};
+
 const useOrderStore = create(
   persist(
     (set, get) => ({
       orders: [],
 
-      addOrder: ({ items = [], status = '결제완료', totalPrice: finalTotalPrice, earnedPoint = 0 }) => {
+      addOrder: ({
+        items = [],
+        status = '결제완료',
+        totalPrice: finalTotalPrice,
+        earnedPoint = 0,
+        discountInfo = {},
+      }) => {
         if (!Array.isArray(items) || items.length === 0) {
           return null;
         }
 
         const normalizedItems = items.map(normalizeOrderItem);
         const fallbackTotalPrice = calcOrderTotalPrice(normalizedItems);
+        const normalizedDiscountInfo = normalizeDiscountInfo(discountInfo);
         const totalPrice =
           typeof finalTotalPrice === 'number' && Number.isFinite(finalTotalPrice)
             ? Math.max(finalTotalPrice, 0)
@@ -57,6 +79,10 @@ const useOrderStore = create(
           status,
           totalPrice,
           earnedPoint: Math.max(Number(earnedPoint) || 0, 0),
+          discountInfo: {
+            ...normalizedDiscountInfo,
+            subtotal: normalizedDiscountInfo.subtotal || fallbackTotalPrice,
+          },
           items: normalizedItems,
         };
 

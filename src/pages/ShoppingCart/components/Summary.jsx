@@ -7,6 +7,7 @@ import useAuthStore from '../../../store/useAuthStore';
 import BaseBtn from '../../../components/common/BaseBtn';
 import BaseSection from '../../../components/common/BaseSection';
 import BaseTooltip from '../../../components/common/BaseTooltip';
+import AddressRequiredModal from '../../../components/common/modals/AddressRequiredModal';
 import OrderConfirmModal from '../../../components/common/modals/OrderConfirmModal';
 import { getGradeByTotalOrderPrice, rewardsRate } from '../../../utils/myPageMap';
 import {
@@ -182,6 +183,7 @@ const SummaryWrap = styled.div`
 `;
 
 const ORDER_CONFIRM_MODAL_ID = 'cart-order-confirm';
+const ADDRESS_REQUIRED_MODAL_ID = 'cart-address-required';
 
 export default function Summary() {
   const totalPrice = useCartStore((state) => state.getTotalPrice);
@@ -205,9 +207,18 @@ export default function Summary() {
   const finalTotal = Math.max(subtotal - discountAmount + shippingFee, 0);
   const rewardRate = rewardsRate[user?.grade || 'MEMBER'] || 0;
   const rewardPoint = Math.floor(finalTotal * rewardRate);
+  const defaultAddress =
+    user?.defaultAddress ||
+    user?.addresses?.find((address) => address.isDefault) ||
+    null;
 
   const handleOpenOrderModal = () => {
     if (!hasCheckedItems) {
+      return;
+    }
+
+    if (!defaultAddress) {
+      openModal(ADDRESS_REQUIRED_MODAL_ID);
       return;
     }
 
@@ -226,6 +237,12 @@ export default function Summary() {
       status: '결제완료',
       totalPrice: finalTotal,
       earnedPoint: rewardPoint,
+      discountInfo: {
+        subtotal,
+        shippingFee,
+        discountAmount,
+        couponCode: appliedCouponCode,
+      },
     });
 
     if (!createdOrder) {
@@ -352,6 +369,7 @@ export default function Summary() {
       </SummaryWrap>
 
       <OrderConfirmModal id={ORDER_CONFIRM_MODAL_ID} onConfirm={handleConfirmOrder} />
+      <AddressRequiredModal id={ADDRESS_REQUIRED_MODAL_ID} />
     </>
   );
 }
