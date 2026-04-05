@@ -42,7 +42,11 @@ const FOOTER_COLS = [
   },
 ];
 
-const ALL_WIP_ITEMS = [...SNS_ITEMS, ...FOOTER_COLS.flatMap((col) => col.items)];
+const GLOBAL_WIP_ITEMS = [
+  { id: 'orderExchangeReturn', label: 'ORDER SERVICE', title: '교환·반품' },
+];
+
+const ALL_WIP_ITEMS = [...SNS_ITEMS, ...FOOTER_COLS.flatMap((col) => col.items), ...GLOBAL_WIP_ITEMS];
 
 const FootScope = styled.div`
   position: relative;

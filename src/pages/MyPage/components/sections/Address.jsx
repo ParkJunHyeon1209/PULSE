@@ -263,10 +263,20 @@ export default function Address() {
   const user = useAuthStore((state) => state.user);
   const storageKey = `pulse-addresses-${user?.id || 'guest'}`;
 
+  return <AddressContent key={storageKey} storageKey={storageKey} user={user} />;
+}
+
+function AddressContent({ storageKey, user }) {
+  const login = useAuthStore((state) => state.login);
+
   const [editingId, setEditingId] = useState(null);
   const [addresses, setAddresses] = useState(() => {
     const saved = localStorage.getItem(storageKey);
-    return saved ? JSON.parse(saved) : [];
+    if (saved) {
+      return JSON.parse(saved);
+    }
+
+    return Array.isArray(user?.addresses) ? user.addresses : [];
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -274,13 +284,27 @@ export default function Address() {
   const [isSubmitted, setIsSubmitted] = useState(false); // 저장 버튼 누른 뒤부터 실시간 재검사용
 
   useEffect(() => {
-    const saved = localStorage.getItem(storageKey);
-    setAddresses(saved ? JSON.parse(saved) : []);
-  }, [storageKey]);
-
-  useEffect(() => {
     localStorage.setItem(storageKey, JSON.stringify(addresses));
   }, [storageKey, addresses]);
+
+  useEffect(() => {
+    if (!user) return;
+
+    const defaultAddress = addresses.find((item) => item.isDefault) || null;
+    const hasSameAddresses = JSON.stringify(user.addresses || []) === JSON.stringify(addresses);
+    const hasSameDefaultAddress =
+      JSON.stringify(user.defaultAddress || null) === JSON.stringify(defaultAddress);
+
+    if (hasSameAddresses && hasSameDefaultAddress) {
+      return;
+    }
+
+    login({
+      ...user,
+      addresses,
+      defaultAddress,
+    });
+  }, [addresses, user, login]);
 
   const resetForm = () => {
     setEditingId(null);

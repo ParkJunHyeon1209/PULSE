@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -166,6 +166,29 @@ export default function BaseModal({ isOpen, onClose, children, ...props }) {
   };
 
   usePanel({ open: isOpen, onClose: handleClose, outsideClick: false });
+
+  useEffect(() => {
+    if (!mounted) return undefined;
+
+    const { body } = document;
+    const previousOverflow = body.style.overflow;
+    const lockCount = Number(body.dataset.modalLockCount || '0') + 1;
+
+    body.dataset.modalLockCount = String(lockCount);
+    body.style.overflow = 'hidden';
+
+    return () => {
+      const nextLockCount = Math.max(Number(body.dataset.modalLockCount || '1') - 1, 0);
+
+      if (nextLockCount === 0) {
+        delete body.dataset.modalLockCount;
+        body.style.overflow = previousOverflow;
+        return;
+      }
+
+      body.dataset.modalLockCount = String(nextLockCount);
+    };
+  }, [mounted]);
 
   if (!mounted) return null;
 

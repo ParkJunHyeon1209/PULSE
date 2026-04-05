@@ -86,6 +86,7 @@ export default function GradeProgress() {
                 offset="14px"
                 $color={tone.color}
                 $lightColor={tone.lightColor}
+                mobileShift="60px"
               >
                 <TooltipTitle>GRADE GUIDE</TooltipTitle>
                 {gradeGuide.map((item) => (
