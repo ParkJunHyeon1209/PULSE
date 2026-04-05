@@ -17,17 +17,23 @@ const VisualCard = styled.article`
   border: 1px solid
     ${({ theme, $accent }) =>
       theme.mode === 'dark'
-        ? ($accent === 'blue' ? theme.tones.blue.containerBorder : theme.tones.violet.containerBorder)
-        : ($accent === 'blue' ? 'rgba(56, 189, 248, 0.36)' : 'rgba(124, 58, 237, 0.3)')};
+        ? $accent === 'blue'
+          ? theme.tones.blue.containerBorder
+          : theme.tones.violet.containerBorder
+        : $accent === 'blue'
+          ? 'rgba(56, 189, 248, 0.36)'
+          : 'rgba(124, 58, 237, 0.3)'};
   background: ${({ theme }) => theme.colors.cardBgLight};
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, ${({ theme }) => (theme.mode === 'dark' ? 0.07 : 0.7)}),
     ${({ theme, $accent }) =>
       theme.mode === 'dark'
-        ? ($accent === 'blue' ? theme.tones.blue.containerShadow : theme.tones.violet.containerShadow)
-        : ($accent === 'blue'
-            ? '0 4px 24px rgba(56, 189, 248, 0.18), 0 1px 6px rgba(56, 189, 248, 0.12)'
-            : '0 4px 24px rgba(124, 58, 237, 0.16), 0 1px 6px rgba(124, 58, 237, 0.1)')};
+        ? $accent === 'blue'
+          ? theme.tones.blue.containerShadow
+          : theme.tones.violet.containerShadow
+        : $accent === 'blue'
+          ? '0 4px 24px rgba(56, 189, 248, 0.18), 0 1px 6px rgba(56, 189, 248, 0.12)'
+          : '0 4px 24px rgba(124, 58, 237, 0.16), 0 1px 6px rgba(124, 58, 237, 0.1)'};
   transition:
     transform ${HOVER_DURATION} ${HOVER_EASE},
     box-shadow 0.2s ease,
@@ -61,8 +67,12 @@ const VisualCard = styled.article`
     transform: translateY(-6px) scale(1.01);
     border-color: ${({ theme, $accent }) =>
       theme.mode === 'dark'
-        ? ($accent === 'blue' ? theme.tones.blue.activeBorder : theme.tones.violet.activeBorder)
-        : ($accent === 'blue' ? 'rgba(56, 189, 248, 0.55)' : 'rgba(124, 58, 237, 0.48)')};
+        ? $accent === 'blue'
+          ? theme.tones.blue.activeBorder
+          : theme.tones.violet.activeBorder
+        : $accent === 'blue'
+          ? 'rgba(56, 189, 248, 0.55)'
+          : 'rgba(124, 58, 237, 0.48)'};
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, ${({ theme }) => (theme.mode === 'dark' ? 0.1 : 0.88)}),
       ${({ $accent }) =>
@@ -76,7 +86,7 @@ const VisualCard = styled.article`
   }
 
   &:hover .slot-spark {
-    opacity: 1;
+    opacity: ${({ theme }) => (theme.mode === 'dark' ? 1 : 0.72)};
     transform: translate(-50%, -50%) scale(1.12);
   }
 
@@ -99,17 +109,15 @@ const VisualImg = styled.img`
   object-fit: cover;
   object-position: ${({ $position }) => $position};
   filter: ${({ theme }) =>
-    theme.mode === 'dark'
-      ? 'brightness(0.88) saturate(1.04)'
-      : 'brightness(1.03) saturate(1.02)'};
-  transform: scale(1.02);
+    theme.mode === 'dark' ? 'brightness(0.88) saturate(1.04)' : 'brightness(1.03) saturate(1.02)'};
+  transform: scale(${({ $scale = 1.02 }) => $scale});
   transition: transform ${HOVER_DURATION} ${HOVER_EASE};
 `;
 
 const VisualShade = styled.div`
   position: absolute;
   inset: 0;
-  background: ${({ theme }) =>
+  background: ${({ theme, $lightDimmed }) =>
     theme.mode === 'dark'
       ? `
         linear-gradient(
@@ -122,13 +130,27 @@ const VisualShade = styled.div`
         linear-gradient(90deg, rgba(8, 6, 20, 0.1) 0%, transparent 50%)
       `
       : `
-        linear-gradient(
-          180deg,
-          transparent 0%,
-          transparent 48%,
-          rgba(8, 6, 20, 0.28) 78%,
-          rgba(8, 6, 20, 0.42) 100%
-        )
+        ${
+          $lightDimmed
+            ? `
+            linear-gradient(
+              180deg,
+              rgba(255, 255, 255,0) 0%,
+              rgba(248, 246, 255, 0.1) 40%,
+              rgba(232, 226, 255, 0.2) 70%,
+              rgba(216, 206, 255, 1) 100%
+            )
+          `
+            : `
+            linear-gradient(
+              180deg,
+              transparent 0%,
+              transparent 48%,
+              rgba(8, 6, 20, 0.28) 78%,
+              rgba(8, 6, 20, 0.42) 100%
+            )
+          `
+        }
       `};
 `;
 
@@ -144,7 +166,7 @@ const VisualGlow = styled.div`
   opacity: 0.62;
   transition: opacity ${HOVER_DURATION} ${HOVER_EASE};
   pointer-events: none;
-  mix-blend-mode: screen;
+  mix-blend-mode: ${({ theme }) => (theme.mode === 'dark' ? 'screen' : 'overlay')};
 `;
 
 const VisualBeam = styled.div`
@@ -164,7 +186,7 @@ const CenterSpark = styled.div`
   top: 42%;
   z-index: 2;
   transform: translate(-50%, -50%) scale(0.82);
-  opacity: 0.6;
+  opacity: ${({ theme }) => (theme.mode === 'dark' ? 0.6 : 0.38)};
   transition:
     opacity ${HOVER_DURATION} ${HOVER_EASE},
     transform ${HOVER_DURATION} ${HOVER_EASE};
@@ -182,7 +204,12 @@ const SlotTextWrap = styled.div`
 `;
 
 const SlotEyebrow = styled.span`
-  color: rgba(255, 255, 255, 0.52);
+  color: ${({ theme, $lightText }) =>
+    theme.mode === 'dark'
+      ? 'rgba(255, 255, 255, 0.52)'
+      : $lightText
+        ? theme.colors.textSecondary
+        : 'rgba(255, 255, 255, 0.52)'};
   font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   letter-spacing: 0.14em;
@@ -190,15 +217,29 @@ const SlotEyebrow = styled.span`
 `;
 
 const SlotLabel = styled.span`
-  color: rgba(255, 255, 255, 0.92);
-  font-family: ${({ theme }) => theme.fontFamily.display};
-  font-size: clamp(13px, 1vw, 17px);
+  margin-bottom: ${({ theme }) => theme.spacing[1]};
+  color: ${({ theme, $lightText }) =>
+    theme.mode === 'dark'
+      ? 'rgba(255, 255, 255, 0.92)'
+      : $lightText
+        ? theme.colors.text
+        : 'rgba(255, 255, 255, 0.92)'};
+  font-family: ${({ theme }) => theme.fontFamily.body};
+  font-size: ${({ theme }) => theme.fontSize.xxs};
+  font-weight: 600;
   letter-spacing: 0.05em;
 `;
 
 const SlotHint = styled.span`
-  color: rgba(255, 255, 255, 0.44);
+  color: ${({ theme, $lightText }) =>
+    theme.mode === 'dark'
+      ? 'rgba(255, 255, 255, 0.44)'
+      : $lightText
+        ? theme.colors.textSecondary
+        : 'rgba(255, 255, 255, 0.44)'};
+  font-family: ${({ theme }) => theme.fontFamily.body};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
+  font-weight: 600;
 `;
 
 const SlotStar = styled(LavStarIcon)`
@@ -220,6 +261,9 @@ export default function BrandImageSlot({
   objectPosition = 'center center',
   eyebrow = 'DROP ASSET',
   sparkTone,
+  lightText = false,
+  lightDimmed = false,
+  imageScale = 1.02,
 }) {
   const theme = useTheme();
   const safeId = useId().replace(/:/g, '');
@@ -240,8 +284,9 @@ export default function BrandImageSlot({
           src={getAssetSource(theme, media)}
           alt={label}
           $position={objectPosition}
+          $scale={imageScale}
         />
-        <VisualShade />
+        <VisualShade $lightText={lightText} $lightDimmed={lightDimmed} />
         <VisualGlow className="slot-glow" $accent={accent} />
         <CenterSpark className="slot-spark">
           <BaseSparkIcon tone={resolvedTone} />
@@ -249,9 +294,9 @@ export default function BrandImageSlot({
         <SlotStar>&#10022;</SlotStar>
         <VisualBeam $accent={accent} />
         <SlotTextWrap>
-          <SlotEyebrow>{eyebrow}</SlotEyebrow>
-          <SlotLabel>{label}</SlotLabel>
-          <SlotHint>{hint}</SlotHint>
+          <SlotEyebrow $lightText={lightText}>{eyebrow}</SlotEyebrow>
+          <SlotLabel $lightText={lightText}>{label}</SlotLabel>
+          <SlotHint $lightText={lightText}>{hint}</SlotHint>
         </SlotTextWrap>
       </VisualCard>
     );

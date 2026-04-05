@@ -142,7 +142,7 @@ const PaletteChip = styled.div`
     transform: translateY(-3px);
     border-color: ${({ theme, $tone }) =>
       $tone === 'blue' ? theme.tones.blue.activeBorder : theme.tones.violet.activeBorder};
-    box-shadow: ${({ theme, $tone }) =>
+    box-shadow: ${({ $tone }) =>
       $tone === 'blue'
         ? '0 4px 18px rgba(56, 189, 248, 0.18)'
         : '0 4px 18px rgba(124, 58, 237, 0.16)'};
