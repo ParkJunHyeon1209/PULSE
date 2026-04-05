@@ -6,6 +6,7 @@ const useAuthStore = create(
     (set) => ({
       user: null,
       isLogin: false,
+      profileIcon: null,
 
       login: (userData = null) => {
         set({
@@ -19,8 +20,12 @@ const useAuthStore = create(
         set({
           isLogin: false,
           user: null,
+          profileIcon: null,
         });
       },
+
+      // 사용자 아이콘 설정 - 추가 했어욤...
+      setProfileIcon: (iconId) => set({ profileIcon: iconId }),
     }),
     {
       name: 'auth-storage',

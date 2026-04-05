@@ -122,7 +122,7 @@ const BadgeWrap = styled.div`
   top: ${({ theme }) => theme.spacing[4]};
   left: ${({ theme }) => theme.spacing[4]};
   z-index: 3;
-  pointer-events: ${({ $isCenter }) => ($isCenter ? 'auto' : 'none')};
+  pointer-events: ${({ $isCenter }) => ($isCenter ? 'inherit' : 'none')};
 `;
 
 const ArrowWrap = styled.div`

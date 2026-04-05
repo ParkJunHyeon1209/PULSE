@@ -1,22 +1,42 @@
+import { useState } from 'react';
 import styled from '@emotion/styled';
 import useAuthStore from '../../../../store/useAuthStore';
 import BaseBtn from '../../../../components/common/BaseBtn';
 import { AddressIcon, EditIcon, MailIcon, LavStarIcon } from '../../../../assets/icons/BtnIcon';
 import getUserInitial from '../../../../utils/getUserInitial';
 import { gradeToneMap } from '../../../../utils/myPageMap';
+import ProfileIconPicker from '../../../../components/common/ProfileIconPicker';
+import { PROFILE_ICONS } from '../../../../assets/icons/profileIcons/profileIconsData';
 
 export default function MyInfo({ setCategory }) {
   const user = useAuthStore((state) => state.user);
-  const handleProfile = (category) => {
-    return setCategory(category);
-  };
+  const profileIcon = useAuthStore((state) => state.profileIcon);
+  const setProfileIcon = useAuthStore((state) => state.setProfileIcon);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const handleProfile = (category) => setCategory(category);
   const initial = getUserInitial(user);
+
+  const iconSrc = profileIcon
+    ? PROFILE_ICONS.find((i) => i.id === profileIcon)?.src
+    : null;
 
   return (
     <MyInfoWrap>
+      {pickerOpen && (
+        <ProfileIconPicker
+          activeId={profileIcon}
+          onSelect={setProfileIcon}
+          onClose={() => setPickerOpen(false)}
+        />
+      )}
       <Profile>
-        <ProfileAvatar icon={false} aria-hidden="true">
-          {initial}
+        <ProfileAvatar
+          icon={false}
+          aria-label="프로필 아이콘 변경"
+          onClick={() => setPickerOpen(true)}
+          $hasIcon={Boolean(iconSrc)}
+        >
+          {iconSrc ? <img src={iconSrc} alt="프로필 아이콘" /> : initial}
         </ProfileAvatar>
         <UserInfo>
           <SectionBox>
@@ -122,27 +142,41 @@ const ProfileAvatar = styled(BaseBtn)`
   width: clamp(76px, 7vw, 98px);
   height: clamp(76px, 7vw, 98px);
   min-width: 0;
-  padding: 0;
+  padding: ${({ $hasIcon }) => ($hasIcon ? '10px' : '0')};
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: ${({ theme }) => theme.radii.full};
-  border: 3px solid rgba(167, 139, 250, 0.35);
+  border: 3px solid ${({ theme }) => theme.colors.primary + '59'};
   box-shadow:
-    0 0 0 6px rgba(124, 58, 237, 0.1),
-    0 0 40px rgba(124, 58, 237, 0.3);
+    0 0 0 6px ${({ theme }) => theme.colors.primary + '1a'},
+    0 0 40px ${({ theme }) => theme.colors.primary + '4d'};
   font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: clamp(28px, 3vw, 36px);
   line-height: 1;
   font-weight: 700;
-  color: #fff;
-  cursor: default;
-  pointer-events: none;
+  color: ${({ theme }) => theme.colors.wColor};
+  cursor: pointer;
+  overflow: hidden;
   transition:
     width ${({ theme }) => theme.motion.normal},
     height ${({ theme }) => theme.motion.normal},
     font-size ${({ theme }) => theme.motion.normal},
-    box-shadow ${({ theme }) => theme.motion.normal};
+    box-shadow ${({ theme }) => theme.motion.normal},
+    border-color 0.18s;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+    box-shadow:
+      0 0 0 6px ${({ theme }) => theme.colors.primary + '28'},
+      0 0 40px ${({ theme }) => theme.colors.primary + '66'};
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 `;
 
 const UserInfo = styled.div`

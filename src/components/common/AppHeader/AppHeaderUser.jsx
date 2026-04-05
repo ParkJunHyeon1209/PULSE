@@ -18,21 +18,12 @@ import useOverlayStore from '../../../store/useOverlayStore';
 import useThemeStore from '../../../store/useThemeStore';
 import useAuthStore from '../../../store/useAuthStore';
 import getUserInitial from '../../../utils/getUserInitial';
+import { PROFILE_ICONS } from '../../../assets/icons/profileIcons/profileIconsData';
 
 const AvatarButton = styled(BaseBtn)`
   overflow: visible;
 `;
 
-const AvatarStatus = styled.span`
-  position: absolute;
-  right: -12px;
-  top: -12px;
-  width: 12px;
-  height: 12px;
-  border-radius: ${({ theme }) => theme.radii.full};
-  background: ${({ theme }) => theme.status.new};
-  border: 2px solid ${({ theme }) => theme.colors.background};
-`;
 
 const DropWrap = styled.div`
   position: relative;
@@ -183,11 +174,16 @@ const DropProfileAvatar = styled.div`
   font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: 600;
-  color: #fff;
+  color: ${({ theme }) => theme.colors.wColor};
   flex-shrink: 0;
-  /* > span {
-    transform: translateY(2px);
-  } */
+  overflow: hidden;
+  padding: ${({ $hasIcon }) => ($hasIcon ? '4px' : '0')};
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 `;
 
 const DropProfileInfo = styled.div`
@@ -220,7 +216,15 @@ const AvatarCircle = styled(BaseBtn)`
   font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: ${({ theme }) => theme.fontSize.s};
   font-weight: 700;
-  color: #fff;
+  color: ${({ theme }) => theme.colors.wColor};
+  overflow: hidden;
+  padding: ${({ $hasIcon }) => ($hasIcon ? '6px' : '0')};
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 
   &:hover {
     box-shadow: 0 0 0 4px ${({ theme }) => `rgba(${theme.colors.primaryRgb},.12)`};
@@ -315,8 +319,10 @@ export default function AppHeaderUser() {
   const onThemeToggle = useThemeStore((state) => state.toggleTheme);
   const wrapRef = usePanel({ open, onClose: closeLogin });
   const { isLogin, user } = useAuthStore();
+  const profileIcon = useAuthStore((state) => state.profileIcon);
   const navigate = useNavigate();
   const initial = getUserInitial(user);
+  const iconSrc = profileIcon ? PROFILE_ICONS.find((i) => i.id === profileIcon)?.src : null;
   const handleLogout = () => {
     closeLogin();
     openModal('logout');
@@ -326,13 +332,12 @@ export default function AppHeaderUser() {
     <>
       <DropWrap ref={wrapRef}>
         {isLogin ? (
-          <AvatarCircle aria-label="User menu" onClick={onOpen} icon={false}>
-            {initial}
+          <AvatarCircle aria-label="User menu" onClick={onOpen} icon={false} $hasIcon={Boolean(iconSrc)}>
+            {iconSrc ? <img src={iconSrc} alt="프로필 아이콘" /> : initial}
           </AvatarCircle>
         ) : (
           <AvatarButton height={'42px'} variant="ic-btn" aria-label="User menu" onClick={onOpen}>
             <UserIcon />
-            {/* <AvatarStatus /> */}
           </AvatarButton>
         )}
 
@@ -340,8 +345,8 @@ export default function AppHeaderUser() {
           {isLogin ? (
             <>
               <DropProfile onClick={() => navigate('/mypage?tab=profile')}>
-                <DropProfileAvatar>
-                  <span>{initial}</span>
+                <DropProfileAvatar $hasIcon={Boolean(iconSrc)}>
+                  {iconSrc ? <img src={iconSrc} alt="프로필 아이콘" /> : <span>{initial}</span>}
                 </DropProfileAvatar>
                 <DropProfileInfo>
                   <DropProfileName>{user?.name ?? 'PULSE USER'}</DropProfileName>
