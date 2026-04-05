@@ -62,7 +62,7 @@ const DetailItem = styled.div`
   &:hover {
     transform: translateX(4px);
     border-color: ${({ theme, $accent }) => theme.tones[$accent].activeBorder};
-    box-shadow: ${({ _, $accent }) =>
+    box-shadow: ${({ $accent }) =>
       $accent === 'blue'
         ? '0 2px 14px rgba(56, 189, 248, 0.14)'
         : '0 2px 14px rgba(124, 58, 237, 0.12)'};

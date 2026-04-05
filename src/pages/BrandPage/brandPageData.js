@@ -8,8 +8,20 @@ import lineUpDark from '../../assets/img/banners/D_LineUp.webp';
 import lineUpLight from '../../assets/img/banners/L_LineUp.webp';
 import controllerDark from '../../assets/img/banners/D_Controller.webp';
 import controllerLight from '../../assets/img/banners/L_Controller.webp';
-import brandBannerDark from '../../assets/img/banners/D_main_brandBanner.webp';
-import brandBannerLight from '../../assets/img/banners/L_main_brandBanner.webp';
+import headsetDark from '../../assets/img/banners/D_Headset.webp';
+import headsetLight from '../../assets/img/banners/L_Headset.webp';
+import keyboardDark from '../../assets/img/banners/D_Keyboard.webp';
+import keyboardLight from '../../assets/img/banners/L_Keyboard.webp';
+import earphonesDark from '../../assets/img/banners/D_Earphones.webp';
+import earphonesLight from '../../assets/img/banners/L_Earphones.webp';
+import consoleSetDark from '../../assets/img/banners/D_ConsoleSet.webp';
+import consoleSetLight from '../../assets/img/banners/L_ConsoleSet.webp';
+import mouseDark from '../../assets/img/banners/D_mouse.webp';
+import mouseLight from '../../assets/img/banners/L_mouse.webp';
+import mouseKeySetDark from '../../assets/img/banners/D_mouse&keySey.webp';
+import mouseKeySetLight from '../../assets/img/banners/L_mouse&keySey.webp';
+import mainBanner3Dark from '../../assets/img/banners/3_dark.webp';
+import mainBanner3Light from '../../assets/img/banners/3_light.webp';
 
 export const heroSection = {
   kicker: 'PULSE · Brand Story',
@@ -123,14 +135,15 @@ export const pillars = [
 
 export const gallerySection = {
   section: {
-    // 비주얼 시스템 / 시즌을 담는 / 캠페인 비주얼
-    label: 'Visual System',
-    title: '시즌을 담아낸',
-    colorTitle: 'Campaign Visuals',
-    sub: 'PULSE의 모든 시즌 드롭은 전용 비주얼과 함께 공개됩니다. 빛과 그림자, 컬러가 기어의 감각을 시각화합니다.',
+    label: 'Signature Frames',
+    titlePrefix: 'PULSE',
+    title: '의',
+    titlePrefixFont: 'hero',
+    colorTitle: 'Proud banners',
+    sub: '메인 대표 컷을 제외한 비주얼 아카이브에서 6개의 프레임을 골라 보여줍니다. 장면마다 PULSE의 무드와 플레이 감각을 한 줄로 담았습니다.',
     titleSize: 'lg',
   },
-  eyebrow: 'CAMPAIGN VISUAL',
+  eyebrow: 'SIGNATURE FRAME',
 };
 
 export const closingSection = {
@@ -197,45 +210,74 @@ export const storyCards = [
 
 export const gallerySlots = [
   {
-    title: '메인 드롭 비주얼',
-    description: '2026 S/S 시즌 대표 드롭 캠페인',
+    title: '헤드셋 무드',
+    description: '사운드가 공간을 채우는 순간, 몰입은 더 깊어집니다.',
     tone: 'violet',
-    media: { dark: mainDropBannerDark, light: mainDropBannerLight },
+    media: { dark: headsetDark, light: headsetLight },
+    objectPosition: '72% center',
+  },
+  {
+    title: '키보드 리듬',
+    description: '입력의 템포가 살아나는 장면을 네온 톤으로 담았습니다.',
+    tone: 'blue',
+    media: { dark: keyboardDark, light: keyboardLight },
+    objectPosition: '68% center',
+  },
+  {
+    title: '이어폰 컷',
+    description: '가볍게 시작해도 감각은 선명하게 이어집니다.',
+    tone: 'violet',
+    media: { dark: earphonesDark, light: earphonesLight },
+    objectPosition: '74% center',
+  },
+  {
+    title: '콘솔 셋업',
+    description: '거실에서도 셋업의 텐션은 그대로 유지됩니다.',
+    tone: 'violet',
+    media: { dark: consoleSetDark, light: consoleSetLight },
+    objectPosition: '72% center',
+  },
+  {
+    title: '마우스 포커스',
+    description: '손끝의 움직임이 바로 반응으로 이어지는 순간입니다.',
+    tone: 'blue',
+    media: { dark: mouseDark, light: mouseLight },
+    objectPosition: '76% center',
+  },
+  {
+    title: '마우스 & 키세트',
+    description: '빛과 리듬, 입력이 하나의 플레이 흐름으로 맞물립니다.',
+    tone: 'violet',
+    media: { dark: mouseKeySetDark, light: mouseKeySetLight },
     objectPosition: '72% center',
   },
   {
     title: '드롭 라인업',
-    description: '시즌 전체 기어 라인업 비주얼',
+    description: '시즌 무드를 가장 넓게 보여주는 대표 셋업 프레임입니다.',
     tone: 'blue',
     media: { dark: dropsBannerDark, light: dropsBannerLight },
     objectPosition: '74% center',
   },
   {
-    title: '브랜드 시그널',
-    description: 'PULSE 아이덴티티 & 시그널 컷',
-    tone: 'violet',
-    media: { dark: lineUpDark, light: lineUpLight },
-    objectPosition: '78% center',
-  },
-  {
     title: '서브 기어 컷',
-    description: '액세서리 & 보조 라인업',
-    tone: 'blue',
-    media: { dark: dropsExtrasDark, light: dropsExtrasLight },
-    objectPosition: '76% center',
-  },
-  {
-    title: '캠페인 와이드',
-    description: '브랜드 무드 전체를 담은 와이드 컷',
+    description: '작은 액세서리까지도 브랜드 감각 안에서 연결됩니다.',
     tone: 'violet',
-    media: { dark: brandBannerDark, light: brandBannerLight },
-    objectPosition: '70% center',
+    media: { dark: mainBanner3Dark, light: mainBanner3Light },
+    objectPosition: 'right 62%',
+    imageScale: 1.12,
   },
   {
-    title: '컨트롤러 라인',
-    description: '플래그십 컨트롤러 & 핵심 기어',
+    title: '플래그십 컨트롤러',
+    description: '강한 존재감과 직관적인 컨트롤이 한 컷 안에 담깁니다.',
     tone: 'blue',
     media: { dark: controllerDark, light: controllerLight },
     objectPosition: '72% center',
+  },
+  {
+    title: '시그널 라인업',
+    description: 'PULSE 특유의 빛과 실루엣이 가장 선명하게 드러나는 장면입니다.',
+    tone: 'violet',
+    media: { dark: lineUpDark, light: lineUpLight },
+    objectPosition: '78% center',
   },
 ];
