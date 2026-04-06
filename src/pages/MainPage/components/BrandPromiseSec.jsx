@@ -7,7 +7,7 @@ import useThemeStore from '../../../store/useThemeStore';
 const SectionWrap = styled.section`
   position: relative;
   margin: ${({ theme }) => `${theme.spacing[24]} 0`};
-  /* padding: ${({ theme }) => `${theme.spacing[14]} 0`}; */
+  
 
   &:hover .banner-img {
     transform: scale(1.06);
@@ -138,7 +138,7 @@ const ListSide = styled.div`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding-inline: ${({ theme }) => theme.spacing[3]};
-    /* margin-top: ${({ theme }) => theme.spacing[20]}; */
+    
   }
 `;
 

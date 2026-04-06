@@ -2,7 +2,7 @@ export const authToneMap = {
   violet: {
     highlight: 'linear-gradient(90deg, #a78bfa, #ec4899)',
     circleBorder: 'rgba(167, 139, 250, 0.22)',
-    glowBackground: 'radial-gradient(circle, rgba(172, 83, 255, 0.9) 0%, transparent 70%)', // #bf55ec
+    glowBackground: 'radial-gradient(circle, rgba(172, 83, 255, 0.9) 0%, transparent 70%)', 
     waveStroke: '#a78bfa',
     lightBg: `radial-gradient(ellipse 80% 60% at 28% 10%, rgba(124, 58, 237, 0.3) 0%, transparent 60%),
       radial-gradient(ellipse 60% 60% at 90% 80%, rgba(167, 139, 250, 0.3) 0%, transparent 66%),

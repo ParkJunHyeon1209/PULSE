@@ -21,7 +21,7 @@ const animProps = {
   shouldForwardProp: (prop) => prop !== '$delay',
 };
 
-// 레이아웃
+
 export const FullInner = styled.div`
   position: relative;
   flex: 1;
@@ -57,7 +57,7 @@ export const HeroWrap = styled.section`
   }
 `;
 
-// 히어로 텍스트 스타일
+
 const HeroIntroLabel = styled.span`
   margin: ${({ theme }) => theme.spacing[6]} 0;
   font-family: ${({ theme }) => theme.fontFamily.mono};
@@ -122,10 +122,7 @@ const HeroCopy = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: ${({ theme }) => theme.fontSize.s};
   line-height: 1.8;
-  /* text-shadow:
-    0 0 8px ${({ theme }) => theme.colors.background},
-    0 0 20px ${({ theme }) => theme.colors.background + 'ee'},
-    0 0 40px ${({ theme }) => theme.colors.background + 'aa'}; */
+  
   transition: font-size ${({ theme }) => theme.motion.normal};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
@@ -202,9 +199,9 @@ const HeroStats = styled.div`
     justify-content: center;
   }
 `;
-// ─── 재사용 가능 stat 블록 시작 ───
-// HeroStatValue font-size: md → sm 으로 변경해서 사용
-// import: HeroStat, HeroStatValue, HeroStatLabel, AnimHeroStats + SlotText
+
+
+
 
 export const HeroStat = styled.div`
   display: flex;
@@ -280,11 +277,11 @@ export const HeroStatLabel = styled.div`
   }
 `;
 
-// 애니메이션
+
 export const AnimHeroStats = styled(HeroStats, animProps)`
   ${animIn}
 `;
-// ─── 재사용 가능 stat 블록 끝 ───
+
 
 export const AnimIntroLabel = styled(HeroIntroLabel, animProps)`
   ${animIn}

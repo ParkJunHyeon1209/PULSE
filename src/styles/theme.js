@@ -16,7 +16,7 @@ const violetBtnTone = {
     'linear-gradient(135deg,rgba(150,70,255,0.88) 0%,rgba(150,70,255,0.95) 40%,rgba(109,40,217,0.9) 100%)',
 };
 
-// 다크/라이트 공통 블루 버튼 톤 — bg/hoverBg/btnActiveBg/spark 다크·라이트 동일
+
 const blueBtnTone = {
   bg: 'linear-gradient(135deg, rgba(56, 130, 255, 0.95) 0%, rgba(99, 102, 241, 0.92) 45%, rgba(56, 130, 255, 0.88) 100%)',
   hoverBg:
@@ -26,7 +26,7 @@ const blueBtnTone = {
   spark: '0 0 8px rgba(255,255,255,0.8), 0 0 18px rgba(147,197,253,0.8)',
 };
 
-// 카드 위 + 버튼(cardAdd) 및 다크 secondary 버튼에서 공통으로 사용하는 값
+
 const darkSecondaryBtn = {
   bg: 'rgba(20,10,60,0.65)',
   border: 'rgba(167,139,250,0.38)',
@@ -42,7 +42,7 @@ const darkSecondaryBtn = {
 
 const baseTokens = {
   effects: {
-    // blur = backdrop-filter 강도
+    
     blurSoft: 'blur(8px)',
     blurMd: 'blur(10px)',
     blurPromo: 'blur(12px)',
@@ -51,13 +51,13 @@ const baseTokens = {
     blurNav: 'blur(24px)',
     blurDropdown: 'blur(32px)',
 
-    // hoverShadow = hover 쓰는 그림자
+    
     hoverShadowIcon: '0 0 18px rgba(124,58,237,.25)',
     hoverShadowAvatar: '0 0 0 4px rgba(124,58,237,.18),0 0 20px rgba(124,58,237,.3)',
 
-    // drop-timer에서 쓰는 빨간색 ✦
+    
     glowTextRed: '0 0 6px rgba(236,72,153,.7)',
-    // CATEGORIES 섹션에서 쓰는 그림자
+    
 
     PurpleStar: '0 0 6px rgba(158, 125, 255, 0.9), 0 0 18px rgba(124, 58, 237, 0.7)',
 
@@ -65,31 +65,31 @@ const baseTokens = {
       'drop-shadow(0 0 8px rgba(167,139,250,.7)) drop-shadow(0 0 22px rgba(124,58,237,.4))',
     glowDropShadowMint:
       'drop-shadow(0 0 8px rgba(52,211,153,.7)) drop-shadow(0 0 22px rgba(16,185,129,.4))',
-    // drop-timer에서 쓰는 빨간색 ✦
+    
     glowDropShadowRed:
       'drop-shadow(0 0 8px rgba(244,114,182,.7)) drop-shadow(0 0 22px rgba(236,72,153,.4))',
     glowDropShadowBlue:
       'drop-shadow(0 0 8px rgba(96,165,250,.7)) drop-shadow(0 0 22px rgba(59,130,246,.4))',
   },
 
-  // status = 벳지에서 쓰는 색상
+  
   status: {
-    // badge, promise card title, 작은 아이콘 상태색
-    new: '#34d399', // 신규/활성 상태 배지, 민트 포인트
-    // hot 상태는 theme.colors.accent 사용
-    col: '#fbbf24', // 한정/마감 임박 배지, 골드 포인트
-    // limited: '#fbbf24', // 한정/마감 임박 배지, 골드 포인트
-    info: '#38bdf8', // 정보성 배지, 블루 포인트
-    mint: '#6ee7b7', // 보조 민트 장식, 스파크/아이콘 보조색
-    rose: '#f9a8d4', // 보조 핑크 장식, 카드 장식/스파크 보조색
-    // goldSoft: '#fcd34d', // 연한 골드 장식, 보조 강조선/잔광
+    
+    new: '#34d399', 
+    
+    col: '#fbbf24', 
+    
+    info: '#38bdf8', 
+    mint: '#6ee7b7', 
+    rose: '#f9a8d4', 
+    
   },
   cStatus: {
-    // badge, promise card title, 작은 아이콘 상태색
+    
     col: { ...violetBtnTone },
     mint: {
       bg: 'linear-gradient(135deg,rgba(14,168,112,0.52) 0%,rgba(8,140,90,0.38) 40%,rgba(14,168,112,0.44) 100%)',
-      // bg: 'linear-gradient(135deg,rgba(14,168,112,0.92) 0%,rgba(8,140,90,0.88) 40%,rgba(14,168,112,0.84) 100%)',
+      
       shadow:
         '0 0 0 1px rgba(52,211,153,0.28),0 0 12px 4px rgba(16,185,129,0.22),0 0 28px 10px rgba(16,185,129,0.12),0 4px 16px rgba(8,140,90,0.18)',
       hoverBg:
@@ -101,7 +101,7 @@ const baseTokens = {
     },
     rose: {
       bg: 'linear-gradient(135deg,rgba(185,40,70,0.38) 0%,rgba(165,25,55,0.34) 40%,rgba(185,40,70,0.34) 100%)',
-      // bg: 'linear-gradient(135deg,rgba(185,40,70,0.88) 0%,rgba(165,25,55,0.84) 40%,rgba(185,40,70,0.80) 100%)',
+      
       shadow:
         '0 0 0 1px rgba(244,100,130,0.22),0 0 10px 3px rgba(220,60,90,0.18),0 0 24px 8px rgba(220,60,90,0.1),0 4px 14px rgba(165,25,55,0.15)',
       hoverBg:
@@ -124,7 +124,7 @@ const baseTokens = {
     },
     gold: {
       bg: 'linear-gradient(135deg,rgba(222,88,12,0.62) 0%,rgba(194,65,8,0.48) 40%,rgba(222,88,12,0.54) 100%)',
-      // bg: 'linear-gradient(135deg,rgba(222,88,12,0.92) 0%,rgba(194,65,8,0.88) 40%,rgba(222,88,12,0.84) 100%)',
+      
       shadow:
         '0 0 0 1px rgba(251,146,60,0.38),0 0 12px 4px rgba(234,88,12,0.32),0 0 28px 10px rgba(234,88,12,0.22),0 4px 16px rgba(194,65,8,0.28)',
       hoverBg:
@@ -136,7 +136,7 @@ const baseTokens = {
     },
   },
 
-  // 라이트/다크 공통 색상
+  
   colors: {
     wColor: '#eeeeff',
     secondary: '#c4b5fd',
@@ -149,25 +149,25 @@ const baseTokens = {
     infoSoft: '#93c5fd',
     infoStrong: '#3b82f6',
   },
-  // 라이트/다크 공통 그라디언트
+  
   gradients: {
     cardTextG: 'linear-gradient(135deg, #c4b5fd, #9c7bff, #6d3cff)',
-    // violetPink: 'linear-gradient(135deg, #6d28d9, #ec4899)',
+    
     violetBlue: 'linear-gradient(135deg, #6d28d9, #3b82f6)',
   },
-  // input 공통 state 토큰
+  
   input: {
     state: {
-      // 에러/성공 테두리색, glow 효과
+      
       errorBorder: 'rgba(248, 113, 113, 0.45)',
       successBorder: 'rgba(52, 211, 153, 0.35)',
       successGlow: '0 0 0 3px rgba(52, 211, 153, 0.08)',
     },
   },
   btn: {
-    // overlay = primary 버튼 공통 상단 하이라이트
+    
     overlay: 'linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, transparent 55%)',
-    // cardWish = 카드 위 찜 버튼 전용 토큰 — 다크 wish 값 고정 (다크/라이트 동일)
+    
     cardWish: {
       bg: 'rgba(0,0,0,0.35)',
       border: 'rgba(255,255,255,0.1)',
@@ -179,10 +179,10 @@ const baseTokens = {
       activeBorder: 'rgba(236,72,153,0.35)',
       activeColor: '#ec4899',
     },
-    // cardAdd = 카드 위 장바구니 버튼 전용 토큰 — 다크 secondary 값 고정 (다크/라이트 동일)
+    
     cardAdd: { ...darkSecondaryBtn },
   },
-  // cardLine = BaseCard 하단 컬러 라인
+  
   cardLine: {
     violet:
       'linear-gradient(90deg,transparent 5%, #a78bfa 35%,#c4b5fd 50%, #a78bfa 65%,transparent 95%)',
@@ -192,7 +192,7 @@ const baseTokens = {
     indigo:
       'linear-gradient(90deg,transparent 5%, #818cf8 35%,#a5b4fc 50%, #818cf8 65%,transparent 95%)',
   },
-  // cardGlow = BaseCard 내부 하단 글로우
+  
   cardGlow: {
     violet: 'radial-gradient(ellipse at 50% 100%,rgba(124,58,237,.25) 0%,transparent 62%)',
     mint: 'radial-gradient(ellipse at 50% 100%,rgba(52,211,153,.25) 0%,transparent 62%)',
@@ -201,7 +201,7 @@ const baseTokens = {
     indigo: 'radial-gradient(ellipse at 50% 100%,rgba(79,70,229,.28) 0%,transparent 62%)',
   },
   dropdown: {
-    // hoverDanger = 로그아웃 등 위험 액션 항목 hover 배경
+    
     hoverDanger: 'rgba(239,68,68,.1)',
   },
   checkbox: {
@@ -213,16 +213,16 @@ const baseTokens = {
     topBg: 'rgba(124,58,237,.03)',
   },
 
-  // 인풋 상단 tabs 레이아웃
+  
   tabs: {
     containerPadding: '4px',
     gap: '5px',
   },
   radii: {
-    // sm = 작게, md = 보통, lg = 크게, xl = 더 크게, 2xl = 훨씬 크게
+    
     sm: '8px',
     md: '12px',
-    lg: '16px', // 뺄까 고민중
+    lg: '16px', 
     xl: '20px',
     xxl: '24px',
     pill: '100px',
@@ -253,8 +253,8 @@ const baseTokens = {
     mono: "'IBM Plex Mono', monospace",
   },
   spacing: {
-    // spacing 스케일: padding / margin / gap 값을 통일해서 쓰기 위한 기준표
-    // 사용 예시: padding: theme.spacing[4];, gap: theme.spacing[6];, margin-bottom: theme.spacing[12];
+    
+    
     1: '4px',
     2: '8px',
     3: '12px',
@@ -273,12 +273,12 @@ const baseTokens = {
     40: '160px',
   },
   grid: {
-    // grid 토큰: 페이지 최대 너비, 좌우 여백, 컬럼 간격 같은 레이아웃 기준값
-    // 사용 예시:
-    // max-width: theme.grid.max;
-    // padding-inline: theme.grid.margin;
-    // gap: theme.grid.gap;
-    // grid-template-columns: repeat(theme.grid.cols, 1fr);
+    
+    
+    
+    
+    
+    
     cols: 12,
     gap: 'clamp(12px,2vw,24px)',
     margin: 'clamp(20px,6vw,80px)',
@@ -292,15 +292,15 @@ export const darkTheme = {
   mode: 'dark',
   colors: {
     ...baseTokens.colors,
-    // background = 페이지 전체 배경
-    background: '#0a0518', // #090613, #06060e 기존값
-    // navBg = 내비게이션 배경
-    navBg: 'rgba(10, 5, 24, 0.88)', //rgba(6,6,14,0.78)
-    // promoBg = 인풋 tabs 호버색
+    
+    background: '#0a0518', 
+    
+    navBg: 'rgba(10, 5, 24, 0.88)', 
+    
     promoBg: 'rgba(9, 6, 19, 0.6)',
     surface: 'rgba(255,255,255,0.04)',
 
-    // 반투명 카드 배경/테두리 색상
+    
     cardBg: 'rgba(255,255,255,0.04)',
     cardBgLight: 'rgba(255,255,255,0.04)',
     cardBgGrad: 'linear-gradient(180deg, transparent 30%, rgba(12,8,32,3) 100%)',
@@ -313,60 +313,60 @@ export const darkTheme = {
     modalShadow: '0 0 0 1px rgba(124,58,237,.08), 0 32px 80px rgba(0,0,0,.7)',
     bandBg: 'rgba(120,60,255,.04)',
 
-    // btn2Bg = 보조 버튼 배경
+    
     btn2Bg: 'rgba(255,255,255,0.06)',
 
-    // dimBg = 모달/검색 딤드 배경
+    
     dimBg: 'rgba(0,0,0,.18)',
 
-    // 텍스트 색상
+    
     text: '#eeeeff',
     noneText: '#eeeeff',
     textSecondary: 'rgba(200,205,255,0.42)',
     border: 'rgba(255,255,255,0.07)',
-    // primary = pulse 메인 라벤더 보라
+    
     primary: '#a78bfa',
     accent: '#ec4899',
-    // warning = 경고/주의 상태, 강조 배지
+    
     warning: '#fbbf24',
 
-    // glowOp = 배경 그라디언트투명도
+    
     glowOp: 0.6,
 
     shadow: 'rgba(20,10,60,0.45)',
     error: '#f87171',
     success: '#34d399',
-    // th = 컬렉션 카드 그라디언트
-    // th1a/th1b = 1번 테마 카드의 시작/끝 색상
+    
+    
     th1a: '#1a0545',
     th1b: '#0d2060',
-    // th2a/th2b = 2번 테마 카드의 시작/끝 색상
+    
     th2a: '#033d2a',
     th2b: '#042d3a',
-    // th3a/th3b = 3번 테마 카드의 시작/끝 색상
+    
     th3a: '#3a0520',
     th3b: '#1f0640',
-    // th4a/th4b = 4번 테마 카드의 시작/끝 색상
+    
     th4a: '#0c1856',
     th4b: '#0a2e52',
   },
   gradients: {
     ...baseTokens.gradients,
-    // lavBlue = 라벤더에서 블루로 가는 그라디언트
+    
     lavBlue: 'linear-gradient(90deg, #a78bfa, #60a5fa)',
     Headline: 'linear-gradient(90deg, #a78bfa, #ec4899)',
     navActive: 'linear-gradient(90deg, #a78bfa, #7c3aed)',
     top: 'linear-gradient(180deg, rgb(20, 12, 56), #2c1a6e)',
     bgMesh: `
       radial-gradient(ellipse 60% 45% at 1% 55%,rgba(100,40,220,0.22) 0%,transparent 62%),
-      /* previous adjusted value: radial-gradient(ellipse 55% 45% at 18% 55%,rgba(100,60,220,0.22) 0%,transparent 62%) */
+      
       radial-gradient(ellipse 65% 45% at 100% 28%,rgba(40,110,250,0.16) 0%,transparent 58%),
       radial-gradient(ellipse 50% 45% at 55% 101%,rgba(220,50,140,0.10) 0%,transparent 70%)
-      /* previous adjusted value: radial-gradient(ellipse 30% 40% at 55% 82%,rgba(180,40,100,0.10) 0%,transparent 58%) */
+      
     `,
   },
   foot: {
-    // decoBand = 푸터 상단 장식 띠 본체(.deco-box)
+    
     decoBand: `linear-gradient(
       to right,
       rgba(6,6,14,1) 4%,
@@ -380,7 +380,7 @@ export const darkTheme = {
       rgba(6,6,14,1) 96%
     )`,
     divider: 'linear-gradient(to right, transparent, rgba(167,139,250,.35), transparent)',
-    // backGlow = 푸터 상단 행성 글로우 배경
+    
     backGlow: `radial-gradient(
       ellipse 100% 28% at 50% 0%,
       rgba(167,139,250,.65) 0%,
@@ -390,18 +390,18 @@ export const darkTheme = {
     )`,
   },
 
-  // Line = 구분선에 쓰는 선 색상
+  
   Line: 'rgba(255, 255, 255, 0.08)',
 
-  // tones = violet / blue 컬러 세트
+  
   tones: {
     violet: {
-      // link
+      
 
       color: '#a78bfa',
       hoverColor: '#ffffff',
       subtleColor: 'rgba(167, 139, 250, 0.5)',
-      // tabs
+      
       containerBg:
         'linear-gradient(135deg, rgba(124, 58, 237, 0.12) 0%, rgba(99, 102, 241, 0.08) 100%)',
       containerBorder: 'rgba(124, 58, 237, 0.2)',
@@ -411,20 +411,20 @@ export const darkTheme = {
       activeColor: '#a78bfa',
       activeShadow: '0 0 16px rgba(124, 58, 237, 0.15)',
       activeLine: 'linear-gradient(90deg, #6d28d9, #7c3aed)',
-      // input
+      
       focusBorder: '#a78bfa',
       focusShadow: '0 1px 0 0 rgba(167, 139, 250, 0.35)',
       iconHover: '#a78bfa',
-      // btn
+      
       ...violetBtnTone,
       spark: '0 0 8px rgba(255,255,255,0.8), 0 0 18px rgba(220,180,255,0.7)',
     },
     blue: {
-      // link
+      
       color: '#60a5fa',
       hoverColor: '#bae6fd',
       subtleColor: 'rgba(96, 165, 250, 0.55)',
-      // tabs
+      
       containerBg:
         'linear-gradient(135deg, rgba(56, 130, 255, 0.1) 0%, rgba(99, 102, 241, 0.08) 100%)',
       containerBorder: 'rgba(96, 165, 250, 0.2)',
@@ -434,11 +434,11 @@ export const darkTheme = {
       activeColor: '#93c5fd',
       activeShadow: '0 0 16px rgba(56, 189, 248, 0.1)',
       activeLine: 'linear-gradient(90deg, #38bdf8, #818cf8)',
-      // input
+      
       focusBorder: '#60a5fa',
       focusShadow: '0 1px 0 0 rgba(56, 130, 255, 0.3)',
       iconHover: '#60a5fa',
-      // btn
+      
       ...blueBtnTone,
       shadow:
         '0 0 0 1px rgba(147, 197, 253, 0.4), 0 0 14px 4px rgba(96, 165, 250, 0.4), 0 0 36px 12px rgba(99, 102, 241, 0.2), 0 4px 20px rgba(56, 100, 240, 0.38)',
@@ -447,7 +447,7 @@ export const darkTheme = {
     },
   },
   iconBtn: {
-    // auth 소셜 로그인 버튼, 원형 아이콘 액션 버튼 같은 UI에 사용
+    
     socialBg: 'rgba(167, 139, 250, 0.05)',
     socialBorder: 'rgba(167, 139, 250, 0.15)',
     socialColor: 'rgba(167, 139, 250, 0.5)',
@@ -455,26 +455,26 @@ export const darkTheme = {
     socialHoverBorder: 'rgba(167, 139, 250, 0.4)',
     socialHoverColor: '#a78bfa',
     socialHoverShadow: '0 6px 20px rgba(124, 58, 237, 0.2)',
-    // 좋아요 아이콘 — cardWish 토큰과 동일, baseTokens에서 참조
+    
     wish: { ...baseTokens.btn.cardWish },
   },
   tabs: {
-    // Tabs 컴포넌트 공용 토큰
-    // 로그인/회원가입 탭, 필터 탭등...
+    
+    
     ...baseTokens.tabs,
     itemColor: 'rgba(200, 205, 255, 0.55)',
     itemHoverColor: 'rgba(220, 225, 255, 0.82)',
     itemHoverBg: 'rgba(255, 255, 255, 0.03)',
   },
   input: {
-    // Input 컴포넌트 공용 토큰
+    
     lineBorder: 'rgba(167, 139, 250, 0.18)',
     placeholder: 'rgba(200, 205, 255, 0.2)',
     icon: 'rgba(167, 139, 250, 0.35)',
     state: { ...baseTokens.input.state },
   },
   btn: {
-    // Button 컴포넌트 공용 토큰
+    
     ...baseTokens.btn,
     secondaryBg: darkSecondaryBtn.bg,
     secondaryBorder: darkSecondaryBtn.border,
@@ -485,36 +485,36 @@ export const darkTheme = {
     secondaryHoverColor: darkSecondaryBtn.hoverColor,
     secondaryHoverShadow: darkSecondaryBtn.hoverShadow,
   },
-  // toggle.thumb = 테마 토글 핸들(원형 버튼)
-  // toggle.track = 토글 pill 트랙 자체
+  
+  
   toggle: {
     thumbBg: 'linear-gradient(145deg, #6d28d9, #4c1d95)',
     thumbShadow:
       '0 0 0 1px rgba(167,139,250,.35),0 0 8px 3px rgba(130,60,255,.55),0 0 18px 6px rgba(100,40,230,.3)',
-    trackBg: 'rgba(14,8,30,.7)', // 트랙 배경
-    trackBorder: 'rgba(167,139,250,.32)', // 트랙 테두리
+    trackBg: 'rgba(14,8,30,.7)', 
+    trackBorder: 'rgba(167,139,250,.32)', 
     trackShadow:
-      '0 0 0 1px rgba(100,40,200,.1), 0 0 10px 2px rgba(130,60,220,.18), inset 0 1px 0 rgba(255,255,255,.07)', // 트랙 기본 그림자
-    trackHoverBorder: 'rgba(190,150,255,.6)', // 트랙 hover 테두리
+      '0 0 0 1px rgba(100,40,200,.1), 0 0 10px 2px rgba(130,60,220,.18), inset 0 1px 0 rgba(255,255,255,.07)', 
+    trackHoverBorder: 'rgba(190,150,255,.6)', 
     trackHoverShadow:
-      '0 0 0 1px rgba(130,60,220,.2), 0 0 16px 5px rgba(150,70,255,.32), 0 0 36px 12px rgba(120,40,230,.16), inset 0 1px 0 rgba(255,255,255,.1)', // 트랙 hover 그림자
+      '0 0 0 1px rgba(130,60,220,.2), 0 0 16px 5px rgba(150,70,255,.32), 0 0 36px 12px rgba(120,40,230,.16), inset 0 1px 0 rgba(255,255,255,.1)', 
   },
   dropdown: {
     ...baseTokens.dropdown,
-    bg: 'rgba(10,8,26,.9)', // 드롭다운 배경
-    border: 'rgba(167,139,250,.18)', // 드롭다운 테두리
-    shadow: '0 20px 52px rgba(0,0,0,.32)', // 드롭다운 그림자
-    hoverBg: 'rgba(124,58,237,.13)', // 일반 항목 hover 배경
+    bg: 'rgba(10,8,26,.9)', 
+    border: 'rgba(167,139,250,.18)', 
+    shadow: '0 20px 52px rgba(0,0,0,.32)', 
+    hoverBg: 'rgba(124,58,237,.13)', 
   },
   effects: {
-    // 카드 하단 beam / glow / line 같은 장식 효과
+    
     ...baseTokens.effects,
 
-    cb1: 'linear-gradient(to top,rgba(124,58,237,.85),rgba(167,139,250,.3),transparent)', // 카테고리 카드 안쪽 효과 1
-    cb2: 'linear-gradient(to top,rgba(59,130,246,.75),rgba(96,165,250,.28),transparent)', // 카테고리 카드 안쪽 효과 2
-    cb3: 'linear-gradient(to top,rgba(236,72,153,.75),rgba(244,114,182,.28),transparent)', // 카테고리 카드 안쪽 효과 3
-    cb4: 'linear-gradient(to top,rgba(99,102,241,.75),rgba(129,140,248,.28),transparent)', // 카테고리 카드 안쪽 효과 4
-    cb5: 'linear-gradient(to top,rgba(242,79,136,.7),rgba(249,168,212,.25),transparent)', // 카테고리 카드 안쪽 효과 5
+    cb1: 'linear-gradient(to top,rgba(124,58,237,.85),rgba(167,139,250,.3),transparent)', 
+    cb2: 'linear-gradient(to top,rgba(59,130,246,.75),rgba(96,165,250,.28),transparent)', 
+    cb3: 'linear-gradient(to top,rgba(236,72,153,.75),rgba(244,114,182,.28),transparent)', 
+    cb4: 'linear-gradient(to top,rgba(99,102,241,.75),rgba(129,140,248,.28),transparent)', 
+    cb5: 'linear-gradient(to top,rgba(242,79,136,.7),rgba(249,168,212,.25),transparent)', 
     hoverShadowCardBase: '0 20px 52px rgba(0,0,0,.30),0 0 32px rgba(124,58,237,.10)',
     hoverShadowCardviolet:
       '0 20px 52px rgba(0,0,0,.3),0 0 40px rgba(124,58,237,.2),0 2px 30px rgba(167,139,250,.15)',
@@ -532,9 +532,9 @@ export const darkTheme = {
     hoverShadowCategoryindigo: '0 14px 40px rgba(20,10,60,.45),0 0 36px rgba(99,102,241,.22)',
   },
   spark: {
-    // cat-spark = 카테고리 카드 중앙 반짝임 장식
-    // arm = 십자/대각선 빛줄기 색
-    // glow = cat-spark 전체 drop-shadow 발광
+    
+    
+    
     csk1Arm: 'linear-gradient(to bottom,transparent,#c4b5fd 40%,#fff 50%,#c4b5fd 60%,transparent)',
     csk1Glow: 'drop-shadow(0 0 8px rgba(167,139,250,.7)) drop-shadow(0 0 22px rgba(124,58,237,.4))',
     csk2Arm: 'linear-gradient(to bottom,transparent,#6ee7b7 40%,#fff 50%,#6ee7b7 60%,transparent)',
@@ -549,20 +549,20 @@ export const darkTheme = {
       'drop-shadow(0 0 8px rgba(196,181,253,.8)) drop-shadow(0 0 22px rgba(167,139,250,.5))',
   },
   card: {
-    // 제품 카드/카테고리 카드 배경
-    // th = 테마 메인 카드
-    // ci = 카드 안쪽 / 보조 카드
-    th1: 'linear-gradient(145deg, #2d1065 0%, #0d2a70 60%, #061540 100%)', // 테마 메인 카드 1
-    th2: 'linear-gradient(145deg, #064028 0%, #054858 60%, #021820 100%)', // 테마 메인 카드 2
-    th3: 'linear-gradient(145deg, #5a0828 0%, #2a0858 60%, #160424 100%)', // 테마 메인 카드 3
-    th4: 'linear-gradient(145deg, #0c1e68 0%, #0a3060 60%, #040c28 100%)', // 테마 메인 카드 4
-    ci1: 'linear-gradient(155deg, #1a0848 0%, #0d2260 60%, #060c28 100%)', // 카드 안쪽/보조 카드 1
-    ci2: 'linear-gradient(155deg, #042e20 0%, #053a40 60%, #011018 100%)', // 카드 안쪽/보조 카드 2
-    ci3: 'linear-gradient(155deg, #3a0620 0%, #1e0640 60%, #0e041e 100%)', // 카드 안쪽/보조 카드 3
-    ci4: 'linear-gradient(155deg, #0c1660 0%, #082846 60%, #040c22 100%)', // 카드 안쪽/보조 카드 4
-    ci5: 'linear-gradient(145deg, #1e0638 0%, #0d1a50 60%, #040c28 100%)', // 카드 안쪽/보조 카드 5
+    
+    
+    
+    th1: 'linear-gradient(145deg, #2d1065 0%, #0d2a70 60%, #061540 100%)', 
+    th2: 'linear-gradient(145deg, #064028 0%, #054858 60%, #021820 100%)', 
+    th3: 'linear-gradient(145deg, #5a0828 0%, #2a0858 60%, #160424 100%)', 
+    th4: 'linear-gradient(145deg, #0c1e68 0%, #0a3060 60%, #040c28 100%)', 
+    ci1: 'linear-gradient(155deg, #1a0848 0%, #0d2260 60%, #060c28 100%)', 
+    ci2: 'linear-gradient(155deg, #042e20 0%, #053a40 60%, #011018 100%)', 
+    ci3: 'linear-gradient(155deg, #3a0620 0%, #1e0640 60%, #0e041e 100%)', 
+    ci4: 'linear-gradient(155deg, #0c1660 0%, #082846 60%, #040c22 100%)', 
+    ci5: 'linear-gradient(145deg, #1e0638 0%, #0d1a50 60%, #040c28 100%)', 
   },
-  // badge = 태그 버튼 배지 토큰 (limited / hot / collab / new)
+  
   badge: {
     col: { bg: 'rgba(124,58,237,.22)', border: 'rgba(124,58,237,.38)', color: '#c4b5fd' },
     hot: { bg: 'rgba(236,72,153,.18)', border: 'rgba(236,72,153,.38)', color: '#f9a8d4' },
@@ -570,13 +570,13 @@ export const darkTheme = {
     new: { bg: 'rgba(52,211,153,.12)', border: 'rgba(52,211,153,.3)', color: '#6ee7b7' },
     info: { bg: 'rgba(0, 68, 153, 0.2)', border: 'rgba(56,189,248,.38)', color: '#38bdf8' },
   },
-  // badge: {
-  //   col: { bg: 'rgba(42, 0, 116, 0.22)', border: 'rgba(124,58,237,.38)', color: '#6e4aff' },
-  //   hot: { bg: 'rgba(97, 0, 48, 0.18)', border: 'rgba(236,72,153,.38)', color: '#ff008c' },
-  //   best: { bg: 'rgba(59, 43, 0, 0.13)', border: 'rgba(251,191,36,.3)', color: '#ffb700' },
-  //   new: { bg: 'rgba(0, 41, 26, 0.12)', border: 'rgba(52,211,153,.3)', color: '#00ff99' },
-  //   info: { bg: 'rgba(0, 68, 153, 0.2)', border: 'rgba(56,189,248,.38)', color: '#38bdf8' },
-  // },
+  
+  
+  
+  
+  
+  
+  
   cart: {
     ...baseTokens.cart,
     topBorder: 'rgba(167,139,250,.3)',
@@ -589,7 +589,7 @@ export const lightTheme = {
   mode: 'light',
   colors: {
     ...baseTokens.colors,
-    background: '#ece9ff', // 기존 색상 #e4e0ff
+    background: '#ece9ff', 
     navBg: 'rgba(236,233,255,0.92)',
     promoBg: 'rgba(228,224,255,1)',
     surface: 'rgba(124,58,237,0.08)',
@@ -629,21 +629,20 @@ export const lightTheme = {
   gradients: {
     ...baseTokens.gradients,
     lavBlue: 'linear-gradient(90deg, #7c3aed, #60a5fa)',
-    // lavPink = 라벤더에서 핑크로 가는 그라디언트
+    
     Headline: 'linear-gradient(90deg, #7c3aed, #ec4899)',
     navActive: 'linear-gradient(90deg, #7c3aed, #6d28d9)',
     top: 'linear-gradient(180deg, rgba(252,250,255,0.97), #dabaff)',
     bgMesh: `
       radial-gradient(ellipse 55% 55% at 8% 44%,rgba(100,40,220,0.36) 0%,transparent 62%),
-      /* previous adjusted value: radial-gradient(ellipse 55% 45% at 18% 55%,rgba(100,60,220,0.06) 0%,transparent 62%) */
+      
       radial-gradient(ellipse 45% 35% at 92% 28%,rgba(40,110,250,0.30) 0%,transparent 58%),
-      // radial-gradient(ellipse 45% 35% at 82% 28%,rgba(218, 40, 250, 0.45) 0%,transparent 58%),
       radial-gradient(ellipse 80% 40% at 50% 100%, rgba(124, 58, 237, 0.42) 0%, transparent 55%)
 
     `,
   },
   foot: {
-    // decoBand = 푸터 상단 장식
+    
     decoBand: `linear-gradient(
       to right,
       rgba(235,233,255,1) 4%,
@@ -656,9 +655,9 @@ export const lightTheme = {
       rgba(167,139,250,.7) 80%,
       rgba(235,233,255,1) 96%
     )`,
-    // 네비&푸터 구분선
+    
     divider: 'linear-gradient(to right, transparent, rgba(124,58,237,.25), transparent)',
-    // backGlow = 푸터 상단 행성 글로우 배경
+    
     backGlow: `radial-gradient(
       ellipse 100% 28% at 50% 0%,
       rgba(167,139,250,.45) 0%,
@@ -670,11 +669,11 @@ export const lightTheme = {
 
   tones: {
     violet: {
-      // link
+      
       color: '#6d28d9',
       hoverColor: '#5b21b6',
       subtleColor: 'rgba(109, 40, 217, 0.55)',
-      // tabs
+      
       containerBg:
         'linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(99, 102, 241, 0.07) 100%)',
       containerBorder: 'rgba(124, 58, 237, 0.18)',
@@ -684,11 +683,11 @@ export const lightTheme = {
       activeColor: '#6d28d9',
       activeShadow: '0 0 12px rgba(124, 58, 237, 0.12)',
       activeLine: 'linear-gradient(90deg, #6d28d9, #7c3aed)',
-      // input
+      
       focusBorder: '#6d28d9',
       focusShadow: '0 1px 0 0 rgba(124, 58, 237, 0.3)',
       iconHover: '#6d28d9',
-      // btn
+      
       bg: 'linear-gradient(135deg,rgba(124,58,237,0.9),rgba(99,40,210,0.88))',
       shadow:
         '0 0 0 0.8px rgba(167,139,250,0.55),0 0 12px 3px rgba(124,58,237,0.4),0 4px 18px rgba(100,20,200,0.35)',
@@ -700,11 +699,11 @@ export const lightTheme = {
       spark: '0 0 8px rgba(255,255,255,0.8), 0 0 18px rgba(220,180,255,0.7)',
     },
     blue: {
-      // link
+      
       color: '#3b82f6',
       hoverColor: '#60a5fa',
       subtleColor: 'rgba(59, 130, 246, 0.5)',
-      // tabs
+      
       containerBg:
         'linear-gradient(135deg, rgba(56, 130, 255, 0.08) 0%, rgba(99, 102, 241, 0.06) 100%)',
       containerBorder: 'rgba(96, 165, 250, 0.18)',
@@ -714,11 +713,11 @@ export const lightTheme = {
       activeColor: '#60a5fa',
       activeShadow: '0 0 12px rgba(56, 189, 248, 0.1)',
       activeLine: 'linear-gradient(90deg, #3b82f6, #818cf8)',
-      // input
+      
       focusBorder: '#3b82f6',
       focusShadow: '0 1px 0 0 rgba(56, 130, 255, 0.3)',
       iconHover: '#3b82f6',
-      // btn
+      
       ...blueBtnTone,
       shadow: '0 0 0 0.8px rgba(147, 197, 253, 0.4), 0 4px 16px rgba(56, 130, 255, 0.25)',
       hoverShadow:
@@ -770,20 +769,20 @@ export const lightTheme = {
   },
   dropdown: {
     ...baseTokens.dropdown,
-    bg: 'rgba(242,240,255,.98)', // 드롭다운 배경
-    border: 'rgba(124,58,237,.2)', // 드롭다운 테두리
-    shadow: '0 20px 52px rgba(124,58,237,.14)', // 드롭다운 그림자
-    hoverBg: 'rgba(124,58,237,.08)', // 일반 항목 hover 배경
+    bg: 'rgba(242,240,255,.98)', 
+    border: 'rgba(124,58,237,.2)', 
+    shadow: '0 20px 52px rgba(124,58,237,.14)', 
+    hoverBg: 'rgba(124,58,237,.08)', 
   },
   toggle: {
     thumbBg: 'linear-gradient(145deg, #f59e0b, #d97706)',
     thumbShadow:
       '0 0 0 1px rgba(251,191,36,.5),0 0 8px 3px rgba(245,158,11,.65),0 0 18px 6px rgba(217,119,6,.35)',
-    trackBg: 'rgba(240,235,255,.75)', // 트랙 배경
-    trackBorder: 'rgba(124,58,237,.28)', // 트랙 테두리
-    trackShadow: '0 0 8px 2px rgba(124,58,237,.1), inset 0 1px 0 rgba(255,255,255,.8)', // 트랙 기본 그림자
-    trackHoverBorder: 'rgba(124,58,237,.55)', // 트랙 hover 테두리
-    trackHoverShadow: '0 0 16px 5px rgba(124,58,237,.2), inset 0 1px 0 rgba(255,255,255,.9)', // 트랙 hover 그림자
+    trackBg: 'rgba(240,235,255,.75)', 
+    trackBorder: 'rgba(124,58,237,.28)', 
+    trackShadow: '0 0 8px 2px rgba(124,58,237,.1), inset 0 1px 0 rgba(255,255,255,.8)', 
+    trackHoverBorder: 'rgba(124,58,237,.55)', 
+    trackHoverShadow: '0 0 16px 5px rgba(124,58,237,.2), inset 0 1px 0 rgba(255,255,255,.9)', 
   },
   effects: {
     ...baseTokens.effects,
@@ -822,7 +821,7 @@ export const lightTheme = {
     csk5Glow: 'drop-shadow(0 0 6px rgba(190,24,93,.6)) drop-shadow(0 0 16px rgba(236,72,153,.35))',
   },
   card: {
-    // th = 테마 메인 카드
+    
     th1: 'linear-gradient(145deg, #c4b0ff, #9ab8ff)',
     th2: 'linear-gradient(145deg, #90e8c0, #a0d8f0)',
     th3: 'linear-gradient(145deg, #ffb0cc, #d8a0ff)',
@@ -833,7 +832,7 @@ export const lightTheme = {
     ci4: 'linear-gradient(155deg, #b8c8ff, #b0a8f0)',
     ci5: 'linear-gradient(145deg, #d4b8ff, #baaaf8)',
   },
-  // badge = 태그 버튼 배지 토큰 (limited / hot / collab / new)
+  
   badge: {
     col: { bg: 'rgba(124,58,237,.12)', border: 'rgba(124,58,237,.25)', color: '#6d28d9' },
     hot: { bg: 'rgba(236,72,153,.12)', border: 'rgba(236,72,153,.25)', color: '#be185d' },

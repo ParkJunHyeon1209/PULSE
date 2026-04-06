@@ -1,15 +1,6 @@
 import styled from '@emotion/styled';
 
-/**
- * Props:
- *   eyebrow    — 상단 소제목 (대문자 모노)
- *   label      — 메인 텍스트
- *   hint       — 하단 보조 텍스트
- *   lightText  — 라이트 모드에서 테마 기본 텍스트 색상 사용 (boolean)
- *   lightCaptionShadow — 라이트 모드에서만 어두운 텍스트 shadow 적용 여부 (boolean)
- *   lightColor — 라이트 모드에서 사용할 커스텀 색상 오브젝트 { eyebrow, label, hint }
- *                lightText보다 우선 적용됨
- */
+
 export default function BrandSlotCaption({
   eyebrow,
   label,

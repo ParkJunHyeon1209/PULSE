@@ -113,7 +113,7 @@ export default function ShoppingCart() {
           <Summary />
         </SummaryWrap>
       </MainWrap>
-      {/* tag가 best인 제품만 추천 */}
+      
     </ShoppingCartWrap>
   );
 }

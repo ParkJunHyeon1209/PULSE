@@ -37,7 +37,7 @@ export default function PurchaseActions({ product, quantity = 1, onAddToCart, on
     openModal(BUY_NOW_MODAL_ID);
   };
 
-  // 구매하기
+  
   const handleConfirmBuyNow = () => {
     if (!product) {
       return;

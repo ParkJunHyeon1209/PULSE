@@ -60,7 +60,6 @@ const SectionHeader = styled.div`
 const SectionTitle = styled.h2`
   margin: 0;
   font-size: ${({ theme }) => theme.fontSize.m};
-  /* font-weight: 600; */
   color: ${({ theme }) => theme.colors.text};
   transition: font-size ${({ theme }) => theme.motion.normal};
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {

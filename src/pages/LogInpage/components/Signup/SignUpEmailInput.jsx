@@ -180,7 +180,7 @@ export default function SignUpEamilInput({
   };
   return (
     <>
-      {/* 이메일 입력란 */}
+      
       <InputGroup>
         <InputRow>
           <InputWrap>

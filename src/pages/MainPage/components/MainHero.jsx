@@ -8,7 +8,7 @@ import PulseLineSvg from './HeroPulseSvg';
 import * as S from './styles/MainHero';
 import useOverlayStore from '../../../store/useOverlayStore';
 
-// 슬라이드 콘텐츠 데이터
+
 const HERO_SLIDES = [
   {
     id: '1',
@@ -126,7 +126,7 @@ export default function MainHero({ interval = 4000 }) {
       />
       <S.HeroSection>
         <S.HeroWrap onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
-          {/* 고정 뱃지 */}
+          
           <S.HeroDec variant="secondary" spark={true} flex="0" icon={false}>
             <LavStarIcon $animate={true} className="btn-spark" aria-hidden="true">
               ✦
@@ -137,7 +137,7 @@ export default function MainHero({ interval = 4000 }) {
             </S.LavStarEnd>
           </S.HeroDec>
 
-          {/* 슬라이드 변경 */}
+          
           <S.HeroTextGroup $visible={textVisible}>
             <Fragment key={textIndex}>
               <S.AnimIntroLabel $delay={0}>{slide.introLabel}</S.AnimIntroLabel>
@@ -155,7 +155,7 @@ export default function MainHero({ interval = 4000 }) {
                   드롭 알림 신청
                 </S.HeroButton>
               </S.AnimHeroActions>
-              {/* 스타일: styles/MainHero.js 158번째 줄 / MainHero.jsx 159~170번째 줄 */}
+              
               <S.AnimHeroStats $delay={220}>
                 {slide.stats.map((stat, i) => (
                   <S.HeroStat key={stat.value}>
@@ -175,7 +175,7 @@ export default function MainHero({ interval = 4000 }) {
         </S.HeroWrap>
       </S.HeroSection>
 
-      {/* 텍스트 슬라이드 */}
+      
       <S.SlideNavRail>
         {HERO_SLIDES.map((s, index) => (
           <S.SlideNavItem

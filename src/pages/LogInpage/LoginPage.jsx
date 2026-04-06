@@ -15,7 +15,7 @@ const LogInPageContainer = styled.div`
   width: 100%;
   min-height: 100vh;
 
-  /* Chrome 테마가 인풋 배경을 덮지 않도록 배경색으로 고정 */
+  
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
@@ -60,7 +60,7 @@ const LogoWrap = styled.div`
   text-decoration: none;
 `;
 
-// 왼쪽 섹션
+
 const LeftSection = styled.div`
   flex: 0 0 50%;
   display: flex;
@@ -74,7 +74,7 @@ const LeftSection = styled.div`
   }
 `;
 
-// 오른쪽 섹션
+
 const RightSection = styled.div`
   flex: 0 0 50%;
   box-sizing: border-box;
@@ -125,14 +125,14 @@ export default function LoginPage() {
       <LogoWrap>
         <AppLogo size="120px" src={theme.mode === 'dark' ? logoDark : logoLight} alt="PULSE" />
       </LogoWrap>
-      {/* --- 왼쪽 영역 --- */}
+      
       <LeftSection>
         <AuthLeftPanel mode={activeTab} />
       </LeftSection>
 
-      {/* --- 오른쪽 영역 --- */}
+      
       <RightSection>
-        {/* 폼 렌더링 영역 */}
+        
         <div className="form-area">
           <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
           {activeTab === 'signin' ? (

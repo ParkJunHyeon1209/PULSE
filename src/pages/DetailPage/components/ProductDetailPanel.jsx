@@ -26,7 +26,7 @@ export default function ProductDetailPanel({
   const wishlistIds = useWishlistStore((state) => state.wishlistIds);
   const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
 
-  const isLiked = wishlistIds.includes(product.id);
+  const isLiked = isLogin && wishlistIds.includes(product.id);
   const handleToggleLike = () => {
     if (!isLogin) {
       onRequireLogin?.();
@@ -35,7 +35,7 @@ export default function ProductDetailPanel({
 
     toggleWishlist(product.id);
   };
-  // id 311부터는 빠진 정보가 많음
+  
   const logisticsInfo = product.logisticsInfo ?? {};
 
   return (
@@ -71,7 +71,7 @@ export default function ProductDetailPanel({
 
         <Description>{product.desc}</Description>
       </DescWrap>
-      {/* api명세에 없음 ↓ */}
+      
       <FeatureTagList>
         <TagButton $tone="mint">✔ 직로배송</TagButton>
         <TagButton $tone="violet">햅틱 피드백</TagButton>
@@ -118,7 +118,7 @@ export default function ProductDetailPanel({
 const InfoSection = styled.aside`
   display: flex;
   flex-direction: column;
-  /* gap: ${({ theme }) => theme.spacing[2]}; */
+  
   color: ${({ theme }) => theme.colors.text};
 `;
 const LikeButton = styled(CardWish)`

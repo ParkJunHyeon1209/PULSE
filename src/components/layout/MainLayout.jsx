@@ -21,11 +21,7 @@ const MainContent = styled.main`
   width: 100%;
   flex: 1;
   max-width: ${({ theme }) => theme.grid.max};
-  /* padding-top: 100px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding-top: 140px;
-  } */
+  
 `;
 
 export default function MainLayout() {

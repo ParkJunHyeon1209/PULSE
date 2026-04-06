@@ -1,4 +1,4 @@
-// 현재 화면 너비가 mobile/tablet/desktop 중 어디에 해당하는지 반환하는 커스텀 훅
+
 import { useEffect, useState } from 'react';
 
 export function useResponsive(breakpoints) {

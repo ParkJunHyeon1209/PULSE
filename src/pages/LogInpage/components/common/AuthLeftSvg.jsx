@@ -181,10 +181,10 @@ const BaseWave = styled.path`
   opacity: 0.1;
 `;
 
-// const AnimatedWave = styled.path`
-//   stroke-dasharray: 600 200;
-//   animation: ${waveFlow} 3s linear infinite;
-// `;
+
+
+
+
 
 const AnimatedWave2 = styled.path`
   mix-blend-mode: multiply;
@@ -231,7 +231,7 @@ export default function AuthLeftSvg({ tone = 'violet' }) {
         <WaveLayer>
           <WavePath viewBox="0 0 400 40" $waveStroke={waveStroke}>
             <BaseWave d={DEFAULT_WAVE_PATH} strokeLinecap="round" strokeLinejoin="round" />
-            {/* <AnimatedWave d={DEFAULT_WAVE_PATH} strokeLinecap="round" strokeLinejoin="round" /> */}
+            
             <AnimatedWave2 d={DEFAULT_WAVE_PATH} strokeLinecap="round" strokeLinejoin="round" />
           </WavePath>
         </WaveLayer>

@@ -2,7 +2,7 @@ import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { TONE_BG } from '../../utils/toneMap';
 
-/* ─── spark-breathe 애니메이션 (tone별) ─── */
+
 const sparkBreathe1 = keyframes`
   0%,100% { filter: drop-shadow(0 0 6px rgba(200,180,255,.6)) drop-shadow(0 0 18px rgba(160,120,255,.35)); transform: scale(1) rotate(0deg); }
   50%      { filter: drop-shadow(0 0 12px rgba(220,200,255,.9)) drop-shadow(0 0 32px rgba(180,140,255,.5)); transform: scale(1.06) rotate(8deg); }
@@ -69,14 +69,7 @@ const SparkArm = styled.div`
   }}
 `;
 
-/**
- * BaseSparkIcon
- *
- * Props:
- * - tone : 'violet' | 'mint' | 'pink' | 'blue'  (default: 'violet')
- * - anim : keyframes — 커스텀 애니메이션 (없으면 tone 기본값)
- * - dur  : '4s' 등  — 애니메이션 duration (없으면 tone 기본값)
- */
+
 export default function BaseSparkIcon({ tone = 'pink', anim, dur }) {
   return (
     <SparkWrap $tone={tone} $anim={anim} $dur={dur}>

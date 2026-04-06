@@ -27,7 +27,7 @@ const PageWrap = styled.main`
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-  /* overflow: visible; */
+  
   isolation: isolate;
   margin-top: 100px;
   margin-bottom: -200px;

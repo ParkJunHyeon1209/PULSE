@@ -12,7 +12,7 @@ import { getAccent } from '../../brandAccents';
 
 const STORY_TABLET_BREAKPOINT = '868px';
 
-const SLIDE_DURATION = 10.5; // 3장 × 3.5초
+const SLIDE_DURATION = 10.5; 
 
 const heroSlideKeyframes = keyframes`
   0% {
@@ -317,7 +317,7 @@ export default function BrandStorySec() {
       ))}
       <HeroGrid>
         <HeroCopy>
-          {/* <HeroKicker>{heroSection.kicker}</HeroKicker> */}
+          
           <HeroHeading {...heroSection.section} />
 
           <HeroVisual>

@@ -119,7 +119,7 @@ export default function BrandKeywordSec() {
               </PillarSparkWrap>
               <PillarTop>
                 <PillarIndex $accent={pillar.accent}>0{index + 1}</PillarIndex>
-                {/* <LavStarIcon $animate={true}>✦</LavStarIcon> */}
+                
               </PillarTop>
               <PillarKeyword>{pillar.title}</PillarKeyword>
               <PillarDesc>{pillar.description}</PillarDesc>

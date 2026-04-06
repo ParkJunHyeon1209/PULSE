@@ -69,20 +69,8 @@ const SectionSub = styled.p`
   }
 `;
 
-/**
- * 섹션 헤딩 컴포넌트
- *
- * label     : 제목 위 작은 레이블 텍스트
- * title     : 메인 제목 (사용X - null)
- * sub       : 제목 아래 보조 설명 (사용X - null)
- * align     : 'left' | 'center' (기본값 'left')
- * titleFont : 타이틀 폰트 변경 (ex: theme.fontFamily.display)
- * titleSize : 타이틀 폰트 크기 변경 (ex: theme.fontSize.xxl)
- * star      : label 오른쪽에 ✦ 추가 여부 (기본값 false)
- */
-/**
- * colorTitle : title 아래에 오는 그라디언트 텍스트 라인 (theme.gradients.Headline 사용)
- */
+
+
 export default function BaseSection({
   label,
   titlePrefix,

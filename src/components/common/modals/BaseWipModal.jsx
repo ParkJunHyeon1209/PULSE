@@ -2,12 +2,12 @@ import useOverlayStore from '../../../store/useOverlayStore';
 import BaseModal from '../BaseModal';
 import BaseBtn from '../BaseBtn';
 
-// 사용법:
-// ex) <BaseWipModal id="brandStory" label="PULSE BRAND" title="브랜드 스토리" />
 
-// id — 모달 키 (openModal(id) / closeModal(id)) 사용처에 맞게 아이디 바꿔주기
-// label — 모달 상단 라벨 (선택 - 대문자로 각 사용처에 맞게 라벨 바꿔주기, 예: PULSE BRAND)
-// title — 모달 타이틀
+
+
+
+
+
 export default function BaseWipModal({ id, label, title }) {
   const isOpen = useOverlayStore((state) => Boolean(state.modals[id]));
   const closeModal = useOverlayStore((state) => state.closeModal);

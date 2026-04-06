@@ -194,7 +194,7 @@ export default function Summary() {
   const user = useAuthStore((state) => state.user);
   const setUser = useAuthStore((state) => state.login);
 
-  // 결제
+  
   const getCheckedItems = useCartStore((state) => state.getCheckedItems);
   const clearCheckedItems = useCartStore((state) => state.clearCheckedItems);
   const addOrder = useOrderStore((state) => state.addOrder);

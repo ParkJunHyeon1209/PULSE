@@ -63,7 +63,7 @@ export const heroSlides = [
 export const heroSection = {
   kicker: 'PULSE · Brand Story',
   section: {
-    // 브랜드 스토리 / 감각을 설계하는 / 게이밍 기어 브랜드 +  빛과 진동, 소리가 하나로 연결되는 순간을 위해.
+    
     label: 'Brand Story',
     title: '감각을 설계하는',
     colorTitle: 'Gaming Gear Brand',
@@ -88,7 +88,7 @@ export const heroStats = [
 
 export const identitySection = {
   section: {
-    // 브랜드 아이덴티티 / PULSE만의 / 시그널 컬러 시스템
+    
     label: 'Brand Identity',
     titlePrefix: 'PULSE',
     title: '만의',
@@ -110,7 +110,7 @@ export const identityColors = [
 
 export const layoutSection = {
   section: {
-    // 제품 철학 / 플레이어의 감각 / 플레이어 중심 설계
+    
     label: 'Product Philosophy',
     title: '플레이를 위한',
     colorTitle: 'Player-First Design',
@@ -139,7 +139,7 @@ export const layoutSection = {
 
 export const keywordSection = {
   section: {
-    // 브랜드 키워드 / PULSE를 / 정의하는 세 가지
+    
     label: 'Brand Keywords',
     titlePrefix: 'PULSE',
     title: '를 정의하는',
@@ -186,7 +186,7 @@ export const gallerySection = {
 export const closingSection = {
   miniLabel: 'Last Signal',
   section: {
-    // 지금 시작하세요 / 신호가 울리는 순간, / 당신의 플레이가 시작된다
+    
     label: 'Start Now',
     title: '신호가 울리는 순간,',
     colorTitle: 'Your Play Begins',

@@ -110,9 +110,6 @@ const HeroCenterContent = styled.div`
   align-items: center;
   justify-content: center;
   gap: ${({ theme }) => theme.spacing[4]};
-  //padding: ${({ theme }) => theme.spacing[10]} ${({ theme }) => theme.spacing[6]};
-  //padding-bottom: 130px;
-
   padding: ${({ theme}) => `${theme.spacing[10]} ${theme.spacing[6]} ${theme.spacing[10]}`};
   text-align: center;
 
@@ -123,8 +120,6 @@ const HeroCenterContent = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     min-height: 280px;
     gap: ${({ theme }) => theme.spacing[3]};
-    //padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[4]};
-    //padding-bottom: 120px;
     padding: ${({ theme, $hasTabs }) =>
       $hasTabs
         ? `${theme.spacing[8]} ${theme.spacing[4]} 120px`
@@ -179,13 +174,11 @@ const HeroTabsArea = styled.div`
   }
 `;
 
-// BaseSection 타이틀 라벨 순서 바꾸기
 const HeroSectionHead = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
 
-  // BaseSection div
   & > div {
     display: flex;
     flex-direction: column;
@@ -193,7 +186,6 @@ const HeroSectionHead = styled.div`
     text-align: center;
   }
 
-  // title 위로 올리기
   & > div > h2 {
     order: 1;
     margin: 0 0 ${({ theme }) => theme.spacing[3]} 0;
@@ -206,7 +198,6 @@ const HeroSectionHead = styled.div`
     text-shadow: 0 0 18px ${({ theme }) => theme.colors.background}80;
   }
 
-  // label 아래로 내리기
   & > div > div {
     order: 2;
     margin-bottom: 0;
@@ -218,7 +209,6 @@ const HeroSectionHead = styled.div`
     color: ${({ theme }) => theme.colors.secondary};
   }
 
-  // sub 제일 아래로
   & > div > p {
     order: 3;
   }

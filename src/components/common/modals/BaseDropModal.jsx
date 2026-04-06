@@ -16,7 +16,7 @@ export default function BaseDropModal({
       label={label}
       width="360px"
       title={title}
-      // closable={false}
+      
     >
       <p>
         드롭 알림이 신청되었습니다. <br />

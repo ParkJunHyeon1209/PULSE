@@ -127,14 +127,14 @@ export default function PulseLineSvg({ className, label = 'Live Signal' }) {
             <stop offset="30%" stopColor="#ec489ac5" stopOpacity=".6" />
             <stop offset="70%" stopColor="#bf26d3ba" />
             <stop offset="100%" stopColor="#7c3aedb2" stopOpacity=".1" />
-            {/* <stop offset="78%" stopColor="#60a5fa" /> */}
-            {/* <stop offset="100%" stopColor="#38bdf8" stopOpacity=".5" /> */}
+            
+            
           </linearGradient>
           <linearGradient id="hero-svg-trail-g" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%" stopColor="#ec4899" stopOpacity=".1" />
             <stop offset="20%" stopColor="#c026d3" stopOpacity=".2" />
             <stop offset="60%" stopColor="#7c3aed" stopOpacity=".3" />
-            {/* <stop offset="100%" stopColor="#60a5fa" stopOpacity="1" /> */}
+            
           </linearGradient>
           <filter id="hero-svg-glow" x="-20%" y="-150%" width="140%" height="400%">
             <feGaussianBlur stdDeviation="3" result="big" />

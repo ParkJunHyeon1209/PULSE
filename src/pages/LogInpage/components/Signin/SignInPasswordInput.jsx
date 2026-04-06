@@ -64,7 +64,7 @@ export default function SignInPasswordInput({
 }) {
   return (
     <>
-      {/* 비밀번호 입력창 */}
+      
       <InputGroup>
         <InputLabel>PASSWORD</InputLabel>
         <div style={{ position: 'relative' }}>

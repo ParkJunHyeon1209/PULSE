@@ -78,7 +78,7 @@ const AddressTop = styled.div`
     font-family: ${({ theme }) => theme.fontFamily.mono};
     font-size: ${({ theme }) => theme.fontSize.xxxs};
     font-weight: 700;
-    /* letter-spacing: -0.1em; */
+    
     text-transform: uppercase;
     white-space: nowrap;
   }
@@ -193,20 +193,20 @@ const AddCardButton = styled.button`
   }
 `;
 
-/* 연락처는 숫자만 남겨서 검사 */
+
 const normalizePhone = (value) => value.replace(/[^\d]/g, '');
 
-/* 연락처 입력 시 자동 하이픈 포맷 */
+
 const formatPhone = (value) => {
   const numbers = normalizePhone(value).slice(0, 11);
 
-  /* 휴대폰 번호 포맷 */
+  
   if (numbers.startsWith('01')) {
     if (numbers.length <= 3) return numbers;
     if (numbers.length <= 7) return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
     return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7)}`;
   }
-  /* 일반 지역번호 / 회사번호 포맷 */
+  
   if (numbers.length <= 3) return numbers;
   if (numbers.length <= 6) return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
   if (numbers.length <= 10)
@@ -214,7 +214,7 @@ const formatPhone = (value) => {
   return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7)}`;
 };
 
-/* 필드별 유효성 검사 */
+
 const validateField = (name, value) => {
   switch (name) {
     case 'name': {
@@ -230,9 +230,9 @@ const validateField = (name, value) => {
     case 'phone': {
       const phoneNumbers = normalizePhone(value);
       if (!phoneNumbers) return '연락처를 입력해주세요.';
-      /* 휴대폰 번호 검사 */
+      
       const mobileRegex = /^01[0-9]\d{7,8}$/;
-      /* 일반 지역번호 / 회사번호 검사 */
+      
       const localRegex = /^0[3-9][0-9]\d{7,8}$/;
       if (!mobileRegex.test(phoneNumbers) && !localRegex.test(phoneNumbers)) {
         return '올바른 연락처를 입력해주세요.';
@@ -251,7 +251,7 @@ const validateField = (name, value) => {
   }
 };
 
-/* 저장/수정 버튼 클릭 시 전체 검사 */
+
 const validateForm = (form) => ({
   name: validateField('name', form.name),
   phone: validateField('phone', form.phone),
@@ -281,7 +281,7 @@ function AddressContent({ storageKey, user }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [errors, setErrors] = useState(EMPTY_ERRORS);
-  const [isSubmitted, setIsSubmitted] = useState(false); // 저장 버튼 누른 뒤부터 실시간 재검사용
+  const [isSubmitted, setIsSubmitted] = useState(false); 
 
   useEffect(() => {
     localStorage.setItem(storageKey, JSON.stringify(addresses));
@@ -341,7 +341,7 @@ function AddressContent({ storageKey, user }) {
       [name]: nextValue,
     }));
 
-    /* 저장 시도 후에는 수정하는 필드만 실시간 재검사 */
+    
     if (isSubmitted && name !== 'isDefault') {
       setErrors((prev) => ({
         ...prev,

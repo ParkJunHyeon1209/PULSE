@@ -30,13 +30,13 @@ const Grid = styled.div`
   }
 `;
 
-// const items = [
-//   { label: 'Category 01', name: 'LINEUP', count: '12 Products', tone: 'violet' },
-//   { label: 'Category 02', name: 'HEADSET', count: '8 Products', tone: 'blue' },
-//   { label: 'Category 03', name: 'GEAR', count: '6 Products', tone: 'pink' },
-//   { label: 'Category 04', name: 'CONSOLE', count: '4 Products', tone: 'mint' },
-//   { label: 'Category 05', name: 'DROPS', count: 'Limited Edition', tone: 'indigo' },
-// ];
+
+
+
+
+
+
+
 
 export default function CategorySec() {
   const [category, setCategory] = useState([]);
