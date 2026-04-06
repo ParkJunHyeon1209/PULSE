@@ -299,7 +299,6 @@ const DetailLayout = styled.div`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     gap: ${({ theme }) => theme.spacing[4]};
-    padding-inline: ${({ theme }) => theme.spacing[3]};
   }
 `;
 

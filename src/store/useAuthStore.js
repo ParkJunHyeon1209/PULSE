@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import useCartStore from './useCartStore';
 
 const useAuthStore = create(
   persist(
@@ -17,6 +18,8 @@ const useAuthStore = create(
 
       logout: () => {
         localStorage.removeItem('accessToken');
+        useCartStore.getState().resetCart();
+
         set({
           isLogin: false,
           user: null,
@@ -24,7 +27,6 @@ const useAuthStore = create(
         });
       },
 
-      
       setProfileIcon: (iconId) => set({ profileIcon: iconId }),
     }),
     {
