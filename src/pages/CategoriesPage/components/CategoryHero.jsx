@@ -85,7 +85,6 @@ const BottomFade = styled.div`
         )`};
 `;
 
-
 const SideFade = styled.div`
   position: absolute;
   inset: 0;
@@ -113,7 +112,7 @@ const HeroCenterContent = styled.div`
   //padding: ${({ theme }) => theme.spacing[10]} ${({ theme }) => theme.spacing[6]};
   //padding-bottom: 130px;
 
-  padding: ${({ theme}) => `${theme.spacing[10]} ${theme.spacing[6]} ${theme.spacing[10]}`};
+  padding: ${({ theme }) => `${theme.spacing[10]} ${theme.spacing[6]} ${theme.spacing[10]}`};
   text-align: center;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -125,10 +124,7 @@ const HeroCenterContent = styled.div`
     gap: ${({ theme }) => theme.spacing[3]};
     //padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[4]};
     //padding-bottom: 120px;
-    padding: ${({ theme, $hasTabs }) =>
-      $hasTabs
-        ? `${theme.spacing[8]} ${theme.spacing[4]} 120px`
-        : `${theme.spacing[8]} ${theme.spacing[4]} ${theme.spacing[8]}`};
+    padding: ${({ theme }) => `${theme.spacing[8]} ${theme.spacing[4]} ${theme.spacing[8]}`};
   }
 `;
 
@@ -176,6 +172,10 @@ const HeroTabsArea = styled.div`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding: 0 ${({ theme }) => theme.spacing[4]};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: 0 ${({ theme }) => theme.spacing[3]};
   }
 `;
 
