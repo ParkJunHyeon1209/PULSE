@@ -133,6 +133,14 @@ export default function MyPage() {
     });
   }, [user, login]);
 
+  if (!isLoggedIn || !user) {
+    return (
+      <MyPageWrap>
+        <LoginModal />
+      </MyPageWrap>
+    );
+  }
+
   return (
     <MyPageWrap>
       <MyInfo setCategory={handleSetCategory} />

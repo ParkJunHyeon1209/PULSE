@@ -42,6 +42,10 @@ const Overlay = styled.div`
   background: ${({ theme }) => theme.colors.dimBg};
   backdrop-filter: ${({ theme }) => theme.effects.blurNav};
   animation: ${({ $closing }) => ($closing ? overlayOut : overlayIn)} 0.3s ease forwards;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: ${({ theme }) => theme.spacing[5]};
+  }
 `;
 
 const ModalWrap = styled.div`
@@ -81,6 +85,10 @@ const ModalWrap = styled.div`
   }
   > *:nth-of-type(3) {
     animation-delay: 0.1s;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: ${({ theme }) => theme.spacing[6]};
   }
 `;
 
