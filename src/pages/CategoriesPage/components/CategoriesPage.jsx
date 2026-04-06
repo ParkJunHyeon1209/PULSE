@@ -14,8 +14,8 @@ import gearBannerDark from '../../../assets/img/banners/D_mouse&keySey.webp';
 import gearBannerLight from '../../../assets/img/banners/L_mouse&keySey.webp';
 import gearKeyboardBannerDark from '../../../assets/img/banners/D_Keyboard.webp';
 import gearKeyboardBannerLight from '../../../assets/img/banners/L_Keyboard.webp';
-import gearMouseBannerDark from '../../../assets/img/banners/D_Mouse.webp';
-import gearMouseBannerLight from '../../../assets/img/banners/L_Mouse.webp';
+import gearMouseBannerDark from '../../../assets/img/banners/D_mouse.webp';
+import gearMouseBannerLight from '../../../assets/img/banners/L_mouse.webp';
 import headsetBannerDark from '../../../assets/img/banners/D_Headset.webp';
 import headsetBannerLight from '../../../assets/img/banners/L_Headset.webp';
 import earphoneBannerDark from '../../../assets/img/banners/D_Earphones.webp';
@@ -723,7 +723,6 @@ export default function CategoriesPage() {
           title={currentCategory.title}
           label={currentCategory.label}
           backgroundImage={currentHeroBackground}
-  
           bgFilter={isDarkMode ? 'brightness(0.9) saturate(1.3)' : 'brightness(1.03) saturate(1.2)'}
           tabs={currentCategory.tabs}
           activeTab={activeTab}
