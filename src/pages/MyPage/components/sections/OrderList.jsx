@@ -446,7 +446,7 @@ const TrackingLayout = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[5]};
-  padding-inline: ${({ theme }) => theme.spacing[2]};
+  /* padding-inline: ${({ theme }) => theme.spacing[2]}; */
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     padding-inline: ${({ theme }) => theme.spacing[3]};
@@ -852,12 +852,8 @@ export default function OrderList() {
 
       <BaseModal
         isOpen={Boolean(trackingOrder)}
-        label="DELIVERY TRACKING"
-        title={
-          trackingOrder
-            ? `${trackingOrder.orderNumber} 배송 조회 · ${trackingStatusLabel}`
-            : '배송 조회'
-        }
+        label={trackingOrder?.orderNumber}
+        title="배송 조회"
         width="640px"
         onClose={handleCloseTrackingModal}
       >
