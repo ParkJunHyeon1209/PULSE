@@ -1,39 +1,62 @@
 import React, { useId } from 'react';
-import { useTheme } from '@emotion/react';
+import { keyframes, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import BaseSparkIcon from '../../../components/common/BaseSparkIcon';
-import { LavStarIcon } from '../../../assets/icons/BtnIcon';
+import BaseSparkIcon from '../../../../components/common/BaseSparkIcon';
+import { LavStarIcon } from '../../../../assets/icons/BtnIcon';
+import BrandSlotCaption from './BrandSlotCaption';
+import { getAccent } from '../../brandAccents';
 
 const getAssetSource = (theme, media) => (theme.mode === 'dark' ? media.dark : media.light);
 
 const HOVER_DURATION = '0.52s';
 const HOVER_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+const DEFAULT_DARK_FILTER = 'brightness(0.88) saturate(1.04)';
+const DEFAULT_LIGHT_FILTER = 'brightness(1.03) saturate(1.02)';
+const DEFAULT_SLIDE_DURATION = 10.5;
+
+const slotMediaSlideKeyframes = keyframes`
+  0% {
+    opacity: 0;
+  }
+  5% {
+    opacity: var(--slot-slide-opacity, 1);
+  }
+  29% {
+    opacity: var(--slot-slide-opacity, 1);
+  }
+  37% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+`;
+
+const slotMediaSlideFirstKeyframes = keyframes`
+  0% {
+    opacity: var(--slot-slide-opacity, 1);
+  }
+  29% {
+    opacity: var(--slot-slide-opacity, 1);
+  }
+  37% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+`;
 
 const VisualCard = styled.article`
   position: relative;
   overflow: hidden;
   aspect-ratio: ${({ $ratio }) => $ratio};
   border-radius: clamp(20px, 2.4vw, 30px);
-  border: 1px solid
-    ${({ theme, $accent }) =>
-      theme.mode === 'dark'
-        ? $accent === 'blue'
-          ? theme.tones.blue.containerBorder
-          : theme.tones.violet.containerBorder
-        : $accent === 'blue'
-          ? 'rgba(56, 189, 248, 0.36)'
-          : 'rgba(124, 58, 237, 0.3)'};
+  border: 1px solid ${({ theme, $accent }) => getAccent(theme, $accent).containerBorder};
   background: ${({ theme }) => theme.colors.cardBgLight};
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, ${({ theme }) => (theme.mode === 'dark' ? 0.07 : 0.7)}),
-    ${({ theme, $accent }) =>
-      theme.mode === 'dark'
-        ? $accent === 'blue'
-          ? theme.tones.blue.containerShadow
-          : theme.tones.violet.containerShadow
-        : $accent === 'blue'
-          ? '0 4px 24px rgba(56, 189, 248, 0.18), 0 1px 6px rgba(56, 189, 248, 0.12)'
-          : '0 4px 24px rgba(124, 58, 237, 0.16), 0 1px 6px rgba(124, 58, 237, 0.1)'};
+    ${({ theme, $accent }) => getAccent(theme, $accent).containerShadow};
   transition:
     transform ${HOVER_DURATION} ${HOVER_EASE},
     box-shadow 0.2s ease,
@@ -58,27 +81,16 @@ const VisualCard = styled.article`
     z-index: 4;
     pointer-events: none;
   }
-
   &:hover::before {
     transform: skewX(-18deg) translateX(460%);
   }
 
   &:hover {
     transform: translateY(-6px) scale(1.01);
-    border-color: ${({ theme, $accent }) =>
-      theme.mode === 'dark'
-        ? $accent === 'blue'
-          ? theme.tones.blue.activeBorder
-          : theme.tones.violet.activeBorder
-        : $accent === 'blue'
-          ? 'rgba(56, 189, 248, 0.55)'
-          : 'rgba(124, 58, 237, 0.48)'};
+    border-color: ${({ theme, $accent }) => getAccent(theme, $accent).activeBorder};
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, ${({ theme }) => (theme.mode === 'dark' ? 0.1 : 0.88)}),
-      ${({ $accent }) =>
-        $accent === 'blue'
-          ? '0 14px 40px rgba(56, 189, 248, 0.24), 0 4px 12px rgba(56, 189, 248, 0.15)'
-          : '0 14px 40px rgba(124, 58, 237, 0.22), 0 4px 12px rgba(124, 58, 237, 0.13)'};
+      ${({ theme, $accent }) => getAccent(theme, $accent).hoverShadow};
   }
 
   &:hover .slot-img {
@@ -87,7 +99,7 @@ const VisualCard = styled.article`
 
   &:hover .slot-spark {
     opacity: ${({ theme }) => (theme.mode === 'dark' ? 1 : 0.72)};
-    transform: translate(-50%, -50%) scale(1.12);
+    transform: translate(-50%, -50%) scale(1.57);
   }
 
   &:hover .slot-glow {
@@ -108,16 +120,47 @@ const VisualImg = styled.img`
   height: 100%;
   object-fit: cover;
   object-position: ${({ $position }) => $position};
-  filter: ${({ theme }) =>
-    theme.mode === 'dark' ? 'brightness(0.88) saturate(1.04)' : 'brightness(1.03) saturate(1.02)'};
+  transform-origin: ${({ $origin, $position = 'center center' }) => $origin ?? $position};
+  filter: ${({ theme, $lightImageFilter, $darkImageFilter }) =>
+    theme.mode === 'dark'
+      ? ($darkImageFilter ?? DEFAULT_DARK_FILTER)
+      : ($lightImageFilter ?? DEFAULT_LIGHT_FILTER)};
+  mix-blend-mode: ${({ theme, $lightImageBlendMode }) =>
+    theme.mode === 'dark' ? 'normal' : ($lightImageBlendMode ?? 'normal')};
+
   transform: scale(${({ $scale = 1.02 }) => $scale});
   transition: transform ${HOVER_DURATION} ${HOVER_EASE};
 `;
 
+const MediaSlideLayer = styled.div`
+  position: absolute;
+  inset: 0;
+  --slot-slide-opacity: ${({ $opacity = 1 }) => $opacity};
+  opacity: ${({ $isFirst, $opacity = 1 }) => ($isFirst ? $opacity : 0)};
+  animation: ${({ $isFirst }) =>
+      $isFirst ? slotMediaSlideFirstKeyframes : slotMediaSlideKeyframes}
+    ${({ $duration = DEFAULT_SLIDE_DURATION }) => $duration}s ease infinite;
+  animation-delay: ${({ $delay = 0 }) => $delay}s;
+`;
+
+const defaultLightShade = `linear-gradient(
+  180deg,
+  rgba(164, 148, 255, 0.2) 0%,
+  transparent 48%,
+  rgba(87, 76, 154, 0.22) 78%,
+  rgba(116, 96, 143, 0.6) 100%
+)`;
+
+const lightDimmedGradient = {
+  violet: defaultLightShade,
+  blue: defaultLightShade,
+  pink: defaultLightShade,
+};
+
 const VisualShade = styled.div`
   position: absolute;
   inset: 0;
-  background: ${({ theme, $lightDimmed }) =>
+  background: ${({ theme, $lightDimmed, $accent }) =>
     theme.mode === 'dark'
       ? `
         linear-gradient(
@@ -125,33 +168,13 @@ const VisualShade = styled.div`
           rgba(8, 6, 20, 0.04) 0%,
           rgba(8, 6, 20, 0.02) 30%,
           rgba(8, 6, 20, 0.62) 78%,
-          rgba(8, 6, 20, 0.78) 100%
+          rgba(13, 6, 20, 0.78) 100%
         ),
         linear-gradient(90deg, rgba(8, 6, 20, 0.1) 0%, transparent 50%)
       `
-      : `
-        ${
-          $lightDimmed
-            ? `
-            linear-gradient(
-              180deg,
-              rgba(255, 255, 255,0) 0%,
-              rgba(248, 246, 255, 0.1) 40%,
-              rgba(232, 226, 255, 0.2) 70%,
-              rgba(216, 206, 255, 1) 100%
-            )
-          `
-            : `
-            linear-gradient(
-              180deg,
-              transparent 0%,
-              transparent 48%,
-              rgba(8, 6, 20, 0.28) 78%,
-              rgba(8, 6, 20, 0.42) 100%
-            )
-          `
-        }
-      `};
+      : $lightDimmed
+        ? (lightDimmedGradient[$accent] ?? lightDimmedGradient.violet)
+        : defaultLightShade};
 `;
 
 const VisualGlow = styled.div`
@@ -162,7 +185,7 @@ const VisualGlow = styled.div`
   height: 48%;
   border-radius: 50% 50% 0 0;
   transform: translateX(-50%);
-  background: ${({ theme, $accent }) => theme.cardGlow[$accent]};
+  background: ${({ theme, $accent }) => getAccent(theme, $accent).glow};
   opacity: 0.62;
   transition: opacity ${HOVER_DURATION} ${HOVER_EASE};
   pointer-events: none;
@@ -175,8 +198,7 @@ const VisualBeam = styled.div`
   right: 18px;
   bottom: 0;
   height: 1px;
-  background: ${({ theme, $accent }) =>
-    $accent === 'blue' ? theme.tones.blue.activeLine : theme.tones.violet.activeLine};
+  background: ${({ theme, $accent }) => getAccent(theme, $accent).activeLine};
   opacity: 0.9;
 `;
 
@@ -185,61 +207,12 @@ const CenterSpark = styled.div`
   left: 50%;
   top: 42%;
   z-index: 2;
-  transform: translate(-50%, -50%) scale(0.82);
+  transform: translate(-50%, -50%) scale(1.15);
   opacity: ${({ theme }) => (theme.mode === 'dark' ? 0.6 : 0.38)};
   transition:
     opacity ${HOVER_DURATION} ${HOVER_EASE},
     transform ${HOVER_DURATION} ${HOVER_EASE};
   pointer-events: none;
-`;
-
-const SlotTextWrap = styled.div`
-  position: absolute;
-  left: ${({ theme }) => theme.spacing[4]};
-  right: ${({ theme }) => theme.spacing[4]};
-  bottom: ${({ theme }) => theme.spacing[4]};
-  display: grid;
-  gap: 3px;
-  z-index: 3;
-`;
-
-const SlotEyebrow = styled.span`
-  color: ${({ theme, $lightText }) =>
-    theme.mode === 'dark'
-      ? 'rgba(255, 255, 255, 0.52)'
-      : $lightText
-        ? theme.colors.textSecondary
-        : 'rgba(255, 255, 255, 0.52)'};
-  font-family: ${({ theme }) => theme.fontFamily.mono};
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-`;
-
-const SlotLabel = styled.span`
-  margin-bottom: ${({ theme }) => theme.spacing[1]};
-  color: ${({ theme, $lightText }) =>
-    theme.mode === 'dark'
-      ? 'rgba(255, 255, 255, 0.92)'
-      : $lightText
-        ? theme.colors.text
-        : 'rgba(255, 255, 255, 0.92)'};
-  font-family: ${({ theme }) => theme.fontFamily.body};
-  font-size: ${({ theme }) => theme.fontSize.xxs};
-  font-weight: 600;
-  letter-spacing: 0.05em;
-`;
-
-const SlotHint = styled.span`
-  color: ${({ theme, $lightText }) =>
-    theme.mode === 'dark'
-      ? 'rgba(255, 255, 255, 0.44)'
-      : $lightText
-        ? theme.colors.textSecondary
-        : 'rgba(255, 255, 255, 0.44)'};
-  font-family: ${({ theme }) => theme.fontFamily.body};
-  font-size: ${({ theme }) => theme.fontSize.xxxs};
-  font-weight: 600;
 `;
 
 const SlotStar = styled(LavStarIcon)`
@@ -258,16 +231,23 @@ export default function BrandImageSlot({
   ratio = '4 / 3',
   accent = 'violet',
   media,
+  mediaSlides,
   objectPosition = 'center center',
   eyebrow = 'DROP ASSET',
   sparkTone,
-  lightText = false,
   lightDimmed = false,
   imageScale = 1.02,
+  slideDuration = DEFAULT_SLIDE_DURATION,
+  lightImageFilter,
+  darkImageFilter,
+  lightImageBlendMode,
+  lightText = false,
+  lightCaptionShadow = false,
+  lightColor,
 }) {
   const theme = useTheme();
   const safeId = useId().replace(/:/g, '');
-  const tone = theme.tones[accent] || theme.tones.violet;
+  const tone = getAccent(theme, accent);
   const gradientId = `brand-slot-gradient-${safeId}`;
   const glowId = `brand-slot-glow-${safeId}`;
   const plateFill = theme.mode === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(124,58,237,0.05)';
@@ -275,29 +255,63 @@ export default function BrandImageSlot({
   const gridStroke = theme.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(124,58,237,0.14)';
   const lineAccent = accent === 'blue' ? theme.colors.primary : theme.colors.accent;
   const resolvedTone = sparkTone || (accent === 'blue' ? 'blue' : 'violet');
+  const resolvedMediaSlides = Array.isArray(mediaSlides) ? mediaSlides.filter(Boolean) : [];
 
-  if (media) {
+  if (media || resolvedMediaSlides.length > 0) {
     return (
       <VisualCard $ratio={ratio} $accent={accent}>
-        <VisualImg
-          className="slot-img"
-          src={getAssetSource(theme, media)}
-          alt={label}
-          $position={objectPosition}
-          $scale={imageScale}
-        />
-        <VisualShade $lightText={lightText} $lightDimmed={lightDimmed} />
+        {resolvedMediaSlides.length > 0 ? (
+          resolvedMediaSlides.map((slide, index) => (
+            <MediaSlideLayer
+              key={`${slide.dark}-${slide.light}-${index}`}
+              $delay={index * (slideDuration / resolvedMediaSlides.length)}
+              $duration={slideDuration}
+              $isFirst={index === 0}
+              $opacity={
+                theme.mode === 'dark' ? (slide.darkOpacity ?? 1) : (slide.lightOpacity ?? 1)
+              }
+            >
+              <VisualImg
+                className="slot-img"
+                src={getAssetSource(theme, slide)}
+                alt={index === 0 ? label : ''}
+                $position={slide.mobileObjectPosition ?? slide.objectPosition ?? objectPosition}
+                $origin={slide.mobileObjectPosition ?? slide.objectPosition ?? objectPosition}
+                $scale={slide.mobileImageScale ?? slide.imageScale ?? imageScale}
+                $lightImageFilter={slide.lightFilter}
+                $darkImageFilter={slide.darkFilter}
+                $lightImageBlendMode={slide.lightBlendMode ?? lightImageBlendMode}
+              />
+            </MediaSlideLayer>
+          ))
+        ) : (
+          <VisualImg
+            className="slot-img"
+            src={getAssetSource(theme, media)}
+            alt={label}
+            $position={objectPosition}
+            $origin={objectPosition}
+            $scale={imageScale}
+            $lightImageFilter={lightImageFilter}
+            $darkImageFilter={darkImageFilter}
+            $lightImageBlendMode={lightImageBlendMode}
+          />
+        )}
+        <VisualShade $lightDimmed={lightDimmed} $accent={accent} />
         <VisualGlow className="slot-glow" $accent={accent} />
         <CenterSpark className="slot-spark">
           <BaseSparkIcon tone={resolvedTone} />
         </CenterSpark>
-        <SlotStar>&#10022;</SlotStar>
+        <SlotStar>✦</SlotStar>
         <VisualBeam $accent={accent} />
-        <SlotTextWrap>
-          <SlotEyebrow $lightText={lightText}>{eyebrow}</SlotEyebrow>
-          <SlotLabel $lightText={lightText}>{label}</SlotLabel>
-          <SlotHint $lightText={lightText}>{hint}</SlotHint>
-        </SlotTextWrap>
+        <BrandSlotCaption
+          eyebrow={eyebrow}
+          label={label}
+          hint={hint}
+          lightText={lightText}
+          lightCaptionShadow={lightCaptionShadow}
+          lightColor={lightColor}
+        />
       </VisualCard>
     );
   }
@@ -370,11 +384,14 @@ export default function BrandImageSlot({
         <BaseSparkIcon tone={resolvedTone} />
       </CenterSpark>
       <VisualBeam $accent={accent} />
-      <SlotTextWrap>
-        <SlotEyebrow>{eyebrow}</SlotEyebrow>
-        <SlotLabel>{label}</SlotLabel>
-        <SlotHint>{hint}</SlotHint>
-      </SlotTextWrap>
+      <BrandSlotCaption
+        eyebrow={eyebrow}
+        label={label}
+        hint={hint}
+        lightText={lightText}
+        lightCaptionShadow={lightCaptionShadow}
+        lightColor={lightColor}
+      />
     </VisualCard>
   );
 }

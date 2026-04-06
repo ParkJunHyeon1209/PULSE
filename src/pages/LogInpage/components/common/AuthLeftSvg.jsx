@@ -4,12 +4,12 @@ import { authToneMap } from '../../authToneMap';
 
 const CenterArea = styled.div`
   width: 100%;
-  height: 100%;
-  min-height: 480px;
+  flex: 1 1 auto;
+  min-height: clamp(240px, 34vh, 480px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32px 0;
+  padding: clamp(12px, 3vh, 32px) 0;
 `;
 
 const signalExpand = keyframes`
@@ -80,8 +80,8 @@ const SignalStage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 280px;
-  height: 280px;
+  width: clamp(220px, 24vw, 280px);
+  height: clamp(220px, 24vw, 280px);
 `;
 
 const SignalRing = styled.div`
@@ -143,8 +143,8 @@ const WaveLayer = styled.div`
   top: 50%;
   z-index: 2;
   transform: translate(-50%, -50%);
-  width: 300px;
-  height: 160px;
+  width: clamp(240px, 26vw, 300px);
+  height: clamp(128px, 14vw, 160px);
   display: flex;
   align-items: center;
   justify-content: center;

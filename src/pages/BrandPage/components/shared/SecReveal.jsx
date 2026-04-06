@@ -1,6 +1,5 @@
-import React from 'react';
 import styled from '@emotion/styled';
-import { useSectionReveal } from '../hooks/useSectionReveal';
+import { useSectionReveal } from '../../hooks/useSectionReveal';
 
 const RevealWrap = styled.div`
   opacity: ${({ $visible }) => ($visible ? 1 : 0)};
@@ -12,7 +11,7 @@ const RevealWrap = styled.div`
   will-change: opacity, transform;
 `;
 
-export default function SectionReveal({ children, delay, threshold, rootMargin }) {
+export default function SecReveal({ children, delay, threshold, rootMargin }) {
   const [ref, visible] = useSectionReveal({ threshold, rootMargin });
   return (
     <RevealWrap ref={ref} $visible={visible} $delay={delay}>

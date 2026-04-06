@@ -53,18 +53,30 @@ export const BackgroundLayer = styled.div`
   &::before {
     background-image: url(${({ $bgImage }) => $bgImage});
     background-position: center;
-     mix-blend-mode: multiply;
-    opacity: .7;
+    mix-blend-mode: multiply;
+    opacity: 0.7;
   }
 
   &::after {
     background-image: url(${({ $beamImage }) => $beamImage});
     background-position: top center;
-    opacity: .78;
+    opacity: 0.78;
     height: 50%;
     mix-blend-mode: multiply;
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 46%, rgba(0,0,0,.78) 68%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0%, #000 46%, rgba(0,0,0,.78) 68%, transparent 100%);
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 46%,
+      rgba(0, 0, 0, 0.78) 68%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 46%,
+      rgba(0, 0, 0, 0.78) 68%,
+      transparent 100%
+    );
   }
 `;
 
@@ -84,8 +96,13 @@ export const LightModeOverlay = styled.div`
   z-index: 4;
   opacity: ${({ $isDarkMode }) => ($isDarkMode ? 0 : 1)};
   background:
-    radial-gradient(circle at 50% 12%, rgba(255,255,255,.08), transparent 34%),
-    linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.1) 34%, rgba(255,255,255,.16) 100%);
+    radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.08), transparent 34%),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.04),
+      rgba(255, 255, 255, 0.1) 34%,
+      rgba(255, 255, 255, 0.16) 100%
+    );
   pointer-events: none;
 `;
 
@@ -114,7 +131,8 @@ export const LogoBar = styled.div`
   max-width: ${({ theme }) => theme.grid.max};
   width: 100%;
   margin: 0 auto;
-  padding: calc(${({ theme }) => theme.spacing[4]} + ${({ theme }) => theme.spacing[5]}) ${({ theme }) => theme.spacing[20]};
+  padding: calc(${({ theme }) => theme.spacing[4]} + ${({ theme }) => theme.spacing[6]})
+    ${({ theme }) => theme.spacing[20]};
   box-sizing: border-box;
   pointer-events: none;
 
@@ -129,7 +147,7 @@ export const LogoLink = styled(Link)`
   align-items: center;
   text-decoration: none;
   pointer-events: all;
-  animation: ${fadeDown} .8s ease both;
+  animation: ${fadeDown} 0.8s ease both;
 `;
 
 export const PageContent = styled.section`
@@ -164,7 +182,7 @@ export const PageContent = styled.section`
       color-mix(in srgb, ${({ theme }) => theme.colors.background} 18%, transparent) 72%,
       transparent 100%
     );
-    opacity: .92;
+    opacity: 0.92;
     filter: blur(36px);
     pointer-events: none;
     z-index: -1;
@@ -176,8 +194,8 @@ export const ErrorCode = styled.h1`
   color: transparent;
   font-family: 'Bebas Neue', sans-serif;
   font-size: clamp(140px, 20vw, 220px);
-  line-height: .9;
-  letter-spacing: .04em;
+  line-height: 0.9;
+  letter-spacing: 0.04em;
   background: ${({ $isDarkMode }) =>
     $isDarkMode
       ? 'linear-gradient(180deg,rgba(255,255,255,.95) 0%,rgba(210,180,255,.88) 30%,rgba(160,90,255,.65) 65%,rgba(100,40,200,.25) 100%)'
@@ -189,7 +207,7 @@ export const ErrorCode = styled.h1`
       : 'drop-shadow(0 0 40px rgba(124,58,237,.25))'};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: ${fadeUp} ${enter} .3s both;
+  animation: ${fadeUp} ${enter} 0.3s both;
 `;
 
 export const Title = styled.h2`
@@ -198,7 +216,7 @@ export const Title = styled.h2`
   font-size: ${({ theme }) => theme.fontSize.s};
   font-weight: 800;
   line-height: 1.1;
-  animation: ${fadeUp} ${enter} .42s both;
+  animation: ${fadeUp} ${enter} 0.42s both;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     font-size: ${({ theme }) => theme.fontSize.xs};
@@ -211,7 +229,7 @@ export const Description = styled.p`
   font-size: ${({ theme }) => theme.fontSize.xs};
   line-height: 1.6;
   font-weight: 600;
-  animation: ${fadeUp} ${enter} .52s both;
+  animation: ${fadeUp} ${enter} 0.52s both;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     font-size: ${({ theme }) => theme.fontSize.xxs};
@@ -234,13 +252,19 @@ export const HomeLink = styled(Link, {
   font-weight: 700;
   text-decoration: none;
   backdrop-filter: ${({ theme }) => theme.effects.blurBtn};
-  box-shadow: 0 10px 30px rgba(${({ theme }) => theme.colors.primaryRgb}, .14);
-  transition: transform ${({ theme }) => theme.motion.normal}, border-color ${({ theme }) => theme.motion.normal}, background ${({ theme }) => theme.motion.normal}, color ${({ theme }) => theme.motion.normal}, box-shadow ${({ theme }) => theme.motion.normal};
+  box-shadow: 0 10px 30px rgba(${({ theme }) => theme.colors.primaryRgb}, 0.14);
+  transition:
+    transform ${({ theme }) => theme.motion.normal},
+    border-color ${({ theme }) => theme.motion.normal},
+    background ${({ theme }) => theme.motion.normal},
+    color ${({ theme }) => theme.motion.normal},
+    box-shadow ${({ theme }) => theme.motion.normal};
   pointer-events: all;
-  animation: ${fadeIn} .6s ease .62s both;
+  animation: ${fadeIn} 0.6s ease 0.62s both;
 
   ${({ $isDarkMode, theme }) => {
-    const { border, background, color, hoverBorder, hoverBackground, hoverColor } = getButtonTone($isDarkMode);
+    const { border, background, color, hoverBorder, hoverBackground, hoverColor } =
+      getButtonTone($isDarkMode);
     return `
       border: 1px solid ${border};
       background: ${background};
@@ -282,22 +306,22 @@ export const FooterMeta = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   font-family: ${({ theme }) => theme.fontFamily.mono};
   font-size: ${({ theme }) => theme.fontSize.xxxs};
-  letter-spacing: .18em;
+  letter-spacing: 0.18em;
   white-space: nowrap;
-  opacity: .72;
-  animation: ${fadeUp} .9s ease .9s both;
+  opacity: 0.72;
+  animation: ${fadeUp} 0.9s ease 0.9s both;
 
   &::before {
     content: '';
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: rgba(${({ theme }) => theme.colors.primaryRgb}, .4);
+    background: rgba(${({ theme }) => theme.colors.primaryRgb}, 0.4);
     animation: ${blink} 2s ease-in-out infinite;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     gap: 12px;
-    letter-spacing: .08em;
+    letter-spacing: 0.08em;
   }
 `;

@@ -23,6 +23,43 @@ import mouseKeySetLight from '../../assets/img/banners/L_mouse&keySey.webp';
 import mainBanner3Dark from '../../assets/img/banners/3_dark.webp';
 import mainBanner3Light from '../../assets/img/banners/3_light.webp';
 
+export const heroSlides = [
+  {
+    dark: mainDropBannerDark,
+    light: mainDropBannerLight,
+    darkFilter: 'brightness(0.82) saturate(1.05)',
+    lightFilter: 'brightness(1.2) saturate(1.06)',
+    darkOpacity: 0.8,
+    lightOpacity: 1,
+    imageScale: 1,
+    mobileImageScale: 1.02,
+    objectPosition: '60% center',
+    mobileObjectPosition: '74% center',
+  },
+  {
+    dark: lineUpDark,
+    light: lineUpLight,
+    darkOpacity: 0.7,
+    lightOpacity: 0.6,
+    imageScale: 1,
+    mobileImageScale: 1.02,
+    objectPosition: '48% center',
+    mobileObjectPosition: '76% center',
+  },
+  {
+    dark: dropsBannerDark,
+    light: dropsBannerLight,
+    darkOpacity: 0.9,
+    lightOpacity: 0.9,
+    darkFilter: 'saturate(1.05)',
+    lightFilter: ' saturate(1.3) contrast(1.04)',
+    imageScale: 1,
+    mobileImageScale: 1.1,
+    objectPosition: '60% center',
+    mobileObjectPosition: '84% 100%',
+  },
+];
+
 export const heroSection = {
   kicker: 'PULSE · Brand Story',
   section: {
@@ -30,10 +67,10 @@ export const heroSection = {
     label: 'Brand Story',
     title: '감각을 설계하는',
     colorTitle: 'Gaming Gear Brand',
-    sub: '단순한 장비가 아닙니다. PULSE는 플레이어의 감각에 반응하는 신호를 설계합니다.',
+    sub: 'PULSE는 플레이어의 감각에 반응하는 신호를 설계합니다.',
     titleSize: 'xl',
   },
-  lead: '2026 S/S 시즌, PULSE는 게이밍 기어의 새로운 기준을 제시합니다. 한정 드롭부터 플래그십 라인업까지 — 당신의 플레이 신호를 증폭하는 기어를 만납니다.',
+  lead: '2026 S/S 시즌, 한정 드롭부터 플래그십까지<br />PULSE의 플레이 신호를 증폭할 기어를 만납니다.',
   inlineLinkLabel: '지금 드롭 컬렉션 확인하기',
   actions: {
     primary: '드롭 컬렉션 보기',
@@ -44,9 +81,9 @@ export const heroSection = {
 export const heroTags = ['2026 S/S 드롭', '게이밍 기어', 'Play Your Signal'];
 
 export const heroStats = [
-  { label: 'Concept', value: '감각에 반응하는 게이밍 기어 플랫폼' },
-  { label: 'Season', value: '2026 S/S · 한정 드롭 & 플래그십 라인업' },
-  { label: 'Signal', value: '빛 · 진동 · 사운드가 하나로 연결되는 순간' },
+  { label: 'Concept', value: '감각에 반응하는 게이밍 기어 플랫폼', accent: 'pink' },
+  { label: 'Season', value: '2026 S/S · 한정 드롭 & 플래그십 라인업', accent: 'violet' },
+  { label: 'Signal', value: '빛 · 진동 · 사운드가 하나로 연결되는 순간', accent: 'pink' },
 ];
 
 export const identitySection = {
@@ -61,13 +98,13 @@ export const identitySection = {
     titleSize: 'lg',
   },
   title: '로고와 컬러 시스템',
-  description:
-    '네온이 번지는 순간을 포착한 PULSE 로고. 맥박 라인과 퍼플-블루 그라데이션은 플레이어의 신호가 흐르는 방향을 시각화합니다.',
+  descHeading: '네온이 번지는 순간을 포착한 PULSE 로고.',
+  descBody: '맥박 라인과 퍼플-블루 그라데이션은 플레이어의 신호가 흐르는 방향을 시각화합니다.',
 };
 
 export const identityColors = [
-  { name: 'Pulse Violet', role: '브랜드 코어 · 로고 · 메인 프레임', tone: 'violet' },
-  { name: 'Drop Blue', role: '드롭 링크 · 보조 하이라이트 · 시그널', tone: 'blue' },
+  { name: 'Pulse Violet', role: '브랜드 코어 · 메인 프레임', tone: 'violet' },
+  { name: 'Drop Blue', role: '드롭 보조 하이라이트 · 시그널', tone: 'blue' },
   { name: 'Signal Pink', role: '캠페인 포인트 · 글로우 · 강조', tone: 'accent' },
 ];
 
@@ -140,7 +177,7 @@ export const gallerySection = {
     title: '의',
     titlePrefixFont: 'hero',
     colorTitle: 'Proud banners',
-    sub: '메인 대표 컷을 제외한 비주얼 아카이브에서 6개의 프레임을 골라 보여줍니다. 장면마다 PULSE의 무드와 플레이 감각을 한 줄로 담았습니다.',
+    sub: '비주얼 아카이브에서 고른 6개의 프레임에 PULSE의 무드와 플레이 감각을 담았습니다.',
     titleSize: 'lg',
   },
   eyebrow: 'SIGNATURE FRAME',
@@ -153,10 +190,9 @@ export const closingSection = {
     label: 'Start Now',
     title: '신호가 울리는 순간,',
     colorTitle: 'Your Play Begins',
-    sub: '2026 S/S 드롭 컬렉션이 공개되었습니다. 한정 수량, 먼저 경험하는 플레이어가 가져갑니다.',
+    sub: '2026 S/S 드롭이 시작되었습니다. 한정 수량은 먼저 도착한 플레이어에게 열립니다.',
     titleSize: 'lg',
   },
-  lead: 'PULSE의 새로운 기어 라인업을 지금 확인하세요. 시즌 드롭부터 플래그십까지 — 당신의 플레이 신호를 증폭할 기어가 기다리고 있습니다.',
   actions: {
     primary: '드롭 컬렉션 보기',
     secondary: '메인으로',
@@ -185,6 +221,11 @@ export const supportFrame = {
 export const identityBackdrop = {
   dark: lineUpDark,
   light: lineUpLight,
+};
+
+export const closingBackdrop = {
+  dark: mainDropBannerDark,
+  light: mainDropBannerLight,
 };
 
 export const storyCards = [
@@ -228,7 +269,7 @@ export const gallerySlots = [
     description: '가볍게 시작해도 감각은 선명하게 이어집니다.',
     tone: 'violet',
     media: { dark: earphonesDark, light: earphonesLight },
-    objectPosition: '74% center',
+    objectPosition: '80% center',
   },
   {
     title: '콘솔 셋업',
@@ -275,7 +316,7 @@ export const gallerySlots = [
   },
   {
     title: '시그널 라인업',
-    description: 'PULSE 특유의 빛과 실루엣이 가장 선명하게 드러나는 장면입니다.',
+    description: 'PULSE의 빛과 실루엣이 선명하게 드러나는 장면입니다.',
     tone: 'violet',
     media: { dark: lineUpDark, light: lineUpLight },
     objectPosition: '78% center',

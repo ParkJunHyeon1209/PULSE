@@ -1,24 +1,21 @@
-import React from 'react';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import AppLogo from '../../../components/common/AppLogo';
-import BaseSection from '../../../components/common/BaseSection';
-import {
-  identityBackdrop,
-  identityColors,
-  identitySection,
-} from '../brandPageData';
-import { BrandSectionHeading, getSoftPanelBackground } from './brandPageShared';
+import AppLogo from '../../../../components/common/AppLogo';
+import BaseSection from '../../../../components/common/BaseSection';
+import { identityBackdrop, identityColors, identitySection } from '../../brandPageData';
+import { BrandSectionHeading, getSoftPanelBackground } from '../shared/brandPageShared';
+import { getAccent } from '../../brandAccents';
 
 const SectionBlock = styled.section`
   display: grid;
-  gap: ${({ theme }) => theme.spacing[6]};
+  gap: ${({ theme }) => theme.spacing[14]};
 `;
 
 const IdentitySurface = styled.div`
   position: relative;
   overflow: hidden;
-  padding: clamp(24px, 4vw, 44px);
+  padding: clamp(24px, 4vw, 80px) clamp(24px, 4vw, 44px) clamp(24px, 4vw, 44px)
+    clamp(24px, 4vw, 44px);
   border-radius: ${({ theme }) => theme.radii.xxl};
   border: 1px solid
     rgba(
@@ -36,22 +33,24 @@ const IdentityBackdrop = styled.img`
   height: 100%;
   object-fit: cover;
   object-position: 78% center;
-  opacity: ${({ theme }) => (theme.mode === 'dark' ? 0.28 : 0.22)};
+  opacity: ${({ theme }) => (theme.mode === 'dark' ? 0.28 : 0.48)};
   filter: ${({ theme }) =>
-    theme.mode === 'dark'
-      ? 'brightness(0.82) saturate(1.05)'
-      : 'brightness(1.06) saturate(1.04)'};
+    theme.mode === 'dark' ? 'brightness(0.82) saturate(1.05)' : 'brightness(1.06) saturate(1.04)'};
 `;
 
 const IdentityVeil = styled.div`
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    ${({ theme }) => theme.colors.background}f0 0%,
-    ${({ theme }) => theme.colors.background}b0 45%,
-    ${({ theme }) => theme.colors.background}40 100%
-  );
+  background: ${({ theme }) =>
+    theme.mode === 'dark'
+      ? `linear-gradient(90deg,
+          ${theme.colors.background}f0 0%,
+          ${theme.colors.background}b0 45%,
+          ${theme.colors.background}40 100%)`
+      : `linear-gradient(90deg,
+          ${theme.colors.background}d0 0%,
+          ${theme.colors.background}70 45%,
+          ${theme.colors.background}18 100%)`};
 `;
 
 const IdentityBeam = styled.div`
@@ -60,7 +59,7 @@ const IdentityBeam = styled.div`
   right: 0;
   bottom: 0;
   height: 160px;
-  background: ${({ theme }) => theme.cardGlow.violet};
+  background: ${({ theme }) => getAccent(theme, 'violet').glow};
   opacity: 0.6;
   pointer-events: none;
 `;
@@ -79,39 +78,46 @@ const IdentityContent = styled.div`
 `;
 
 const IdentityLeft = styled.div`
+  padding-top: ${({ theme }) => theme.spacing[4]};
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing[5]};
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.spacing[8]};
 `;
 
 const LogoStage = styled.div`
   width: fit-content;
   padding: ${({ theme }) => `${theme.spacing[4]} ${theme.spacing[5]}`};
   border-radius: ${({ theme }) => theme.radii.xxl};
-  border: 1px solid ${({ theme }) => theme.tones.violet.containerBorder};
+  border: 1px solid ${({ theme }) => getAccent(theme, 'violet').containerBorder};
   background: ${({ theme }) => getSoftPanelBackground(theme)};
-  box-shadow: ${({ theme }) => theme.tones.violet.containerShadow};
+  box-shadow: ${({ theme }) => getAccent(theme, 'violet').containerShadow};
   transition:
     box-shadow ${({ theme }) => theme.motion.normal},
     border-color ${({ theme }) => theme.motion.normal};
+`;
 
-  &:hover {
-    border-color: ${({ theme }) => theme.tones.violet.activeBorder};
-    box-shadow: ${({ theme }) => theme.tones.violet.hoverShadow || theme.tones.violet.containerShadow};
-  }
+const IdentityDescHeading = styled.strong`
+  display: block;
+  color: ${({ theme }) => theme.colors.text};
+  font-weight: 700;
+  line-height: 2.4;
+  font-size: ${({ theme }) => theme.fontSize.xxs};
 `;
 
 const IdentityDesc = styled.p`
   margin: 0;
-  max-width: 280px;
+  max-width: 270px;
   color: ${({ theme }) => theme.colors.textSecondary};
-  line-height: 1.75;
+  line-height: 1.6;
   font-size: ${({ theme }) => theme.fontSize.xxs};
 `;
 
 const IdentityRight = styled.div`
   display: grid;
-  gap: ${({ theme }) => theme.spacing[5]};
+  /* gap: ${({ theme }) => theme.spacing[1]}; */
+  height: 100%;
+  align-content: end;
 `;
 
 const PaletteGrid = styled.div`
@@ -130,8 +136,7 @@ const PaletteChip = styled.div`
   padding: ${({ theme }) => theme.spacing[4]};
   border-radius: ${({ theme }) => theme.radii.xl};
   border: 1px solid
-    ${({ theme, $tone }) =>
-      $tone === 'blue' ? theme.tones.blue.containerBorder : theme.tones.violet.containerBorder};
+    ${({ theme, $tone }) => getAccent(theme, $tone === 'accent' ? 'violet' : $tone).containerBorder};
   background: ${({ theme }) => getSoftPanelBackground(theme)};
   transition:
     transform ${({ theme }) => theme.motion.normal},
@@ -141,11 +146,9 @@ const PaletteChip = styled.div`
   &:hover {
     transform: translateY(-3px);
     border-color: ${({ theme, $tone }) =>
-      $tone === 'blue' ? theme.tones.blue.activeBorder : theme.tones.violet.activeBorder};
-    box-shadow: ${({ $tone }) =>
-      $tone === 'blue'
-        ? '0 4px 18px rgba(56, 189, 248, 0.18)'
-        : '0 4px 18px rgba(124, 58, 237, 0.16)'};
+      getAccent(theme, $tone === 'accent' ? 'violet' : $tone).activeBorder};
+    box-shadow: ${({ theme, $tone }) =>
+      getAccent(theme, $tone === 'accent' ? 'violet' : $tone).itemHoverShadow};
   }
 `;
 
@@ -154,10 +157,9 @@ const PaletteSwatch = styled.div`
   height: 8px;
   border-radius: ${({ theme }) => theme.radii.pill};
   background: ${({ theme, $tone }) => {
-    if ($tone === 'blue') return theme.tones.blue.activeLine;
     if ($tone === 'accent')
       return `linear-gradient(90deg, ${theme.colors.accentSoft}, ${theme.colors.accent})`;
-    return theme.tones.violet.activeLine;
+    return getAccent(theme, $tone).activeLine;
   }};
 `;
 
@@ -174,7 +176,7 @@ const PaletteRole = styled.span`
   line-height: 1.6;
 `;
 
-export default function BrandIdentitySection() {
+export default function BrandIdentitySec() {
   const theme = useTheme();
 
   return (
@@ -191,16 +193,16 @@ export default function BrandIdentitySection() {
 
         <IdentityContent>
           <IdentityLeft>
-            <LogoStage>
-              <AppLogo linked={false} size="160px" />
-            </LogoStage>
-            <IdentityDesc>{identitySection.description}</IdentityDesc>
+            <AppLogo linked={false} size="220px" />
+
+            <IdentityDesc>
+              <IdentityDescHeading>{identitySection.descHeading}</IdentityDescHeading>
+              {identitySection.descBody}
+            </IdentityDesc>
           </IdentityLeft>
 
           <IdentityRight>
-            <BaseSection
-              label={identitySection.title}
-            />
+            <BaseSection label={identitySection.title} />
             <PaletteGrid>
               {identityColors.map((item) => (
                 <PaletteChip key={item.name} $tone={item.tone}>

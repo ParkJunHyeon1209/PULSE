@@ -120,10 +120,15 @@ export default function BaseSection({
             $size={titleSize}
             $weight={titleWeight}
           >
-            {titlePrefix ? <TitlePrefix $font={titlePrefixFont}>{titlePrefix}</TitlePrefix> : null}
+            {titlePrefix ? (
+              <TitlePrefix className="base-section-title-prefix" $font={titlePrefixFont}>
+                {titlePrefix}
+              </TitlePrefix>
+            ) : null}
             {title}
           </SectionTitle>
           <SectionColorTitle
+            className="base-section-color-title"
             $hasSub={hasSub}
             $font={titleFont}
             $size={titleSize}
@@ -144,13 +149,16 @@ export default function BaseSection({
               $weight={titleWeight}
             >
               {titlePrefix ? (
-                <TitlePrefix $font={titlePrefixFont}>{titlePrefix}</TitlePrefix>
+                <TitlePrefix className="base-section-title-prefix" $font={titlePrefixFont}>
+                  {titlePrefix}
+                </TitlePrefix>
               ) : null}
               {title}
             </SectionTitle>
           )}
           {colorTitle && (
             <SectionColorTitle
+              className="base-section-color-title"
               $hasSub={hasSub}
               $font={titleFont}
               $size={titleSize}

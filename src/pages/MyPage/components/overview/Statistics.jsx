@@ -3,6 +3,7 @@ import useAuthStore from '../../../../store/useAuthStore';
 import styled from '@emotion/styled';
 import useWishlistStore from '../../../../store/useWishlistStore';
 import useOrderStore from '../../../../store/useOrderStore';
+import useReviewStore from '../../../../store/useReviewStore';
 import {
   CouponIcon2,
   HeartFillIcon,
@@ -53,10 +54,15 @@ const VARIANT_COLORS = {
   },
 };
 
+const ensureArray = (value) => (Array.isArray(value) ? value : []);
+
 export default function Statistics({ setCategory }) {
   const user = useAuthStore((state) => state.user);
+  const reviews = useReviewStore((state) => state.reviews);
   const wishlistCount = useWishlistStore((state) => state.wishlistIds).length;
   const orderCount = useOrderStore((state) => state.orders.length);
+  const reviewCount =
+    ensureArray(reviews).length > 0 ? ensureArray(reviews).length : ensureArray(user?.reviewList).length;
 
   const statistics = [
     {
@@ -79,7 +85,7 @@ export default function Statistics({ setCategory }) {
       key: 'review',
       variant: 'blue',
       icon: <ReviewFillIcon />,
-      value: user?.reviews.length?.toLocaleString() || 0,
+      value: reviewCount.toLocaleString(),
       label: 'REVIEW ',
       category: 'review',
     },
