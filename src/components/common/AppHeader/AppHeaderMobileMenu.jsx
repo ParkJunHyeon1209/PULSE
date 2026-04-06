@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import { NavLink, useNavigate } from 'react-router-dom';
 import useOverlayStore from '../../../store/useOverlayStore';
 import useAuthStore from '../../../store/useAuthStore';
-import LogoutModal from '../LogoutModal';
 import useCartStore from '../../../store/useCartStore';
 import useThemeStore from '../../../store/useThemeStore';
 import {
@@ -295,7 +294,6 @@ export default function AppHeaderMobileMenu() {
           </PanelFoot>
         )}
       </Panel>
-      <LogoutModal />
     </>
   );
 }

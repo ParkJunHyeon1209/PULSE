@@ -194,7 +194,7 @@ export default function BaseModal({ isOpen, onClose, children, ...props }) {
   return createPortal(
     <Overlay
       $closing={closing}
-      onClick={closeOnOverlay && handleClose}
+      onClick={closeOnOverlay ? handleClose : undefined}
       onAnimationEnd={() => {
         if (closing) { setMounted(false); onClose(); }
       }}

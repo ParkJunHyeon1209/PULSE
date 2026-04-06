@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import BaseBtn from '../BaseBtn';
-import LogoutModal from '../LogoutModal';
 import {
   UserIcon,
   CartIcon,
@@ -433,7 +432,6 @@ export default function AppHeaderUser() {
       >
         <CartIcon strokeWidth="1" />
       </CartButton>
-      <LogoutModal />
     </>
   );
 }
