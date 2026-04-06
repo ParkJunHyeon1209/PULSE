@@ -16,9 +16,7 @@ export default function MyInfo({ setCategory }) {
   const handleProfile = (category) => setCategory(category);
   const initial = getUserInitial(user);
 
-  const iconSrc = profileIcon
-    ? PROFILE_ICONS.find((i) => i.id === profileIcon)?.src
-    : null;
+  const iconSrc = profileIcon ? PROFILE_ICONS.find((i) => i.id === profileIcon)?.src : null;
 
   return (
     <MyInfoWrap>
@@ -106,8 +104,12 @@ const MyInfoWrap = styled.div`
     pointer-events: none;
     z-index: 0;
   }
+  flex-direction: column;
+  align-items: flex-start;
+  gap: ${({ theme }) => theme.spacing[5]};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) 
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+  }
 `;
 
 const Profile = styled.div`
@@ -197,7 +199,7 @@ const ProfileLabel = styled.div`
 
 const ProfileName = styled.h2`
   position: relative;
-  
+
   margin-bottom: ${({ theme }) => theme.spacing[1]};
   font-family: ${({ theme }) => theme.fontFamily.body};
   font-size: ${({ theme }) => theme.fontSize.xl};
@@ -332,6 +334,4 @@ const SettingBtn = styled(BaseBtn)`
     min-width: 0;
     justify-content: center;
   }
-
-  
 `;
