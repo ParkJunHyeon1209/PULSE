@@ -190,13 +190,6 @@ const ItemInfo = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: ${({ theme }) => theme.spacing[2]};
-
-  > p:nth-of-type(1) {
-    opacity: 0.75;
-    color: ${({ theme }) => theme.colors.textSecondary};
-    font-weight: 700;
-    font-size: ${({ theme }) => theme.fontSize.xxxs};
-  }
 `;
 
 const ImgWrap = styled.div`
@@ -232,6 +225,26 @@ const ImgWrap = styled.div`
     font-size: ${({ theme }) => theme.fontSize.xxs};
     color: ${({ theme }) => theme.colors.textSecondary};
   }
+
+  > p[data-hidden='true'] {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    gap: ${({ theme }) => theme.spacing[2]};
+
+    > img,
+    > p {
+      width: 52px;
+      height: 52px;
+      flex: 0 0 52px;
+    }
+
+    > p {
+      font-size: ${({ theme }) => theme.fontSize.xxxs};
+    }
+  }
 `;
 
 const PriceSection = styled.p`
@@ -265,6 +278,18 @@ const ActionBtn = styled(BaseBtn)`
   height: 32px;
   padding: 0 14px;
   font-size: ${({ theme }) => theme.fontSize.xxxs};
+`;
+
+const OrderTitle = styled.p`
+  opacity: 0.75;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-weight: 700;
+  font-size: ${({ theme }) => theme.fontSize.xxxs};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: ${({ theme }) => theme.fontSize.xxxs};
+    line-height: 1.4;
+  }
 `;
 
 const DetailLayout = styled.div`
@@ -334,7 +359,7 @@ const DetailItems = styled.ul`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     gap: ${({ theme }) => theme.spacing[4]};
-    max-height: min(300px, 42vh);
+    max-height: min(300px, 25vh);
   }
 `;
 
@@ -446,7 +471,6 @@ const TrackingLayout = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[5]};
-  
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     padding-inline: ${({ theme }) => theme.spacing[3]};
@@ -654,7 +678,7 @@ export default function OrderList() {
             return (
               <li key={order.id} onClick={() => handleOpenOrderDetail(order.id)}>
                 <ItemInfo>
-                  <p>{order.orderNumber}</p>
+                  <OrderTitle>{order.orderNumber}</OrderTitle>
 
                   <ImgWrap>
                     {order.items.slice(0, 2).map((item, index) => (
@@ -665,7 +689,9 @@ export default function OrderList() {
                       />
                     ))}
 
-                    {order.items.length - 2 > 0 ? <p>+{order.items.length - 2}</p> : null}
+                    <p data-hidden={order.items.length - 2 > 0 ? 'false' : 'true'}>
+                      +{Math.max(order.items.length - 2, 0)}
+                    </p>
                   </ImgWrap>
 
                   <PriceSection>

@@ -44,12 +44,20 @@ export default function Profile() {
   const user = useAuthStore((state) => state.user);
   const setUser = useAuthStore((state) => state.login);
   const openModal = useOverlayStore((state) => state.openModal);
+  const safeUser = user ?? {
+    name: '',
+    nickname: '',
+    id: '',
+    email: '',
+    tel: '',
+    password: '',
+  };
 
   const [formData, setFormData] = useState({
-    name: user?.name,
-    nickname: user?.nickname ?? user?.name ?? '',
-    email: user?.email || user?.id,
-    tel: user?.tel || '',
+    name: safeUser.name,
+    nickname: safeUser.nickname ?? safeUser.name ?? '',
+    email: safeUser.email || safeUser.id,
+    tel: safeUser.tel || '',
     currentPassword: '',
     newPassword: '',
     newPasswordCheck: '',
@@ -73,7 +81,7 @@ export default function Profile() {
 
     if (!formData.currentPassword) {
       errors.currentPassword = '현재 비밀번호를 입력해주세요.';
-    } else if (formData.currentPassword !== user.password) {
+    } else if (formData.currentPassword !== safeUser.password) {
       errors.currentPassword = '비밀번호가 일치하지 않습니다.';
     }
 
@@ -96,7 +104,7 @@ export default function Profile() {
     }
 
     return errors;
-  }, [formData, user.password, isChangingPassword]);
+  }, [formData, safeUser.password, isChangingPassword]);
 
   const isPasswordValid =
     !passwordErrors.currentPassword &&
@@ -121,12 +129,12 @@ export default function Profile() {
     }
 
     const updatedUser = {
-      ...user,
+      ...safeUser,
       name: formData.name,
       nickname: formData.nickname,
       id: formData.email,
       tel: formData.tel,
-      password: formData.newPassword ? formData.newPassword : user.password,
+      password: formData.newPassword ? formData.newPassword : safeUser.password,
     };
 
     setUser(updatedUser);
@@ -148,10 +156,10 @@ export default function Profile() {
 
   const handleCancel = () => {
     setFormData({
-      name: user.name,
-      nickname: user.nickname ?? user.name,
-      email: user.id,
-      tel: user.tel,
+      name: safeUser.name,
+      nickname: safeUser.nickname ?? safeUser.name,
+      email: safeUser.id,
+      tel: safeUser.tel,
       currentPassword: '',
       newPassword: '',
       newPasswordCheck: '',
@@ -162,7 +170,6 @@ export default function Profile() {
 
   return (
     <ProfileWrap onSubmit={handleSubmit} autoComplete="off">
-      
       <AutoFillTrap aria-hidden="true">
         <input type="text" name="fake-username" autoComplete="username" tabIndex={-1} />
         <input type="password" name="fake-password" autoComplete="new-password" tabIndex={-1} />
@@ -459,7 +466,6 @@ const BtnWrap = styled.div`
 
 const CancelBtn = styled(BaseBtn)`
   width: 60px;
-  
 `;
 
 const SubmitBtn = styled(BaseBtn)`
