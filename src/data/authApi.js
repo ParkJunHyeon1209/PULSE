@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.mylecture.kr/api/team3';
+const BASE_URL = import.meta.env.PROD ? '/api' : 'https://api.mylecture.kr/api/team3';
 
 async function request(path, options = {}) {
   const res = await fetch(`${BASE_URL}${path}`, {
