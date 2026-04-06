@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import BaseBtn from './BaseBtn';
 
-/* 찜 버튼 */
+
 export const CardWish = styled(BaseBtn, {
   shouldForwardProp: (prop) => prop !== '$isLiked',
 })`
@@ -42,7 +42,7 @@ export const CardWish = styled(BaseBtn, {
   }
 `;
 
-/* 배지 */
+
 export const CardBadge = styled(BaseBtn)`
   position: absolute;
   top: ${({ theme }) => theme.spacing[3]};
@@ -54,7 +54,7 @@ export const CardBadge = styled(BaseBtn)`
   letter-spacing: 0.1em;
 `;
 
-/* 장바구니 추가 버튼 */
+
 export const CardAddBtn = styled(BaseBtn)`
   position: absolute;
   bottom: ${({ theme }) => theme.spacing[6]};
@@ -101,7 +101,7 @@ export const CardAddBtn = styled(BaseBtn)`
   }
 `;
 
-/* 내부 하단 글로우 */
+
 export const CardGlow = styled.div`
   position: absolute;
   inset: 0;
@@ -114,7 +114,7 @@ export const CardGlow = styled.div`
   z-index: 1;
 `;
 
-/* 카드 슬라이드 반짝이 */
+
 export const CardShim = styled.div`
   position: absolute;
   inset: 0;

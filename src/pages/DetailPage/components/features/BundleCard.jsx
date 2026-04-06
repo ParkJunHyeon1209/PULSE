@@ -38,13 +38,13 @@ const CardItem = styled.li`
     min-width: 0;
   }
 
-  /* BaseProductCard 루트(article) */
+  
   > article {
     min-height: 420px;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    /* 모바일에서 기존 번들카드처럼 가로로 길고 낮은 형태로 보정 */
+    
     > article {
       min-height: 228px;
       height: 228px;
@@ -52,18 +52,18 @@ const CardItem = styled.li`
       border-radius: ${({ theme }) => theme.radii.xl};
     }
 
-    /* 카드 상단 영역 */
+    
     > article > div:nth-of-type(1) {
       padding: ${({ theme }) => theme.spacing[3]};
     }
 
-    /* 카드 하단 텍스트 영역 */
+    
     > article > div:nth-of-type(3) {
       gap: ${({ theme }) => theme.spacing[2]};
       padding: ${({ theme }) => theme.spacing[3]};
     }
 
-    /* 플러스 버튼 위치 보정 */
+    
     > article > button {
       bottom: ${({ theme }) => theme.spacing[3]};
       right: ${({ theme }) => theme.spacing[3]};

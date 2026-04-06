@@ -106,7 +106,7 @@ const StyledBtn = styled.button`
 
   align-items: center;
   justify-content: center;
-  /* gap: ${({ theme }) => theme.spacing[2]}; */
+
   flex: ${({ $flex = '1' }) => $flex};
 
   width: ${({ $size, $width }) => $width || $size || 'auto'};
@@ -173,31 +173,6 @@ const StyledBtn = styled.button`
   }
 `;
 
-/**
- * variant  : 'primary' | 'secondary' | 'ic-btn' | 'badge'
- *   - primary  : 톤 컬러 배경 (기본값)
- *   - secondary: 테두리형 버튼
- *   - ic-btn   : 아이콘 전용 원형 버튼 (size로 크기 지정)
- *   - badge    : 플랫 태그 버튼
- *   - c-badge  : 그라디언트 태그 버튼 (카드 배지)
- *
- * tone     : 'violet' | 'blue' | 'col' | 'hot' | 'best' | 'new'
- *   — primary일 때: 'violet' | 'blue' (기본값 'violet')
- *   — badge일 때: 'col' | 'hot' | 'best' | 'new'
- *
- * size     : '36px' 등 — ic-btn 전용, 가로세로 동일 크기
- * padding  : 기본 패딩 12px 사용,
- *   - ex) <BaseBtn padding='{`${theme.spacing[2]} ${theme.spacing[4]}`}'
- *
- * icon     : primary일 때 별 아이콘 표시 여부 (기본값 true) — icon={false}로 숨길 수 있음
- *
- * flex     : flex 비율 (기본값 '1')
- * type     : button | submit | reset (기본값 'button')
- * ...props  : 그 외 button 요소에 들어갈 모든 props ( onClick, aria-label 등...) 넣어주면 되욤
- *
- * $btnStyle : variant + tone 기반으로 계산된 색상 스타일 객체 — btnStyle() 함수가 반환한 값을
- *             StyledBtn에 prop으로 전달해 bg / border / color 등을 주입함 (직접 넘기지 않아도 됨)
- */
 export default function BaseBtn({
   children,
   flex = '1',

@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useState, useRef } from 'react';
 import styled from '@emotion/styled';
-// import { categoryDetailApi } from '../../../../data/mockCategoryApi';
+
 import BundleCard from './BundleCard';
 import ProductReviewSection from './ProductReviewSection';
 import BaseSection from '../../../../components/common/BaseSection';

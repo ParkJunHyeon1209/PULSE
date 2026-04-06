@@ -1,7 +1,7 @@
 import { Global, css } from '@emotion/react';
 
 const styles = (theme) => css`
-  /* 폰트는 로컬 파일 기준으로 로드 */
+  
   @font-face {
     font-family: 'Pretendard';
     src: url('/fonts/PretendardVariable.woff2') format('woff2');
@@ -161,10 +161,10 @@ const styles = (theme) => css`
     background: ${theme.colors.background};
     color: ${theme.colors.text};
     line-height: 1.5;
-    /* 글자를 조금 더 부드럽게 보이게 하는 브라우저별 보정 */
+    
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* 자간/ligature 같은 텍스트 렌더링 품질을 우선하는 옵션 */
+    
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
     font-family: ${theme.fontFamily.body};

@@ -8,7 +8,6 @@ const TabSection = styled.section`
 const SectionDivider = styled.div`
   width: 100%;
   height: 1px;
-  /* margin: ${({ theme }) => theme.spacing[3]} 0; */
   border-radius: ${({ theme }) => theme.radii.pill};
   background: ${({ theme }) => theme.gradients.violetBlue};
   mask-image: linear-gradient(
@@ -99,7 +98,6 @@ export default function CategoryTabs({ tabs, activeTab, onClickTab, inHero = fal
 
   const updateIndicator = (tab) => {
     requestAnimationFrame(() => {
-      // → JS 실행 중 레이아웃 강제 재계산(forced reflow) 방지
       const listEl = listRef.current;
       const buttonEl = buttonRefs.current[tab];
 

@@ -92,7 +92,7 @@ export default function StarIcon(props) {
   );
 }
 
-// 화살표
+
 export function ArrowIcon(props) {
   return (
     <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -185,7 +185,7 @@ export function ArrowUpRightIconL(props) {
   );
 }
 
-// 헤더 아이콘
+
 export function UserIcon(props) {
   return (
     <svg
@@ -312,7 +312,7 @@ export function LogoutIcon() {
     </svg>
   );
 }
-// 테마 토글 아이콘
+
 export function SunIcon(props) {
   return (
     <svg
@@ -359,7 +359,7 @@ export function MoonIcon(props) {
   );
 }
 
-// 푸터아이콘
+
 export function TwitterIcon({ strokeWidth = '0.75', ...props }) {
   return (
     <svg
@@ -464,7 +464,7 @@ export function YoutubeIcon({ strokeWidth = '0.75', ...props }) {
   );
 }
 
-// 카드 아이콘
+
 export function HeartIcon({ size, strokeWidth = '1.8', ...props }) {
   return (
     <svg

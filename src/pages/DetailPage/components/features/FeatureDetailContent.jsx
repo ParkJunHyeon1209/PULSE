@@ -69,7 +69,7 @@ const SpecPreviewImage = styled.img`
 `;
 
 const SpecItem = styled.div`
-  /* width: 100%; */
+  
 `;
 
 const SpecLine = styled.p`

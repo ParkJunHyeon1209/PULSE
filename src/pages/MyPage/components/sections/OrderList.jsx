@@ -446,7 +446,7 @@ const TrackingLayout = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[5]};
-  /* padding-inline: ${({ theme }) => theme.spacing[2]}; */
+  
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     padding-inline: ${({ theme }) => theme.spacing[3]};

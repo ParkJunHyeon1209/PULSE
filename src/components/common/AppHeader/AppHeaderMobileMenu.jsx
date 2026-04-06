@@ -96,7 +96,7 @@ const PanelBody = styled.div`
 `;
 
 const SectionLabel = styled.div`
-  /* font-family: ${({ theme }) => theme.fontFamily.mono}; */
+  
   font-size: ${({ theme }) => theme.fontSize.xxs};
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -185,7 +185,7 @@ const MenuItemRight = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  /* font-family: ${({ theme }) => theme.fontFamily.mono}; */
+  
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   font-weight: 700;
   color: ${({ theme }) => theme.colors.primary};

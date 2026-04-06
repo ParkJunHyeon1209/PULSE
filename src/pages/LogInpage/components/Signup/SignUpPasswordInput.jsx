@@ -249,7 +249,7 @@ export default function SignUpPasswordInput({
 
   return (
     <>
-      {/* 비밀번호 입력란 */}
+      
       <InputGroup>
         <LabelRow>
           <InputLabel className="password-label">PASSWORD</InputLabel>
@@ -276,7 +276,7 @@ export default function SignUpPasswordInput({
           />
           <ShowBtn showPw={showPw} setShowPw={setShowPw} />
         </div>
-        {/* 비밀번호 안전도 게이지바 */}
+        
         <StrengthContainer>
           <StrengthBar className="weak" $score={pwScore} />
           <StrengthBar className="medium" $score={pwScore} />
@@ -296,7 +296,7 @@ export default function SignUpPasswordInput({
           )}
         </MessageContainer>
       </InputGroup>
-      {/* 비밀번호 재입력란 */}
+      
       <InputGroup>
         <InputLabel>CONFIRM PASSWORD</InputLabel>
         <div style={{ position: 'relative' }}>

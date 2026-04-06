@@ -16,22 +16,22 @@ async function request(path) {
   return json.data;
 }
 
-// 카테고리 목록
+
 export async function getCategories() {
   return request('/categories');
 }
 
-// 전체 상품 목록
+
 export async function getAllProducts() {
   return request('/products');
 }
 
-// 상품 상세 조회
+
 export async function getProductDetailById(id) {
   return request(`/products/${id}`);
 }
 
-// 상품 상세 정보
+
 export async function getCategoryDetailByType(type) {
   return request(`/categoryDetail/${type}`);
 }

@@ -24,7 +24,7 @@ const useAuthStore = create(
         });
       },
 
-      // 사용자 아이콘 설정 - 추가 했어욤...
+      
       setProfileIcon: (iconId) => set({ profileIcon: iconId }),
     }),
     {

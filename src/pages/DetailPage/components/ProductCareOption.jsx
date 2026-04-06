@@ -4,10 +4,8 @@ import styled from '@emotion/styled';
 export default function ProductCareOption({ product, isChecked, onToggle }) {
   const CARE_DISCOUNT_RATE = 20;
 
-  /*const getDiscountedPrice = (price, discountRate) => {
-    return Math.round(price * (1 - discountRate / 100));
-  };*/
-  // 케어서비스 옵션
+  
+  
   const careService = product.additionalServices?.[0];
   if (!careService) return null;
   const originalPrice = Math.round(careService.price / (1 - CARE_DISCOUNT_RATE / 100));

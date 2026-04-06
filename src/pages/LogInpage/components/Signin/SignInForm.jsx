@@ -156,9 +156,9 @@ export default function SignInForm({ onClick }) {
       <StyledForm onSubmit={handleLogin}>
         <Title>다시 돌아왔군요.</Title>
         <SubText>계정에 로그인해 드롭을 놓치지 마세요.</SubText>
-        {/* 이메일 입력창 */}
+        
         <SignInEmailInput email={email} setEmail={setEmail} isFirst />
-        {/* 비밀번호 입력창 */}
+        
         <SignInPasswordInput
           pw={pw}
           setPw={setPw}

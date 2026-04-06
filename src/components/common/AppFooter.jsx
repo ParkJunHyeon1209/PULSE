@@ -135,7 +135,7 @@ const FootInner = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
     grid-template-columns: repeat(3, 1fr);
     gap: ${({ theme }) => `${theme.spacing[10]} ${theme.spacing[8]}`};
-    /* padding: ${({ theme }) => `${theme.spacing[12]} ${theme.spacing[12]} 36px`}; */
+    
 
     & > *:first-of-type {
       grid-column: 1 / -1;

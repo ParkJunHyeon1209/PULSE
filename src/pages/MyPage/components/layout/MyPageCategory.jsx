@@ -96,7 +96,7 @@ export default function MyPageCategory({ category, setCategory }) {
 }
 
 const CategoryList = styled.ul`
-  /* min-width: 240px; */
+  
   flex: 1;
   flex-shrink: 0;
   display: flex;
