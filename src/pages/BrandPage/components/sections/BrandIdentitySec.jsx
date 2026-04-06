@@ -115,7 +115,7 @@ const IdentityDesc = styled.p`
 
 const IdentityRight = styled.div`
   display: grid;
-  /* gap: ${({ theme }) => theme.spacing[1]}; */
+  
   height: 100%;
   align-content: end;
 `;

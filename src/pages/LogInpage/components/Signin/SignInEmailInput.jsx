@@ -35,7 +35,7 @@ export default function SignInEmailInput({ email, setEmail, isFirst = false }) {
   return (
     <>
       <InputGroup $isFirst={isFirst}>
-        {/* 이메일 입력창 */}
+        
         <InputLabel>EMAIL</InputLabel>
         <Input
           id="id"

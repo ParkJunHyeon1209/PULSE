@@ -138,7 +138,7 @@ const CartButton = styled(BaseBtn)`
     display: flex;
     align-items: center;
     justify-content: center;
-    /* font-family: ${({ theme }) => theme.fontFamily.mono}; */
+    
     font-size: ${({ theme }) => theme.fontSize.xxxs};
     font-weight: 600;
     box-sizing: border-box;

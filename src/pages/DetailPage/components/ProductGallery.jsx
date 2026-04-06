@@ -84,7 +84,7 @@ export default function ProductGallery({
           </ThumbnailButton>
         ))}
       </ThumbnailList>
-      {/* 임시로 옵션 뿌림 features가 없음 features에서 options로 교체 */}
+      
       {featureItems.length > 0 && (
         <Features>
           {featureItems.map((item, index) => (
@@ -225,7 +225,7 @@ const Features = styled.div`
   display: flex;
   flex-direction: column;
   font-weight: 700;
-  /* line-height: 1.2; */
+  
   gap: ${({ theme }) => theme.spacing[2]};
   width: 100%;
 

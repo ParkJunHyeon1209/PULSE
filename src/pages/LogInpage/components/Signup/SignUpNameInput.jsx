@@ -91,7 +91,7 @@ export default function SignupNameInput({
   };
   return (
     <>
-      {/* 이름 입력란 */}
+      
       <InputNameGroup>
         <InputGroup $isFirst={isFirst}>
           <InputLabel>FIRST NAME</InputLabel>

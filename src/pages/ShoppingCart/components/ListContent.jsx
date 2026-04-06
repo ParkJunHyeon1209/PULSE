@@ -83,9 +83,7 @@ export default function ListContent() {
                 >
                   {item.type}
                 </CategoryBadge>
-                {/* <button className="del-btn" onClick={() => removeCart(item.id)}>
-                  <DelIcon />
-                </button> */}
+                
 
                 <CloseBtn
                   variant="ic-btn"
@@ -140,7 +138,7 @@ export default function ListContent() {
 }
 
 const List = styled.ul`
-  /* background-color: ${({ isDarkMode }) => (isDarkMode ? 'transparent' : '#ffffff30')}; */
+  
   background: color-mix(in srgb, ${({ theme }) => theme.colors.cardBgLight} 50%, transparent);
 `;
 

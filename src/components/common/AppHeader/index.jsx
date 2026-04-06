@@ -17,7 +17,7 @@ const NavWrap = styled.nav`
   z-index: 100;
   min-height: 100px;
   padding-top: ${({ theme }) => theme.spacing[4]};
-  /* border-bottom: 1px solid ${({ theme }) => theme.colors.border}; */
+  
 
   &::before {
     content: '';
@@ -61,7 +61,7 @@ const NavLinks = styled.div`
   }
 `;
 
-/* shouldForwardProp: $isDrops가 NavLink → <a> DOM까지 전달되는 것 차단 */
+
 const NavItem = styled(NavLink, {
   shouldForwardProp: (prop) => prop !== '$isDrops',
 })`

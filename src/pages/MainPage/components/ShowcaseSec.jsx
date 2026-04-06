@@ -289,7 +289,7 @@ export default function ShowcaseSec() {
                   imgFilter="brightness(1.2) saturate(1.2)"
                   badge={card.tag}
                   beamOver
-                  // arrow={card.arrow}
+                  
                   nameSize="clamp(18px, 2.5vw, 32px)"
                   flipped={flippedId === card.id && slot === 0}
                   backSlot={

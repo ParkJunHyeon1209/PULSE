@@ -32,7 +32,7 @@ export default function DetailPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isNotFound, setIsNotFound] = useState(false);
 
-  // 전체 상품 목록
+  
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -60,7 +60,7 @@ export default function DetailPage() {
     return typeMap[normalizedType] || normalizedType;
   };
 
-  // 현재 상세 상품
+  
   useEffect(() => {
     const fetchProductDetail = async () => {
       setIsLoading(true);
@@ -104,7 +104,7 @@ export default function DetailPage() {
     fetchProductDetail();
   }, [id]);
 
-  // 상품 바뀔때 초기 상태
+  
   useEffect(() => {
     if (!product) return;
 
@@ -121,7 +121,7 @@ export default function DetailPage() {
     setSelectedOptions(initialOption);
   }, [product]);
 
-  // 토스트 메세지
+  
   useEffect(() => {
     if (!toast) return;
 
@@ -131,7 +131,7 @@ export default function DetailPage() {
 
     return () => clearTimeout(timer);
   }, [toast]);
-  // 옵션 클릭 핸들러 추가
+  
 
   const handleSelectOption = (label, item) => {
     setSelectedOptions((prev) => ({
@@ -150,7 +150,7 @@ export default function DetailPage() {
     setQuantity((prev) => prev + 1);
   };
 
-  // 로그인 필요 함수
+  
   const handleRequireLogin = () => {
     setToast({
       message: '로그인 후 이용 가능합니다.',
@@ -178,7 +178,7 @@ export default function DetailPage() {
   if (isNotFound || !product) {
     return <Navigate to="/product-not-found" replace />;
   }
-  // 추가금 옵션 계산함수
+  
   const getOptionExtraPrice = (selectedOptions) => {
     return Object.values(selectedOptions).reduce((total, value) => {
       const match = String(value).match(/\(\+([\d,]+)\)/);
@@ -222,16 +222,16 @@ export default function DetailPage() {
       quantity,
       checked: true,
 
-      // 가격 관련
+      
       basePrice: product.price,
       carePrice,
       optionExtraPrice,
       price: finalPrice,
 
-      // 장바구니에서 바로 렌더 가능한 문자열만 따로 제공
+      
       optionSummary,
       careTitle: isCareChecked ? (careService?.title ?? '') : '',
-      // 나중에 필요하면 쓰라고 남겨두는 값
+      
       options: selectedOptions,
       isCareChecked,
     };

@@ -87,28 +87,7 @@ const MainCursor = styled.div`
     height 0.18s ease,
     transform 0.12s ease;
 `;
-/*
-const Follower = styled.div`
-  position: fixed;
-  left: ${({ x }) => x}px;
-  top: ${({ y }) => y}px;
-  width: 48px;
-  height: 48px;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  pointer-events: none;
 
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent 65%);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-
-  box-shadow:
-    0 0 24px rgba(168, 85, 247, 0.28),
-    inset 0 0 18px rgba(255, 255, 255, 0.08);
-
-  backdrop-filter: blur(3px);
-  mix-blend-mode: screen;
-`;
-*/
 const Particle = styled.span`
   position: fixed;
   left: ${({ x }) => x}px;
@@ -145,7 +124,7 @@ const Particle = styled.span`
     0 0 20px ${({ glow }) => glow};
 `;
 
-// 라이트모드: 흰색 시작 → 테마 핵심 컬러
+
 const COLORS = [
   {
     fill: 'linear-gradient(135deg, rgba(236,233,255,0.9) 0%, rgba(196,181,253,0.95) 50%, rgba(124,58,237,0.9) 100%)',
@@ -161,7 +140,7 @@ const COLORS = [
   },
 ];
 
-// 다크모드: 테마 컬러만, 흰색 없음
+
 const DARK_COLORS = [
   {
     fill: 'linear-gradient(135deg, rgba(167,139,250,0.25) 0%, rgba(124,58,237,0.92) 55%, rgba(150,70,255,0.98) 100%)',
@@ -271,7 +250,7 @@ export default function CursorTrail() {
     };
   }, []);
 
-  // <Follower x={follower.x} y={follower.y} />
+  
   return (
     <TrailRoot aria-hidden="true">
       <MainCursor x={mouse.x} y={mouse.y} isDark={isDarkMode} />

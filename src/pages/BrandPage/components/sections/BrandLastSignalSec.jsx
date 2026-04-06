@@ -42,7 +42,7 @@ const ClosingCard = styled.div`
     ${({ theme }) => getAccent(theme, 'violet').containerShadow};
   backdrop-filter: ${({ theme }) => theme.effects.blurMd};
 
-  /* 글래스 시머 */
+  
   &::after {
     content: '';
     position: absolute;
@@ -89,7 +89,7 @@ const ClosingCard = styled.div`
   }
 `;
 
-/* 하단 빔 — 다크/라이트 모두 보이도록 명시적 그라디언트 */
+
 const ClosingBeam = styled.div`
   position: absolute;
   left: 0;
@@ -106,7 +106,7 @@ const ClosingBeam = styled.div`
   pointer-events: none;
 `;
 
-/* 좌상단 보조 빔 (파란 계열) */
+
 const ClosingBeamBlue = styled.div`
   position: absolute;
   top: 0;
@@ -194,7 +194,7 @@ const ClosingBackdrop = styled.img`
     theme.mode === 'dark' ? 'brightness(0.75) saturate(1.05)' : 'brightness(1.2) saturate(1.02)'};
 `;
 
-/* 상단 accent 라인 */
+
 const TopLine = styled.div`
   position: absolute;
   top: 0;
@@ -249,7 +249,7 @@ export default function BrandLastSignalSec() {
           src={theme.mode === 'dark' ? closingBackdrop.dark : closingBackdrop.light}
           alt=""
         />
-        {/* <TopLine /> */}
+        
         <ClosingBeam />
         <ClosingBeamBlue />
         <ClosingSparkLeft>

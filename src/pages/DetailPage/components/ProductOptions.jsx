@@ -11,7 +11,7 @@ export default function ProductOptions({ options = [], selectedOptions = {}, onS
       '컬러',
       '케이블 컬러',
       '컬러테마',
-      /* '에디션', 이건 빼는 걸로 */ '투명도',
+       '투명도',
       '마감',
     ].includes(normalized);
   };

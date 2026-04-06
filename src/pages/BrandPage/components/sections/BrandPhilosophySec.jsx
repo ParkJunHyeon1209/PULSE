@@ -24,17 +24,7 @@ const PanelGrid = styled.div`
 const SurfaceCard = styled.div`
   position: relative;
   padding-top: ${({ theme }) => theme.spacing[5]};
-  /* 
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: max(20%, 80px);
-    top: 0;
-    height: 1px;
-    background: ${({ theme }) => theme.gradients.Headline};
-    opacity: 0.9;
-  } */
+  
 `;
 
 const BodyText = styled.p`

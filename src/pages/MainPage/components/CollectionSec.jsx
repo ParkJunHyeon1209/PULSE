@@ -180,7 +180,7 @@ export default function CollectionSec() {
   const recommendedProducts = useMemo(() => {
     if (!productsList || productsList.length === 0) return [];
 
-    // eslint-disable-next-line
+    
     return [...productsList].sort(() => Math.random() - 0.5).slice(0, 8);
   }, [productsList]);
 

@@ -260,8 +260,8 @@ export default function BaseProductCard({
   const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);
 
   const isLiked = useMemo(() => {
-    return wishlistIds.includes(product.id);
-  }, [wishlistIds, product.id]);
+    return isLogin && wishlistIds.includes(product.id);
+  }, [isLogin, wishlistIds, product.id]);
 
   const handleClickWishlist = (e) => {
     e.stopPropagation();

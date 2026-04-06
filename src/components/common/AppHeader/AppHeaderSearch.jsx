@@ -145,7 +145,7 @@ export default function AppHeaderSearch() {
 
   useEffect(() => {
     if (!hasQuery) return;
-    // 검색어 입력이 멈춘 후 300ms 뒤에 API 요청을 보내도록 디바운스 처리
+    
     const timer = setTimeout(async () => {
       try {
         const data = await searchProducts(query.trim());

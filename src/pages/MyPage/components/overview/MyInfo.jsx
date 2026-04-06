@@ -107,19 +107,7 @@ const MyInfoWrap = styled.div`
     z-index: 0;
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    /* padding: ${({ theme }) => theme.spacing[10]} ${({ theme }) => theme.spacing[6]}; */
-    /* ${({ theme }) => theme.spacing[8]}; */
-    flex-direction: column;
-    align-items: flex-start;
-    gap: ${({ theme }) => theme.spacing[5]};
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    /* padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[3]}; */
-    /* ${({ theme }) => theme.spacing[6]}; */
-    /* gap: ${({ theme }) => theme.spacing[4]}; */
-  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) 
 `;
 
 const Profile = styled.div`
@@ -209,7 +197,7 @@ const ProfileLabel = styled.div`
 
 const ProfileName = styled.h2`
   position: relative;
-  /* padding-bottom: ${({ theme }) => theme.spacing[5]}; */
+  
   margin-bottom: ${({ theme }) => theme.spacing[1]};
   font-family: ${({ theme }) => theme.fontFamily.body};
   font-size: ${({ theme }) => theme.fontSize.xl};
@@ -345,7 +333,5 @@ const SettingBtn = styled(BaseBtn)`
     justify-content: center;
   }
 
-  /* @media (max-width: 400px) {
-    flex-basis: 100%;
-  } */
+  
 `;

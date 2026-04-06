@@ -9,19 +9,19 @@ const useCartStore = create(
     (set, get) => ({
       cart: [],
 
-      // 체크된 상품들 총합 가격 구하기
+      
       getTotalPrice: () => {
         return get()
           .cart.filter((item) => item.checked)
           .reduce((acc, item) => acc + item.price * item.quantity, 0);
       },
 
-      // 체크된 상품 가져오기 (주문 내역)
+      
       getCheckedItems: () => {
         return get().cart.filter((item) => item.checked);
       },
 
-      // 개별 상품 체크 토글
+      
       toggleItemChecked: (product) =>
         set((state) => {
           const targetKey = getCartItemKey(product);
@@ -33,7 +33,7 @@ const useCartStore = create(
           };
         }),
 
-      // 전체선택 토글
+      
       toggleAllChecked: () =>
         set((state) => {
           const isAllChecked = state.cart.length > 0 && state.cart.every((item) => item.checked);
@@ -46,7 +46,7 @@ const useCartStore = create(
           };
         }),
 
-      // 장바구니 추가 및 수량 올리기
+      
       addToCart: (product, qty = 1) =>
         set((state) => {
           const targetKey = getCartItemKey(product);
@@ -68,7 +68,7 @@ const useCartStore = create(
           };
         }),
 
-      // 수량 줄이기
+      
       decreaseQuantity: (product) => {
         const targetKey = getCartItemKey(product);
         const cart = get().cart;
@@ -88,7 +88,7 @@ const useCartStore = create(
         }));
       },
 
-      // 수량 늘리기
+      
       increaseQuantity: (product) =>
         set((state) => {
           const targetKey = getCartItemKey(product);
@@ -100,7 +100,7 @@ const useCartStore = create(
           };
         }),
 
-      // 해당 아이템 삭제
+      
       removeCart: (product) =>
         set((state) => {
           const targetKey = getCartItemKey(product);
@@ -110,19 +110,19 @@ const useCartStore = create(
           };
         }),
 
-      // 선택삭제
+      
       removeSelected: () =>
         set((state) => ({
           cart: state.cart.filter((item) => !item.checked),
         })),
 
-      // 체크된 상품 카트에서 빼기 (주문 내역)
+      
       clearCheckedItems: () =>
         set((state) => ({
           cart: state.cart.filter((item) => !item.checked),
         })),
 
-      // 카트 전체 초기화
+      
       openResetModal: () => {
         useOverlayStore.getState().openModal('confirm');
         return;

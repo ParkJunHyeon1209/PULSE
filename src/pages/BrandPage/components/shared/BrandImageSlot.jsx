@@ -62,7 +62,7 @@ const VisualCard = styled.article`
     box-shadow 0.2s ease,
     border-color 0.2s ease;
 
-  /* 글래스 시머 레이어 */
+  
   &::before {
     content: '';
     position: absolute;

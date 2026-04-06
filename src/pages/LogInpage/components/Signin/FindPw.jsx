@@ -38,7 +38,9 @@ export default function FindPw({ findEmail, setFindEmail, isFindPwOpen, setIsFin
   const [successMsg, setSuccessMsg] = useState('');
   const navigate = useNavigate();
 
-  const isEmailValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/.test(findEmail);
+  const isEmailValid = /^(?=[^@]*[a-zA-Z])[a-zA-Z0-9._%+-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/.test(
+    findEmail
+  );
 
   const handleOpenFindPw = (e) => {
     e.preventDefault();

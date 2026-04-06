@@ -165,7 +165,7 @@ const SummaryCard = styled.article`
   }
 
   p {
-    /* font-family: ${({ theme }) => theme.fontFamily.mono}; */
+    
     font-size: ${({ theme }) => theme.fontSize.xxxs};
     font-weight: 600;
     letter-spacing: 0.03em;
@@ -179,7 +179,7 @@ const CouponTitle = styled.h5`
   font-size: ${({ theme }) => theme.fontSize.xs};
   font-weight: 700;
   letter-spacing: 0.12em;
-  /* margin-top: ${({ theme }) => theme.spacing[8]}; */
+  
   color: ${({ theme }) => theme.colors.textSecondary};
 `;
 

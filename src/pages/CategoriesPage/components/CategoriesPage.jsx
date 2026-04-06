@@ -9,13 +9,12 @@ import CategorySection from './CategorySection';
 import CategoryPromoBanner from './CategoryPromoBanner';
 import useThemeStore from '../../../store/useThemeStore';
 
-// 히어로 이미지 모음
 import gearBannerDark from '../../../assets/img/banners/D_mouse&keySey.webp';
 import gearBannerLight from '../../../assets/img/banners/L_mouse&keySey.webp';
 import gearKeyboardBannerDark from '../../../assets/img/banners/D_Keyboard.webp';
 import gearKeyboardBannerLight from '../../../assets/img/banners/L_Keyboard.webp';
-import gearMouseBannerDark from '../../../assets/img/banners/D_Mouse.webp';
-import gearMouseBannerLight from '../../../assets/img/banners/L_Mouse.webp';
+import gearMouseBannerDark from '../../../assets/img/banners/D_mouse.webp';
+import gearMouseBannerLight from '../../../assets/img/banners/L_mouse.webp';
 import headsetBannerDark from '../../../assets/img/banners/D_Headset.webp';
 import headsetBannerLight from '../../../assets/img/banners/L_Headset.webp';
 import earphoneBannerDark from '../../../assets/img/banners/D_Earphones.webp';
@@ -33,7 +32,6 @@ import dropsOnlyBannerLight from '../../../assets/img/banners/L_Drops.webp';
 import etcBannerDark from '../../../assets/img/banners/D_DropsExtras.webp';
 import etcBannerLight from '../../../assets/img/banners/L_DropsExtras.webp';
 
-// 카테고리 메뉴 분류
 const categoryConfig = {
   gear: {
     title: 'GEAR',
@@ -153,7 +151,6 @@ const categoryConfig = {
   },
 };
 
-// 필터링 목록
 const detailFilters = [
   { key: 'ALL', label: '전체' },
   { key: 'NEW', label: '신규' },
@@ -177,7 +174,6 @@ export default function CategoriesPage() {
   const currentHeroBackground = isDarkMode ? currentHeroImage.dark : currentHeroImage.light;
   const [promoBackground, setPromoBackground] = useState('');
 
-  // 프로모션 배너 이미지 출력
   const getRandomItem = (list = []) => {
     if (!Array.isArray(list) || list.length === 0) return '';
     return list[Math.floor(Math.random() * list.length)];
@@ -191,7 +187,6 @@ export default function CategoriesPage() {
     setPromoBackground(getRandomItem(imageList));
   }, [categoryName, isDarkMode]);
 
-  // 카테고리 API
   useEffect(() => {
     async function loadProducts() {
       try {
@@ -210,14 +205,12 @@ export default function CategoriesPage() {
     loadProducts();
   }, [categoryName]);
 
-  // 탭 이동시 초기화
   useEffect(() => {
     setActiveTab('ALL');
     setActiveFilter('ALL');
     setPriceOrder('');
   }, [categoryName]);
 
-  // 필터만 초기화
   useEffect(() => {
     setActiveFilter('ALL');
     setPriceOrder('');
@@ -723,7 +716,6 @@ export default function CategoriesPage() {
           title={currentCategory.title}
           label={currentCategory.label}
           backgroundImage={currentHeroBackground}
-  
           bgFilter={isDarkMode ? 'brightness(0.9) saturate(1.3)' : 'brightness(1.03) saturate(1.2)'}
           tabs={currentCategory.tabs}
           activeTab={activeTab}
@@ -814,8 +806,6 @@ const FilterBar = styled.div`
   flex-wrap: wrap;
   gap: 10px;
   transform: translate(18px, 66px);
-
-  /* margin: 0 0 ${({ theme }) => theme.spacing[8]}; */
 `;
 
 const FilterBadge = styled.button`

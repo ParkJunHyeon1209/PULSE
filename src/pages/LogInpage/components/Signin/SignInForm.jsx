@@ -90,6 +90,7 @@ export default function SignInForm({ onClick }) {
   const [showPw, setShowPw] = useState(false);
   const [findEmail, setFindEmail] = useState('');
   const [isFindPwOpen, setIsFindPwOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -139,6 +140,7 @@ export default function SignInForm({ onClick }) {
         storeLogin(userData);
 
         setModalMessage(`${userData.name}님, 환영합니다!`);
+        setIsSuccess(true);
         setIsModalOpen(true);
       }
     } catch (error) {
@@ -154,9 +156,9 @@ export default function SignInForm({ onClick }) {
       <StyledForm onSubmit={handleLogin}>
         <Title>다시 돌아왔군요.</Title>
         <SubText>계정에 로그인해 드롭을 놓치지 마세요.</SubText>
-        {/* 이메일 입력창 */}
+        
         <SignInEmailInput email={email} setEmail={setEmail} isFirst />
-        {/* 비밀번호 입력창 */}
+        
         <SignInPasswordInput
           pw={pw}
           setPw={setPw}
@@ -197,8 +199,9 @@ export default function SignInForm({ onClick }) {
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
-          if (modalMessage.includes('환영합니다')) {
+          if (isSuccess) {
             navigate('/');
+            setIsSuccess(false);
           }
         }}
         message={modalMessage}

@@ -41,7 +41,7 @@ const TotalLabel = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
-  /* font-family: ${({ theme }) => theme.fontFamily.mono}; */
+  
   font-size: ${({ theme }) => theme.fontSize.xxxs};
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -49,7 +49,7 @@ const TotalLabel = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing[1]};
   .point {
     font-weight: 700;
-    /* font-size: ${({ theme }) => theme.fontSize.xxs}; */
+    
   }
 `;
 

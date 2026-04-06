@@ -11,7 +11,7 @@ import useThemeStore from '../../store/useThemeStore';
 import categoryBannerDark from '../../assets/img/banners/D_LineUp.webp';
 import categoryBannerLight from '../../assets/img/banners/L_LineUp.webp';
 
-// 프로모션 배너 이미지 모음
+
 import gearBannerDark from '../../assets/img/banners/D_mouse&keySey.webp';
 import gearBannerLight from '../../assets/img/banners/L_mouse&keySey.webp';
 import headsetBannerDark from '../../assets/img/banners/D_Headset.webp';

@@ -162,7 +162,7 @@ export default function Profile() {
 
   return (
     <ProfileWrap onSubmit={handleSubmit} autoComplete="off">
-      {/* 브라우저에 저장한 이메일 및 비밀번호 자동 완성을 방지하기 위한 더미 입력 필드 */}
+      
       <AutoFillTrap aria-hidden="true">
         <input type="text" name="fake-username" autoComplete="username" tabIndex={-1} />
         <input type="password" name="fake-password" autoComplete="new-password" tabIndex={-1} />
@@ -459,7 +459,7 @@ const BtnWrap = styled.div`
 
 const CancelBtn = styled(BaseBtn)`
   width: 60px;
-  /* color: ${({ theme }) => theme.colors.textSecondary}; */
+  
 `;
 
 const SubmitBtn = styled(BaseBtn)`

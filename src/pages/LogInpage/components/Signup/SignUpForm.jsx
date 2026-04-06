@@ -105,15 +105,18 @@ export default function SignUpForm({ onClick, setActiveTab }) {
   const [modalMessage, setModalMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const navigate = useNavigate();
-
   const handleJoin = async (e) => {
     e.preventDefault();
 
     const isFilled = email && pw && firstName && lastName;
     const isAgreed = agreement.agreeTerms && agreement.agreePrivacy;
     const isNoError =
-      !emailError && !pwError && !firstNameError && !lastNameError && isUnique === true;
+      !emailError &&
+      !pwError &&
+      !firstNameError &&
+      !lastNameError &&
+      isUnique === true &&
+      pw === pwConfirm;
 
     if (!(isFilled && isAgreed && isNoError)) {
       setModalMessage('회원가입 정보를 확인해주세요. \n 누락되거나 잘못 입력된 항목이 있습니다.');
@@ -149,9 +152,9 @@ export default function SignUpForm({ onClick, setActiveTab }) {
   const handleModalClose = () => {
     setIsModalOpen(false);
 
-    setIsModalOpen(false);
-    if (modalMessage.includes('성공')) {
+    if (isSuccess) {
       setActiveTab('signin');
+      setIsSuccess(false);
     }
   };
 

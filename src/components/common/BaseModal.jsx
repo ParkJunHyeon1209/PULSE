@@ -142,12 +142,12 @@ const ModalBody = styled.div`
   line-height: 1.65;
 `;
 
-// props: isOpen, onClose, children
-// label — 타이틀 위 뱃지 텍스트 (선택)
-// title — 모달 제목 (선택)
-// titleSize — 제목 폰트 사이즈 (선택, 기본 theme.fontSize.s)
-// width — 최대 너비 (선택, 기본 360px)
-// closable — X버튼 표시 여부 (선택, 기본 true)
+
+
+
+
+
+
 export default function BaseModal({ isOpen, onClose, children, ...props }) {
   const { label, title, titleSize, width, closable = true, closeOnOverlay = false } = props;
   const [mounted, setMounted] = useState(isOpen);
