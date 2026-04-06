@@ -7,13 +7,16 @@ import AuthLeftSvg from './AuthLeftSvg';
 const PanelShell = styled.div`
   position: relative;
   width: 100%;
+  height: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
   flex: 1;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-top: ${({ theme }) => theme.spacing[20]};
-  padding-bottom: ${({ theme }) => theme.spacing[20]};
+  padding-top: clamp(28px, 5vh, ${({ theme }) => theme.spacing[20]});
+  padding-bottom: clamp(28px, 5vh, ${({ theme }) => theme.spacing[20]});
   padding-left: max(
     ${({ theme }) => theme.grid.margin},
     calc((100vw - ${({ theme }) => theme.grid.max}) / 2 + ${({ theme }) => theme.grid.margin})
@@ -55,7 +58,7 @@ const BottomContent = styled.div`
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
-  gap: ${({ theme }) => theme.spacing[10]};
+  gap: clamp(20px, 4vh, ${({ theme }) => theme.spacing[10]});
   width: 100%;
   position: relative;
   z-index: 2;
@@ -67,7 +70,7 @@ const TextGroup = styled.div`
 `;
 
 const MainHeading = styled.h2`
-  font-size: 30px;
+  font-size: clamp(24px, 2vw, 30px);
   font-weight: 800;
   line-height: 1.5;
   font-family: ${({ theme }) => theme.fontFamily.body};
@@ -92,9 +95,9 @@ const Description = styled.p`
 
 const DataWrapper = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing[14]};
+  gap: clamp(20px, 3vw, ${({ theme }) => theme.spacing[14]});
   width: 100%;
-  padding-top: ${({ theme }) => theme.spacing[10]};
+  padding-top: clamp(16px, 3vh, ${({ theme }) => theme.spacing[10]});
   border-top: 1px solid ${({ theme }) => theme.Line};
 `;
 

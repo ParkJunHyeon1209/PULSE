@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import BaseSection from '../../../components/common/BaseSection';
+import BaseSection from '../../../../components/common/BaseSection';
 
 export const getPanelBackground = (theme) =>
   `linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.012)), ${theme.colors.cardBgLight}`;

@@ -1,12 +1,11 @@
-import React from 'react';
 import styled from '@emotion/styled';
-import BrandHeroSection from './components/BrandHeroSection';
-import BrandIdentitySection from './components/BrandIdentitySection';
-import BrandLayoutSection from './components/BrandLayoutSection';
-import BrandKeywordSection from './components/BrandKeywordSection';
-import BrandGallerySection from './components/BrandGallerySection';
-import BrandClosingSection from './components/BrandClosingSection';
-import SectionReveal from './components/SectionReveal';
+import BrandStorySec from './components/sections/BrandStorySec';
+import BrandIdentitySec from './components/sections/BrandIdentitySec';
+import BrandPhilosophySec from './components/sections/BrandPhilosophySec';
+import BrandKeywordSec from './components/sections/BrandKeywordSec';
+import BrandSignatureSec from './components/sections/BrandSignatureSec';
+import BrandLastSignalSec from './components/sections/BrandLastSignalSec';
+import SecReveal from './components/shared/SecReveal';
 
 const getPageBackground = (theme) =>
   theme.mode === 'dark'
@@ -61,10 +60,14 @@ const PageInner = styled.div`
 
 const PageStack = styled.div`
   display: grid;
-  gap: clamp(220px, 18vw, 280px);
+  gap: clamp(160px, 14vw, 260px);
 
-  padding-top: clamp(200px, 18vw, 240px);
+  padding-top: clamp(80px, 18vw, 100px);
   padding-bottom: ${({ theme }) => theme.spacing[10]};
+
+  @media (min-width: 869px) {
+    padding-top: 0;
+  }
 `;
 
 export default function BrandPage() {
@@ -72,24 +75,24 @@ export default function BrandPage() {
     <PageWrap>
       <PageInner>
         <PageStack>
-          <SectionReveal threshold={0.06}>
-            <BrandHeroSection />
-          </SectionReveal>
-          <SectionReveal threshold={0.08} delay="40ms">
-            <BrandIdentitySection />
-          </SectionReveal>
-          <SectionReveal threshold={0.08} delay="40ms">
-            <BrandLayoutSection />
-          </SectionReveal>
-          <SectionReveal threshold={0.08} delay="40ms">
-            <BrandKeywordSection />
-          </SectionReveal>
-          <SectionReveal threshold={0.06} delay="40ms">
-            <BrandGallerySection />
-          </SectionReveal>
-          <SectionReveal threshold={0.1} delay="40ms">
-            <BrandClosingSection />
-          </SectionReveal>
+          <SecReveal threshold={0.06}>
+            <BrandStorySec />
+          </SecReveal>
+          <SecReveal threshold={0.08} delay="40ms">
+            <BrandIdentitySec />
+          </SecReveal>
+          <SecReveal threshold={0.08} delay="40ms">
+            <BrandPhilosophySec />
+          </SecReveal>
+          <SecReveal threshold={0.08} delay="40ms">
+            <BrandKeywordSec />
+          </SecReveal>
+          <SecReveal threshold={0.06} delay="40ms">
+            <BrandSignatureSec />
+          </SecReveal>
+          <SecReveal threshold={0.1} delay="40ms">
+            <BrandLastSignalSec />
+          </SecReveal>
         </PageStack>
       </PageInner>
     </PageWrap>

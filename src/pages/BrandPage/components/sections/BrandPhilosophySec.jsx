@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { layoutSection, storyCards } from '../brandPageData';
-import BrandImageSlot from './BrandImageSlot';
-import { BrandSectionHeading, getSoftPanelBackground } from './brandPageShared';
+import { layoutSection, storyCards } from '../../brandPageData';
+import BrandImageSlot from '../shared/BrandImageSlot';
+import { BrandSectionHeading, getSoftPanelBackground } from '../shared/brandPageShared';
+import { getAccent } from '../../brandAccents';
 
 const SectionBlock = styled.section`
   display: grid;
@@ -13,7 +14,7 @@ const PanelGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: clamp(20px, 3vw, 40px);
-  align-items: start;
+  align-items: center;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
@@ -23,7 +24,7 @@ const PanelGrid = styled.div`
 const SurfaceCard = styled.div`
   position: relative;
   padding-top: ${({ theme }) => theme.spacing[5]};
-
+  /* 
   &::before {
     content: '';
     position: absolute;
@@ -33,7 +34,7 @@ const SurfaceCard = styled.div`
     height: 1px;
     background: ${({ theme }) => theme.gradients.Headline};
     opacity: 0.9;
-  }
+  } */
 `;
 
 const BodyText = styled.p`
@@ -52,7 +53,7 @@ const DetailList = styled.div`
 const DetailItem = styled.div`
   padding: ${({ theme }) => theme.spacing[4]};
   border-radius: ${({ theme }) => theme.radii.xl};
-  border: 1px solid ${({ theme, $accent }) => theme.tones[$accent].containerBorder};
+  border: 1px solid ${({ theme, $accent }) => getAccent(theme, $accent).containerBorder};
   background: ${({ theme }) => getSoftPanelBackground(theme)};
   transition:
     transform ${({ theme }) => theme.motion.normal},
@@ -61,11 +62,8 @@ const DetailItem = styled.div`
 
   &:hover {
     transform: translateX(4px);
-    border-color: ${({ theme, $accent }) => theme.tones[$accent].activeBorder};
-    box-shadow: ${({ $accent }) =>
-      $accent === 'blue'
-        ? '0 2px 14px rgba(56, 189, 248, 0.14)'
-        : '0 2px 14px rgba(124, 58, 237, 0.12)'};
+    border-color: ${({ theme, $accent }) => getAccent(theme, $accent).activeBorder};
+    box-shadow: ${({ theme, $accent }) => getAccent(theme, $accent).itemHoverShadow};
   }
 `;
 
@@ -88,7 +86,7 @@ const StoryVisualColumn = styled.div`
   gap: ${({ theme }) => theme.spacing[3]};
 `;
 
-export default function BrandLayoutSection() {
+export default function BrandPhilosophySec() {
   return (
     <SectionBlock>
       <PanelGrid>

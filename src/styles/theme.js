@@ -702,7 +702,7 @@ export const lightTheme = {
     blue: {
       // link
       color: '#3b82f6',
-      hoverColor: '#2563eb',
+      hoverColor: '#60a5fa',
       subtleColor: 'rgba(59, 130, 246, 0.5)',
       // tabs
       containerBg:

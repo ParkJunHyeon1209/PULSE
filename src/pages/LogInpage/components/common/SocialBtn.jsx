@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import BaseBtn from '../../../../components/common/BaseBtn';
+import useOverlayStore from '../../../../store/useOverlayStore';
 
 const SocialGroup = styled.div`
   display: flex;
@@ -39,10 +40,19 @@ const NaverButton = styled.div`
 `;
 
 export default function SocialBtn() {
+  const openModal = useOverlayStore((state) => state.openModal);
+
   return (
     <>
       <SocialGroup>
-        <BaseBtn variant="ic-btn" aria-label="Google" size="44px" flex="0">
+        <BaseBtn
+          variant="ic-btn"
+          type="button"
+          aria-label="Google"
+          size="44px"
+          flex="0"
+          onClick={() => openModal('googleLoginWip')}
+        >
           <GoogleButton>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -56,7 +66,14 @@ export default function SocialBtn() {
             </svg>
           </GoogleButton>
         </BaseBtn>
-        <BaseBtn variant="ic-btn" aria-label="Naver" size="44px" flex="0">
+        <BaseBtn
+          variant="ic-btn"
+          type="button"
+          aria-label="Naver"
+          size="44px"
+          flex="0"
+          onClick={() => openModal('naverLoginWip')}
+        >
           <NaverButton>
             <svg
               role="img"

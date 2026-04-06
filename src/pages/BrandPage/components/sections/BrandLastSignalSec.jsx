@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import BaseBtn from '../../../components/common/BaseBtn';
-import BaseSection from '../../../components/common/BaseSection';
-import BaseSparkIcon from '../../../components/common/BaseSparkIcon';
-import { LavStarIcon } from '../../../assets/icons/BtnIcon';
-import { closingSection } from '../brandPageData';
-import { BrandSectionHeading } from './brandPageShared';
+import { useTheme } from '@emotion/react';
+import BaseBtn from '../../../../components/common/BaseBtn';
+import BaseSection from '../../../../components/common/BaseSection';
+import BaseSparkIcon from '../../../../components/common/BaseSparkIcon';
+import { LavStarIcon } from '../../../../assets/icons/BtnIcon';
+import { closingSection, closingBackdrop } from '../../brandPageData';
+import { BrandSectionHeading } from '../shared/brandPageShared';
+import { getAccent } from '../../brandAccents';
 
 const SectionBlock = styled.section`
   position: relative;
@@ -14,6 +16,11 @@ const SectionBlock = styled.section`
 
 const ClosingMiniLabel = styled(BaseSection)`
   margin-bottom: ${({ theme }) => theme.spacing[5]};
+
+  > div {
+    text-shadow: ${({ theme }) =>
+      theme.mode === 'dark' ? '0 0 10px rgba(4, 2, 12, 0.72)' : '0 0 10px rgba(22, 14, 52, 0.28)'};
+  }
 `;
 
 const ClosingCard = styled.div`
@@ -25,22 +32,14 @@ const ClosingCard = styled.div`
   align-items: end;
   padding: clamp(32px, 5vw, 56px);
   border-radius: ${({ theme }) => theme.radii.xxl};
-  border: 1px solid
-    ${({ theme }) =>
-      theme.mode === 'dark'
-        ? theme.tones.violet.containerBorder
-        : 'rgba(124, 58, 237, 0.28)'};
+  border: 1px solid ${({ theme }) => getAccent(theme, 'violet').containerBorder};
   background:
-    linear-gradient(135deg, rgba(124,58,237,0.09) 0%, rgba(56,189,248,0.07) 100%),
-    ${({ theme }) => theme.mode === 'dark'
-      ? 'rgba(12, 8, 32, 0.72)'
-      : 'rgba(252, 250, 255, 0.82)'};
+    linear-gradient(135deg, rgba(124, 58, 237, 0.09) 0%, rgba(56, 189, 248, 0.07) 100%),
+    ${({ theme }) =>
+      theme.mode === 'dark' ? 'rgba(12, 8, 32, 0.72)' : 'rgba(252, 250, 255, 0.82)'};
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, ${({ theme }) => (theme.mode === 'dark' ? 0.06 : 0.84)}),
-    ${({ theme }) =>
-      theme.mode === 'dark'
-        ? theme.tones.violet.containerShadow
-        : '0 4px 28px rgba(124, 58, 237, 0.16), 0 1px 6px rgba(124, 58, 237, 0.1)'};
+    ${({ theme }) => getAccent(theme, 'violet').containerShadow};
   backdrop-filter: ${({ theme }) => theme.effects.blurMd};
 
   /* 글래스 시머 */
@@ -64,11 +63,24 @@ const ClosingCard = styled.div`
   }
 
   @keyframes closingShimmer {
-    0%   { transform: skewX(-18deg) translateX(0%); opacity: 0; }
-    10%  { opacity: 1; }
-    60%  { transform: skewX(-18deg) translateX(560%); opacity: 1; }
-    61%  { opacity: 0; }
-    100% { transform: skewX(-18deg) translateX(560%); opacity: 0; }
+    0% {
+      transform: skewX(-18deg) translateX(0%);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    60% {
+      transform: skewX(-18deg) translateX(560%);
+      opacity: 1;
+    }
+    61% {
+      opacity: 0;
+    }
+    100% {
+      transform: skewX(-18deg) translateX(560%);
+      opacity: 0;
+    }
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -87,10 +99,8 @@ const ClosingBeam = styled.div`
   background: radial-gradient(
     ellipse 80% 100% at 50% 100%,
     ${({ theme }) =>
-      theme.mode === 'dark'
-        ? 'rgba(124, 58, 237, 0.38)'
-        : 'rgba(124, 58, 237, 0.22)'}
-    0%,
+        theme.mode === 'dark' ? 'rgba(124, 58, 237, 0.38)' : 'rgba(124, 58, 237, 0.22)'}
+      0%,
     transparent 70%
   );
   pointer-events: none;
@@ -106,10 +116,8 @@ const ClosingBeamBlue = styled.div`
   background: radial-gradient(
     ellipse 80% 80% at 10% 10%,
     ${({ theme }) =>
-      theme.mode === 'dark'
-        ? 'rgba(56, 189, 248, 0.18)'
-        : 'rgba(56, 189, 248, 0.12)'}
-    0%,
+        theme.mode === 'dark' ? 'rgba(56, 189, 248, 0.18)' : 'rgba(56, 189, 248, 0.12)'}
+      0%,
     transparent 70%
   );
   pointer-events: none;
@@ -173,6 +181,19 @@ const StarFloat = styled(LavStarIcon)`
   }
 `;
 
+const ClosingBackdrop = styled.img`
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transform: scale(1.15) translate(6%, -2%);
+  opacity: ${({ theme }) => (theme.mode === 'dark' ? 0.6 : 0.8)};
+  filter: ${({ theme }) =>
+    theme.mode === 'dark' ? 'brightness(0.75) saturate(1.05)' : 'brightness(1.2) saturate(1.02)'};
+`;
+
 /* 상단 accent 라인 */
 const TopLine = styled.div`
   position: absolute;
@@ -192,7 +213,7 @@ const ClosingContent = styled.div`
 const ClosingLead = styled.p`
   margin: ${({ theme }) => theme.spacing[5]} 0 0;
   color: ${({ theme }) => theme.colors.textSecondary};
-  line-height: 1.9;
+  line-height: 1.4;
   font-size: ${({ theme }) => theme.fontSize.xs};
 `;
 
@@ -207,20 +228,28 @@ const ActionRow = styled.div`
   align-self: end;
   justify-content: flex-end;
 
+  > button {
+    color: ${({ theme }) => theme.colors.wColor};
+  }
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     justify-content: flex-start;
     align-self: auto;
   }
 `;
 
-export default function BrandClosingSection() {
+export default function BrandLastSignalSec() {
   const navigate = useNavigate();
+  const theme = useTheme();
 
   return (
     <SectionBlock>
       <ClosingMiniLabel label={closingSection.miniLabel} />
       <ClosingCard>
-        <TopLine />
+        <ClosingBackdrop
+          src={theme.mode === 'dark' ? closingBackdrop.dark : closingBackdrop.light}
+          alt=""
+        />
+        {/* <TopLine /> */}
         <ClosingBeam />
         <ClosingBeamBlue />
         <ClosingSparkLeft>
@@ -232,13 +261,23 @@ export default function BrandClosingSection() {
         <ClosingSparkCenter>
           <BaseSparkIcon tone="violet" />
         </ClosingSparkCenter>
-        <StarFloat className="closing-star-1" $animate={true}>&#10022;</StarFloat>
-        <StarFloat className="closing-star-2" $animate={true}>&#10022;</StarFloat>
-        <StarFloat className="closing-star-3" $animate={true}>&#10022;</StarFloat>
+        <StarFloat className="closing-star-1" $animate={true}>
+          ✦
+        </StarFloat>
+        <StarFloat className="closing-star-2" $animate={true}>
+          ✦
+        </StarFloat>
+        <StarFloat className="closing-star-3" $animate={true}>
+          ✦
+        </StarFloat>
 
         <ClosingContent>
           <BrandSectionHeading {...closingSection.section} />
-          <ClosingLead>{closingSection.lead}</ClosingLead>
+          <ClosingLead>
+            PULSE의 새로운 기어 라인업을 지금 확인하세요. 시즌 드롭부터 플래그십까지
+            <br />
+            당신의 플레이 신호를 증폭할 기어가 기다리고 있습니다.
+          </ClosingLead>
         </ClosingContent>
 
         <ActionRow>

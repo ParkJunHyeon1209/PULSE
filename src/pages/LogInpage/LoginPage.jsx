@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import AuthLeftPanel from './components/common/AuthLeftPanel';
 import TabNavigation from './components/common/TabNavigation';
 import AppLogo from '../../components/common/AppLogo';
+import BaseWipModal from '../../components/common/modals/BaseWipModal';
 import logoDark from '../../assets/Logo-dark.svg';
 import logoLight from '../../assets/Logo-wite.svg';
 import { useTheme } from '@emotion/react';
@@ -48,7 +49,7 @@ const LogInPageContainer = styled.div`
 
 const LogoWrap = styled.div`
   position: absolute;
-  top: calc(${({ theme }) => theme.spacing[4]} + ${({ theme }) => theme.spacing[5]});
+  top: calc(${({ theme }) => theme.spacing[4]} + ${({ theme }) => theme.spacing[6]});
   left: max(
     ${({ theme }) => theme.grid.margin},
     calc((100vw - ${({ theme }) => theme.grid.max}) / 2 + ${({ theme }) => theme.grid.margin})
@@ -64,6 +65,9 @@ const LeftSection = styled.div`
   flex: 0 0 50%;
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  min-height: 100vh;
+  min-height: 100dvh;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: none;
@@ -138,6 +142,8 @@ export default function LoginPage() {
           )}
         </div>
       </RightSection>
+      <BaseWipModal id="googleLoginWip" label="SOCIAL LOGIN" title="Google 로그인" />
+      <BaseWipModal id="naverLoginWip" label="SOCIAL LOGIN" title="네이버 로그인" />
     </LogInPageContainer>
   );
 }
