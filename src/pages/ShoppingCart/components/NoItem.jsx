@@ -37,6 +37,15 @@ const NoItemWrap = styled.div`
     border: 1px solid ${({ theme }) => theme.colors.primary + '20'};
     background-color: ${({ theme }) => theme.colors.primary + '15'};
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    padding: ${({ theme }) => theme.spacing[20]} ${({ theme }) => theme.spacing[16]};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: ${({ theme }) => theme.spacing[16]} ${({ theme }) => theme.spacing[8]};
+    min-height: 420px;
+  }
 `;
 
 export default function NoItem() {
