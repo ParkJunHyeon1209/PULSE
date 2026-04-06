@@ -85,7 +85,6 @@ const BottomFade = styled.div`
         )`};
 `;
 
-
 const SideFade = styled.div`
   position: absolute;
   inset: 0;
@@ -171,6 +170,10 @@ const HeroTabsArea = styled.div`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     padding: 0 ${({ theme }) => theme.spacing[4]};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: 0 ${({ theme }) => theme.spacing[3]};
   }
 `;
 

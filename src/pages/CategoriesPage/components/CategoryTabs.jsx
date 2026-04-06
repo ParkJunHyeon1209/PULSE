@@ -37,8 +37,12 @@ const CategoryTabList = styled.div`
   gap: ${({ theme }) => theme.tabs.gap};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    justify-content: flex-start;
+    justify-content: center;
     border-radius: ${({ theme }) => theme.radii.xl};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    justify-content: center;
   }
 `;
 
@@ -81,6 +85,12 @@ const CategoryTabButton = styled.button`
 
   &:hover {
     color: ${({ theme }) => theme.colors.text};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 11px;
+    padding: 0 14px;
+    min-width: fit-content;
   }
 `;
 
