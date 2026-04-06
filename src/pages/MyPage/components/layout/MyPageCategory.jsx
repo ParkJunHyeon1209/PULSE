@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import useOverlayStore from '../../../../store/useOverlayStore';
-import LogoutModal from '../../../../components/common/LogoutModal';
 import useAuthStore from '../../../../store/useAuthStore';
 import useReviewStore from '../../../../store/useReviewStore';
 import useWishlistStore from '../../../../store/useWishlistStore';
@@ -92,7 +91,6 @@ export default function MyPageCategory({ category, setCategory }) {
           </button>
         </div>
       </li>
-      <LogoutModal />
     </CategoryList>
   );
 }

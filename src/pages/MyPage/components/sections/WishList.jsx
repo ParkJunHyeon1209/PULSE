@@ -281,12 +281,12 @@ const WishListWrap = styled.ul`
     opacity: 0;
     animation: ${fadeUp} 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
-  > *:nth-child(1) { animation-delay: 0ms; }
-  > *:nth-child(2) { animation-delay: 40ms; }
-  > *:nth-child(3) { animation-delay: 80ms; }
-  > *:nth-child(4) { animation-delay: 120ms; }
-  > *:nth-child(5) { animation-delay: 160ms; }
-  > *:nth-child(6) { animation-delay: 200ms; }
+  > *:nth-of-type(1) { animation-delay: 0ms; }
+  > *:nth-of-type(2) { animation-delay: 40ms; }
+  > *:nth-of-type(3) { animation-delay: 80ms; }
+  > *:nth-of-type(4) { animation-delay: 120ms; }
+  > *:nth-of-type(5) { animation-delay: 160ms; }
+  > *:nth-of-type(6) { animation-delay: 200ms; }
   gap: 12px;
   margin: 0;
   padding: 0;

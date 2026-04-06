@@ -13,6 +13,7 @@ import CursorTrail from './components/common/CursorTrail';
 import ScrollToTop from './components/common/ScrollToTop';
 import MyPage from './pages/MyPage/MyPage';
 import ScrollToTopButton from './components/common/ScrollToTopButton';
+import LogoutModal from './components/common/LogoutModal';
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
       <CursorTrail />
       <ScrollToTop />
       <ScrollToTopButton />
+      <LogoutModal />
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<MainPage />} />

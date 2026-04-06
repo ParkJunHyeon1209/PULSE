@@ -49,5 +49,5 @@ const CategoryWrap = styled.div`
 `;
 
 const SectionWrap = styled.div`
-  animation: ${fadeSlideIn} 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: ${fadeSlideIn} 0.44s cubic-bezier(0.22, 1, 0.36, 1) both;
 `;
