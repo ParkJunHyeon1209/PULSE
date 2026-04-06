@@ -109,7 +109,7 @@ const HeroCenterContent = styled.div`
   align-items: center;
   justify-content: center;
   gap: ${({ theme }) => theme.spacing[4]};
-  padding: ${({ theme}) => `${theme.spacing[10]} ${theme.spacing[6]} ${theme.spacing[10]}`};
+  padding: ${({ theme }) => `${theme.spacing[10]} ${theme.spacing[6]} ${theme.spacing[10]}`};
   text-align: center;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -119,10 +119,11 @@ const HeroCenterContent = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     min-height: 280px;
     gap: ${({ theme }) => theme.spacing[3]};
-    padding: ${({ theme, $hasTabs }) =>
+    /* padding: ${({ theme, $hasTabs }) =>
       $hasTabs
         ? `${theme.spacing[8]} ${theme.spacing[4]} 120px`
         : `${theme.spacing[8]} ${theme.spacing[4]} ${theme.spacing[8]}`};
+  } */
   }
 `;
 
